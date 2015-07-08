@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+	<grafcet type="normal" owner="" name="GSecPrincipal" comment="organiza tanto el arranque del sistema en modo automático como la parada programada del mismo, generando las señales de mando que informan a producción normal sobre el estado &#10;del sistema en cada momento. ">
+		<sequence id="1">
+			<step type="initial" name="X0">
+				<action type="normal">
+					<text>Inicio</text>
+				</action>
+			</step>
+			<transition>
+				<condition>SolModoAuto</condition>
+				<comment>(* SolModoAuto:=<re />Marcha*)</comment>
+			</transition>
+			<step type="normal" name="X1">
+				<action type="normal">
+					<text>SolCondIni</text>
+				</action>
+			</step>
+			<transition>
+				<condition>FinCondIni</condition>
+			</transition>
+			<step type="normal" name="X2">
+				<action type="normal">
+					<text>ProdNormal</text>
+				</action>
+			</step>
+			<transition>
+				<condition><re />Paro</condition>
+			</transition>
+			<step type="normal" name="X3">
+				<action type="normal">
+					<text>ParoFC</text>
+				</action>
+			</step>
+			<transition>
+				<condition>FinProces</condition>
+				<comment>(* FinProces:=X20*)</comment>
+			</transition>
+		</sequence>
+		<jump seqid_from="1" seqid_to="1" />
+	</grafcet>
+	<grafcet type="normal" owner="" name="GCondIniciales" comment="Acciones necesarias para llevar el proceso a una situación de partida conocida y segura según las condiciones iniciales y de seguridad especificadas">
+		<sequence id="1">
+			<step type="initial" name="X10" />
+			<transition>
+				<condition>SolCondIni</condition>
+			</transition>
+			<step type="normal" name="X11" />
+		</sequence>
+		<sequence id="2">
+			<transition>
+				<condition>F0</condition>
+			</transition>
+		</sequence>
+		<sequence id="3">
+			<transition>
+				<condition><cpl>F0</cpl></condition>
+			</transition>
+			<step type="normal" name="X12">
+				<action type="normal">
+					<text>CIzquierda</text>
+				</action>
+			</step>
+			<transition>
+				<condition>F0</condition>
+			</transition>
+		</sequence>
+		<sequence id="4">
+			<step type="normal" name="X13">
+				<action type="normal">
+					<text>FinCondIni</text>
+				</action>
+			</step>
+			<transition>
+				<condition><cpl>SolCondIni</cpl></condition>
+			</transition>
+		</sequence>
+		<hlink type="div or" seqid="1">
+			<node seqid="2" />
+			<node seqid="3" />
+		</hlink>
+		<hlink type="conv or" seqid="4">
+			<node seqid="2" />
+			<node seqid="3" />
+		</hlink>
+		<jump seqid_from="4" seqid_to="1" />
+	</grafcet>
+	<grafcet type="normal" owner="" name="GMovil" comment="">
+		<sequence id="1">
+			<step type="initial" name="X20" />
+			<transition>
+				<condition>ProdNormal</condition>
+			</transition>
+			<step type="normal" name="X21">
+				<action type="normal">
+					<text>CDerecha</text>
+				</action>
+			</step>
+			<transition>
+				<condition>F1</condition>
+			</transition>
+			<step type="normal" name="X22">
+				<action type="normal">
+					<text>Temp=2seg</text>
+				</action>
+			</step>
+			<transition>
+				<condition>Temp/X22/2seg</condition>
+			</transition>
+			<step type="normal" name="X23">
+				<action type="normal">
+					<text>CIzquierda</text>
+				</action>
+			</step>
+			<transition>
+				<condition>F0</condition>
+			</transition>
+			<step type="normal" name="X24">
+				<action type="normal">
+					<text>Temp=2seg</text>
+				</action>
+			</step>
+			<transition>
+				<condition>Temp/X24/2seg</condition>
+			</transition>
+		</sequence>
+		<jump seqid_from="1" seqid_to="1" />
+	</grafcet>
+	<grafcet type="normal" owner="" name="GEmergencia" comment="Organiza tanto el arranque como la parada del sistema para el tratamiento de emergencias">
+		<sequence id="1">
+			<step type="initial" name="X30" />
+			<transition>
+				<condition>SolEmergencia</condition>
+				<comment>(* SolEmergencia:=Emergencia*)</comment>
+			</transition>
+		</sequence>
+		<sequence id="2">
+			<step type="normal" name="X31">
+				<action type="conditional">
+					<condition><cpl>F0</cpl></condition>
+					<text>CIzquierda</text>
+				</action>
+			</step>
+			<transition>
+				<condition>F0</condition>
+			</transition>
+			<step type="normal" name="X32" />
+		</sequence>
+		<sequence id="3">
+			<step type="normal" name="X33">
+				<action type="forcing order">
+					<text>F/GSecPrincipal&gt;{},F/GCondIniciales&gt;{}, F/GMovil&gt;{}</text>
+				</action>
+			</step>
+			<transition>
+				<condition>=1</condition>
+			</transition>
+			<step type="normal" name="X34" />
+		</sequence>
+		<sequence id="4">
+			<transition>
+				<condition>ParoEmergencia</condition>
+				<comment>(* ParoEmergencia:=  <cpl>Emergencia</cpl> * Rearme *)</comment>
+			</transition>
+			<step type="normal" name="X35">
+				<action type="forcing order">
+					<text>F/GSecPrincipal&gt;{X0},F/GCondIniciales&gt;{X10}, F/GMovil&gt;{X20}</text>
+				</action>
+			</step>
+			<transition>
+				<condition>Inicio</condition>
+			</transition>
+		</sequence>
+		<hlink type="div and" seqid="1">
+			<node seqid="2" />
+			<node seqid="3" />
+		</hlink>
+		<hlink type="conv and" seqid="4">
+			<node seqid="2" />
+			<node seqid="3" />
+		</hlink>
+		<jump seqid_from="4" seqid_to="1" />
+	</grafcet>
+</project>
