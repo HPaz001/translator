@@ -3,7 +3,7 @@ package com.hpaz.translator.grafcetelements;
 import java.util.LinkedList;
 
 import com.hpaz.translator.output.Output;
-import com.hpaz.translator.output.OutputProcess;
+import com.hpaz.translator.output.PostProcess;
 
 
 public class Project {
@@ -50,7 +50,7 @@ public class Project {
 		for (Grafcet g : listG) {
 			vG.addAll(g.printGrafcetVarGlobalStages());
 		}
-		vG.add("\n\t(*---Señales---*)\n\n");
+		vG.add("\n\t(*---Seï¿½ales---*)\n\n");
 		for (Grafcet g : listG) {
 			vG.addAll(g.printGrafcetVarGlobalSignals());
 		}
@@ -60,7 +60,7 @@ public class Project {
 	public void print(String pCompatibility){
 		if(pCompatibility.equals("T")){
 			try {
-				Output.getSalida().exportarFichero(OutputProcess.getOutputProcess().getGlobalVar(printVarGlobal()), this.name);
+				Output.getSalida().exportarFichero(PostProcess.getOutputProcess().getGlobalVar(printVarGlobal()), this.name);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

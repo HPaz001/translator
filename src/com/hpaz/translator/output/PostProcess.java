@@ -2,14 +2,14 @@ package com.hpaz.translator.output;
 
 import java.util.LinkedList;
 
-public class OutputProcess {
+public class PostProcess {
 	
 		
-	private static OutputProcess myOutputProcess = new OutputProcess();
+	private static PostProcess myOutputProcess = new PostProcess();
 	
-	public OutputProcess(){}
+	public PostProcess(){}
 
-	public static OutputProcess getOutputProcess() {
+	public static PostProcess getOutputProcess() {
 		return myOutputProcess;
 	}
 		
