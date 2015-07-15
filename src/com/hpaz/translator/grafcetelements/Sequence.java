@@ -1,6 +1,6 @@
 package com.hpaz.translator.grafcetelements;
 
-import java.util.Collection;
+
 import java.util.LinkedList;
 
 public class Sequence {
@@ -51,5 +51,15 @@ public class Sequence {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
+	public void printSequence(){
+		System.out.println("----- SEQUENCE ------");
+		System.out.println("ID secuencia : "+this.idSeq);
+		for (Object o : list) {
+			if(o instanceof Transition){
+				((Transition) o).printTransition();
+			}else if (o instanceof Step){
+				((Step) o).printStep();
+			}
+		}
+	}
 }

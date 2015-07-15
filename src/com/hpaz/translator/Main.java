@@ -88,7 +88,7 @@ public class Main {
 			
 			// Procesamos el xml
 			file.replace(";","");
-			reader.parse(new InputSource(new FileInputStream(file)));
+			reader.parse(new InputSource(new FileInputStream("xml/"+file)));
 			
 			//genero el fichero de salida
 			//FormatoSalida.getSalida().exportarFichero();

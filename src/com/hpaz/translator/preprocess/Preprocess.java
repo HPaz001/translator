@@ -73,16 +73,16 @@ public class Preprocess extends DefaultHandler {
 		compatibility=pCompatibility;
 	}
 */
+	
 	public void startDocument() throws SAXException {
 		System.out.println("\nPrincipio del documento...");
-
 	}
 
 	public void endDocument() throws SAXException {
 		System.out.println("\nFin del documento...");
 	}
 
-	// Esto lo hace por cada etiqueta que hay
+	/**Esto lo hace por cada etiqueta que hay*/
 	public void startElement(String uri, String localName, String name, Attributes attributes) throws SAXException {
 		previousTag = actualTag;
 		actualTag = localName;
@@ -91,14 +91,18 @@ public class Preprocess extends DefaultHandler {
 
 		if (actualTag.equals(GrafcetTagsConstants.GRAFCET_TAG)) {
 			grafcet = new Grafcet();
+	
 		} else if (actualTag.equals(GrafcetTagsConstants.SEQUENCE_TAG)) {
 			sequence = new Sequence();
+
 		} else if (actualTag.equals(GrafcetTagsConstants.STEP_TAG)) {
 			step = new Step();
 			isStep = true;
+
 		} else if (actualTag.equals(GrafcetTagsConstants.TRANSITION_TAG)) {
 			transition = new Transition();
 			isTransition = true;
+
 		} else if (actualTag.equals(GrafcetTagsConstants.ACTION_TAG)) {
 			// comment=false;
 		} else if (actualTag.equals(GrafcetTagsConstants.RE_TAG)) {
@@ -109,8 +113,10 @@ public class Preprocess extends DefaultHandler {
 			/// transition.activateFb();
 		} else if (actualTag.equals(GrafcetTagsConstants.HLINK_TAG)) {// road
 			road = new Road();
+
 		} else if (actualTag.equals(GrafcetTagsConstants.JUMP_TAG)) {
 			jump = new Jump();
+
 		}
 
 		// Recorremos los atributos de la etiqueta actual
@@ -121,78 +127,148 @@ public class Preprocess extends DefaultHandler {
 		}
 	}
 
-	// Para obtener los textos que hay dentro de una etiqueta
-	public void characters(char[] ch, int start, int length) throws SAXException {
+	/** Para obtener los textos que hay dentro de una etiqueta */
+	public void characters(char[] ch, int start, int length)
+			throws SAXException {
 
 		String texto = String.valueOf(ch, start, length);
 
 		text = texto;
+		// quito los enter, tambulaciones y espacios en blanco
 		text = text.replace("\n", "");
 		text = text.replace("\t", "");
 		text = text.trim();
 
+		// si la etiqueta tiene texto
 		if (text != null && !text.isEmpty()) {
+
+			// si la etiqueta es text entonces es el texto de una accion
 			if (actualTag.equals(GrafcetTagsConstants.TEXT_TAG)) {
+				
 				step.setAction(step.getAction() + text);
-			} else if (actualTag.equals(GrafcetTagsConstants.CONDITION_TAG)) { // condition
-				// texto dentro de la condicion
+
 				/*
-				 * sustituyo el + y el * y añado la negacion en el caso de q
-				 * exista
+				 * Si la etiqueta es condition, puede ser de una transition o de
+				 * un step ya que la acction puede ser condicionada
 				 */
-				text = changeSigns(text);
-				transition.setConditionComp(transition.getConditionComp() + " " + text);
-				if (text.contains("+") || text.contains("*")) {
-					transition.addListConditionSep(removeSigns(text));
-				} else {
-					transition.addListConditionSep(text);
+			} else if (actualTag.equals(GrafcetTagsConstants.CONDITION_TAG)) { // condition
+
+				// si es un paso la condition sera de la accion
+				if (isStep) {
+					/*
+					 * añado la condicion completa, lo q habia + lo nuevo y dejo
+					 * los signos ya los cambiare en la propia transition
+					 */
+					step.setCondition(step.getCondition() + " " + text);
+
+				} else if (isTransition) {
+					/*
+					 * añado la condicion completa, lo q habia + lo nuevo y dejo
+					 * los signos ya los cambiare en la propia transition
+					 */
+					transition.setConditionComp(transition.getConditionComp()
+							+ " " + text);
+
+					/*
+					 * la añado en la lista por separados para tener todas las
+					 * señales por separado
+					 */
+					if (text.contains("+") || text.contains("*")) {
+						transition.addListConditionSep(removeSigns(text));
+					} else {
+						transition.addListConditionSep(text);
+					}
 				}
+
 			} else if (actualTag.equals(GrafcetTagsConstants.CPL_TAG)) {// cpl
 				/*
-				 * sustituyo el + y el * y añado la negacion en el caso de q
-				 * exista
+				 * cpl etiqueta de negacion puede estar en un commentario, una
+				 * accion o una transicion
 				 */
-				text = changeSigns(text);
-				// transition.setConditionComp(transition.getConditionComp()+"
-				// "+text);
-				text = transition.getConditionComp() + "(NOT (" + text + "))";
-				transition.setConditionComp(text);
-			} else if (actualTag.equals(GrafcetTagsConstants.COMMENT_TAG)) {// comment
-				// si el comentario es de una accion o de una transicion
-				if (previousTag.equals(GrafcetTagsConstants.CONDITION_TAG)) {
-					// comentario de una transicion
-					transition.setComment(transition.getComment() + " " + text);
-				} else if (previousTag.equals(GrafcetTagsConstants.TEXT_TAG)) {
-					// comentario de una accion que esta en step
-					step.setComment(step.getComment() + " " + text);
-				}
-			} else if (actualTag.equals(GrafcetTagsConstants.RE_TAG)) {
-				// si la etiqueta es re (flanco de subida)
+
+				// si es de un comentario
 				if (previousTag.equals(GrafcetTagsConstants.COMMENT_TAG)) {
-					// debo saber si es de un step o transition
-					if (isTransition) {
-						transition.setComment(transition.getComment() + " " + text);
-					} else if (isStep) {
-						step.setComment(step.getComment() + " " + text);
+					addComent(text);
+
+					// si es un paso la condition sera de la accion
+				} else if (isStep) {
+					/*
+					 * Si es de un step puede ser tanto de una condicion de la
+					 * accion o de la propia accion
+					 */
+					step.setCondition(step.getCondition() + "(NOT (" + text
+							+ "))");
+
+				} else if (isTransition) {
+					/*
+					 * añado la condicion completa, lo q habia + lo nuevo y dejo
+					 * los signos ya los cambiare en la propia transition
+					 */
+					transition.setConditionComp(transition.getConditionComp()
+							+ "(NOT (" + text + "))");
+
+					/*
+					 * la añado en la lista por separados para tener todas las
+					 * señales por separado
+					 */
+					if (text.contains("+") || text.contains("*")) {
+						transition.addListConditionSep(removeSigns(text));
+					} else {
+						transition.addListConditionSep(text);
 					}
-				} else {
-					// transition.activateFs();
-					transition.setConditionComp(transition.getConditionComp() + " (RE " + text + ")");
+				}
+
+			} else if (actualTag.equals(GrafcetTagsConstants.COMMENT_TAG)) {// comment
+				/*
+				 * Un comentario puede ser tanto de un paso como de una
+				 * transicion
+				 */
+				addComent(text);
+
+			} else if (actualTag.equals(GrafcetTagsConstants.RE_TAG)) {
+				/*
+				 * si la etiqueta es re (flanco de subida) Puede estar en :
+				 * Action, transitio, comment
+				 */
+				if (previousTag.equals(GrafcetTagsConstants.COMMENT_TAG)) {
+					// si esta dentro de un comentario añado a cometario
+					addComent(text);
+
+				} else if (isStep) {
+					// Si es un step puede ser de una condicion o de una action
+					if (previousTag.equals(GrafcetTagsConstants.CONDITION_TAG)) {
+						step.setCondition(step.getCondition() + " RE " + text);
+					} else {
+						step.setAction(step.getAction() + " RE " + text);
+					}
+
+				} else if (isTransition) {
+					// si esta dentro de una transition
+					transition.setConditionComp(transition.getConditionComp()
+							+ " (RE " + text + ")");
 					transition.addListConditionSep(text);
 				}
 			} else if (actualTag.equals(GrafcetTagsConstants.FE_TAG)) {
-				// si la etiqueta es fe (flanco de bajada)
-
+				/*
+				 * si la etiqueta es fe (flanco de bajada) Puede estar en :
+				 * Action, transitio, comment
+				 */
 				if (previousTag.equals(GrafcetTagsConstants.COMMENT_TAG)) {
-					// debo saber si es de un step o transition
-					if (isTransition) {
-						transition.setComment(transition.getComment() + " " + text);
-					} else if (isStep) {
-						step.setComment(step.getComment() + " " + text);
+					// si esta dentro de un comentario añado a cometario
+					addComent(text);
+
+				} else if (isStep) {
+					// Si es un step puede ser de una condicion o de una action
+					if (previousTag.equals(GrafcetTagsConstants.CONDITION_TAG)) {
+						step.setCondition(step.getCondition() + " FE " + text);
+					} else {
+						step.setAction(step.getAction() + " FE " + text);
 					}
-				} else {
-					// transition.activateFb();
-					transition.setConditionComp(transition.getConditionComp() + " (FE " + text + ")");
+
+				} else if (isTransition) {
+					// si esta dentro de una transition
+					transition.setConditionComp(transition.getConditionComp()
+							+ " (FE " + text + ")");
 					transition.addListConditionSep(text);
 				}
 			}
@@ -200,7 +276,7 @@ public class Preprocess extends DefaultHandler {
 
 	}
 
-	// Cuando detecta un fin de etiqueta
+	/**Cuando detecta un fin de etiqueta*/
 	public void endElement(String uri, String localName, String name) throws SAXException {
 		actualTag = localName;
 		// Si la etiqueta es sequence guardo el id de la etiqueta sequence
@@ -209,35 +285,44 @@ public class Preprocess extends DefaultHandler {
 		if (actualTag.equals(GrafcetTagsConstants.SEQUENCE_TAG)) {// Sequence
 			// añado la secuencia al grafcet
 			grafcet.addSeq(sequence);
+			
 		} else if (actualTag.equals(GrafcetTagsConstants.STEP_TAG)) {// Step
 			// añado el step a la secuencia
 			sequence.addTorS(step);
 			isStep = false;
+			
 		} else if (actualTag.equals(GrafcetTagsConstants.TRANSITION_TAG)) { // Transition
 			// añado la transicion a la secuencia
 			sequence.addTorS(transition);
 			isTransition = false;
+			
 		} else if (actualTag.equals(GrafcetTagsConstants.HLINK_TAG)) { // hlink
 			// añado el camino al grafcet
 			grafcet.addRoad(road);
-		} else if (actualTag.equals(GrafcetTagsConstants.PROJECT_TAG)) {// project
+			
+		}else if (actualTag.equals(GrafcetTagsConstants.GRAFCET_TAG)) { // Grafcet
+			// añado el grafcet al proyecto
+			Project.getProject().addGragcet(grafcet);
+			
+		}else if (actualTag.equals(GrafcetTagsConstants.PROJECT_TAG)) {// project
 			// añado el lenguaje y el nombre del proyecto
 			Project.getProject().setLanguage(language);
 			Project.getProject().setName(nameProject);
+			Project.getProject().setProgram(compatibility);
+			
+			//Genero las salidas dependiendo del software de compatibilidad
 			try {
-				Project.getProject().print(compatibility);
+				//Project.getProject().print(compatibility);
 				//Output.getSalida().exportarFicheroVG(Project.getProject().printVarGlobal(), nameProject);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		} else if (actualTag.equals(GrafcetTagsConstants.GRAFCET_TAG)) { // Grafcet
-			// añado el grafcet al proyecto
-			Project.getProject().addGragcet(grafcet);
+			Project.getProject().printProject();
 		}
 	}
 	
-	/** este metodo guarda cada atributo en su correspondiente clase*/
+	/**este metodo guarda cada atributo en su correspondiente clase*/
 	private void processingAttributes(String pNameAtt, String pAtt) {
 
 		if (actualTag.equals(GrafcetTagsConstants.GRAFCET_TAG)) {// Grafcet
@@ -251,9 +336,11 @@ public class Preprocess extends DefaultHandler {
 			} else if (pNameAtt.equals("owner")) {
 				grafcet.setOwner(pAtt);
 			}
+			
 		} else if (actualTag.equals(GrafcetTagsConstants.SEQUENCE_TAG)) {// Sequence
 			// añado el id
 			sequence.setIdSeq(Integer.parseInt(pAtt));
+			
 		} else if (actualTag.equals(GrafcetTagsConstants.STEP_TAG)) {// Step
 			// añado tipo y nombre
 			if (pNameAtt.equals("type")) {
@@ -261,9 +348,11 @@ public class Preprocess extends DefaultHandler {
 			} else if (pNameAtt.equals("name")) {
 				step.setName(pAtt);
 			}
+			
 		} else if (actualTag.equals(GrafcetTagsConstants.ACTION_TAG)) {// action
 			// añado el tipo
 			step.setTypeAction(pAtt);
+			
 		} else if (actualTag.equals(GrafcetTagsConstants.HLINK_TAG)) {// hlink
 			// Si hay una convergencia o divergencia estara en la etiketa hlink,
 			// guardaremos si es diver o conver
@@ -273,6 +362,7 @@ public class Preprocess extends DefaultHandler {
 			} else if (pNameAtt.equals("type")) {
 				road.setTypeRoad(pAtt);
 			}
+			
 		} else if (actualTag.equals(GrafcetTagsConstants.NODE_TAG)) { // node
 			// guardo las dos secuencias de las q viene o va en el road
 			if (road.getSeqOne() == 0) {
@@ -280,8 +370,9 @@ public class Preprocess extends DefaultHandler {
 			} else if (road.getSeqTwo() == 0) {
 				road.setSeqTwo(Integer.parseInt(pAtt));
 			}
+			
 		} else if (actualTag.equals(GrafcetTagsConstants.JUMP_TAG)) {// jump
-			// a�ado desde y adonde
+			// añado desde y a donde
 			if (pNameAtt.equals("seqid_from")) {
 				jump.setFromSeq(Integer.parseInt(pAtt));
 			} else if (pNameAtt.equals("seqid_to")) {
@@ -289,20 +380,8 @@ public class Preprocess extends DefaultHandler {
 			}
 		}
 	}
-
-	private String changeSigns(String text) {
-
-		if (text.indexOf("+") != -1) {
-			text = text.replace("+", " OR ");
-		}
-		if (text.indexOf("*") != -1) {
-			text = text.replace("*", " AND ");
-		}
-
-		return text;
-
-	}
-
+	
+	/**Quita el signo a el testo pasado y devuelve una lista*/
 	private LinkedList<String> removeSigns(String t) {
 
 		LinkedList<String> aux = new LinkedList<String>();
@@ -312,27 +391,48 @@ public class Preprocess extends DefaultHandler {
 		text = t.trim();
 
 		while (itr) {
+			
 			if (text.indexOf("+") == (-1) || text.indexOf("*") == (-1)) {
+				
 				itr = false;
 				aux.add(text);
+				
 			} else {
+				
 				// si es un signo mas coloco en poss la posicion donde esta
 				if (text.indexOf("+") != (-1)) {
 					posS = text.indexOf("+");
+					
 					// si es un signo por coloco en poss la posicion donde esta
 				} else if (text.indexOf("*") != (-1)) {
 					posS = text.indexOf("*");
 				}
-				/*A�ado el texto desde la posicion 0 a la del signo ya q esta
+				
+				/*Añado el texto desde la posicion 0 a la del signo ya q esta
 				  no se incluye*/
 				aux.add(text.substring(0, posS));
+				
 				/*Dejo en text el resto del string para seguirlo tratando*/
 				text = text.substring(posS + 1, text.length() + 1);
 			}
 		}
 
 		return aux;
-
+	}
+	
+	/**Añade el comentario donde le corresponde, 
+	 * ya que puede ser de una transicion o de un paso*/
+	private void addComent(String comm){
+		
+		/*Un comentario puede ser tanto de un paso como de una transicion*/
+		if(isStep){
+			// comentario de una accion que esta en step
+			step.setComment(step.getComment() + " " + comm);
+			
+		}else if(isTransition){
+			// comentario de una transicion
+			transition.setComment(transition.getComment() + " " + comm);
+		}
 	}
 
 }

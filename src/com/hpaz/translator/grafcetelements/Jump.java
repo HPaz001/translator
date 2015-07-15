@@ -20,6 +20,10 @@ public class Jump {
 	public void setToSeq(int toSeq) {
 		this.toSeq = toSeq;
 	}
-  
+	public void printJump(){
+		System.out.println("----- JUMP ------");
+		System.out.println("Desde la secuencia : "+this.fromSeq);
+		System.out.println("A la secuencia: "+this.toSeq);
+	}
   
 }

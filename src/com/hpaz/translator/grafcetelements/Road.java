@@ -38,4 +38,12 @@ public class Road {
 	public void setSeqTwo(int seqTwo) {
 		this.seqTwo = seqTwo;
 	}
+	public void printRoad(){
+		System.out.println("----- ROAD ------");
+		System.out.println("Secuencia inicial: "+this.seqIni);
+		System.out.println("Seccuencia 1 : "+this.seqOne);
+		System.out.println("Seccuencia 2 : "+this.seqTwo);
+		System.out.println("Tipo camino: "+this.typeRoad);
+
+	}
 }

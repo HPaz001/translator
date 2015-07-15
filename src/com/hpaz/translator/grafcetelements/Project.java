@@ -72,6 +72,16 @@ public class Project {
 		}
 		
 	}
+	public void printProject(){
+		System.out.println("----- PROJECT ------");
+		System.out.println("Nombre: "+this.name);
+		System.out.println("Lenguaje: "+this.language);
+		System.out.println("Compatibilidad: "+this.program);
+		for (Grafcet g : listG) {
+			g.printGrafcet();
+		}
+			
+	}
 
 	
 	

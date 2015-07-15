@@ -97,5 +97,23 @@ public class Grafcet {
 		}
 		return sR;
 	}
+	public void printGrafcet(){
+		System.out.println("----- GRAFCET ------");
+		System.out.println("Nombre: "+this.name);
+		System.out.println("Tipo: "+this.type);
+		System.out.println("Propietario: "+this.owner);
+		System.out.println("Comentario: "+this.comment);
+		for (Jump j : listJ) {
+			j.printJump();
+		}
+		for (Road r : listR) {
+			r.printRoad();		
+		}
+		for (Sequence s : listS) {
+			s.printSequence();
+		}
+		
+		
+	}
 	
 }

@@ -68,6 +68,23 @@ public class Transition {
 		
 		return aux;
 	}
-	
+	/**Este metodo cambia los simbolos + o * del texto por AND y OR */
+	private String changeSigns(String text) {
+
+		if (text.indexOf("+") != -1) {
+			text = text.replace("+", " OR ");
+		}
+		if (text.indexOf("*") != -1) {
+			text = text.replace("*", " AND ");
+		}
+
+		return text;
+
+	}
+	public void printTransition(){
+		System.out.println("----- TRANSITION ------");
+		System.out.println("Condicion completa: "+this.conditionComp);
+		System.out.println("Comentario: "+this.comment);
+	}
 	
 }

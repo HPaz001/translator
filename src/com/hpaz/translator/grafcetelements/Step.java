@@ -8,6 +8,7 @@ public class Step {
 	private String action;
 	private String typeAction;
 	private String comment;
+	private String condition; //segun el tipo de accion tiene condicion o no
 	
 	
 	public Step() {
@@ -16,6 +17,7 @@ public class Step {
 		action="";
 		typeAction="";
 		comment="";
+		condition="";
 		
 	}	
 	public String getType() {
@@ -48,9 +50,25 @@ public class Step {
 	public void setComment(String comment) {
 		this.comment = comment;
 	}
+	public String getCondition() {
+		return condition;
+	}
+	public void setCondition(String condition) {
+		this.condition = condition;
+	}
+
 	public String printStepVG() {
 		String s = "\t"+this.name+"\t: BOOL;\n";
 		return s;
 	}
-
+	public void printStep(){
+		System.out.println("----- STEP ------");
+		System.out.println("Nombre: "+this.name);
+		System.out.println("Tipo: "+this.type);
+		System.out.println("Accion: "+this.action);
+		System.out.println("Tipo accion: "+this.typeAction);
+		System.out.println("Condicion: "+this.condition);
+		System.out.println("Comentario: "+this.comment);
+	}
+	
 }
