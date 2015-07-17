@@ -1,7 +1,9 @@
 package com.hpaz.translator.grafcetelements;
 
 
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 
 public class Sequence {
 	private int idSeq;
@@ -62,4 +64,33 @@ public class Sequence {
 			}
 		}
 	}
+	
+	public Map<String, String> getActionStepMap(){
+		/*SE DEBEN AÑADIR EL RE PARO Y RE MARCHA Y ALGUNA MAS PREGUNTAR
+		 * EN ESTE CASO DEPENDEMOS DE LO Q NOS DIGA EL USUARIO EN LAS SEÑALES*/
+		Map<String, String> actionStepMap = new HashMap<String, String>();
+		
+		//por cada objeto de la lista
+		for (Object stepOrTransition : list) {
+			//si es de tipo step
+			if (stepOrTransition instanceof Step){
+				//busco la acciones del step y la guardo en auxMap				
+				Map<String, String> auxMap = ((Step) stepOrTransition).getActionStepMap();
+				//por cada accion de auxMap (Que en este caso sera solo una)
+				for (String action : auxMap.keySet()){
+					//si la accion no esta en actionStepMap
+					if (actionStepMap.get(action) == null){
+						//añado la accion 
+						actionStepMap.put(action, auxMap.get(action));
+					}else{
+						//si la accion ya existe, solo modifico el value del actionStepMap
+						actionStepMap.put(action, actionStepMap.get(action) + " OR " + auxMap.get(action));
+					}
+				}
+			}
+		}
+		//devuelvo el map unido 
+		return actionStepMap;	
+	}
+	
 }

@@ -1,6 +1,11 @@
 package com.hpaz.translator.grafcetelements;
 
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
+import java.util.Set;
+import java.util.Map.Entry;
 
 public class Grafcet {
 	
@@ -12,16 +17,19 @@ public class Grafcet {
 	private LinkedList<Sequence> listS;
 	private LinkedList<Road> listR;
 	
+
+	
 	public Grafcet() {
 		this.type="";
 		this.name="";
 		this.comment="";
 		this.owner="";
-		listJ = new LinkedList<Jump>();
-		listS= new LinkedList<Sequence>();
-		listR = new LinkedList<Road>();
+		this.listJ = new LinkedList<Jump>();
+		this.listS= new LinkedList<Sequence>();
+		this.listR = new LinkedList<Road>();
 		
 	}
+	
 	public String getType() {
 		return type;
 	}
@@ -112,8 +120,52 @@ public class Grafcet {
 		for (Sequence s : listS) {
 			s.printSequence();
 		}
+	}
+	
+	/**Este metodo devuelve la primera parte del PROGRAM MAIN */
+	public String printVar(){
+		String n = this.name.substring(1, 0);
 		
+		/*Ejemplo:
+		 * 	SecPrincipal		: GSecPrincipal;
+			InitSecPrincipal	:BOOL;
+			ResetSecPrincipal	:BOOL;
+		 * */
+		String v = "\t\t"+n+"\t:"+this.name+";\n";
+		v=v+"\t\tInit"+n+"\t: BOOL;\n";
+		v=v+"\t\tReset"+n+"\t: BOOL;\n";
+		
+		return v;
 		
 	}
+	
+	/**Este metodo devuelve la segunda parte del PROGRAM MAIN */
+	public Map<String, String> getActionStepMap(){
+		/*AQUI MIRO CADA SECUENCIA DEL GRAFCET Y SUS TRANSICIONES Y STEP
+		 * EN STEP --> ACTION:=NAME;
+		 * EN TRANSITION --> TRANSITION MIRAR Y HABLAR SOLO PARACE Q NECESITO LA MARCHA Y EL PARO*/
+		
+		Map<String, String> actionStepMap = new HashMap<String, String>();
+		
+		//por cada secuencia del grafcet
+		for (Sequence sequence : listS) {
+				//obtengo el map de la secuencia
+				Map<String, String> auxMap =  sequence.getActionStepMap();
+				//por cada accion de auxMap
+				for (String action : auxMap.keySet()){
+					//si la key no existe en actionStepMap
+					if (actionStepMap.get(action) == null){
+						//añado 
+						actionStepMap.put(action, auxMap.get(action));
+					}else{
+						//si existe solo modifico el value
+						actionStepMap.put(action, actionStepMap.get(action) + " OR " + auxMap.get(action));
+					}
+				}
+		}
+		
+		return actionStepMap;	
+	}
+
 	
 }

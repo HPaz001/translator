@@ -36,7 +36,13 @@ public class PostProcess {
 	 * Post: devolvera una lista de String*/
 	public LinkedList<String> getProgramMain(){
 		//PROGRAMAR 
-		return null;
+		LinkedList<String> listaProgramMain = new LinkedList<String>();
+		
+		
+		
+		
+		
+		return listaProgramMain;
 	}
 	/**Este metodo se encargara de obtener la parte secuencial correspondientes a PL7PRO
 	 * Pre:

@@ -309,7 +309,7 @@ public class Preprocess extends DefaultHandler {
 			Project.getProject().setLanguage(language);
 			Project.getProject().setName(nameProject);
 			Project.getProject().setProgram(compatibility);
-			
+						
 			//Genero las salidas dependiendo del software de compatibilidad
 			try {
 				//Project.getProject().print(compatibility);
@@ -319,6 +319,7 @@ public class Preprocess extends DefaultHandler {
 				e.printStackTrace();
 			}
 			Project.getProject().printProject();
+			Project.getProject().print();
 		}
 	}
 	

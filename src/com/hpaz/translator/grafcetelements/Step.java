@@ -1,74 +1,110 @@
 package com.hpaz.translator.grafcetelements;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import com.hpaz.translator.grafcetelements.constants.GrafcetTagsConstants;
+
 public class Step {
 	/***/
-	
+
 	private String type;
 	private String name;
 	private String action;
 	private String typeAction;
 	private String comment;
-	private String condition; //segun el tipo de accion tiene condicion o no
-	
-	
+	private String condition; // segun el tipo de accion tiene condicion o no
+
+
 	public Step() {
-		type="";
-		name="";
-		action="";
-		typeAction="";
-		comment="";
-		condition="";
-		
-	}	
+		type = "";
+		name = "";
+		action = "";
+		typeAction = "";
+		comment = "";
+		condition = "";
+	}
+
 	public String getType() {
 		return type;
 	}
+
 	public void setType(String type) {
 		this.type = type;
 	}
+
 	public String getName() {
 		return name;
 	}
+
 	public void setName(String name) {
 		this.name = name;
 	}
+
 	public String getAction() {
 		return action;
 	}
+
 	public void setAction(String action) {
 		this.action = action;
 	}
+
 	public String getTypeAction() {
 		return typeAction;
 	}
+
 	public void setTypeAction(String typeAction) {
 		this.typeAction = typeAction;
 	}
+
 	public String getComment() {
 		return comment;
 	}
+
 	public void setComment(String comment) {
 		this.comment = comment;
 	}
+
 	public String getCondition() {
 		return condition;
 	}
+
 	public void setCondition(String condition) {
 		this.condition = condition;
 	}
 
 	public String printStepVG() {
-		String s = "\t"+this.name+"\t: BOOL;\n";
+		String s = "\t" + this.name + "\t: BOOL;\n";
 		return s;
 	}
-	public void printStep(){
+
+	public void printStep() {
 		System.out.println("----- STEP ------");
-		System.out.println("Nombre: "+this.name);
-		System.out.println("Tipo: "+this.type);
-		System.out.println("Accion: "+this.action);
-		System.out.println("Tipo accion: "+this.typeAction);
-		System.out.println("Condicion: "+this.condition);
-		System.out.println("Comentario: "+this.comment);
+		System.out.println("Nombre: " + this.name);
+		System.out.println("Tipo: " + this.type);
+		System.out.println("Accion: " + this.action);
+		System.out.println("Tipo accion: " + this.typeAction);
+		System.out.println("Condicion: " + this.condition);
+		System.out.println("Comentario: " + this.comment);
 	}
-	
+
+	public Map<String, String> getActionStepMap() {
+		Map<String, String> actionStepMap = new HashMap<String, String>();
+		if(!action.equals("")){
+			String aux = name;
+			if (this.typeAction.equals(GrafcetTagsConstants.ACTION_CONDITIONAL)){
+				aux = "("+aux+" AND " + condition+")";
+			}
+			if (!this.typeAction.equals(GrafcetTagsConstants.ACTION_FORCING_ORDER)){
+				actionStepMap.put(action, aux);
+			}else{
+				/*if(){
+					
+				}*/
+				
+			}
+		}
+		
+		return actionStepMap;
+	}
 }

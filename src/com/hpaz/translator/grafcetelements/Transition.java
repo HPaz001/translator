@@ -84,6 +84,10 @@ public class Transition {
 	public void printTransition(){
 		System.out.println("----- TRANSITION ------");
 		System.out.println("Condicion completa: "+this.conditionComp);
+		System.out.println("Condicion por partes: ");
+		for (String s : conditionSep) {
+			System.out.println(s);
+		}
 		System.out.println("Comentario: "+this.comment);
 	}
 	
