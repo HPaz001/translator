@@ -18,6 +18,7 @@ public class Project {
 	//Etapas de la emergencia
 	private String stop;
 	private String init;
+	private LinkedList<String> listEmergency;
 		
 
 	private static Project project = new Project();
@@ -73,7 +74,7 @@ public class Project {
 		for (Grafcet g : listG) {
 			vG.addAll(g.printGrafcetVarGlobalStages());
 		}
-		vG.add("\n\t(*---Se�ales---*)\n\n");
+		vG.add("\n\t(*---Señales---*)\n\n");
 		for (Grafcet g : listG) {
 			vG.addAll(g.printGrafcetVarGlobalSignals());
 		}
@@ -84,8 +85,8 @@ public class Project {
 	public void print(String pCompatibility) {
 		if (pCompatibility.equals("T")) {
 			try {
-				Output.getSalida().exportarFichero(
-						PostProcess.getOutputProcess().getGlobalVar(
+				Output.getOutput().exportarFichero(
+						PostProcess.getPostProcess().getGlobalVar(
 								printVarGlobal()), this.name);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
@@ -124,19 +125,19 @@ public class Project {
 		}
 	}
 
-	public Map<String, String> generarListaProgramMain() {
+	public void generarListaProgramMain() {
 		//LinkedList<String> listaProgramMain = new LinkedList<String>();
 		LinkedList<String> aux = new LinkedList<String>();
 
 		Map<String, String> actionStepMap = new HashMap<String, String>();
 
-		//listaProgramMain.add("PROGRAM MAIN\n\tVAR");
+		
 		for (Grafcet grafcet : listG) {
-			//gurdo solo el nombre del grafcet q sera Gxxxxxxxxx
+			//guardo solo el nombre del grafcet q sera Gxxxxxxxxx
 			aux.add(grafcet.getName());
 			
-			//listaProgramMain.add("\n" + grafcet.printVar() + "\n");
-			//en este hasmap voy guardando las acciones
+			
+			//en este hashMap voy guardando las acciones
 			Map<String, String> auxMap = grafcet.getActionStepMap();
 			for (String action : auxMap.keySet()) {
 				if (actionStepMap.get(action) == null)
@@ -146,20 +147,10 @@ public class Project {
 							+ " OR " + auxMap.get(action));
 			}
 		}
-
-		/*listaProgramMain.add("\n\tXInit\t:BOOL;\n\tXReset\t:BOOL;\n\n\tEND_VAR\n");
-		listaProgramMain.add("\n\t(*---------------------------------------------*)\n");
-
-		listaProgramMain.add("\n\tXInit:=INIT;\n\tXReset:=RESET;\n\n");
-		listaProgramMain.addAll(aux);
-		for (String action : actionStepMap.keySet()) {
-			listaProgramMain.add("\t"+actionStepMap.get(action)+":="+actionStepMap.get(action)+";\n");
-		}
 		
-		listaProgramMain.add("END_PROGRAM\n");
-		*/
-		return actionStepMap;
-
+		//llamada al postprocess
+		PostProcess.getPostProcess().getProgramMain(aux, listEmergency, actionStepMap, this.name);
+				
 	}
 
 	public String getStop() {
@@ -176,6 +167,14 @@ public class Project {
 
 	public void setInit(String init) {
 		this.init = init;
+	}
+
+	public LinkedList<String> getListEmergency() {
+		return listEmergency;
+	}
+
+	public void addListEmergency(LinkedList<String> pListEmergency) {
+		this.listEmergency=pListEmergency;
 	}
 
 }

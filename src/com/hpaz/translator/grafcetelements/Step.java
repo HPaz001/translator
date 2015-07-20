@@ -1,9 +1,11 @@
 package com.hpaz.translator.grafcetelements;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
 
 import com.hpaz.translator.grafcetelements.constants.GrafcetTagsConstants;
+import com.hpaz.translator.output.PostProcess;
 
 public class Step {
 	/***/
@@ -95,16 +97,59 @@ public class Step {
 			if (this.typeAction.equals(GrafcetTagsConstants.ACTION_CONDITIONAL)){
 				aux = "("+aux+" AND " + condition+")";
 			}
-			if (!this.typeAction.equals(GrafcetTagsConstants.ACTION_FORCING_ORDER)){
-				actionStepMap.put(action, aux);
-			}else{
-				/*if(){
-					
-				}*/
+			if (this.typeAction.equals(GrafcetTagsConstants.ACTION_FORCING_ORDER)){
+				/*en este caso tengo que tratar lo q hay dentro porq seguramente se trata de la emergencia*/
+				/*Miro si es de parada o de inicio*/
+				/*si contiene los corchetes vacios es un stop, guardo la etapa en el project*/
+				if(action.contains("{}")){
+					Project.getProject().setStop(name);
+					//guardo solo los que para, doy por hecho q los q inicia son los mismos
+					Project.getProject().addListEmergency(processEmergency(action));
+				}else{/*Si dentro del corchete hay una etapa no estara vacio, guardo la tapa en el proj*/
+					Project.getProject().setInit(name);
+				}
 				
+			}else{
+				actionStepMap.put(action, aux);
 			}
 		}
 		
 		return actionStepMap;
+	}
+	
+	/**Devuelve una lista con los grafcet q se paran e inician en a emergencia*/
+	private LinkedList<String> processEmergency(String pAcction) {
+		
+		LinkedList<String> listAux= new LinkedList<String>();
+		boolean opc = true;
+		int posI, posF;
+		
+		posI=pAcction.indexOf("/");
+		String aux = pAcction.substring(posI + 2 ,pAcction.length() + 1);
+		
+		
+		
+		/*Empiezo a descomponer la cadena de caracteres para obtener los 
+		 * nombres de los grafcet que se paran y se activan en la emergencia*/
+		
+		
+		while (opc) {
+			// obtengo el nombre de grafcet
+			posF = aux.indexOf(">");
+			// guardo solo el nombre del grafcet (Gxx)
+			listAux.add(aux.substring(0, posF));
+			
+			/*si no tiene barra quiere decir q no hay mas grafcet 
+			despues de este*/
+			posI=aux.indexOf("/");
+			if (posI == -1) {
+				opc = false;
+			} else {
+				//corto el string
+				aux = aux.substring(posI + 2, aux.length() + 1);
+			}	
+		}
+		
+		return listAux;
 	}
 }

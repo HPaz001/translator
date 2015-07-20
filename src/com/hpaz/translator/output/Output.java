@@ -14,12 +14,12 @@ public class Output {
 	private static String OUTPUT_FOLDER = "output";
 	private static String FILE_EXTENSION = ".txt";
 
-	private static Output salida = new Output();
+	private static Output myOutput = new Output();
 
 	private Output() {
 	}
-	public static Output getSalida() {
-		return salida;
+	public static Output getOutput() {
+		return myOutput;
 	}
 
 	/**
@@ -46,7 +46,7 @@ public class Output {
 			wr.write("");
 			// Comenzamos a escribi en el fichero
 			for (String s : text) {
-				wr.append(s);// añado lineas al fichero
+				wr.append(s);// aï¿½ado lineas al fichero
 			}
 
 		} catch (Exception e) {
