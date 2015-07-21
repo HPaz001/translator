@@ -23,10 +23,10 @@ public class Output {
 	}
 
 	/**
-	 * pNombreF contendra el nombre del fichero con las extencion
-	 * correspondiente incluida
+	 * text : lista de String.
+	 * name : nombre del fichero sin las extension.
 	 */
-	public void exportarFichero(LinkedList<String> text, String name) throws Exception {
+	public void exportFile(LinkedList<String> text, String name) throws Exception {
 
 		// Inicializamos variables que necesitaremos
 		File fichero = null;
@@ -34,19 +34,18 @@ public class Output {
 		FileWriter fw = null;
 		PrintWriter wr = null;// new PrintWriter(fw);
 		// indico el nombre que tendra el fichero
-		// (/*Proyecto.getProyecto().getNombreProyecto()+"_"+Proyecto.getProyecto().getLenguaje()*/)
 		fichero = new File(OUTPUT_FOLDER + FILESYSTEM_SEPARATOR + name + FILE_EXTENSION);
 		fichero.createNewFile();
-		// if(Proyecto.getProyecto().getLenguaje().equals("ST")){
 
 		try {
 			fw = new FileWriter(fichero);
 			pw = new BufferedWriter(fw);
 			wr = new PrintWriter(pw);
 			wr.write("");
+			
 			// Comenzamos a escribi en el fichero
 			for (String s : text) {
-				wr.append(s);// a�ado lineas al fichero
+				wr.append(s);// anado lineas al fichero
 			}
 
 		} catch (Exception e) {

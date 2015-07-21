@@ -72,7 +72,7 @@ public class Grafcet {
 	public void addRoad(Road pR) {
 		this.listR.add(pR);
 	}
-	public LinkedList<String> printGrafcetVarGlobalStages() {
+	public LinkedList<String> grafcetVarGlobalStages() {
 		LinkedList<String> vG = new LinkedList<String>();
 		vG.add("\n\t(*---"+this.name+"---*)\n\n");
 		/*if(!this.owner.equals("")){
@@ -90,7 +90,7 @@ public class Grafcet {
 		
 		return vG;
 	}
-	public LinkedList<String> printGrafcetVarGlobalSignals() {
+	public LinkedList<String> grafcetVarGlobalSignals() {
 		LinkedList<String> vG = new LinkedList<String>();
 		for (Sequence s : listS) {
 			vG.addAll(s.getSignals());

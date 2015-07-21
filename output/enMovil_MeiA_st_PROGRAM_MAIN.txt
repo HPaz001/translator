@@ -1,0 +1,53 @@
+PROGRAM MAIN
+
+	VAR
+
+		SecPrincipal	:GSecPrincipal;
+		InitSecPrincipal	: BOOL;
+		ResetSecPrincipal	: BOOL;
+
+		CondIniciales	:GCondIniciales;
+		InitCondIniciales	: BOOL;
+		ResetCondIniciales	: BOOL;
+
+		Movil	:GMovil;
+		InitMovil	: BOOL;
+		ResetMovil	: BOOL;
+
+		Emergencia	:GEmergencia;
+		InitEmergencia	: BOOL;
+		ResetEmergencia	: BOOL;
+
+		XInit	:BOOL;
+		XReset	:BOOL;
+
+	END_VAR
+
+	(*---------------------------------------------*)
+
+	XInit:=INIT;
+	XReset:=RESET;
+
+	InitSecPrincipal:=X35;
+	ResetSecPrincipal:=X33;
+	SecPrincipal(Init:=(XInit OR InitSecPrincipal), Reset:=(XReset OR ResetSecPrincipal));
+
+	InitCondIniciales:=X35;
+	ResetCondIniciales:=X33;
+	CondIniciales(Init:=(XInit OR InitCondIniciales), Reset:=(XReset OR ResetCondIniciales));
+
+	InitMovil:=X35;
+	ResetMovil:=X33;
+	Movil(Init:=(XInit OR InitMovil), Reset:=(XReset OR ResetMovil));
+
+
+	SolCondIni:=X1;
+	CDerecha:=X21;
+	CIzquierda:=X12 OR X23 OR (X31 AND (NOT (F0)));
+	Inicio:=X0;
+	ProdNormal:=X2;
+	FinCondIni:=X13;
+	Temp=2seg:=X22 OR X24;
+	ParoFC:=X3;
+
+END_PROGRAM

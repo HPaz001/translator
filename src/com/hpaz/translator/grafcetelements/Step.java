@@ -125,7 +125,7 @@ public class Step {
 		int posI, posF;
 		
 		posI=pAcction.indexOf("/");
-		String aux = pAcction.substring(posI + 2 ,pAcction.length() + 1);
+		String aux = pAcction.substring(posI + 2 ,pAcction.length());
 		
 		
 		
@@ -146,7 +146,7 @@ public class Step {
 				opc = false;
 			} else {
 				//corto el string
-				aux = aux.substring(posI + 2, aux.length() + 1);
+				aux = aux.substring(posI + 2, aux.length());
 			}	
 		}
 		

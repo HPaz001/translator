@@ -306,24 +306,24 @@ public class Preprocess extends DefaultHandler {
 			
 		}else if (actualTag.equals(GrafcetTagsConstants.PROJECT_TAG)) {// project
 			// añado el lenguaje y el nombre del proyecto
-			Project.getProject().setLanguage(language);
-			Project.getProject().setName(nameProject);
-			Project.getProject().setProgram(compatibility);
+			Project.getProject().addLanguage(language);
+			Project.getProject().addName(nameProject);
+			Project.getProject().addProgram(compatibility);
 						
 			//Genero las salidas dependiendo del software de compatibilidad
 			try {
+				Project.getProject().printProject();
+				Project.getProject().print();
 				//Project.getProject().print(compatibility);
 				//Output.getSalida().exportarFicheroVG(Project.getProject().printVarGlobal(), nameProject);
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			Project.getProject().printProject();
-			Project.getProject().print();
+			
 		}
 	}
 	
-	/**este metodo guarda cada atributo en su correspondiente clase*/
+	/**Guarda cada atributo en su correspondiente clase*/
 	private void processingAttributes(String pNameAtt, String pAtt) {
 
 		if (actualTag.equals(GrafcetTagsConstants.GRAFCET_TAG)) {// Grafcet

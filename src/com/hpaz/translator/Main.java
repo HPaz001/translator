@@ -87,7 +87,7 @@ public class Main {
 			reader.setContentHandler(new Preprocess(pNomPro, planguage, pCompatibility));
 			
 			// Procesamos el xml
-			file.replace(";","");
+			//file.replace(";","");
 			reader.parse(new InputSource(new FileInputStream("xml/"+file)));
 			
 			//genero el fichero de salida
