@@ -116,7 +116,7 @@ public class Project {
 		LinkedList<String> aux = new LinkedList<String>();
 		if (program.equals(GrafcetTagsConstants.PROGRAM_OPT1)) { // Twincat
 			// Program Main
-			generarListaProgramMain();
+			generarProgramMain();
 			
 		} else if (program.equals(GrafcetTagsConstants.PROGRAM_OPT2)) {// PL7PRO
 
@@ -125,7 +125,7 @@ public class Project {
 		}
 	}
 
-	public void generarListaProgramMain() {
+	private void generarProgramMain() {
 		//LinkedList<String> listaProgramMain = new LinkedList<String>();
 		LinkedList<String> aux = new LinkedList<String>();
 

@@ -84,7 +84,6 @@ public class PostProcess {
 		try {
 			Output.getOutput().exportarFichero(listaProgramMain, pProjecName);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
