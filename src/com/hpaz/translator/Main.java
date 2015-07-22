@@ -39,7 +39,7 @@ public class Main {
 						compatibility.equalsIgnoreCase("PL")|| compatibility.equalsIgnoreCase("PC"))/*&&
 						(file.matches(regex))*/) {
 					String name = file;
-					name=name.substring(4, file.length()-4)+"_"+language;
+					name=name.substring(0, file.length()-4)+"_"+language;
 					ejecutar(name, language, compatibility);
 				} else{
 					imprimirError();

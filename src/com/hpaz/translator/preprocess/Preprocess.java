@@ -6,6 +6,7 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
+import com.hpaz.translator.grafcetelements.Action;
 import com.hpaz.translator.grafcetelements.Grafcet;
 import com.hpaz.translator.grafcetelements.Jump;
 import com.hpaz.translator.grafcetelements.Project;
@@ -30,7 +31,8 @@ public class Preprocess extends DefaultHandler {
 	private Step step;
 	private Transition transition;
 	private String text;
-
+	private Action action;
+	
 	// variables auxiliares
 	private boolean isStep;// True si lo que se esta procesasndo es una step
 	private boolean isTransition;//True si lo que se esta procesasndo es una
@@ -104,7 +106,8 @@ public class Preprocess extends DefaultHandler {
 			isTransition = true;
 
 		} else if (actualTag.equals(GrafcetTagsConstants.ACTION_TAG)) {
-			// comment=false;
+			action= new Action();
+			
 		} else if (actualTag.equals(GrafcetTagsConstants.RE_TAG)) {
 			// si la etiqueta es re (flanco de subida)
 			// transition.activateFs();
@@ -145,7 +148,8 @@ public class Preprocess extends DefaultHandler {
 			// si la etiqueta es text entonces es el texto de una accion
 			if (actualTag.equals(GrafcetTagsConstants.TEXT_TAG)) {
 				
-				step.setAction(step.getAction() + text);
+				//step.setAction(step.getAction() + text);
+				action.setText(action.getText()+text);
 
 				/*
 				 * Si la etiqueta es condition, puede ser de una transition o de
@@ -159,7 +163,8 @@ public class Preprocess extends DefaultHandler {
 					 * añado la condicion completa, lo q habia + lo nuevo y dejo
 					 * los signos ya los cambiare en la propia transition
 					 */
-					step.setCondition(step.getCondition() + " " + text);
+					//step.setCondition(step.getCondition() + " " + text);
+					action.setCondition(action.getCondition()+ " " + text);
 
 				} else if (isTransition) {
 					/*
@@ -196,8 +201,8 @@ public class Preprocess extends DefaultHandler {
 					 * Si es de un step puede ser tanto de una condicion de la
 					 * accion o de la propia accion
 					 */
-					step.setCondition(step.getCondition() + "(NOT (" + text
-							+ "))");
+					//step.setCondition(step.getCondition() + "(NOT (" + text+ "))");
+					action.setCondition(action.getCondition() + "(NOT (" + text+ "))");
 
 				} else if (isTransition) {
 					/*
@@ -237,9 +242,9 @@ public class Preprocess extends DefaultHandler {
 				} else if (isStep) {
 					// Si es un step puede ser de una condicion o de una action
 					if (previousTag.equals(GrafcetTagsConstants.CONDITION_TAG)) {
-						step.setCondition(step.getCondition() + " RE " + text);
+						action.setCondition(action.getCondition() + " RE " + text);
 					} else {
-						step.setAction(step.getAction() + " RE " + text);
+						action.setText(action.getText() + " RE " + text);
 					}
 
 				} else if (isTransition) {
@@ -260,9 +265,9 @@ public class Preprocess extends DefaultHandler {
 				} else if (isStep) {
 					// Si es un step puede ser de una condicion o de una action
 					if (previousTag.equals(GrafcetTagsConstants.CONDITION_TAG)) {
-						step.setCondition(step.getCondition() + " FE " + text);
+						action.setCondition(action.getCondition() + " FE " + text);
 					} else {
-						step.setAction(step.getAction() + " FE " + text);
+						action.setText(action.getText() + " FE " + text);
 					}
 
 				} else if (isTransition) {
@@ -286,7 +291,11 @@ public class Preprocess extends DefaultHandler {
 			// añado la secuencia al grafcet
 			grafcet.addSeq(sequence);
 			
-		} else if (actualTag.equals(GrafcetTagsConstants.STEP_TAG)) {// Step
+		}else if (actualTag.equals(GrafcetTagsConstants.ACTION_TAG)) { // Action
+			// añado la accion al step
+			step.addAction(action);
+			
+		}else if (actualTag.equals(GrafcetTagsConstants.STEP_TAG)) {// Step
 			// añado el step a la secuencia
 			sequence.addTorS(step);
 			isStep = false;
@@ -356,7 +365,7 @@ public class Preprocess extends DefaultHandler {
 			
 		} else if (actualTag.equals(GrafcetTagsConstants.ACTION_TAG)) {// action
 			// añado el tipo
-			step.setTypeAction(pAtt);
+			action.setType(pAtt);
 			
 		} else if (actualTag.equals(GrafcetTagsConstants.HLINK_TAG)) {// hlink
 			// Si hay una convergencia o divergencia estara en la etiketa hlink,
@@ -365,16 +374,17 @@ public class Preprocess extends DefaultHandler {
 			if (pNameAtt.equals("seqid")) {
 				road.setSeqIni(Integer.parseInt(pAtt));
 			} else if (pNameAtt.equals("type")) {
-				road.setTypeRoad(pAtt);
+				road.setType(pAtt);
 			}
 			
 		} else if (actualTag.equals(GrafcetTagsConstants.NODE_TAG)) { // node
 			// guardo las dos secuencias de las q viene o va en el road
-			if (road.getSeqOne() == 0) {
+			/*if (road.getSeqOne() == 0) {
 				road.setSeqOne(Integer.parseInt(pAtt));
 			} else if (road.getSeqTwo() == 0) {
 				road.setSeqTwo(Integer.parseInt(pAtt));
-			}
+			}*/
+			road.addSequences(Integer.parseInt(pAtt));
 			
 		} else if (actualTag.equals(GrafcetTagsConstants.JUMP_TAG)) {// jump
 			// añado desde y a donde

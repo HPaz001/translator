@@ -63,9 +63,9 @@ public class Grafcet {
 	public LinkedList<Sequence> getListS() {
 		return listS;
 	}
-	/**Añade la secuencia en la misma posición que el id de la seq*/
+	/***/
 	public void addSeq(Sequence pS) {
-		this.listS.add(pS.getIdSeq(), pS);;
+		this.listS.add(pS);
 	}
 	public LinkedList<Road> getListR() {
 		return listR;

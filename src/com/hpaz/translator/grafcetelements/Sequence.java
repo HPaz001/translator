@@ -38,10 +38,13 @@ public class Sequence {
 				signals.addAll(((Transition) st).printTransVG());
 			}else if(st instanceof Step){
 				textAux.add(((Step) st).printStepVG());
-				String action = (((Step) st).getAction());
-				if(!action.equals("")){
-					signals.add("\t"+((Step) st).getAction()+"\t: BOOL;\n");
+				for (Action action : ((Step) st).getMyActions()) {
+					String act = action.getText();
+					if(!act.equals("")){
+						signals.add("\t"+action.getText()+"\t: BOOL;\n");
+					}
 				}
+				
 				
 			}
 		}

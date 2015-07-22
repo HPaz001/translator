@@ -19,20 +19,23 @@ public class Step {
 	
 	/*MODIFICAR PARA Q TENGA UNA LISTA DE LA CLASE ACTION*/
 	/*DEBE SER UNA LISTA YA Q PUEDE TENER MAS DE UNA ACCCION*/
-	private String action;
+	//private String action;
 	/*DEBE SER UNA LISTA YA Q PUEDE TENER MAS DE UNA ACCCION Y PUDE SER D DISTINTO TIPO*/
-	private String typeAction;
-	private String condition; // segun el tipo de accion tiene condicion o no
+	//private String typeAction;
+	//private String condition; // segun el tipo de accion tiene condicion o no
+	
+	private LinkedList<Action> myActions;
 
 	public Step() {
 		this.type = "";
 		this.name = "";
-		this.action = "";
-		this.typeAction = "";
 		this.comment = "";
-		this.condition = "";
 		this.mySet=null;
 		this.myReset=null;
+		this.myActions = new LinkedList<Action>();
+		/*		this.action = "";
+		this.typeAction = "";
+		this.condition = "";*/
 	}
 
 	public String getType() {
@@ -51,6 +54,14 @@ public class Step {
 		this.name = name;
 	}
 
+	public String getComment() {
+		return comment;
+	}
+
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
+/*
 	public String getAction() {
 		return action;
 	}
@@ -66,23 +77,14 @@ public class Step {
 	public void setTypeAction(String typeAction) {
 		this.typeAction = typeAction;
 	}
-
-	public String getComment() {
-		return comment;
-	}
-
-	public void setComment(String comment) {
-		this.comment = comment;
-	}
-
 	public String getCondition() {
 		return condition;
 	}
 
 	public void setCondition(String condition) {
 		this.condition = condition;
-	}
-
+	}*/
+	
 	public String printStepVG() {
 		String s = "\t" + this.name + "\t: BOOL;\n";
 		return s;
@@ -92,33 +94,35 @@ public class Step {
 		System.out.println("----- STEP ------");
 		System.out.println("Nombre: " + this.name);
 		System.out.println("Tipo: " + this.type);
-		System.out.println("Accion: " + this.action);
-		System.out.println("Tipo accion: " + this.typeAction);
-		System.out.println("Condicion: " + this.condition);
+		for (Action action : myActions) {
+			action.printAction();
+		}
 		System.out.println("Comentario: " + this.comment);
 	}
 
 	public Map<String, String> getActionStepMap() {
 		Map<String, String> actionStepMap = new HashMap<String, String>();
-		if(!action.equals("")){
-			String aux = name;
-			if (this.typeAction.equals(GrafcetTagsConstants.ACTION_CONDITIONAL)){
-				aux = "("+aux+" AND " + condition+")";
-			}
-			if (this.typeAction.equals(GrafcetTagsConstants.ACTION_FORCING_ORDER)){
-				/*en este caso tengo que tratar lo q hay dentro porq seguramente se trata de la emergencia*/
-				/*Miro si es de parada o de inicio*/
-				/*si contiene los corchetes vacios es un stop, guardo la etapa en el project*/
-				if(action.contains("{}")){
-					Project.getProject().setStop(name);
-					//guardo solo los que para, doy por hecho q los q inicia son los mismos
-					Project.getProject().addListEmergency(processEmergency(action));
-				}else{/*Si dentro del corchete hay una etapa no estara vacio, guardo la tapa en el proj*/
-					Project.getProject().setInit(name);
+		for (Action action : myActions) {
+			if(!action.getText().equals("")){
+				String aux = getName();
+				if (action.getType().equals(GrafcetTagsConstants.ACTION_CONDITIONAL)){
+					aux = "("+aux+" AND " + action.getCondition()+")";
 				}
-				
-			}else{
-				actionStepMap.put(action, aux);
+				if (action.getType().equals(GrafcetTagsConstants.ACTION_FORCING_ORDER)){
+					/*en este caso tengo que tratar lo q hay dentro porq seguramente se trata de la emergencia*/
+					/*Miro si es de parada o de inicio*/
+					/*si contiene los corchetes vacios es un stop, guardo la etapa en el project*/
+					if(action.getText().contains("{}")){
+						Project.getProject().setStop(getName());
+						//guardo solo los que para, doy por hecho q los q inicia son los mismos
+						Project.getProject().addListEmergency(processEmergency(action.getText()));
+					}else{/*Si dentro del corchete hay una etapa no estara vacio, guardo la tapa en el proj*/
+						Project.getProject().setInit(getName());
+					}
+					
+				}else{
+					actionStepMap.put(action.getText(), aux);
+				}
 			}
 		}
 		
@@ -177,5 +181,13 @@ public class Step {
 
 	public void addMyReset(String myReset) {
 		this.myReset = myReset;
+	}
+
+	public LinkedList<Action> getMyActions() {
+		return myActions;
+	}
+
+	public void addAction(Action pAction) {
+		this.myActions.add(pAction);
 	}
 }
