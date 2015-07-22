@@ -63,8 +63,9 @@ public class Grafcet {
 	public LinkedList<Sequence> getListS() {
 		return listS;
 	}
+	/**Añade la secuencia en la misma posición que el id de la seq*/
 	public void addSeq(Sequence pS) {
-		this.listS.add(pS);
+		this.listS.add(pS.getIdSeq(), pS);;
 	}
 	public LinkedList<Road> getListR() {
 		return listR;
@@ -165,6 +166,16 @@ public class Grafcet {
 		
 		return actionStepMap;	
 	}
-
+	
+	private void setAndReset(){
+		
+		
+		/*Miro si tiene caminos*/
+		if(listR.size()!=0){
+			//dependiendo de cuantos caminos tenga hare una cosa u otra?
+			
+		}
+	}
+	
 	
 }

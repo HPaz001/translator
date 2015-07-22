@@ -296,9 +296,13 @@ public class Preprocess extends DefaultHandler {
 			sequence.addTorS(transition);
 			isTransition = false;
 			
-		} else if (actualTag.equals(GrafcetTagsConstants.HLINK_TAG)) { // hlink
+		}else if (actualTag.equals(GrafcetTagsConstants.HLINK_TAG)) { // hlink
 			// añado el camino al grafcet
 			grafcet.addRoad(road);
+			
+		}else if (actualTag.equals(GrafcetTagsConstants.JUMP_TAG)) { // jump
+			// añado el salto al grafcet
+			grafcet.addJump(jump);
 			
 		}else if (actualTag.equals(GrafcetTagsConstants.GRAFCET_TAG)) { // Grafcet
 			// añado el grafcet al proyecto

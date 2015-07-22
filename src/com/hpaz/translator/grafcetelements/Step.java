@@ -12,19 +12,27 @@ public class Step {
 
 	private String type;
 	private String name;
+	private String comment;//comentario del step
+	private String mySet;
+	private String myReset;
+	
+	
+	/*MODIFICAR PARA Q TENGA UNA LISTA DE LA CLASE ACTION*/
+	/*DEBE SER UNA LISTA YA Q PUEDE TENER MAS DE UNA ACCCION*/
 	private String action;
+	/*DEBE SER UNA LISTA YA Q PUEDE TENER MAS DE UNA ACCCION Y PUDE SER D DISTINTO TIPO*/
 	private String typeAction;
-	private String comment;
 	private String condition; // segun el tipo de accion tiene condicion o no
 
-
 	public Step() {
-		type = "";
-		name = "";
-		action = "";
-		typeAction = "";
-		comment = "";
-		condition = "";
+		this.type = "";
+		this.name = "";
+		this.action = "";
+		this.typeAction = "";
+		this.comment = "";
+		this.condition = "";
+		this.mySet=null;
+		this.myReset=null;
 	}
 
 	public String getType() {
@@ -151,5 +159,23 @@ public class Step {
 		}
 		
 		return listAux;
+	}
+
+	public String getMySet() {
+		return mySet;
+	}
+
+	public void addMySet(String mySet) {
+		if (this.mySet==null){
+			this.mySet = mySet;
+		}
+	}
+
+	public String getMyReset() {
+		return myReset;
+	}
+
+	public void addMyReset(String myReset) {
+		this.myReset = myReset;
 	}
 }

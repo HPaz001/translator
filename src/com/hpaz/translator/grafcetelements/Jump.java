@@ -5,7 +5,7 @@ public class Jump {
   private int toSeq;
   
   	public Jump() {
-	
+  		
   	}
 
 	public int getFromSeq() {
@@ -22,8 +22,8 @@ public class Jump {
 	}
 	public void printJump(){
 		System.out.println("----- JUMP ------");
-		System.out.println("Desde la secuencia : "+this.fromSeq);
-		System.out.println("A la secuencia: "+this.toSeq);
+		System.out.println("Desde la secuencia : "+getFromSeq());
+		System.out.println("A la secuencia: "+getToSeq());
 	}
   
 }

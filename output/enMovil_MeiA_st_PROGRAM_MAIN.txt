@@ -28,6 +28,7 @@ PROGRAM MAIN
 	XInit:=INIT;
 	XReset:=RESET;
 
+
 	InitSecPrincipal:=X35;
 	ResetSecPrincipal:=X33;
 	SecPrincipal(Init:=(XInit OR InitSecPrincipal), Reset:=(XReset OR ResetSecPrincipal));
