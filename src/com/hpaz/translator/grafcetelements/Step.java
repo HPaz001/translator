@@ -16,14 +16,6 @@ public class Step {
 	private String mySet;
 	private String myReset;
 	
-	
-	/*MODIFICAR PARA Q TENGA UNA LISTA DE LA CLASE ACTION*/
-	/*DEBE SER UNA LISTA YA Q PUEDE TENER MAS DE UNA ACCCION*/
-	//private String action;
-	/*DEBE SER UNA LISTA YA Q PUEDE TENER MAS DE UNA ACCCION Y PUDE SER D DISTINTO TIPO*/
-	//private String typeAction;
-	//private String condition; // segun el tipo de accion tiene condicion o no
-	
 	private LinkedList<Action> myActions;
 
 	public Step() {
@@ -33,9 +25,6 @@ public class Step {
 		this.mySet=null;
 		this.myReset=null;
 		this.myActions = new LinkedList<Action>();
-		/*		this.action = "";
-		this.typeAction = "";
-		this.condition = "";*/
 	}
 
 	public String getType() {
@@ -61,29 +50,6 @@ public class Step {
 	public void setComment(String comment) {
 		this.comment = comment;
 	}
-/*
-	public String getAction() {
-		return action;
-	}
-
-	public void setAction(String action) {
-		this.action = action;
-	}
-
-	public String getTypeAction() {
-		return typeAction;
-	}
-
-	public void setTypeAction(String typeAction) {
-		this.typeAction = typeAction;
-	}
-	public String getCondition() {
-		return condition;
-	}
-
-	public void setCondition(String condition) {
-		this.condition = condition;
-	}*/
 	
 	public String printStepVG() {
 		String s = "\t" + this.name + "\t: BOOL;\n";

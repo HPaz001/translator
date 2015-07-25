@@ -1,11 +1,9 @@
 package com.hpaz.translator.grafcetelements;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
-import java.util.Set;
-import java.util.Map.Entry;
+
 
 public class Grafcet {
 	
@@ -63,9 +61,12 @@ public class Grafcet {
 	public LinkedList<Sequence> getListS() {
 		return listS;
 	}
-	/***/
-	public void addSeq(Sequence pS) {
-		this.listS.add(pS);
+	/**Recibe la secuencia y el numero de secuecia
+	 * rellenara la lista de seccuencias 
+	 * la posicion de la lista sera el numero de secuencia -1 */
+	public void addSeq(Sequence pS,int pIndex) {
+		/*la posicion de la lista sera el numero de secuencia -1 */
+		this.listS.add(pIndex-1, pS);
 	}
 	public LinkedList<Road> getListR() {
 		return listR;
@@ -112,6 +113,7 @@ public class Grafcet {
 		System.out.println("Tipo: "+this.type);
 		System.out.println("Propietario: "+this.owner);
 		System.out.println("Comentario: "+this.comment);
+		
 		for (Jump j : listJ) {
 			j.printJump();
 		}
@@ -166,16 +168,90 @@ public class Grafcet {
 		
 		return actionStepMap;	
 	}
-	
-	private void setAndReset(){
-		
-		
-		/*Miro si tiene caminos*/
-		if(listR.size()!=0){
-			//dependiendo de cuantos caminos tenga hare una cosa u otra?
-			
+	/**Esta funcion rellenara las listas PreviousStepLits, PreviousTransitionList
+	 * y getNextStepLits se cada secuencia, que nos serviran luego
+	 * a la hora de rellenar los set y reset de cada etapa*/
+	public void fillPreviousNextListsSequences(){
+		/*por cada salto */
+		for (Jump j : listJ) {
+			/*En un salto comienza siempre en una etapa por lo que guardo 
+			 * FromSeq salta a  ToSeq */
+			Sequence s = listS.get(j.getFromSeq());
+			int sizeTrans = s.getList().size()-1;
+			int sizeStep = s.getList().size()-2;
+			Transition t = (Transition) s.getList().get(sizeTrans);
+			Step step = (Step) s.getList().get(sizeStep);
+			/*Se guardara la ultima transision y etapa de la seq(fromSeq) en la seq(toSeq)*/
+			listS.get(j.getToSeq()).addPreviousSeq("("+step.getName()+" AND "+t.getConditionComp()+")");
 		}
+		/*Por cada camino que tengamos*/
+		for (Road r : listR) {
+			//por cada secuencia de la lista de caminos	
+			for (Integer sR : r.getMySequences()) {
+
+				Sequence sIni = listS.get(r.getSeqIni());
+				Sequence sSR = listS.get(sR);	
+				
+				/*Si el tipo es div or*/
+				if(r.getType().equals("div or")){
+					
+					/*Guardo en secuencia(sR) la ultima etapa de la secuencia(r.seqIni)*/
+					int sizeStep = sIni.getList().size()-1;
+					Step step = (Step) sIni.getList().get(sizeStep);
+					listS.get(sR).addPreviousSeq(step.getName());
+					
+					/*Guardar en la secuencia(r.SeqIni) la primera etapa de la secuencia(sR) */
+					Step step0 = (Step) sSR.getList().get(0);
+					listS.get(r.getSeqIni()).addNextSeq(step0.getName());
+					
+					
+					/*Si el tipo es div and*/
+				}else if(r.getType().equals("div and")){
+					
+					/*Guardo en secuencia(sR) la ultima etapa y transicion de la secuencia(r.seqIni)*/
+					int sizeTrans = sIni.getList().size()-1;				
+					Transition t = (Transition) sIni.getList().get(sizeTrans);
+					int sizeStep = sIni.getList().size()-2;
+					Step step = (Step) sIni.getList().get(sizeStep);
+					listS.get(sR).addPreviousSeq("("+step.getName()+" AND "+t.getConditionComp()+")");
+					
+					/*Guardar en la secuencia(r.SeqIni) la primera etapa de la secuencia(sR) */
+					Step step0 = (Step) sSR.getList().get(0);
+					listS.get(r.getSeqIni()).addNextSeq(step0.getName());
+					
+					
+					/*Si el tipo es conv or*/
+				}else if (r.getType().equals("conv or")){
+
+					/*Guardo en la secuencia(sR) la primera etapa de la secuencia(r.seqIni)*/
+					Step step = (Step) sIni.getList().get(0);
+					listS.get(sR).addNextSeq(step.getName());
+					
+					/*Guardar en la secuencia(r.SeqIni) la ultima transicion de secuencia(sR) */
+					int sizeTrans = sSR.getList().size()-1;				
+					Transition t = (Transition) sIni.getList().get(sizeTrans);
+					listS.get(r.getSeqIni()).addPreviousSeq(t.getConditionComp());
+					
+					
+					
+					/*Si el tipo es conv or*/
+				} else if(r.getType().equals("conv and")){
+					
+					/*Guardo en la secuencia(sR) la primera etapa de la secuencia(r.seqIni)*/
+					Step step = (Step) sIni.getList().get(0);
+					listS.get(sR).addNextSeq(step.getName());
+					
+					/*Guardar en la secuencia(r.SeqIni) la ultima etapa de secuencia(sR) */
+					int sizeStep = sSR.getList().size()-1;
+					Step step0 = (Step) sSR.getList().get(sizeStep);
+					listS.get(r.getSeqIni()).addPreviousSeq(step0.getName());
+				}
+			}
+		}
+		
 	}
+	
+	
 	
 	
 }

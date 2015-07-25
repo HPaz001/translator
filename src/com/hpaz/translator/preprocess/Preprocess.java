@@ -42,6 +42,7 @@ public class Preprocess extends DefaultHandler {
 	private String language;// el lenguaje al que se quiere pasar
 	private String nameProject;
 	private String compatibility;
+	private int actualSequence;
 
 	/*private static Preprocess myPreprocess;*/
 	
@@ -54,6 +55,7 @@ public class Preprocess extends DefaultHandler {
 		isTransition = false;
 		previousTag = "";
 		compatibility=pCompatibility;
+		this.actualSequence=0;
 	}
 	
 	// si no existe el preproceso lo creo
@@ -289,7 +291,8 @@ public class Preprocess extends DefaultHandler {
 
 		if (actualTag.equals(GrafcetTagsConstants.SEQUENCE_TAG)) {// Sequence
 			// añado la secuencia al grafcet
-			grafcet.addSeq(sequence);
+			grafcet.addSeq(sequence,actualSequence);
+			actualSequence=0;
 			
 		}else if (actualTag.equals(GrafcetTagsConstants.ACTION_TAG)) { // Action
 			// añado la accion al step
@@ -353,6 +356,7 @@ public class Preprocess extends DefaultHandler {
 			
 		} else if (actualTag.equals(GrafcetTagsConstants.SEQUENCE_TAG)) {// Sequence
 			// añado el id
+			actualSequence=Integer.parseInt(pAtt);
 			sequence.setIdSeq(Integer.parseInt(pAtt));
 			
 		} else if (actualTag.equals(GrafcetTagsConstants.STEP_TAG)) {// Step

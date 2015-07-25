@@ -9,6 +9,12 @@ public class Sequence {
 	private int idSeq;
 	private LinkedList<Object> list;// puede tener tanto transiciones como pasos
 	private LinkedList<String> signals; 
+	/*private LinkedList<String> previousStepLits;  
+	private LinkedList<String> previousTransitionList; 
+	private LinkedList<String> nextStepLits; */
+	
+	private LinkedList<String> previousList; 
+	private LinkedList<String> nextLits; 
 	
 	public Sequence() {
 		list = new LinkedList<Object>();
@@ -94,6 +100,37 @@ public class Sequence {
 		}
 		//devuelvo el map unido 
 		return actionStepMap;	
+	}
+/*	public LinkedList<String> getPreviousStepLits() {
+		return previousStepLits;
+	}
+	public void addPreviousStepLits(String previousStep) {
+		this.previousStepLits.add(previousStep);
+	}
+	public LinkedList<String> getPreviousTransitionList() {
+		return previousTransitionList;
+	}
+	public void addPreviousTransitionList(String previousTransition) {
+		this.previousTransitionList.add(previousTransition);
+	}
+	public LinkedList<String> getNextStepLits() {
+		return nextStepLits;
+	}
+	public void addNextStepLits(String nextStep) {
+		this.nextStepLits.add(nextStep);
+	}
+*/
+	public LinkedList<String> getPreviousList() {
+		return previousList;
+	}
+	public void addPreviousSeq(String previousSeq) {
+		this.previousList.add(previousSeq);
+	}
+	public LinkedList<String> getNextLits() {
+		return nextLits;
+	}
+	public void addNextSeq(String nextSeq) {
+		this.nextLits.add(nextSeq);
 	}
 	
 }
