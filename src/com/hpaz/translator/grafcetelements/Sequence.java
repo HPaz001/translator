@@ -8,17 +8,18 @@ import java.util.Map;
 public class Sequence {
 	private int idSeq;
 	private LinkedList<Object> list;// puede tener tanto transiciones como pasos
-	private LinkedList<String> signals; 
-	/*private LinkedList<String> previousStepLits;  
-	private LinkedList<String> previousTransitionList; 
-	private LinkedList<String> nextStepLits; */
-	
+	private LinkedList<String> signals; 	
 	private LinkedList<String> previousList; 
 	private LinkedList<String> nextLits; 
 	
+	/**
+	 * 
+	 */
 	public Sequence() {
-		list = new LinkedList<Object>();
-		signals = new LinkedList<String>();
+		this.list = new LinkedList<Object>();
+		this.signals = new LinkedList<String>();
+		this.previousList=new LinkedList<String>();
+		this.nextLits= new LinkedList<String>();
 	}
 	public int getIdSeq() {
 		return idSeq;
@@ -101,25 +102,6 @@ public class Sequence {
 		//devuelvo el map unido 
 		return actionStepMap;	
 	}
-/*	public LinkedList<String> getPreviousStepLits() {
-		return previousStepLits;
-	}
-	public void addPreviousStepLits(String previousStep) {
-		this.previousStepLits.add(previousStep);
-	}
-	public LinkedList<String> getPreviousTransitionList() {
-		return previousTransitionList;
-	}
-	public void addPreviousTransitionList(String previousTransition) {
-		this.previousTransitionList.add(previousTransition);
-	}
-	public LinkedList<String> getNextStepLits() {
-		return nextStepLits;
-	}
-	public void addNextStepLits(String nextStep) {
-		this.nextStepLits.add(nextStep);
-	}
-*/
 	public LinkedList<String> getPreviousList() {
 		return previousList;
 	}

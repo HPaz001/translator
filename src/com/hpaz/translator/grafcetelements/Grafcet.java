@@ -250,8 +250,95 @@ public class Grafcet {
 		}
 		
 	}
-	
-	
+	public LinkedList<String> generateFunctionBlock(){
+		LinkedList<String> functionBlock = new LinkedList<String>();
+		String actualStep="", auxSet="",auxReset="";
+		functionBlock.add("\nFUNCTION_BLOCK "+getName()+"\n\tVAR_INPUT"
+				+ "\n\t\tInit\t:BOOL;\n\t\tReset\t:BOOL;\n\tEND_VAR"
+				+ "\n\tVAR_OUTPUT\n\tEND_VAR\n\tVAR\n\tEND_VAR");
+		
+		functionBlock.add("\n(*---------------------------------------\n"
+				+getName().substring(1, getName().length())+"\n"
+				+getComment()
+				+ "\n-----------------------------------------------*)");
+		//por cada seccuencia
+		for (Sequence seq : listS) {
+			//recorro la lista de la secuencia
+			//Object obj : seq.getList()
+			System.out.println("Secuencia "+ seq.getIdSeq());
+			for (int i = 0; i < seq.getList().size(); i++) {	
+				/*Si es una etapa*/
+				if(seq.getList().get(i) instanceof Step){
+					actualStep=((Step) seq.getList().get(i)).getName();
+					//int index=seq.getList().indexOf(seq.getList().get(i));
+					String aux="";
+					
+					/*Busco el Set a una etapa*/
+					//Si es el primer elemento d la lista
+					if(i==0){
+						//por cada elemento de de la lista previous
+						for (String pre : seq.getPreviousList()){
+							aux=aux+" OR "+pre;
+						}				
+					/*Si no es el primer elemento de la lista
+					 * pero es el segundo quiere decir q no tiene etapa antes*/
+					}else if (i==1){
+						Step sAux= (Step) seq.getList().get(i);
+						Transition tAux= (Transition) seq.getList().get(i-1);
+						aux="("+sAux.getName()+" AND "+tAux.getConditionComp()+")";
+					}else{
+						Step sAux= (Step) seq.getList().get(i-2);
+						Transition tAux= (Transition) seq.getList().get(i-1);
+						aux="("+sAux.getName()+" AND "+tAux.getConditionComp()+")";
+					}
+					/*Añado el Set a una etapa*/
+					((Step) seq.getList().get(i)).addMySet(aux);
+					aux ="";
+					
+					/*Busco el Reset a una etapa*/
+					//si hay dos objetos mas en la lista 
+				
+					
+					if(seq.getList().size() > (i+2)){
+						//si ese segundo objeto es una etapa
+						if(seq.getList().get(i+2) instanceof Step){
+							Step sAux= (Step) seq.getList().get(i+2);
+							aux=sAux.getName();
+						}
+					}else{
+						//por cada elemento de de la lista next
+						for (String nex : seq.getNextLits()){
+							aux=aux+" OR "+nex;
+						}
+					}
+					/*Añadir el Reset a una etapa*/
+					((Step) seq.getList().get(i)).addMyReset(aux);
+					
+					
+					//Relleno la lista con los Set-Reset
+					functionBlock.add("\n(* Set -Reset ___________________________"
+							+ "_____________________________________ "+actualStep
+							+" *)");
+					String set=((Step) seq.getList().get(i)).getMySet();
+					String reset =((Step) seq.getList().get(i)).getMyReset();
+					//si es una etapa inicial
+					if(((Step) seq.getList().get(i)).getType().equals("initial")){
+						auxSet = "\n\tIF ( "+set+" OR Init ) THEN\n\t\t"+actualStep+":=1;";
+						auxReset = "\n\tEND_IF;\n\tIF ( "+reset+" OR Reset ) THEN\n\t\t"+actualStep+":=0;";	
+					}else {
+						auxSet = "\n\tIF ( "+set+" ) THEN\n\t\t"+actualStep+":=1;";
+						auxReset =  "\n\tEND_IF;\n\tIF ( "+reset+" OR Init OR Reset ) THEN\n\t\t"+actualStep+":=0;";
+					}
+					functionBlock.add(auxSet);
+					functionBlock.add(auxReset);
+					functionBlock.add("\n\tEND_IF;\n");
+				}	
+			}
+		}
+		functionBlock.add("\nEND_FUNCTION_BLOCK");
+		return functionBlock;
+		
+	}
 	
 	
 }

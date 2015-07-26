@@ -1,0 +1,55 @@
+
+FUNCTION_BLOCK GMovil
+	VAR_INPUT
+		Init	:BOOL;
+		Reset	:BOOL;
+	END_VAR
+	VAR_OUTPUT
+	END_VAR
+	VAR
+	END_VAR
+(*---------------------------------------
+Movil
+
+-----------------------------------------------*)
+(* Set -Reset ________________________________________________________________ X20 *)
+	IF (  OR Init ) THEN
+		X20:=1;
+	END_IF;
+	IF ( X21 OR Reset ) THEN
+		X20:=0;
+	END_IF;
+
+(* Set -Reset ________________________________________________________________ X21 *)
+	IF ( (X20 AND  ProdNormal) ) THEN
+		X21:=1;
+	END_IF;
+	IF ( X22 OR Init OR Reset ) THEN
+		X21:=0;
+	END_IF;
+
+(* Set -Reset ________________________________________________________________ X22 *)
+	IF ( (X21 AND  F1) ) THEN
+		X22:=1;
+	END_IF;
+	IF ( X23 OR Init OR Reset ) THEN
+		X22:=0;
+	END_IF;
+
+(* Set -Reset ________________________________________________________________ X23 *)
+	IF ( (X22 AND  Temp/X22/2seg) ) THEN
+		X23:=1;
+	END_IF;
+	IF ( X24 OR Init OR Reset ) THEN
+		X23:=0;
+	END_IF;
+
+(* Set -Reset ________________________________________________________________ X24 *)
+	IF ( (X23 AND  F0) ) THEN
+		X24:=1;
+	END_IF;
+	IF (  OR Init OR Reset ) THEN
+		X24:=0;
+	END_IF;
+
+END_FUNCTION_BLOCK

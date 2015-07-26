@@ -3,10 +3,8 @@ package com.hpaz.translator.grafcetelements;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
-
 import com.hpaz.translator.grafcetelements.constants.GrafcetTagsConstants;
 import com.hpaz.translator.output.Output;
-import com.hpaz.translator.output.PostProcess;
 
 public class Project {
 	
@@ -123,7 +121,9 @@ public class Project {
 				Output.getOutput().exportFile(getGlobalVar(globalVars()), getName()+"_VAR_GLOBAL");
 				
 				//Function Block --> uno por cada grafcet
-				
+				for (Grafcet g : listG) {
+					Output.getOutput().exportFile(g.generateFunctionBlock(),"FUNCTION_BLOCK_"+g.getName());
+				}
 				
 			} catch (Exception e) {
 				e.printStackTrace();
