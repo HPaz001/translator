@@ -10,7 +10,7 @@ FUNCTION_BLOCK GCondIniciales
 	END_VAR
 (*---------------------------------------
 CondIniciales
-Acciones necesarias para llevar el proceso a una situaciÃ³n de partida conocida y segura segÃºn las condiciones iniciales y de seguridad especificadas
+Acciones necesarias para llevar el proceso a una situación de partida conocida y segura según las condiciones iniciales y de seguridad especificadas
 -----------------------------------------------*)
 (* Set -Reset ________________________________________________________________ X10 *)
 	IF (  OR Init ) THEN

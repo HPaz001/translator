@@ -13,20 +13,18 @@ public class Sequence {
 	private LinkedList<String> nextLits; 
 	
 	/**Para saber la etepa de la emergencia,
-	 * Devuelve stop o start*/
-	private String stepStopEmergency;
-	private String StepStartEmergency;
+	 *en ellos guardare el indice de la etapa*/
+	private int stepStopEmergency;
+	private int StepStartEmergency;
 	
-	/**
-	 * 
-	 */
+
 	public Sequence() {
 		this.list = new LinkedList<Object>();
 		this.signals = new LinkedList<String>();
 		this.previousList=new LinkedList<String>();
 		this.nextLits= new LinkedList<String>();
-		this.setStepStartEmergency(null);
-		this.setStepStopEmergency(null);
+		this.stepStopEmergency = -1;
+		this.StepStartEmergency = -1;
 	}
 	public int getIdSeq() {
 		return idSeq;
@@ -43,6 +41,31 @@ public class Sequence {
 	/**puede ser una transition o un step*/
 	public void addTorS(Object pTorS) {
 		this.list.add(pTorS);
+	}
+	
+	public LinkedList<String> getPreviousList() {
+		return previousList;
+	}
+	public void addPreviousSeq(String previousSeq) {
+		this.previousList.add(previousSeq);
+	}
+	public LinkedList<String> getNextLits() {
+		return nextLits;
+	}
+	public void addNextSeq(String nextSeq) {
+		this.nextLits.add(nextSeq);
+	}
+	public int getStepStopEmergency() {
+		return stepStopEmergency;
+	}
+	public void setStepStopEmergency(int stepStopEmergency) {
+		this.stepStopEmergency = stepStopEmergency;
+	}
+	public int getStepStartEmergency() {
+		return StepStartEmergency;
+	}
+	public void setStepStartEmergency(int stepStartEmergency) {
+		StepStartEmergency = stepStartEmergency;
 	}
 	
 	public LinkedList<String> printSeqVG(){
@@ -83,7 +106,7 @@ public class Sequence {
 	}
 	
 	public Map<String, String> getActionStepMap(){
-		/*SE DEBEN AÑADIR EL RE PARO Y RE MARCHA Y ALGUNA MAS PREGUNTAR
+		/*SE DEBEN A�ADIR EL RE PARO Y RE MARCHA Y ALGUNA MAS PREGUNTAR
 		 * EN ESTE CASO DEPENDEMOS DE LO Q NOS DIGA EL USUARIO EN LAS SEÑALES*/
 		Map<String, String> actionStepMap = new HashMap<String, String>();
 		
@@ -104,40 +127,26 @@ public class Sequence {
 						actionStepMap.put(action, actionStepMap.get(action) + " OR " + auxMap.get(action));
 					}
 				}
-				//si es una etapa de emergencia guardo en el tipo la etapa
-				if(((Step) stepOrTransition).isStartEmergency()){
-					setStepStartEmergency(((Step) stepOrTransition).getName());
-				}else if(((Step) stepOrTransition).isStopEmergency()){
-					setStepStopEmergency(((Step) stepOrTransition).getName());
-				}
 			}
 		}
 		//devuelvo el map unido 
 		return actionStepMap;	
 	}
-	public LinkedList<String> getPreviousList() {
-		return previousList;
+	public void getEmergency(){
+		for (int i = 0; i < getList().size(); i++) {
+			Object step = getList().get(i);
+			if(step instanceof Step){
+				//si es una etapa de emergencia guardo en el tipo la etapa
+				if(((Step) step).isStartEmergency()){
+					((Step) step).getEmergency();
+					setStepStartEmergency(i);
+				}else if(((Step) step).isStopEmergency()){
+					((Step) step).getEmergency();
+					setStepStopEmergency(i);
+				}
+			}
+		}		
 	}
-	public void addPreviousSeq(String previousSeq) {
-		this.previousList.add(previousSeq);
-	}
-	public LinkedList<String> getNextLits() {
-		return nextLits;
-	}
-	public void addNextSeq(String nextSeq) {
-		this.nextLits.add(nextSeq);
-	}
-	public String getStepStopEmergency() {
-		return stepStopEmergency;
-	}
-	public void setStepStopEmergency(String stepStopEmergency) {
-		this.stepStopEmergency = stepStopEmergency;
-	}
-	public String getStepStartEmergency() {
-		return StepStartEmergency;
-	}
-	public void setStepStartEmergency(String stepStartEmergency) {
-		StepStartEmergency = stepStartEmergency;
-	}
+	
 
 }

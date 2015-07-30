@@ -28,7 +28,6 @@ PROGRAM MAIN
 	XInit:=INIT;
 	XReset:=RESET;
 
-	Emergencia(Init:=(XInit OR InitEmergencia), Reset:=(ResetEmergencia));
 
 
 	SolCondIni:=X1;

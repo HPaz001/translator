@@ -19,6 +19,11 @@ public class Grafcet {
 	/**Para saber las etepas de la emergencia*/
 	private String stepStopEmergency;
 	private String StepStartEmergency;
+	/**Lista de grafcets que se fuerzan en la emergencia*/	
+	private LinkedList<String> listEmergencyStop;
+	private LinkedList<String> listEmergencyStart;
+
+	
 	
 	private LinkedList<Jump> listJ;
 	private LinkedList<Sequence> listS;
@@ -85,6 +90,48 @@ public class Grafcet {
 	public void addRoad(Road pR) {
 		this.listR.add(pR);
 	}
+	
+	/**Si cambia si al añadir el nombre en el preproceso es GEmergencia*/
+	public boolean isEmergency() {
+		return emergency;
+	}
+
+	public void setEmergency(boolean emergency) {
+		this.emergency = emergency;
+	}
+
+	public String getStepStopEmergency() {
+		return stepStopEmergency;
+	}
+
+	public void setStepStopEmergency(String stepStopEmergency) {
+		this.stepStopEmergency = stepStopEmergency;
+	}
+
+	public String getStepStartEmergency() {
+		return StepStartEmergency;
+	}
+
+	public void setStepStartEmergency(String stepStartEmergency) {
+		StepStartEmergency = stepStartEmergency;
+	}
+
+	public LinkedList<String> getListEmergencyStop() {
+		return listEmergencyStop;
+	}
+
+	public void setListEmergencyStop(LinkedList<String> listEmergencyStop) {
+		this.listEmergencyStop = listEmergencyStop;
+	}
+
+	public LinkedList<String> getListEmergencyStart() {
+		return listEmergencyStart;
+	}
+
+	public void setListEmergencyStart(LinkedList<String> listEmergencyStart) {
+		this.listEmergencyStart = listEmergencyStart;
+	}
+	
 	public LinkedList<String> grafcetVarGlobalStages() {
 		LinkedList<String> vG = new LinkedList<String>();
 		vG.add("\n\t(*---"+this.name+"---*)\n\n");
@@ -166,12 +213,7 @@ public class Grafcet {
 						//si existe solo modifico el value
 						actionStepMap.put(action, actionStepMap.get(action) + " OR " + auxMap.get(action));
 					}
-				}
-				if(isEmergency()){
-					setStepStartEmergency(sequence.getStepStartEmergency());
-					setStepStopEmergency(sequence.getStepStopEmergency());
-				}
-				
+				}			
 		}
 		
 		return actionStepMap;	
@@ -345,30 +387,26 @@ public class Grafcet {
 		return functionBlock;
 		
 	}
-	/**Si cambia si al añadir el nombre en el preproceso es GEmergencia*/
-	public boolean isEmergency() {
-		return emergency;
-	}
-
-	public void setEmergency(boolean emergency) {
-		this.emergency = emergency;
-	}
-
-	public String getStepStopEmergency() {
-		return stepStopEmergency;
-	}
-
-	public void setStepStopEmergency(String stepStopEmergency) {
-		this.stepStopEmergency = stepStopEmergency;
-	}
-
-	public String getStepStartEmergency() {
-		return StepStartEmergency;
-	}
-
-	public void setStepStartEmergency(String stepStartEmergency) {
-		StepStartEmergency = stepStartEmergency;
-	}
+	/**Rellena las listas de emergencia*/
+	public void getEmergency(){
 		
+		for (Sequence s : getListS()) {
+			
+			if(s.getStepStartEmergency() != -1 && s.getStepStopEmergency() != -1){
+				
+				s.getEmergency();
+				
+				Step stepStop = (Step) s.getList().get(s.getStepStopEmergency());
+				setStepStopEmergency(stepStop.getName());
+				setListEmergencyStop(stepStop.getGrafcetsStopEmergency());
+				
+				Step stepStart = (Step) s.getList().get(s.getStepStartEmergency());
+				setStepStartEmergency(stepStart.getName());
+				setListEmergencyStart(stepStart.getGrafcetsStartEmergency());
+			
+			}
+		}
+		
+	}
 	
 }

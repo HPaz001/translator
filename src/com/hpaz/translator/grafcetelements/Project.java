@@ -24,6 +24,7 @@ public class Project {
 	/**Para saber las etepas de la emergencia*/
 	private String stepStopEmergency;
 	private String StepStartEmergency;
+	private String nameGrafcetEmergency;
 	
 	/** PL -> PLC TSX Micro (PL7Pro), T -> PLC Beckhoff (TwinCAT), PC -> PLCOpen */
 	private String program;
@@ -41,6 +42,9 @@ public class Project {
 		this.name = null;
 		this.language = null;
 		this.program = null;
+		this.stepStopEmergency=null;
+		this.StepStartEmergency=null;
+		this.nameGrafcetEmergency=null;
 		this.listG = new LinkedList<Grafcet>();
 		this.listEmergencyStart=new LinkedList<String>();
 		this.listEmergencyStop=new LinkedList<String>();
@@ -139,6 +143,9 @@ public class Project {
 		}
 	}
 
+	/**
+	 * @return
+	 */
 	private LinkedList<String> generarProgramMain() {
 		//LinkedList<String> listaProgramMain = new LinkedList<String>();
 		LinkedList<String> aux = new LinkedList<String>();
@@ -150,23 +157,7 @@ public class Project {
 		for (Grafcet grafcet : listG) {
 			//guardo solo el nombre del grafcet q sera Gxxxxxxxxx
 			aux.add(grafcet.getName());
-			//si el grafcet es el de emergencia relleno la lista de emergencia
-			if(grafcet.isEmergency()){
-				/*Si la lista de stop y start son iguales*/
-				if(compareStartAndStopLists()){
-					for (String emerg : getListEmergencyStart()) {
-						System.err.println("EN LA EMERGENCIA --> "+emerg);
-						listEmergency.add("\n\tInit"+emerg+":="+grafcet.getStepStartEmergency()+";\n");
-						listEmergency.add("\tReset"+emerg+":="+grafcet.getStepStopEmergency()+";\n");
-						listEmergency.add("\t"+emerg+"(Init:=(XInit OR Init"+emerg+"), Reset:=(XReset OR Reset"+emerg+"));\n");
-					}
-					/*En el de Emergencia
-					Emergencia(Init:=(XInit OR IntitEmergencia) , Reset:=ResetEmergencia );*/
-					String gEmergency=grafcet.getName().substring(1, grafcet.getName().length());
-					listEmergency.add("\t"+gEmergency+"(Init:=(XInit OR Init"+gEmergency+"), Reset:=(Reset"+gEmergency+"));\n");
-				}
-			}
-			
+					
 			//en este hashMap voy guardando las acciones
 			Map<String, String> auxMap = grafcet.getActionStepMap();
 			for (String action : auxMap.keySet()) {
@@ -176,16 +167,34 @@ public class Project {
 					actionStepMap.put(action, actionStepMap.get(action)
 							+ " OR " + auxMap.get(action));
 			}
+		
+			//si el grafcet es el de emergencia relleno la lista de emergencia
+			if(grafcet.isEmergency()){
+					/*for (String emerg : getListEmergencyStart()) {
+						System.err.println("EN LA EMERGENCIA --> "+emerg);
+						listEmergency.add("\n\tInit"+emerg+":="+grafcet.getStepStartEmergency()+";\n");
+						listEmergency.add("\tReset"+emerg+":="+grafcet.getStepStopEmergency()+";\n");
+						listEmergency.add("\t"+emerg+"(Init:=(XInit OR Init"+emerg+"), Reset:=(XReset OR Reset"+emerg+"));\n");
+					}
+					En el de Emergencia
+					Emergencia(Init:=(XInit OR IntitEmergencia) , Reset:=ResetEmergencia );
+					String gEmergency=grafcet.getName().substring(1, grafcet.getName().length());
+					listEmergency.add("\t"+gEmergency+"(Init:=(XInit OR Init"+gEmergency+"), Reset:=(Reset"+gEmergency+"));\n");*/
+					setNameGrafcetEmergency(grafcet.getName().substring(1, grafcet.getName().length()));
+					setStepStartEmergency(grafcet.getStepStartEmergency());
+					setStepStopEmergency(grafcet.getStepStopEmergency());
+			}
+		
 		}
 		
-		return getProgramMain(aux,listEmergency, actionStepMap);
+		return getProgramMain(aux,/*listEmergency,*/ actionStepMap);
 				
 	}
 
 	/**Este metodo se encargara de obtener la parte combinacional correspondientes a TwinCAT
 	 * Pre:
 	 * Post: devolvera una lista de String*/
-	private LinkedList<String> getProgramMain(LinkedList<String> pNames,LinkedList<String> pEmergency, Map<String, String> pInit){
+	private LinkedList<String> getProgramMain(LinkedList<String> pNames,/*LinkedList<String> pEmergency,*/ Map<String, String> pInit){
 		//PROGRAMAR 
 		LinkedList<String> listaProgramMain = new LinkedList<String>();
 		
@@ -212,7 +221,20 @@ public class Project {
 		
 		
 		/*Añado la lista de emergencia*/
-		listaProgramMain.addAll(pEmergency);
+		//listaProgramMain.addAll(pEmergency);
+		/*Si la lista de stop y start son iguales*/
+		if(compareStartAndStopLists()){
+			for (String emerg : getListEmergencyStart()) {
+				System.err.println("EN LA EMERGENCIA --> "+emerg);
+				listaProgramMain.add("\n\tInit"+emerg+":="+getStepStartEmergency()+";\n");
+				listaProgramMain.add("\tReset"+emerg+":="+getStepStopEmergency()+";\n");
+				listaProgramMain.add("\t"+emerg+"(Init:=(XInit OR Init"+emerg+"), Reset:=(XReset OR Reset"+emerg+"));\n");
+			}
+			/*En el de Emergencia
+			Emergencia(Init:=(XInit OR IntitEmergencia) , Reset:=ResetEmergencia );*/
+			listaProgramMain.add("\t"+getNameGrafcetEmergency()+"(Init:=(XInit OR Init"+getNameGrafcetEmergency()+"), Reset:=(Reset"+getNameGrafcetEmergency()+"));\n");
+		}
+		
 		
 		listaProgramMain.add("\n\n");
 		for (String action : pInit.keySet()) {
@@ -289,4 +311,23 @@ public class Project {
 		StepStartEmergency = stepStartEmergency;
 	}
 
+	public String getNameGrafcetEmergency() {
+		return nameGrafcetEmergency;
+	}
+
+	public void setNameGrafcetEmergency(String nameGrafcetEmergency) {
+		this.nameGrafcetEmergency = nameGrafcetEmergency;
+	}
+	
+	public void generateEmergencyData() {
+		for (Grafcet g : getListG() ) {
+			//si el grafcet es el de emergencia relleno la lista de emergencia
+			if(g.isEmergency()){
+				g.getEmergency();
+			}
+		}
+		
+
+	}
+	
 }

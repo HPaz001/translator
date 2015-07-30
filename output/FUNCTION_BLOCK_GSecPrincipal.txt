@@ -10,7 +10,7 @@ FUNCTION_BLOCK GSecPrincipal
 	END_VAR
 (*---------------------------------------
 SecPrincipal
-organiza tanto el arranque del sistema en modo autom√°tico como la parada programada del mismo, generando las se√±ales de mando que informan a producci√≥n normal sobre el estado 
+organiza tanto el arranque del sistema en modo autom·tico como la parada programada del mismo, generando las seÒales de mando que informan a producciÛn normal sobre el estado 
 del sistema en cada momento. 
 -----------------------------------------------*)
 (* Set -Reset ________________________________________________________________ X0 *)

@@ -12,7 +12,6 @@ public class Action {
 	private String condition;
 	private String comment;//comentario de la accion
 	private LinkedList<String> stopEmergency;
-	/**Tendra el nombre del grafcet seguido de la etapa*/
 	private LinkedList<String> startEmergency;
 	
 	public Action() {
@@ -20,8 +19,6 @@ public class Action {
 		this.text="";
 		this.condition="";
 		this.comment="";
-		this.stopEmergency = new LinkedList<String>();
-		this.startEmergency = new LinkedList<String>();
 	}
 	
 	public String getType() {
@@ -48,6 +45,14 @@ public class Action {
 	public void setComment(String comment) {
 		this.comment = comment;
 	}
+	
+	public LinkedList<String> getStopEmergency() {
+		return this.stopEmergency;
+	}
+	public LinkedList<String> getStartEmergency() {
+		return this.startEmergency;
+	}
+	
 	public void printAction(){
 		System.out.println("----- ACTION ------");
 		System.out.println("Accion  : " + getText());
@@ -55,6 +60,7 @@ public class Action {
 		System.out.println("	Condicion: " + getCondition());
 		System.out.println("	Comentario: " + getComment());
 	}
+	
 	/**Para saber la etepa de la emergencia,
 	 * Devuelve stop o start*/
 	public String getEmergency() {
@@ -72,25 +78,15 @@ public class Action {
 			if(mat.matches()){
 				s= "stop";
 				generateListEmergency(getText(),s);
-				Project.getProject().addListEmergencyStop(getStopEmergency());
 			}else{
 				if(mat1.matches()){
 					s= "start";	
 					generateListEmergency(getText(),s);
-					Project.getProject().addListEmergencyStart(getStartEmergency());
 				}
 				
 			}
 		}
 		return s;
-	}
-
-	private LinkedList<String> getStopEmergency() {
-		return stopEmergency;
-	}
-	
-	private LinkedList<String> getStartEmergency() {
-		return startEmergency;
 	}
 	
 	private void generateListEmergency(String pText, String pOpc) {
@@ -99,7 +95,7 @@ public class Action {
 		String  auxText = pText.trim();
 		//Me quedo solo con los nombres de los grafcets
 		
-		auxText = auxText.replaceAll("F/G|>\\{\\}|>\\{X.[0-9]\\}", "");
+		auxText = auxText.replaceAll("F/G|>\\{\\}|>\\{X.[0-9]\\}|>\\{X0\\}", "");
 		boolean aux=true;
 		int cont = 0;
 	
