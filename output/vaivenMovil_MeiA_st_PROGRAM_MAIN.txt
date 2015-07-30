@@ -28,18 +28,7 @@ PROGRAM MAIN
 	XInit:=INIT;
 	XReset:=RESET;
 
-
-	InitSecPrincipal:=X35;
-	ResetSecPrincipal:=X33;
-	SecPrincipal(Init:=(XInit OR InitSecPrincipal), Reset:=(XReset OR ResetSecPrincipal));
-
-	InitCondIniciales:=X35;
-	ResetCondIniciales:=X33;
-	CondIniciales(Init:=(XInit OR InitCondIniciales), Reset:=(XReset OR ResetCondIniciales));
-
-	InitMovil:=X35;
-	ResetMovil:=X33;
-	Movil(Init:=(XInit OR InitMovil), Reset:=(XReset OR ResetMovil));
+	Emergencia(Init:=(XInit OR InitEmergencia), Reset:=(ResetEmergencia));
 
 
 	SolCondIni:=X1;

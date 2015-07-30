@@ -1,8 +1,11 @@
 package com.hpaz.translator.grafcetelements;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.regex.Pattern;
+
 import com.hpaz.translator.grafcetelements.constants.GrafcetTagsConstants;
 import com.hpaz.translator.output.Output;
 
@@ -18,20 +21,19 @@ public class Project {
 		SFC --> Grafico de funciones secuenciales.*/
 	private String language;
 	
-	/** PL-->PL7PRO TSX, T--> TwinCat Beckch, PC--> PCWorx PLCOpen */
+	/**Para saber las etepas de la emergencia*/
+	private String stepStopEmergency;
+	private String StepStartEmergency;
+	
+	/** PL -> PLC TSX Micro (PL7Pro), T -> PLC Beckhoff (TwinCAT), PC -> PLCOpen */
 	private String program;
 	
 	private LinkedList<Grafcet> listG;
 	
-	/**Etepa de forzar parada de emergencia*/
-	private String stop;
-	
-	/**etapa de forzar inicio despues de emergencia*/
-	private String init;
-	
-	/**Lista de grafcets que se fuerzan en la emergencia*/
-	private LinkedList<String> listEmergency;
-		
+
+	/**Lista de grafcets que se fuerzan en la emergencia*/	
+	private LinkedList<String> listEmergencyStop;
+	private LinkedList<String> listEmergencyStart;
 
 	private static Project project = new Project();
 
@@ -40,8 +42,9 @@ public class Project {
 		this.language = null;
 		this.program = null;
 		this.listG = new LinkedList<Grafcet>();
-		setStop(null);
-		setInit(null);
+		this.listEmergencyStart=new LinkedList<String>();
+		this.listEmergencyStop=new LinkedList<String>();
+
 	}
 
 	public static Project getProject() {
@@ -85,7 +88,7 @@ public class Project {
 
 	public LinkedList<String> globalVars() {
 		LinkedList<String> vG = new LinkedList<String>();
-
+			
 		for (Grafcet g : listG) {
 			vG.addAll(g.grafcetVarGlobalStages());
 		}
@@ -139,14 +142,30 @@ public class Project {
 	private LinkedList<String> generarProgramMain() {
 		//LinkedList<String> listaProgramMain = new LinkedList<String>();
 		LinkedList<String> aux = new LinkedList<String>();
-
+		LinkedList<String> listEmergency = new LinkedList<String>();
+		
 		Map<String, String> actionStepMap = new HashMap<String, String>();
 
 		
 		for (Grafcet grafcet : listG) {
 			//guardo solo el nombre del grafcet q sera Gxxxxxxxxx
 			aux.add(grafcet.getName());
-			
+			//si el grafcet es el de emergencia relleno la lista de emergencia
+			if(grafcet.isEmergency()){
+				/*Si la lista de stop y start son iguales*/
+				if(compareStartAndStopLists()){
+					for (String emerg : getListEmergencyStart()) {
+						System.err.println("EN LA EMERGENCIA --> "+emerg);
+						listEmergency.add("\n\tInit"+emerg+":="+grafcet.getStepStartEmergency()+";\n");
+						listEmergency.add("\tReset"+emerg+":="+grafcet.getStepStopEmergency()+";\n");
+						listEmergency.add("\t"+emerg+"(Init:=(XInit OR Init"+emerg+"), Reset:=(XReset OR Reset"+emerg+"));\n");
+					}
+					/*En el de Emergencia
+					Emergencia(Init:=(XInit OR IntitEmergencia) , Reset:=ResetEmergencia );*/
+					String gEmergency=grafcet.getName().substring(1, grafcet.getName().length());
+					listEmergency.add("\t"+gEmergency+"(Init:=(XInit OR Init"+gEmergency+"), Reset:=(Reset"+gEmergency+"));\n");
+				}
+			}
 			
 			//en este hashMap voy guardando las acciones
 			Map<String, String> auxMap = grafcet.getActionStepMap();
@@ -159,39 +178,14 @@ public class Project {
 			}
 		}
 		
-		//llamada al postprocess
-		return getProgramMain(aux, listEmergency, actionStepMap);
+		return getProgramMain(aux,listEmergency, actionStepMap);
 				
-	}
-
-	public String getStop() {
-		return stop;
-	}
-
-	public void setStop(String stop) {
-		this.stop = stop;
-	}
-
-	public String getInit() {
-		return init;
-	}
-
-	public void setInit(String init) {
-		this.init = init;
-	}
-
-	public LinkedList<String> getListEmergency() {
-		return listEmergency;
-	}
-
-	public void addListEmergency(LinkedList<String> pListEmergency) {
-		this.listEmergency=pListEmergency;
 	}
 
 	/**Este metodo se encargara de obtener la parte combinacional correspondientes a TwinCAT
 	 * Pre:
 	 * Post: devolvera una lista de String*/
-	private LinkedList<String> getProgramMain(LinkedList<String> pNames, LinkedList<String> pEmergency, Map<String, String> pInit){
+	private LinkedList<String> getProgramMain(LinkedList<String> pNames,LinkedList<String> pEmergency, Map<String, String> pInit){
 		//PROGRAMAR 
 		LinkedList<String> listaProgramMain = new LinkedList<String>();
 		
@@ -217,16 +211,9 @@ public class Project {
 		/*Aqui deberian estar las señales de entrada y salida q se preguntaran al usuario*/
 		
 		
-		/*Ejemplo
-		 * 	InitMovil:=X35;
-			ResetMovil:=X33;
-			Movil(Init:=(XInit OR InitMovil), Reset:=(XReset OR ResetMovil));
-		*/
-		for (String emerg : pEmergency) {
-			listaProgramMain.add("\n\tInit"+emerg+":="+Project.getProject().getInit()+";\n");
-			listaProgramMain.add("\tReset"+emerg+":="+Project.getProject().getStop()+";\n");
-			listaProgramMain.add("\t"+emerg+"(Init:=(XInit OR Init"+emerg+"), Reset:=(XReset OR Reset"+emerg+"));\n");
-		}
+		/*Añado la lista de emergencia*/
+		listaProgramMain.addAll(pEmergency);
+		
 		listaProgramMain.add("\n\n");
 		for (String action : pInit.keySet()) {
 			listaProgramMain.add("\t"+action+":="+pInit.get(action)+";\n");
@@ -263,4 +250,43 @@ public class Project {
 			
 	    return listwithoutduplicates;
 	}
+
+	public LinkedList<String> getListEmergencyStop() {
+		return listEmergencyStop;
+	}
+
+	public void addListEmergencyStop(LinkedList<String> listEmergencyStop) {
+		this.listEmergencyStop.addAll(listEmergencyStop);
+	}
+
+	public LinkedList<String> getListEmergencyStart() {
+		return listEmergencyStart;
+	}
+
+	public void addListEmergencyStart(LinkedList<String> listEmergencyStart) {
+		this.listEmergencyStart.addAll(listEmergencyStart);
+	}
+	
+	private boolean compareStartAndStopLists() {
+		Collections.sort(listEmergencyStop);
+	    Collections.sort(listEmergencyStart);      
+	    return listEmergencyStart.equals(listEmergencyStop);
+	}
+
+	public String getStepStopEmergency() {
+		return stepStopEmergency;
+	}
+
+	public void setStepStopEmergency(String stepStopEmergency) {
+		this.stepStopEmergency = stepStopEmergency;
+	}
+
+	public String getStepStartEmergency() {
+		return StepStartEmergency;
+	}
+
+	public void setStepStartEmergency(String stepStartEmergency) {
+		StepStartEmergency = stepStartEmergency;
+	}
+
 }

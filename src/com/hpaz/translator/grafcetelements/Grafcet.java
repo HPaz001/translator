@@ -3,6 +3,8 @@ package com.hpaz.translator.grafcetelements;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class Grafcet {
@@ -11,6 +13,13 @@ public class Grafcet {
 	private String name;
 	private String comment;
 	private String owner; // propietario
+	
+	/*Variables que se usararn solo si el grafcet es de emergencia*/
+	private boolean emergency;
+	/**Para saber las etepas de la emergencia*/
+	private String stepStopEmergency;
+	private String StepStartEmergency;
+	
 	private LinkedList<Jump> listJ;
 	private LinkedList<Sequence> listS;
 	private LinkedList<Road> listR;
@@ -22,10 +31,12 @@ public class Grafcet {
 		this.name="";
 		this.comment="";
 		this.owner="";
+		this.setStepStartEmergency(null);
+		this.setStepStopEmergency(null);
+		this.setEmergency(false);
 		this.listJ = new LinkedList<Jump>();
 		this.listS= new LinkedList<Sequence>();
-		this.listR = new LinkedList<Road>();
-		
+		this.listR = new LinkedList<Road>();	
 	}
 	
 	public String getType() {
@@ -77,14 +88,6 @@ public class Grafcet {
 	public LinkedList<String> grafcetVarGlobalStages() {
 		LinkedList<String> vG = new LinkedList<String>();
 		vG.add("\n\t(*---"+this.name+"---*)\n\n");
-		/*if(!this.owner.equals("")){
-			vG.add("(* Propietario: "+this.owner+"*)\n");
-		}
-		if(!this.comment.equals("")){
-			vG.add("(*"+this.comment+"*)\n");
-		}
-		ESTO SE USARA EN EL SET Y RESET*/
-		
 		//por cada secuencia de la lista
 		for (Sequence s : listS) {
 			vG.addAll(s.printSeqVG());
@@ -164,6 +167,11 @@ public class Grafcet {
 						actionStepMap.put(action, actionStepMap.get(action) + " OR " + auxMap.get(action));
 					}
 				}
+				if(isEmergency()){
+					setStepStartEmergency(sequence.getStepStartEmergency());
+					setStepStopEmergency(sequence.getStepStopEmergency());
+				}
+				
 		}
 		
 		return actionStepMap;	
@@ -248,7 +256,6 @@ public class Grafcet {
 				}
 			}
 		}
-		
 	}
 	public LinkedList<String> generateFunctionBlock(){
 		LinkedList<String> functionBlock = new LinkedList<String>();
@@ -265,7 +272,6 @@ public class Grafcet {
 		for (Sequence seq : listS) {
 			//recorro la lista de la secuencia
 			//Object obj : seq.getList()
-			System.out.println("Secuencia "+ seq.getIdSeq());
 			for (int i = 0; i < seq.getList().size(); i++) {	
 				/*Si es una etapa*/
 				if(seq.getList().get(i) instanceof Step){
@@ -339,6 +345,30 @@ public class Grafcet {
 		return functionBlock;
 		
 	}
-	
+	/**Si cambia si al añadir el nombre en el preproceso es GEmergencia*/
+	public boolean isEmergency() {
+		return emergency;
+	}
+
+	public void setEmergency(boolean emergency) {
+		this.emergency = emergency;
+	}
+
+	public String getStepStopEmergency() {
+		return stepStopEmergency;
+	}
+
+	public void setStepStopEmergency(String stepStopEmergency) {
+		this.stepStopEmergency = stepStopEmergency;
+	}
+
+	public String getStepStartEmergency() {
+		return StepStartEmergency;
+	}
+
+	public void setStepStartEmergency(String stepStartEmergency) {
+		StepStartEmergency = stepStartEmergency;
+	}
+		
 	
 }

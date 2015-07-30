@@ -46,8 +46,6 @@ VAR_GLOBAL
 	CDerecha	: BOOL;
 	F1	: BOOL;
 	Temp=2seg	: BOOL;
-	Temp/X22/2seg	: BOOL;
-	Temp/X24/2seg	: BOOL;
 	SolEmergencia	: BOOL;
 	F/GSecPrincipal>{},F/GCondIniciales>{}, F/GMovil>{}	: BOOL;
 	ParoEmergencia	: BOOL;

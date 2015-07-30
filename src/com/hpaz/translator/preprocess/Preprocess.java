@@ -1,6 +1,8 @@
 package com.hpaz.translator.preprocess;
 
 import java.util.LinkedList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -148,8 +150,7 @@ public class Preprocess extends DefaultHandler {
 		if (text != null && !text.isEmpty()) {
 
 			// si la etiqueta es text entonces es el texto de una accion
-			if (actualTag.equals(GrafcetTagsConstants.TEXT_TAG)) {
-				
+			if (actualTag.equals(GrafcetTagsConstants.TEXT_TAG)) {				
 				//step.setAction(step.getAction() + text);
 				action.setText(action.getText()+text);
 
@@ -347,6 +348,12 @@ public class Preprocess extends DefaultHandler {
 			if (pNameAtt.equals("type")) {
 				grafcet.setType(pAtt);
 			} else if (pNameAtt.equals("name")) {
+				/*Para añadir expresiones regulares*/
+				Pattern pat = Pattern.compile("^GEmergencia.*|^GEmergency.*");
+				Matcher mat = pat.matcher(pAtt);
+				if(mat.matches()){	
+					grafcet.setEmergency(true);
+				}
 				grafcet.setName(pAtt);
 			} else if (pNameAtt.equals("comment")) {
 				grafcet.setComment(pAtt);

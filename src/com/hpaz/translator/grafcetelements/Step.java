@@ -3,12 +3,14 @@ package com.hpaz.translator.grafcetelements;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.hpaz.translator.grafcetelements.constants.GrafcetTagsConstants;
 import com.hpaz.translator.output.PostProcess;
 
 public class Step {
-	/***/
+	
 
 	private String type;
 	private String name;
@@ -16,6 +18,21 @@ public class Step {
 	private String mySet;
 	private String myReset;
 	
+	/**Para saber la etepa de la emergencia,
+	 * Devuelve stop o start*/
+	private boolean stopEmergency;
+	private boolean startEmergency;
+	
+	
+	
+	public boolean isStartEmergency() {
+		return startEmergency;
+	}
+
+	public void setStartEmergency(boolean startEmergency) {
+		this.startEmergency = startEmergency;
+	}
+
 	private LinkedList<Action> myActions;
 
 	public Step() {
@@ -25,6 +42,8 @@ public class Step {
 		this.mySet=null;
 		this.myReset=null;
 		this.myActions = new LinkedList<Action>();
+		this.setStopEmergency(false);
+		this.startEmergency=false;
 	}
 
 	public String getType() {
@@ -75,16 +94,32 @@ public class Step {
 					aux = "("+aux+" AND " + action.getCondition()+")";
 				}
 				if (action.getType().equals(GrafcetTagsConstants.ACTION_FORCING_ORDER)){
-					/*en este caso tengo que tratar lo q hay dentro porq seguramente se trata de la emergencia*/
-					/*Miro si es de parada o de inicio*/
-					/*si contiene los corchetes vacios es un stop, guardo la etapa en el project*/
-					if(action.getText().contains("{}")){
-						Project.getProject().setStop(getName());
-						//guardo solo los que para, doy por hecho q los q inicia son los mismos
-						Project.getProject().addListEmergency(processEmergency(action.getText()));
-					}else{/*Si dentro del corchete hay una etapa no estara vacio, guardo la tapa en el proj*/
-						Project.getProject().setInit(getName());
+					if(action.getEmergency().equalsIgnoreCase("stop")){
+						setStopEmergency(true);
+					}else if(action.getEmergency().equalsIgnoreCase("start")){
+						setStartEmergency(true);
 					}
+					/*en este caso tengo que tratar lo q hay dentro porq seguramente se trata de la emergencia
+					Miro si es de parada o de inicio
+					si contiene los corchetes vacios es un stop, guardo la etapa en el project
+					
+					Para añadir expresiones regulares
+					Emergencia forzado a stop
+					Pattern pat = Pattern.compile("^F/G.*.>\\{\\}$");
+					Matcher mat = pat.matcher(action.getText());
+					Emergencia forzado a start
+					Pattern pat1 = Pattern.compile("^F/G.*.>\\{.*.\\}$");
+					Matcher mat1 = pat1.matcher(action.getText());
+				
+					if(mat.matches()){
+						Project.getProject().setStop(getName());
+						
+						Tengo q mirar cuales se paran y cuales se iniician, pueden no ser los mismos
+						Project.getProject().addListEmergency(processEmergency(action.getText()));
+					}else{Si dentro del corchete hay una etapa, guardo la etapa en el proj
+						if(mat1.matches())
+							Project.getProject().setInit(getName());
+					}*/
 					
 				}else{
 					actionStepMap.put(action.getText(), aux);
@@ -155,5 +190,13 @@ public class Step {
 
 	public void addAction(Action pAction) {
 		this.myActions.add(pAction);
+	}
+
+	public boolean isStopEmergency() {
+		return stopEmergency;
+	}
+
+	public void setStopEmergency(boolean stopEmergency) {
+		this.stopEmergency = stopEmergency;
 	}
 }

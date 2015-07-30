@@ -1,16 +1,27 @@
 package com.hpaz.translator.grafcetelements;
 
+import java.util.LinkedList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import com.hpaz.translator.grafcetelements.constants.GrafcetTagsConstants;
+
 public class Action {
 	private String type;
 	private String text;
 	private String condition;
 	private String comment;//comentario de la accion
+	private LinkedList<String> stopEmergency;
+	/**Tendra el nombre del grafcet seguido de la etapa*/
+	private LinkedList<String> startEmergency;
 	
 	public Action() {
 		this.type="";
 		this.text="";
 		this.condition="";
 		this.comment="";
+		this.stopEmergency = new LinkedList<String>();
+		this.startEmergency = new LinkedList<String>();
 	}
 	
 	public String getType() {
@@ -44,4 +55,70 @@ public class Action {
 		System.out.println("	Condicion: " + getCondition());
 		System.out.println("	Comentario: " + getComment());
 	}
+	/**Para saber la etepa de la emergencia,
+	 * Devuelve stop o start*/
+	public String getEmergency() {
+		String s="";
+		if(getType().equalsIgnoreCase((String) GrafcetTagsConstants.ACTION_FORCING_ORDER)){
+			/*Para añadir expresiones regulares*/
+			/*Emergencia forzado a stop*/
+			Pattern pat = Pattern.compile("^F/G.*.>\\{\\}$");
+			Matcher mat = pat.matcher(getText());
+			
+			/*Emergencia forzado a start*/
+			Pattern pat1 = Pattern.compile("^F/G.*.>\\{.*.\\}$");
+			Matcher mat1 = pat1.matcher(getText());
+		
+			if(mat.matches()){
+				s= "stop";
+				generateListEmergency(getText(),s);
+				Project.getProject().addListEmergencyStop(getStopEmergency());
+			}else{
+				if(mat1.matches()){
+					s= "start";	
+					generateListEmergency(getText(),s);
+					Project.getProject().addListEmergencyStart(getStartEmergency());
+				}
+				
+			}
+		}
+		return s;
+	}
+
+	private LinkedList<String> getStopEmergency() {
+		return stopEmergency;
+	}
+	
+	private LinkedList<String> getStartEmergency() {
+		return startEmergency;
+	}
+	
+	private void generateListEmergency(String pText, String pOpc) {
+		LinkedList<String> auxtList=new LinkedList<String>();
+		//Quito los espacios en blanco
+		String  auxText = pText.trim();
+		//Me quedo solo con los nombres de los grafcets
+		
+		auxText = auxText.replaceAll("F/G|>\\{\\}|>\\{X.[0-9]\\}", "");
+		boolean aux=true;
+		int cont = 0;
+	
+		while(aux){
+			cont=auxText.indexOf(",");
+			if(cont!=(-1)){
+				auxtList.add(auxText.substring(0,cont));
+				auxText=auxText.substring(cont+1, auxText.length());
+			}else{
+				auxtList.add(auxText);
+				aux=false;
+			}
+		}
+		if(pOpc.equals("stop")){
+			this.stopEmergency.addAll(auxtList);
+		}else if(pOpc.equals("start")){
+			this.startEmergency.addAll(auxtList);
+		}
+	}
+
+	
 }

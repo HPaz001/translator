@@ -12,6 +12,11 @@ public class Sequence {
 	private LinkedList<String> previousList; 
 	private LinkedList<String> nextLits; 
 	
+	/**Para saber la etepa de la emergencia,
+	 * Devuelve stop o start*/
+	private String stepStopEmergency;
+	private String StepStartEmergency;
+	
 	/**
 	 * 
 	 */
@@ -20,6 +25,8 @@ public class Sequence {
 		this.signals = new LinkedList<String>();
 		this.previousList=new LinkedList<String>();
 		this.nextLits= new LinkedList<String>();
+		this.setStepStartEmergency(null);
+		this.setStepStopEmergency(null);
 	}
 	public int getIdSeq() {
 		return idSeq;
@@ -86,8 +93,8 @@ public class Sequence {
 			if (stepOrTransition instanceof Step){
 				//busco la acciones del step y la guardo en auxMap				
 				Map<String, String> auxMap = ((Step) stepOrTransition).getActionStepMap();
-				//por cada accion de auxMap (Que en este caso sera solo una)
-				for (String action : auxMap.keySet()){
+				//por cada accion de auxMap 
+				for (String action : auxMap.keySet()){		
 					//si la accion no esta en actionStepMap
 					if (actionStepMap.get(action) == null){
 						//añado la accion 
@@ -96,6 +103,12 @@ public class Sequence {
 						//si la accion ya existe, solo modifico el value del actionStepMap
 						actionStepMap.put(action, actionStepMap.get(action) + " OR " + auxMap.get(action));
 					}
+				}
+				//si es una etapa de emergencia guardo en el tipo la etapa
+				if(((Step) stepOrTransition).isStartEmergency()){
+					setStepStartEmergency(((Step) stepOrTransition).getName());
+				}else if(((Step) stepOrTransition).isStopEmergency()){
+					setStepStopEmergency(((Step) stepOrTransition).getName());
 				}
 			}
 		}
@@ -114,5 +127,17 @@ public class Sequence {
 	public void addNextSeq(String nextSeq) {
 		this.nextLits.add(nextSeq);
 	}
-	
+	public String getStepStopEmergency() {
+		return stepStopEmergency;
+	}
+	public void setStepStopEmergency(String stepStopEmergency) {
+		this.stepStopEmergency = stepStopEmergency;
+	}
+	public String getStepStartEmergency() {
+		return StepStartEmergency;
+	}
+	public void setStepStartEmergency(String stepStartEmergency) {
+		StepStartEmergency = stepStartEmergency;
+	}
+
 }
