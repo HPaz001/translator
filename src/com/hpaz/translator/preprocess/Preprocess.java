@@ -25,6 +25,9 @@ public class Preprocess extends DefaultHandler {
 	 * @author hpaz
 	 *
 	 */
+	private static String file; // ruta del file xml
+	private static String outputDir; // ruta del directorio de salida
+
 	// creo las variables necesarias para guardar la informacion de etiquetas
 	private Grafcet grafcet;
 	private Jump jump;
@@ -34,10 +37,10 @@ public class Preprocess extends DefaultHandler {
 	private Transition transition;
 	private String text;
 	private Action action;
-	
+
 	// variables auxiliares
 	private boolean isStep;// True si lo que se esta procesasndo es una step
-	private boolean isTransition;//True si lo que se esta procesasndo es una
+	private boolean isTransition;// True si lo que se esta procesasndo es una
 									// transition
 	private String actualTag;
 	private String previousTag;
@@ -46,7 +49,8 @@ public class Preprocess extends DefaultHandler {
 	private String compatibility;
 	private int actualSequence;
 
-	/*private static Preprocess myPreprocess;*/
+	/* private static Preprocess myPreprocess; */
+
 	
 	public Preprocess(String pNamePro, String pLanguage, String pCompatibility) {
 		language = pLanguage;
@@ -59,27 +63,20 @@ public class Preprocess extends DefaultHandler {
 		compatibility=pCompatibility;
 		this.actualSequence=0;
 	}
-	
+
 	// si no existe el preproceso lo creo
-/*	public static Preprocess getMyPreprocess(){
-		if(myPreprocess == null){
-			myPreprocess = new Preprocess();
-		}
-		return myPreprocess;
-	}*/
-	
-	/*public void addVarsPreprocess(String pNamePro, String pLanguage, String pCompatibility) {
-		language = pLanguage;
-		actualTag = "";
-		text = "";
-		nameProject = pNamePro;
-		isStep = false;
-		isTransition = false;
-		previousTag = "";
-		compatibility=pCompatibility;
-	}
-*/
-	
+	/*
+	 * public static Preprocess getMyPreprocess(){ if(myPreprocess == null){
+	 * myPreprocess = new Preprocess(); } return myPreprocess; }
+	 */
+
+	/*
+	 * public void addVarsPreprocess(String pNamePro, String pLanguage, String
+	 * pCompatibility) { language = pLanguage; actualTag = ""; text = "";
+	 * nameProject = pNamePro; isStep = false; isTransition = false; previousTag
+	 * = ""; compatibility=pCompatibility; }
+	 */
+
 	public void startDocument() throws SAXException {
 		System.out.println("\nPrincipio del documento...");
 	}
@@ -88,7 +85,7 @@ public class Preprocess extends DefaultHandler {
 		System.out.println("\nFin del documento...");
 	}
 
-	/**Esto lo hace por cada etiqueta que hay*/
+	/** Esto lo hace por cada etiqueta que hay */
 	public void startElement(String uri, String localName, String name, Attributes attributes) throws SAXException {
 		previousTag = actualTag;
 		actualTag = localName;
@@ -97,7 +94,7 @@ public class Preprocess extends DefaultHandler {
 
 		if (actualTag.equals(GrafcetTagsConstants.GRAFCET_TAG)) {
 			grafcet = new Grafcet();
-	
+
 		} else if (actualTag.equals(GrafcetTagsConstants.SEQUENCE_TAG)) {
 			sequence = new Sequence();
 
@@ -110,13 +107,13 @@ public class Preprocess extends DefaultHandler {
 			isTransition = true;
 
 		} else if (actualTag.equals(GrafcetTagsConstants.ACTION_TAG)) {
-			action= new Action();
-			
+			action = new Action();
+
 		} else if (actualTag.equals(GrafcetTagsConstants.RE_TAG)) {
 			// si la etiqueta es re (flanco de subida)
 			// transition.activateFs();
 		} else if (actualTag.equals(GrafcetTagsConstants.FE_TAG)) {
-			// si la etiqueta es fe (flanco  de bajada)
+			// si la etiqueta es fe (flanco de bajada)
 			/// transition.activateFb();
 		} else if (actualTag.equals(GrafcetTagsConstants.HLINK_TAG)) {// road
 			road = new Road();
@@ -135,8 +132,7 @@ public class Preprocess extends DefaultHandler {
 	}
 
 	/** Para obtener los textos que hay dentro de una etiqueta */
-	public void characters(char[] ch, int start, int length)
-			throws SAXException {
+	public void characters(char[] ch, int start, int length) throws SAXException {
 
 		String texto = String.valueOf(ch, start, length);
 
@@ -150,9 +146,9 @@ public class Preprocess extends DefaultHandler {
 		if (text != null && !text.isEmpty()) {
 
 			// si la etiqueta es text entonces es el texto de una accion
-			if (actualTag.equals(GrafcetTagsConstants.TEXT_TAG)) {				
-				//step.setAction(step.getAction() + text);
-				action.setText(action.getText()+text);
+			if (actualTag.equals(GrafcetTagsConstants.TEXT_TAG)) {
+				// step.setAction(step.getAction() + text);
+				action.setText(action.getText() + text);
 
 				/*
 				 * Si la etiqueta es condition, puede ser de una transition o de
@@ -163,19 +159,18 @@ public class Preprocess extends DefaultHandler {
 				// si es un paso la condition sera de la accion
 				if (isStep) {
 					/*
-					 * añado la condicion completa, lo q habia + lo nuevo y dejo
-					 * los signos ya los cambiare en la propia transition
+					 * añado la condicion completa, lo q habia + lo nuevo y
+					 * dejo los signos ya los cambiare en la propia transition
 					 */
-					//step.setCondition(step.getCondition() + " " + text);
-					action.setCondition(action.getCondition()+ " " + text);
+					// step.setCondition(step.getCondition() + " " + text);
+					action.setCondition(action.getCondition() + " " + text);
 
 				} else if (isTransition) {
 					/*
-					 * añado la condicion completa, lo q habia + lo nuevo y dejo
-					 * los signos ya los cambiare en la propia transition
+					 * añado la condicion completa, lo q habia + lo nuevo y
+					 * dejo los signos ya los cambiare en la propia transition
 					 */
-					transition.setConditionComp(transition.getConditionComp()
-							+ " " + text);
+					transition.setConditionComp(transition.getConditionComp() + " " + text);
 
 					/*
 					 * la añado en la lista por separados para tener todas las
@@ -204,16 +199,16 @@ public class Preprocess extends DefaultHandler {
 					 * Si es de un step puede ser tanto de una condicion de la
 					 * accion o de la propia accion
 					 */
-					//step.setCondition(step.getCondition() + "(NOT (" + text+ "))");
-					action.setCondition(action.getCondition() + "(NOT (" + text+ "))");
+					// step.setCondition(step.getCondition() + "(NOT (" + text+
+					// "))");
+					action.setCondition(action.getCondition() + "(NOT (" + text + "))");
 
 				} else if (isTransition) {
 					/*
-					 * añado la condicion completa, lo q habia + lo nuevo y dejo
-					 * los signos ya los cambiare en la propia transition
+					 * añado la condicion completa, lo q habia + lo nuevo y
+					 * dejo los signos ya los cambiare en la propia transition
 					 */
-					transition.setConditionComp(transition.getConditionComp()
-							+ "(NOT (" + text + "))");
+					transition.setConditionComp(transition.getConditionComp() + "(NOT (" + text + "))");
 
 					/*
 					 * la añado en la lista por separados para tener todas las
@@ -252,8 +247,7 @@ public class Preprocess extends DefaultHandler {
 
 				} else if (isTransition) {
 					// si esta dentro de una transition
-					transition.setConditionComp(transition.getConditionComp()
-							+ " (RE " + text + ")");
+					transition.setConditionComp(transition.getConditionComp() + " (RE " + text + ")");
 					transition.addListConditionSep(text);
 				}
 			} else if (actualTag.equals(GrafcetTagsConstants.FE_TAG)) {
@@ -275,8 +269,7 @@ public class Preprocess extends DefaultHandler {
 
 				} else if (isTransition) {
 					// si esta dentro de una transition
-					transition.setConditionComp(transition.getConditionComp()
-							+ " (FE " + text + ")");
+					transition.setConditionComp(transition.getConditionComp() + " (FE " + text + ")");
 					transition.addListConditionSep(text);
 				}
 			}
@@ -284,7 +277,7 @@ public class Preprocess extends DefaultHandler {
 
 	}
 
-	/**Cuando detecta un fin de etiqueta*/
+	/** Cuando detecta un fin de etiqueta */
 	public void endElement(String uri, String localName, String name) throws SAXException {
 		actualTag = localName;
 		// Si la etiqueta es sequence guardo el id de la etiqueta sequence
@@ -292,55 +285,56 @@ public class Preprocess extends DefaultHandler {
 
 		if (actualTag.equals(GrafcetTagsConstants.SEQUENCE_TAG)) {// Sequence
 			// añado la secuencia al grafcet
-			grafcet.addSeq(sequence,actualSequence);
-			actualSequence=0;
-			
-		}else if (actualTag.equals(GrafcetTagsConstants.ACTION_TAG)) { // Action
+			grafcet.addSeq(sequence, actualSequence);
+			actualSequence = 0;
+
+		} else if (actualTag.equals(GrafcetTagsConstants.ACTION_TAG)) { // Action
 			// añado la accion al step
 			step.addAction(action);
-			
-		}else if (actualTag.equals(GrafcetTagsConstants.STEP_TAG)) {// Step
+
+		} else if (actualTag.equals(GrafcetTagsConstants.STEP_TAG)) {// Step
 			// añado el step a la secuencia
 			sequence.addTorS(step);
 			isStep = false;
-			
+
 		} else if (actualTag.equals(GrafcetTagsConstants.TRANSITION_TAG)) { // Transition
 			// añado la transicion a la secuencia
 			sequence.addTorS(transition);
 			isTransition = false;
-			
-		}else if (actualTag.equals(GrafcetTagsConstants.HLINK_TAG)) { // hlink
+
+		} else if (actualTag.equals(GrafcetTagsConstants.HLINK_TAG)) { // hlink
 			// añado el camino al grafcet
 			grafcet.addRoad(road);
-			
-		}else if (actualTag.equals(GrafcetTagsConstants.JUMP_TAG)) { // jump
+
+		} else if (actualTag.equals(GrafcetTagsConstants.JUMP_TAG)) { // jump
 			// añado el salto al grafcet
 			grafcet.addJump(jump);
-			
-		}else if (actualTag.equals(GrafcetTagsConstants.GRAFCET_TAG)) { // Grafcet
+
+		} else if (actualTag.equals(GrafcetTagsConstants.GRAFCET_TAG)) { // Grafcet
 			// añado el grafcet al proyecto
-			Project.getProject().addGragcet(grafcet);
-			
-		}else if (actualTag.equals(GrafcetTagsConstants.PROJECT_TAG)) {// project
+			Project.getProject().addGrafcet(grafcet);
+
+		} else if (actualTag.equals(GrafcetTagsConstants.PROJECT_TAG)) {// project
 			// añado el lenguaje y el nombre del proyecto
 			Project.getProject().addLanguage(language);
 			Project.getProject().addName(nameProject);
 			Project.getProject().addProgram(compatibility);
-						
-			//Genero las salidas dependiendo del software de compatibilidad
-			try {
+
+			// Genero las salidas dependiendo del software de compatibilidad
+			try {//TODO ESTO DESAPARECE SE LE LLEMARA DESDE LA INTERFACE A LO QUE ESTA DENTRO DEL TRY
 				Project.getProject().printProject();
 				Project.getProject().print();
-				//Project.getProject().print(compatibility);
-				//Output.getSalida().exportarFicheroVG(Project.getProject().printVarGlobal(), nameProject);
+				// Project.getProject().print(compatibility);
+				// Output.getSalida().exportarFicheroVG(Project.getProject().printVarGlobal(),
+				// nameProject);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			
+
 		}
 	}
-	
-	/**Guarda cada atributo en su correspondiente clase*/
+
+	/** Guarda cada atributo en su correspondiente clase */
 	private void processingAttributes(String pNameAtt, String pAtt) {
 
 		if (actualTag.equals(GrafcetTagsConstants.GRAFCET_TAG)) {// Grafcet
@@ -348,10 +342,10 @@ public class Preprocess extends DefaultHandler {
 			if (pNameAtt.equals("type")) {
 				grafcet.setType(pAtt);
 			} else if (pNameAtt.equals("name")) {
-				/*Para añadir expresiones regulares*/
+				/* Para añadir expresiones regulares */
 				Pattern pat = Pattern.compile("^GEmergencia.*|^GEmergency.*");
 				Matcher mat = pat.matcher(pAtt);
-				if(mat.matches()){	
+				if (mat.matches()) {
 					grafcet.setEmergency(true);
 				}
 				grafcet.setName(pAtt);
@@ -360,12 +354,12 @@ public class Preprocess extends DefaultHandler {
 			} else if (pNameAtt.equals("owner")) {
 				grafcet.setOwner(pAtt);
 			}
-			
+
 		} else if (actualTag.equals(GrafcetTagsConstants.SEQUENCE_TAG)) {// Sequence
 			// añado el id
-			actualSequence=Integer.parseInt(pAtt);
+			actualSequence = Integer.parseInt(pAtt);
 			sequence.setIdSeq(Integer.parseInt(pAtt));
-			
+
 		} else if (actualTag.equals(GrafcetTagsConstants.STEP_TAG)) {// Step
 			// añado tipo y nombre
 			if (pNameAtt.equals("type")) {
@@ -373,11 +367,11 @@ public class Preprocess extends DefaultHandler {
 			} else if (pNameAtt.equals("name")) {
 				step.setName(pAtt);
 			}
-			
+
 		} else if (actualTag.equals(GrafcetTagsConstants.ACTION_TAG)) {// action
 			// añado el tipo
 			action.setType(pAtt);
-			
+
 		} else if (actualTag.equals(GrafcetTagsConstants.HLINK_TAG)) {// hlink
 			// Si hay una convergencia o divergencia estara en la etiketa hlink,
 			// guardaremos si es diver o conver
@@ -387,16 +381,17 @@ public class Preprocess extends DefaultHandler {
 			} else if (pNameAtt.equals("type")) {
 				road.setType(pAtt);
 			}
-			
+
 		} else if (actualTag.equals(GrafcetTagsConstants.NODE_TAG)) { // node
 			// guardo las dos secuencias de las q viene o va en el road
-			/*if (road.getSeqOne() == 0) {
-				road.setSeqOne(Integer.parseInt(pAtt));
-			} else if (road.getSeqTwo() == 0) {
-				road.setSeqTwo(Integer.parseInt(pAtt));
-			}*/
+			/*
+			 * if (road.getSeqOne() == 0) {
+			 * road.setSeqOne(Integer.parseInt(pAtt)); } else if
+			 * (road.getSeqTwo() == 0) { road.setSeqTwo(Integer.parseInt(pAtt));
+			 * }
+			 */
 			road.addSequences(Integer.parseInt(pAtt));
-			
+
 		} else if (actualTag.equals(GrafcetTagsConstants.JUMP_TAG)) {// jump
 			// añado desde y a donde
 			if (pNameAtt.equals("seqid_from")) {
@@ -406,8 +401,8 @@ public class Preprocess extends DefaultHandler {
 			}
 		}
 	}
-	
-	/**Quita el signo a el testo pasado y devuelve una lista*/
+
+	/** Quita el signo a el testo pasado y devuelve una lista */
 	private LinkedList<String> removeSigns(String t) {
 
 		LinkedList<String> aux = new LinkedList<String>();
@@ -417,45 +412,49 @@ public class Preprocess extends DefaultHandler {
 		text = t.trim();
 
 		while (itr) {
-			
+
 			if (text.indexOf("+") == (-1) || text.indexOf("*") == (-1)) {
-				
+
 				itr = false;
 				aux.add(text);
-				
+
 			} else {
-				
+
 				// si es un signo mas coloco en poss la posicion donde esta
 				if (text.indexOf("+") != (-1)) {
 					posS = text.indexOf("+");
-					
+
 					// si es un signo por coloco en poss la posicion donde esta
 				} else if (text.indexOf("*") != (-1)) {
 					posS = text.indexOf("*");
 				}
-				
-				/*Añado el texto desde la posicion 0 a la del signo ya q esta
-				  no se incluye*/
+
+				/*
+				 * Añado el texto desde la posicion 0 a la del signo ya q esta
+				 * no se incluye
+				 */
 				aux.add(text.substring(0, posS));
-				
-				/*Dejo en text el resto del string para seguirlo tratando*/
+
+				/* Dejo en text el resto del string para seguirlo tratando */
 				text = text.substring(posS + 1, text.length() + 1);
 			}
 		}
 
 		return aux;
 	}
-	
-	/**Añade el comentario donde le corresponde, 
-	 * ya que puede ser de una transicion o de un paso*/
-	private void addComent(String comm){
-		
-		/*Un comentario puede ser tanto de un paso como de una transicion*/
-		if(isStep){
+
+	/**
+	 * Añade el comentario donde le corresponde, ya que puede ser de una
+	 * transicion o de un paso
+	 */
+	private void addComent(String comm) {
+
+		/* Un comentario puede ser tanto de un paso como de una transicion */
+		if (isStep) {
 			// comentario de una accion que esta en step
 			step.setComment(step.getComment() + " " + comm);
-			
-		}else if(isTransition){
+
+		} else if (isTransition) {
 			// comentario de una transicion
 			transition.setComment(transition.getComment() + " " + comm);
 		}

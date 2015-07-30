@@ -11,6 +11,8 @@ import com.hpaz.translator.output.Output;
 
 public class Project {
 	
+	//TODO Crear en project funciones de getVariables y setVariables
+	
 	/**Nombre del fichero que se ha importado, sin extension*/
 	private String name;
 	
@@ -86,7 +88,7 @@ public class Project {
 		return listG;
 	}
 
-	public void addGragcet(Grafcet g) {
+	public void addGrafcet(Grafcet g) {
 		this.listG.add(g);
 	}
 

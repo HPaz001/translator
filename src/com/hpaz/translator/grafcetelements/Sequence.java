@@ -90,7 +90,6 @@ public class Sequence {
 	}
 	/**Devuelve un listado con los set y reset correspondientes a cada objeto de la secuencia*/
 	public LinkedList<String> getSetReset() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 	public void printSequence(){
