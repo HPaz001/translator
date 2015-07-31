@@ -1,9 +1,6 @@
 package com.hpaz.translator.output;
 
 import java.util.LinkedList;
-import java.util.Map;
-
-import com.hpaz.translator.grafcetelements.Project;
 
 public class PostProcess {
 	

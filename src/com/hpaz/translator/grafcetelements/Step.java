@@ -3,11 +3,8 @@ package com.hpaz.translator.grafcetelements;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import com.hpaz.translator.grafcetelements.constants.GrafcetTagsConstants;
-import com.hpaz.translator.output.PostProcess;
+
 
 public class Step {
 	
@@ -154,13 +151,19 @@ public class Step {
 	
 	/**Rellena las variablas de stoy y start emergencia*/
 	public void getEmergency(){
+		/*Por cada accion del step*/
 		for (Action action : myActions) {
+			/*Si el tipò de accion es de forcing order*/
 			if (action.getType().equals(GrafcetTagsConstants.ACTION_FORCING_ORDER)){
-				action.getEmergency();
-				if(action.getEmergency().equalsIgnoreCase("stop")){
+				/*Llamo al get emergencia de la accion para rellenar los datos 
+				 * de la emergencia en caso de que lo sea*/
+				String aux = action.getEmergency();
+				/*Si es una emergencia tendre que saber de que tipo es
+				 * para rellenar las variables correspondientes*/
+				if(aux.equalsIgnoreCase("stop")){
 					setStopEmergency(true);
 					setGrafcetsStopEmergency(action.getStopEmergency());
-				}else if(action.getEmergency().equalsIgnoreCase("start")){
+				}else if(aux.equalsIgnoreCase("start")){
 					setStartEmergency(true);
 					setGrafcetsStartEmergency(action.getStartEmergency());
 				}

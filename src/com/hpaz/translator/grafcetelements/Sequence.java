@@ -132,15 +132,17 @@ public class Sequence {
 		return actionStepMap;	
 	}
 	public void getEmergency(){
+		/*Por cada step de la secuencia*/
 		for (int i = 0; i < getList().size(); i++) {
 			Object step = getList().get(i);
 			if(step instanceof Step){
+				/*llamo a get emergency del step para que rellene los 
+				 * datos correspondientes en caso de que sea un step de emergencia*/
+				((Step) step).getEmergency();
 				//si es una etapa de emergencia guardo en el tipo la etapa
 				if(((Step) step).isStartEmergency()){
-					((Step) step).getEmergency();
 					setStepStartEmergency(i);
 				}else if(((Step) step).isStopEmergency()){
-					((Step) step).getEmergency();
 					setStepStopEmergency(i);
 				}
 			}

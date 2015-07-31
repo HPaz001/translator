@@ -29,13 +29,29 @@ PROGRAM MAIN
 	XReset:=RESET;
 
 
+	InitMovil:=X35;
+	ResetMovil:=X33;
+	Movil(Init:=(XInit OR InitMovil), Reset:=(XReset OR ResetMovil));
+
+	InitCondIniciales:=X35;
+	ResetCondIniciales:=X33;
+	CondIniciales(Init:=(XInit OR InitCondIniciales), Reset:=(XReset OR ResetCondIniciales));
+
+	InitSecPrincipal:=X35;
+	ResetSecPrincipal:=X33;
+	SecPrincipal(Init:=(XInit OR InitSecPrincipal), Reset:=(XReset OR ResetSecPrincipal));
+
+	Emergencia(Init:=(XInit OR InitEmergencia), Reset:=(ResetEmergencia));
+
 
 	SolCondIni:=X1;
 	CDerecha:=X21;
-	CIzquierda:=X12 OR X23 OR (X31 AND (NOT (F0)));
+	CIzquierda:=X12 OR X23;
 	Inicio:=X0;
 	ProdNormal:=X2;
 	FinCondIni:=X13;
+	F/GSecPrincipal>{},F/GCondIniciales>{}, F/GMovil>{}:=X33;
+	F/GSecPrincipal>{X0},F/GCondIniciales>{X10}, F/GMovil>{X20}:=X35;
 	Temp=2seg:=X22 OR X24;
 	ParoFC:=X3;
 

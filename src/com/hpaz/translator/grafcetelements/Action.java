@@ -19,6 +19,8 @@ public class Action {
 		this.text="";
 		this.condition="";
 		this.comment="";
+		this.startEmergency=new LinkedList<String>();
+		this.stopEmergency=new LinkedList<String>();
 	}
 	
 	public String getType() {
@@ -65,27 +67,23 @@ public class Action {
 	 * Devuelve stop o start*/
 	public String getEmergency() {
 		String s="";
-		if(getType().equalsIgnoreCase((String) GrafcetTagsConstants.ACTION_FORCING_ORDER)){
-			/*Para añadir expresiones regulares*/
-			/*Emergencia forzado a stop*/
-			Pattern pat = Pattern.compile("^F/G.*.>\\{\\}$");
-			Matcher mat = pat.matcher(getText());
-			
+		/*Uso expresiones regulares*/
+		/*Emergencia forzado a stop*/
+		Pattern pat = Pattern.compile("^F/G.*.>\\{\\}$");
+		Matcher mat = pat.matcher(getText());
+		if(mat.matches()){
+			s= "stop";
+			generateListEmergency(getText(),s);
+		}else{
 			/*Emergencia forzado a start*/
-			Pattern pat1 = Pattern.compile("^F/G.*.>\\{.*.\\}$");
+			Pattern pat1 = Pattern.compile("^F/G.*.>\\{X.[0-9]\\}$");
 			Matcher mat1 = pat1.matcher(getText());
-		
-			if(mat.matches()){
-				s= "stop";
+			if(mat1.matches()){
+				s= "start";	
 				generateListEmergency(getText(),s);
-			}else{
-				if(mat1.matches()){
-					s= "start";	
-					generateListEmergency(getText(),s);
-				}
-				
 			}
 		}
+		
 		return s;
 	}
 	

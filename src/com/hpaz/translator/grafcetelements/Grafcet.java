@@ -1,10 +1,9 @@
 package com.hpaz.translator.grafcetelements;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 
 public class Grafcet {
@@ -392,21 +391,26 @@ public class Grafcet {
 		
 		for (Sequence s : getListS()) {
 			
-			if(s.getStepStartEmergency() != -1 && s.getStepStopEmergency() != -1){
-				
-				s.getEmergency();
-				
-				Step stepStop = (Step) s.getList().get(s.getStepStopEmergency());
-				setStepStopEmergency(stepStop.getName());
-				setListEmergencyStop(stepStop.getGrafcetsStopEmergency());
-				
+			s.getEmergency();
+			
+			if(s.getStepStartEmergency() != -1){		
 				Step stepStart = (Step) s.getList().get(s.getStepStartEmergency());
 				setStepStartEmergency(stepStart.getName());
 				setListEmergencyStart(stepStart.getGrafcetsStartEmergency());
-			
+				
+			}	else if(s.getStepStopEmergency() != -1){
+				Step stepStop = (Step) s.getList().get(s.getStepStopEmergency());
+				setStepStopEmergency(stepStop.getName());
+				setListEmergencyStop(stepStop.getGrafcetsStopEmergency());
 			}
+			
 		}
 		
+	}
+	public boolean compareStartAndStopLists() {
+		Collections.sort(this.listEmergencyStop);
+	    Collections.sort(this.listEmergencyStart);      
+	    return getListEmergencyStart().equals(getListEmergencyStop());
 	}
 	
 }

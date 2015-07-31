@@ -1,7 +1,5 @@
 package com.hpaz.translator.grafcetelements;
 
-
-import java.awt.SystemColor;
 import java.util.LinkedList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -56,7 +54,7 @@ public class Transition {
 		
 		return aux;
 	}
-	/**Este metodo cambia los simbolos + o * del texto por AND y OR */
+	/**Este metodo cambia los simbolos + o * del texto por AND y OR 
 	private String changeSigns(String text) {
 
 		if (text.indexOf("+") != -1) {
@@ -68,7 +66,7 @@ public class Transition {
 
 		return text;
 
-	}
+	}*/
 	public void printTransition(){
 		analyzeReviews();
 		System.out.println("----- TRANSITION ------");

@@ -1,10 +1,8 @@
 package com.hpaz.translator.grafcetelements;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
-import java.util.regex.Pattern;
 
 import com.hpaz.translator.grafcetelements.constants.GrafcetTagsConstants;
 import com.hpaz.translator.output.Output;
@@ -23,10 +21,10 @@ public class Project {
 		SFC --> Grafico de funciones secuenciales.*/
 	private String language;
 	
-	/**Para saber las etepas de la emergencia*/
+	/**Para saber las etepas de la emergencia
 	private String stepStopEmergency;
 	private String StepStartEmergency;
-	private String nameGrafcetEmergency;
+	private String nameGrafcetEmergency;*/
 	
 	/** PL -> PLC TSX Micro (PL7Pro), T -> PLC Beckhoff (TwinCAT), PC -> PLCOpen */
 	private String program;
@@ -34,9 +32,9 @@ public class Project {
 	private LinkedList<Grafcet> listG;
 	
 
-	/**Lista de grafcets que se fuerzan en la emergencia*/	
+	/**Lista de grafcets que se fuerzan en la emergencia	
 	private LinkedList<String> listEmergencyStop;
-	private LinkedList<String> listEmergencyStart;
+	private LinkedList<String> listEmergencyStart;*/
 
 	private static Project project = new Project();
 
@@ -44,12 +42,14 @@ public class Project {
 		this.name = null;
 		this.language = null;
 		this.program = null;
+		this.listG = new LinkedList<Grafcet>();
+		/*
 		this.stepStopEmergency=null;
 		this.StepStartEmergency=null;
 		this.nameGrafcetEmergency=null;
-		this.listG = new LinkedList<Grafcet>();
+		
 		this.listEmergencyStart=new LinkedList<String>();
-		this.listEmergencyStop=new LinkedList<String>();
+		this.listEmergencyStop=new LinkedList<String>();*/
 
 	}
 
@@ -119,7 +119,7 @@ public class Project {
 
 	/** Este metodo devuelve */
 	public void print() {
-		
+		generateEmergencyData();
 		if (program.equalsIgnoreCase(GrafcetTagsConstants.PROGRAM_OPT1)) { // Twincat		
 			try {
 				
@@ -149,16 +149,17 @@ public class Project {
 	 * @return
 	 */
 	private LinkedList<String> generarProgramMain() {
-		//LinkedList<String> listaProgramMain = new LinkedList<String>();
+		
 		LinkedList<String> aux = new LinkedList<String>();
 		LinkedList<String> listEmergency = new LinkedList<String>();
 		
 		Map<String, String> actionStepMap = new HashMap<String, String>();
-
+		String gName;
 		
 		for (Grafcet grafcet : listG) {
 			//guardo solo el nombre del grafcet q sera Gxxxxxxxxx
-			aux.add(grafcet.getName());
+			gName=grafcet.getName();
+			aux.add(gName);
 					
 			//en este hashMap voy guardando las acciones
 			Map<String, String> auxMap = grafcet.getActionStepMap();
@@ -172,32 +173,80 @@ public class Project {
 		
 			//si el grafcet es el de emergencia relleno la lista de emergencia
 			if(grafcet.isEmergency()){
-					/*for (String emerg : getListEmergencyStart()) {
-						System.err.println("EN LA EMERGENCIA --> "+emerg);
-						listEmergency.add("\n\tInit"+emerg+":="+grafcet.getStepStartEmergency()+";\n");
-						listEmergency.add("\tReset"+emerg+":="+grafcet.getStepStopEmergency()+";\n");
-						listEmergency.add("\t"+emerg+"(Init:=(XInit OR Init"+emerg+"), Reset:=(XReset OR Reset"+emerg+"));\n");
-					}
-					En el de Emergencia
-					Emergencia(Init:=(XInit OR IntitEmergencia) , Reset:=ResetEmergencia );
-					String gEmergency=grafcet.getName().substring(1, grafcet.getName().length());
-					listEmergency.add("\t"+gEmergency+"(Init:=(XInit OR Init"+gEmergency+"), Reset:=(Reset"+gEmergency+"));\n");*/
-					setNameGrafcetEmergency(grafcet.getName().substring(1, grafcet.getName().length()));
-					setStepStartEmergency(grafcet.getStepStartEmergency());
-					setStepStopEmergency(grafcet.getStepStopEmergency());
+				String stepStop = grafcet.getStepStopEmergency();
+				String stepStart =grafcet.getStepStartEmergency();
+				boolean bol = false;
+				if(grafcet.compareStartAndStopLists()){
+					bol=true;
+				}
+				listEmergency.addAll(generateListEmergency(grafcet.getListEmergencyStart(),grafcet.getListEmergencyStop(),bol,stepStop,stepStart));
+				
+				/*//Emergencia(Init:=(XInit OR IntitEmergencia) , Reset:=ResetEmergencia );*/
+				String gEmergency=gName.substring(1, gName.length());
+				listEmergency.add("\n\t"+gEmergency+"(Init:=(XInit OR Init"+gEmergency+"), Reset:=(Reset"+gEmergency+"));\n");
 			}
 		
 		}
 		
-		return getProgramMain(aux,/*listEmergency,*/ actionStepMap);
+		return getProgramMain(aux,listEmergency, actionStepMap);
 				
+	}
+
+	private LinkedList<String> generateListEmergency(LinkedList<String> pListStop, LinkedList<String> pListStart, boolean pEquals, String pStepStop, String pStepStart) {
+		LinkedList<String> aux = new LinkedList<String>();
+		String emerg ="";
+			//quiere decir que las listas de stop y start son iguales
+			if(pEquals){
+				for (String e : pListStop) {
+					emerg=e.trim();
+					System.err.println("EN LA EMERGENCIA --> "+emerg);
+					aux.add("\n\tInit"+emerg.trim()+":="+pStepStart+";\n");
+					aux.add("\tReset"+emerg+":="+pStepStop+";\n");
+					aux.add("\t"+emerg+"(Init:=(XInit OR Init"+emerg+"), Reset:=(XReset OR Reset"+emerg+"));\n");
+				}
+			}else{
+				/*Si no son iguales comparo a ver cual es la mas grande*/
+				if(pListStop.size()>pListStart.size()){
+					for (String e : pListStop) {
+						//Por cada elemento d la lista miro si este se encuentra en la otra lista
+						if(pListStart.contains(e)){
+							emerg=e.trim();
+							aux.add("\n\tInit"+emerg+":="+pStepStart+";\n");
+							aux.add("\tReset"+emerg+":="+pStepStop+";\n");
+							aux.add("\t"+emerg+"(Init:=(XInit OR Init"+emerg+"), Reset:=(XReset OR Reset"+emerg+"));\n");
+						}else{
+							emerg=e.trim();
+							//aux.add("\n\tInit"+emerg+":="+pStepStart+";\n");
+							aux.add("\tReset"+emerg+":="+pStepStop+";\n");
+							aux.add("\t"+emerg+"(Init:=(XInit), Reset:=(XReset OR Reset"+emerg+"));\n");
+						}
+					}
+				}else{
+					for (String e : pListStart) {
+						//Por cada elemento d la lista miro si este se encuentra en la otra lista
+						if(pListStop.contains(e)){
+							emerg=e.trim();
+							aux.add("\n\tInit"+emerg+":="+pStepStart+";\n");
+							aux.add("\tReset"+emerg+":="+pStepStop+";\n");
+							aux.add("\t"+emerg+"(Init:=(XInit OR Init"+emerg+"), Reset:=(XReset OR Reset"+emerg+"));\n");
+						}else{
+							emerg=e.trim();
+							aux.add("\n\tInit"+emerg+":="+pStepStart+";\n");
+							//aux.add("\tReset"+emerg+":="+pStepStop+";\n");
+							aux.add("\t"+emerg+"(Init:=(XInit OR Init"+emerg+"), Reset:=(XReset));\n");
+						}
+					}
+				}
+			}
+	
+		return aux;
 	}
 
 	/**Este metodo se encargara de obtener la parte combinacional correspondientes a TwinCAT
 	 * Pre:
 	 * Post: devolvera una lista de String*/
-	private LinkedList<String> getProgramMain(LinkedList<String> pNames,/*LinkedList<String> pEmergency,*/ Map<String, String> pInit){
-		//PROGRAMAR 
+	private LinkedList<String> getProgramMain(LinkedList<String> pNames,LinkedList<String> pEmergency, Map<String, String> pInit){
+	
 		LinkedList<String> listaProgramMain = new LinkedList<String>();
 		
 		listaProgramMain.add("PROGRAM MAIN\n\n\tVAR\n");
@@ -222,20 +271,9 @@ public class Project {
 		/*Aqui deberian estar las señales de entrada y salida q se preguntaran al usuario*/
 		
 		
-		/*Añado la lista de emergencia*/
-		//listaProgramMain.addAll(pEmergency);
-		/*Si la lista de stop y start son iguales*/
-		if(compareStartAndStopLists()){
-			for (String emerg : getListEmergencyStart()) {
-				System.err.println("EN LA EMERGENCIA --> "+emerg);
-				listaProgramMain.add("\n\tInit"+emerg+":="+getStepStartEmergency()+";\n");
-				listaProgramMain.add("\tReset"+emerg+":="+getStepStopEmergency()+";\n");
-				listaProgramMain.add("\t"+emerg+"(Init:=(XInit OR Init"+emerg+"), Reset:=(XReset OR Reset"+emerg+"));\n");
-			}
-			/*En el de Emergencia
-			Emergencia(Init:=(XInit OR IntitEmergencia) , Reset:=ResetEmergencia );*/
-			listaProgramMain.add("\t"+getNameGrafcetEmergency()+"(Init:=(XInit OR Init"+getNameGrafcetEmergency()+"), Reset:=(Reset"+getNameGrafcetEmergency()+"));\n");
-		}
+		/*Anado la lista de emergencia*/
+		listaProgramMain.addAll(pEmergency);
+
 		
 		
 		listaProgramMain.add("\n\n");
@@ -273,52 +311,6 @@ public class Project {
 		}
 			
 	    return listwithoutduplicates;
-	}
-
-	public LinkedList<String> getListEmergencyStop() {
-		return listEmergencyStop;
-	}
-
-	public void addListEmergencyStop(LinkedList<String> listEmergencyStop) {
-		this.listEmergencyStop.addAll(listEmergencyStop);
-	}
-
-	public LinkedList<String> getListEmergencyStart() {
-		return listEmergencyStart;
-	}
-
-	public void addListEmergencyStart(LinkedList<String> listEmergencyStart) {
-		this.listEmergencyStart.addAll(listEmergencyStart);
-	}
-	
-	private boolean compareStartAndStopLists() {
-		Collections.sort(listEmergencyStop);
-	    Collections.sort(listEmergencyStart);      
-	    return listEmergencyStart.equals(listEmergencyStop);
-	}
-
-	public String getStepStopEmergency() {
-		return stepStopEmergency;
-	}
-
-	public void setStepStopEmergency(String stepStopEmergency) {
-		this.stepStopEmergency = stepStopEmergency;
-	}
-
-	public String getStepStartEmergency() {
-		return StepStartEmergency;
-	}
-
-	public void setStepStartEmergency(String stepStartEmergency) {
-		StepStartEmergency = stepStartEmergency;
-	}
-
-	public String getNameGrafcetEmergency() {
-		return nameGrafcetEmergency;
-	}
-
-	public void setNameGrafcetEmergency(String nameGrafcetEmergency) {
-		this.nameGrafcetEmergency = nameGrafcetEmergency;
 	}
 	
 	public void generateEmergencyData() {
