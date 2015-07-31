@@ -40,6 +40,16 @@ public class Sequence {
 	}
 	/**puede ser una transition o un step*/
 	public void addTorS(Object pTorS) {
+		if (pTorS instanceof Transition){
+			signals.addAll(((Transition) pTorS).getConditionSep());
+		}else if(pTorS instanceof Step){
+			for (Action action : ((Step) pTorS).getMyActions()) {
+				String act = action.getText();
+				if(!act.equals("") && !action.isEmergency()){
+					signals.add(action.getText());
+				}
+			}		
+		}
 		this.list.add(pTorS);
 	}
 	
@@ -69,25 +79,50 @@ public class Sequence {
 	}
 	
 	public LinkedList<String> printSeqVG(){
-		LinkedList<String> textAux= new LinkedList<String>();
+		LinkedList<String> auxSignals = new LinkedList<String>();
+		LinkedList<String> auxStages= new LinkedList<String>();
+		auxSignals.add("\n\t(*---Señales---*)\n\n");
 		for (Object st : list) {/*puede ser una transition o un step*/
 			if (st instanceof Transition){
-				signals.addAll(((Transition) st).printTransVG());
+				//signals.addAll(((Transition) st).printTransVG());
+				auxSignals.addAll(((Transition) st).printTransVG());
+				
 			}else if(st instanceof Step){
-				textAux.add(((Step) st).printStepVG());
+				auxStages.add(((Step) st).printStepVG());
 				for (Action action : ((Step) st).getMyActions()) {
 					String act = action.getText();
 					if(!act.equals("")){
-						signals.add("\t"+action.getText()+"\t: BOOL;\n");
+						//signals.add("\t"+action.getText()+"\t: BOOL;\n");
+						auxSignals.add("\t"+action.getText()+"\t: BOOL;\n");
 					}
 				}
 				
 				
 			}
 		}
-		return textAux;
+		
+		//esto lo hago para que queden primero las señales y despues las etapas
+		auxSignals.addAll(auxStages);
+		
+		return auxStages;
 		
 	}
+	
+	/*public LinkedList<String> generateListSignals(){
+		for (Object st : list) {/*puede ser una transition o un step
+			if (st instanceof Transition){
+				signals.addAll(((Transition) st).getConditionSep());
+			}else if(st instanceof Step){
+				for (Action action : ((Step) st).getMyActions()) {
+					String act = action.getText();
+					if(!act.equals("")){
+						signals.add(action.getText());
+					}
+				}		
+			}
+		}
+		return signals;
+	}*/
 	/**Devuelve un listado con los set y reset correspondientes a cada objeto de la secuencia*/
 	public LinkedList<String> getSetReset() {
 		return null;
@@ -138,7 +173,7 @@ public class Sequence {
 			if(step instanceof Step){
 				/*llamo a get emergency del step para que rellene los 
 				 * datos correspondientes en caso de que sea un step de emergencia*/
-				((Step) step).getEmergency();
+				//((Step) step).getEmergency();
 				//si es una etapa de emergencia guardo en el tipo la etapa
 				if(((Step) step).isStartEmergency()){
 					setStepStartEmergency(i);

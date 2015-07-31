@@ -13,6 +13,8 @@ public class Grafcet {
 	private String comment;
 	private String owner; // propietario
 	
+	
+	
 	/*Variables que se usararn solo si el grafcet es de emergencia*/
 	private boolean emergency;
 	/**Para saber las etepas de la emergencia*/
@@ -21,8 +23,8 @@ public class Grafcet {
 	/**Lista de grafcets que se fuerzan en la emergencia*/	
 	private LinkedList<String> listEmergencyStop;
 	private LinkedList<String> listEmergencyStart;
-
-	
+	/*Lista de señales del grafcet*/
+	private LinkedList<String> signalsGrafcet; 
 	
 	private LinkedList<Jump> listJ;
 	private LinkedList<Sequence> listS;
@@ -40,7 +42,8 @@ public class Grafcet {
 		this.setEmergency(false);
 		this.listJ = new LinkedList<Jump>();
 		this.listS= new LinkedList<Sequence>();
-		this.listR = new LinkedList<Road>();	
+		this.listR = new LinkedList<Road>();
+		this.signalsGrafcet = new LinkedList<String>();
 	}
 	
 	public String getType() {
@@ -76,12 +79,14 @@ public class Grafcet {
 	public LinkedList<Sequence> getListS() {
 		return listS;
 	}
-	/**Recibe la secuencia y el numero de secuecia
-	 * rellenara la lista de seccuencias 
+	/**Recibe la secuencia y el numero rellenara la lista de seccuencias 
 	 * la posicion de la lista sera el numero de secuencia -1 */
 	public void addSeq(Sequence pS,int pIndex) {
 		/*la posicion de la lista sera el numero de secuencia -1 */
 		this.listS.add(pIndex-1, pS);
+		/*al añadir la secuencial al grafcet obntengo su lista de señales
+		 *  para añadirla a la lista de señales del grafcet*/
+		this.signalsGrafcet.addAll(pS.getSignals());
 	}
 	public LinkedList<Road> getListR() {
 		return listR;
@@ -143,9 +148,14 @@ public class Grafcet {
 	}
 	public LinkedList<String> grafcetVarGlobalSignals() {
 		LinkedList<String> vG = new LinkedList<String>();
-		for (Sequence s : listS) {
-			vG.addAll(s.getSignals());
-		}
+		//for (Sequence s : listS) {
+		
+			for (String signal : this.signalsGrafcet) {
+				vG.add("\t"+signal+"\t: BOOL;\n");
+			}
+		//	"\t"+action.getText()+"\t: BOOL;\n"
+			//vG.addAll(s.getSignals());
+		
 		return vG;
 	}
 	//genera un listado con los set y reset listos para exportar
@@ -231,7 +241,7 @@ public class Grafcet {
 			Transition t = (Transition) s.getList().get(sizeTrans);
 			Step step = (Step) s.getList().get(sizeStep);
 			/*Se guardara la ultima transision y etapa de la seq(fromSeq) en la seq(toSeq)*/
-			listS.get(j.getToSeq()).addPreviousSeq("("+step.getName()+" AND "+t.getConditionComp()+")");
+			listS.get(j.getToSeq()).addPreviousSeq("("+step.getName()+" AND "+t.getCondition()+")");
 		}
 		/*Por cada camino que tengamos*/
 		for (Road r : listR) {
@@ -262,7 +272,7 @@ public class Grafcet {
 					Transition t = (Transition) sIni.getList().get(sizeTrans);
 					int sizeStep = sIni.getList().size()-2;
 					Step step = (Step) sIni.getList().get(sizeStep);
-					listS.get(sR).addPreviousSeq("("+step.getName()+" AND "+t.getConditionComp()+")");
+					listS.get(sR).addPreviousSeq("("+step.getName()+" AND "+t.getCondition()+")");
 					
 					/*Guardar en la secuencia(r.SeqIni) la primera etapa de la secuencia(sR) */
 					Step step0 = (Step) sSR.getList().get(0);
@@ -279,7 +289,7 @@ public class Grafcet {
 					/*Guardar en la secuencia(r.SeqIni) la ultima transicion de secuencia(sR) */
 					int sizeTrans = sSR.getList().size()-1;				
 					Transition t = (Transition) sIni.getList().get(sizeTrans);
-					listS.get(r.getSeqIni()).addPreviousSeq(t.getConditionComp());
+					listS.get(r.getSeqIni()).addPreviousSeq(t.getCondition());
 					
 					
 					
@@ -332,11 +342,11 @@ public class Grafcet {
 					}else if (i==1){
 						Step sAux= (Step) seq.getList().get(i);
 						Transition tAux= (Transition) seq.getList().get(i-1);
-						aux="("+sAux.getName()+" AND "+tAux.getConditionComp()+")";
+						aux="("+sAux.getName()+" AND "+tAux.getCondition()+")";
 					}else{
 						Step sAux= (Step) seq.getList().get(i-2);
 						Transition tAux= (Transition) seq.getList().get(i-1);
-						aux="("+sAux.getName()+" AND "+tAux.getConditionComp()+")";
+						aux="("+sAux.getName()+" AND "+tAux.getCondition()+")";
 					}
 					/*AÃ±ado el Set a una etapa*/
 					((Step) seq.getList().get(i)).addMySet(aux);
@@ -411,6 +421,12 @@ public class Grafcet {
 		Collections.sort(this.listEmergencyStop);
 	    Collections.sort(this.listEmergencyStart);      
 	    return getListEmergencyStart().equals(getListEmergencyStop());
+	}
+	
+	public LinkedList<String> getListSignalsGrafcet(){
+		/*Esta lista se va rellenando al ir añadiendo 
+		 * una secuencia al grafcet*/
+		return this.signalsGrafcet;
 	}
 	
 }

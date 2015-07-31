@@ -13,6 +13,7 @@ public class Action {
 	private String comment;//comentario de la accion
 	private LinkedList<String> stopEmergency;
 	private LinkedList<String> startEmergency;
+	private boolean emergency;
 	
 	public Action() {
 		this.type="";
@@ -21,6 +22,7 @@ public class Action {
 		this.comment="";
 		this.startEmergency=new LinkedList<String>();
 		this.stopEmergency=new LinkedList<String>();
+		this.emergency=false;
 	}
 	
 	public String getType() {
@@ -53,6 +55,9 @@ public class Action {
 	}
 	public LinkedList<String> getStartEmergency() {
 		return this.startEmergency;
+	}
+	public boolean isEmergency() {
+		return emergency;
 	}
 	
 	public void printAction(){
@@ -92,7 +97,6 @@ public class Action {
 		//Quito los espacios en blanco
 		String  auxText = pText.trim();
 		//Me quedo solo con los nombres de los grafcets
-		
 		auxText = auxText.replaceAll("F/G|>\\{\\}|>\\{X.[0-9]\\}|>\\{X0\\}", "");
 		boolean aux=true;
 		int cont = 0;
@@ -107,11 +111,15 @@ public class Action {
 				aux=false;
 			}
 		}
+		
 		if(pOpc.equals("stop")){
 			this.stopEmergency.addAll(auxtList);
 		}else if(pOpc.equals("start")){
 			this.startEmergency.addAll(auxtList);
 		}
+		//Modifico la boleana
+		this.emergency=true;
+		
 	}
 
 	

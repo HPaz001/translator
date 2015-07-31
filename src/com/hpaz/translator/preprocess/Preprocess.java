@@ -3,11 +3,9 @@ package com.hpaz.translator.preprocess;
 import java.util.LinkedList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
-
 import com.hpaz.translator.grafcetelements.Action;
 import com.hpaz.translator.grafcetelements.Grafcet;
 import com.hpaz.translator.grafcetelements.Jump;
@@ -166,21 +164,22 @@ public class Preprocess extends DefaultHandler {
 					action.setCondition(action.getCondition() + " " + text);
 
 				} else if (isTransition) {
+					transition.addCondition(text);
 					/*
 					 * añado la condicion completa, lo q habia + lo nuevo y
 					 * dejo los signos ya los cambiare en la propia transition
-					 */
+					 
 					transition.setConditionComp(transition.getConditionComp() + " " + text);
-
+						*/
 					/*
 					 * la añado en la lista por separados para tener todas las
 					 * señales por separado
-					 */
+					 
 					if (text.contains("+") || text.contains("*")) {
 						transition.addListConditionSep(removeSigns(text));
 					} else {
 						transition.addListConditionSep(text);
-					}
+					}*/
 				}
 
 			} else if (actualTag.equals(GrafcetTagsConstants.CPL_TAG)) {// cpl
@@ -208,17 +207,17 @@ public class Preprocess extends DefaultHandler {
 					 * añado la condicion completa, lo q habia + lo nuevo y
 					 * dejo los signos ya los cambiare en la propia transition
 					 */
-					transition.setConditionComp(transition.getConditionComp() + "(NOT (" + text + "))");
+					transition.addCondition("(NOT (" + text + "))");
 
 					/*
 					 * la añado en la lista por separados para tener todas las
 					 * señales por separado
-					 */
+					 
 					if (text.contains("+") || text.contains("*")) {
 						transition.addListConditionSep(removeSigns(text));
 					} else {
 						transition.addListConditionSep(text);
-					}
+					}*/
 				}
 
 			} else if (actualTag.equals(GrafcetTagsConstants.COMMENT_TAG)) {// comment
@@ -247,8 +246,8 @@ public class Preprocess extends DefaultHandler {
 
 				} else if (isTransition) {
 					// si esta dentro de una transition
-					transition.setConditionComp(transition.getConditionComp() + " (RE " + text + ")");
-					transition.addListConditionSep(text);
+					transition.addCondition(" (RE " + text + ")");
+					//transition.addListConditionSep(text);
 				}
 			} else if (actualTag.equals(GrafcetTagsConstants.FE_TAG)) {
 				/*
@@ -269,8 +268,8 @@ public class Preprocess extends DefaultHandler {
 
 				} else if (isTransition) {
 					// si esta dentro de una transition
-					transition.setConditionComp(transition.getConditionComp() + " (FE " + text + ")");
-					transition.addListConditionSep(text);
+					transition.addCondition(" (FE " + text + ")");
+					//transition.addListConditionSep(text);
 				}
 			}
 		}
@@ -322,8 +321,10 @@ public class Preprocess extends DefaultHandler {
 
 			// Genero las salidas dependiendo del software de compatibilidad
 			try {//TODO ESTO DESAPARECE SE LE LLEMARA DESDE LA INTERFACE A LO QUE ESTA DENTRO DEL TRY
-				Project.getProject().printProject();
+				//Project.getProject().printProject();
 				Project.getProject().print();
+			
+				Project.getProject().generateSignals();
 				// Project.getProject().print(compatibility);
 				// Output.getSalida().exportarFicheroVG(Project.getProject().printVarGlobal(),
 				// nameProject);
@@ -402,7 +403,7 @@ public class Preprocess extends DefaultHandler {
 		}
 	}
 
-	/** Quita el signo a el testo pasado y devuelve una lista */
+	/** Quita el signo a el testo pasado y devuelve una lista
 	private LinkedList<String> removeSigns(String t) {
 
 		LinkedList<String> aux = new LinkedList<String>();
@@ -432,16 +433,16 @@ public class Preprocess extends DefaultHandler {
 				/*
 				 * Añado el texto desde la posicion 0 a la del signo ya q esta
 				 * no se incluye
-				 */
+				 
 				aux.add(text.substring(0, posS));
 
-				/* Dejo en text el resto del string para seguirlo tratando */
+				/* Dejo en text el resto del string para seguirlo tratando 
 				text = text.substring(posS + 1, text.length() + 1);
 			}
 		}
 
 		return aux;
-	}
+	} */
 
 	/**
 	 * Añade el comentario donde le corresponde, ya que puede ser de una

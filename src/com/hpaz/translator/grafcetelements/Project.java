@@ -21,20 +21,10 @@ public class Project {
 		SFC --> Grafico de funciones secuenciales.*/
 	private String language;
 	
-	/**Para saber las etepas de la emergencia
-	private String stepStopEmergency;
-	private String StepStartEmergency;
-	private String nameGrafcetEmergency;*/
-	
 	/** PL -> PLC TSX Micro (PL7Pro), T -> PLC Beckhoff (TwinCAT), PC -> PLCOpen */
 	private String program;
 	
 	private LinkedList<Grafcet> listG;
-	
-
-	/**Lista de grafcets que se fuerzan en la emergencia	
-	private LinkedList<String> listEmergencyStop;
-	private LinkedList<String> listEmergencyStart;*/
 
 	private static Project project = new Project();
 
@@ -43,14 +33,6 @@ public class Project {
 		this.language = null;
 		this.program = null;
 		this.listG = new LinkedList<Grafcet>();
-		/*
-		this.stepStopEmergency=null;
-		this.StepStartEmergency=null;
-		this.nameGrafcetEmergency=null;
-		
-		this.listEmergencyStart=new LinkedList<String>();
-		this.listEmergencyStop=new LinkedList<String>();*/
-
 	}
 
 	public static Project getProject() {
@@ -98,12 +80,12 @@ public class Project {
 		for (Grafcet g : listG) {
 			vG.addAll(g.grafcetVarGlobalStages());
 		}
-		vG.add("\n\t(*---SeÃ±ales---*)\n\n");
+		vG.add("\n\t(*---Señales---*)\n\n");
 		for (Grafcet g : listG) {
 			vG.addAll(g.grafcetVarGlobalSignals());
 		}
 
-		return vG;
+		return removeDuplicates(vG);
 	}
 
 	public void printProject() {
@@ -199,7 +181,6 @@ public class Project {
 			if(pEquals){
 				for (String e : pListStop) {
 					emerg=e.trim();
-					System.err.println("EN LA EMERGENCIA --> "+emerg);
 					aux.add("\n\tInit"+emerg.trim()+":="+pStepStart+";\n");
 					aux.add("\tReset"+emerg+":="+pStepStop+";\n");
 					aux.add("\t"+emerg+"(Init:=(XInit OR Init"+emerg+"), Reset:=(XReset OR Reset"+emerg+"));\n");
@@ -293,7 +274,7 @@ public class Project {
 	private LinkedList<String> getGlobalVar(LinkedList<String> text){
 		LinkedList<String> t = new LinkedList<String>();
 		t.add("VAR_GLOBAL\n");
-		t.addAll(removeDuplicates(text));
+		t.addAll(text);
 		t.add("\nEND_VAR\n");
 		return t;
 	}
@@ -320,8 +301,22 @@ public class Project {
 				g.getEmergency();
 			}
 		}
-		
+	}
 
+	public LinkedList<String> generateSignals() {
+		LinkedList<String> signals = new LinkedList<String>();
+		//TODO faltan las señales de los comentarios
+		for (Grafcet g : getListG() ) {
+			//si el grafcet es el de emergencia relleno la lista de emergencia
+			signals.addAll(g.getListSignalsGrafcet());
+		}
+		signals = removeDuplicates(signals);
+		//TODO Eliminar este for q imprime por consola
+		for (String string : signals) {
+			System.out.println(string);		
+		}
+		return signals;
+		
 	}
 	
 }

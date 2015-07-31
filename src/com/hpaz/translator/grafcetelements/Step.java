@@ -32,7 +32,7 @@ public class Step {
 		this.mySet=null;
 		this.myReset=null;
 		this.myActions = new LinkedList<Action>();
-		this.setStopEmergency(false);
+		this.stopEmergency=false;
 		this.startEmergency=false;
 	}
 
@@ -86,6 +86,21 @@ public class Step {
 
 	public void addAction(Action pAction) {
 		this.myActions.add(pAction);
+		/*Si el tipò de accion es de forcing order*/
+		if (pAction.getType().equals(GrafcetTagsConstants.ACTION_FORCING_ORDER)){
+			/*Llamo al get emergencia de la accion para rellenar los datos 
+			 * de la emergencia en caso de que lo sea*/
+			String aux = pAction.getEmergency();
+			/*Si es una emergencia tendre que saber de que tipo es
+			 * para rellenar las variables correspondientes*/
+			if(aux.equalsIgnoreCase("stop")){
+				setStopEmergency(true);
+				setGrafcetsStopEmergency(pAction.getStopEmergency());
+			}else if(aux.equalsIgnoreCase("start")){
+				setStartEmergency(true);
+				setGrafcetsStartEmergency(pAction.getStartEmergency());
+			}
+		}
 	}
 
 	public boolean isStopEmergency() {
@@ -148,28 +163,4 @@ public class Step {
 		}
 		return actionStepMap;
 	}
-	
-	/**Rellena las variablas de stoy y start emergencia*/
-	public void getEmergency(){
-		/*Por cada accion del step*/
-		for (Action action : myActions) {
-			/*Si el tipò de accion es de forcing order*/
-			if (action.getType().equals(GrafcetTagsConstants.ACTION_FORCING_ORDER)){
-				/*Llamo al get emergencia de la accion para rellenar los datos 
-				 * de la emergencia en caso de que lo sea*/
-				String aux = action.getEmergency();
-				/*Si es una emergencia tendre que saber de que tipo es
-				 * para rellenar las variables correspondientes*/
-				if(aux.equalsIgnoreCase("stop")){
-					setStopEmergency(true);
-					setGrafcetsStopEmergency(action.getStopEmergency());
-				}else if(aux.equalsIgnoreCase("start")){
-					setStartEmergency(true);
-					setGrafcetsStartEmergency(action.getStartEmergency());
-				}
-			}
-		}	
-	}
-
-
 }

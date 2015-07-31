@@ -29,7 +29,7 @@ Acciones necesarias para llevar el proceso a una situación de partida conocida y
 	END_IF;
 
 (* Set -Reset ________________________________________________________________ X12 *)
-	IF ( (X12 AND (NOT (F0))) ) THEN
+	IF ( (X12 AND  (NOT (F0))) ) THEN
 		X12:=1;
 	END_IF;
 	IF (  OR Init OR Reset ) THEN

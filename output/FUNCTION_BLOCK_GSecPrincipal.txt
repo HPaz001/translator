@@ -38,7 +38,7 @@ del sistema en cada momento.
 	END_IF;
 
 (* Set -Reset ________________________________________________________________ X3 *)
-	IF ( (X2 AND  (RE Paro)) ) THEN
+	IF ( (X2 AND   (RE Paro)) ) THEN
 		X3:=1;
 	END_IF;
 	IF (  OR Init OR Reset ) THEN

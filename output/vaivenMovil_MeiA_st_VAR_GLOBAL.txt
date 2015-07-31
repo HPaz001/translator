@@ -31,7 +31,7 @@ VAR_GLOBAL
 	X34	: BOOL;
 	X35	: BOOL;
 
-	(*---SeÃ±ales---*)
+	(*---Señales---*)
 
 	Inicio	: BOOL;
 	SolModoAuto	: BOOL;
@@ -46,9 +46,10 @@ VAR_GLOBAL
 	CDerecha	: BOOL;
 	F1	: BOOL;
 	Temp=2seg	: BOOL;
+	Temp/X22/2seg	: BOOL;
+	Temp/X24/2seg	: BOOL;
 	SolEmergencia	: BOOL;
-	F/GSecPrincipal>{},F/GCondIniciales>{}, F/GMovil>{}	: BOOL;
+	=1	: BOOL;
 	ParoEmergencia	: BOOL;
-	F/GSecPrincipal>{X0},F/GCondIniciales>{X10}, F/GMovil>{X20}	: BOOL;
 
 END_VAR
