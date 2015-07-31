@@ -79,7 +79,7 @@ public class Main {
 	//Rellena la lista de grafcets q hay en proyecto
 	private static void ejecutar(String pNomPro, String planguage, String pCompatibility) {
 	
-		try {		
+		/*try {		
 			// Creamos la factoria de parseadores por defecto
 			XMLReader reader = XMLReaderFactory.createXMLReader();
 			// Añadimos nuestro manejador al reader
@@ -99,7 +99,7 @@ public class Main {
 			e.printStackTrace();
 		} catch (Exception e) {
 			e.printStackTrace();
-		}
+		}*/
 	}
 
 }

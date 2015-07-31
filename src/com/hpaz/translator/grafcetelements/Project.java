@@ -24,6 +24,8 @@ public class Project {
 	/** PL -> PLC TSX Micro (PL7Pro), T -> PLC Beckhoff (TwinCAT), PC -> PLCOpen */
 	private String program;
 	
+	private String outputDir;
+	
 	private LinkedList<Grafcet> listG;
 
 	private static Project project = new Project();
@@ -37,6 +39,11 @@ public class Project {
 
 	public static Project getProject() {
 		return project;
+	}
+	
+	public void setOutputPath(String outputDir) {
+		this.outputDir = outputDir;
+		
 	}
 
 	private String getName() {
@@ -106,14 +113,14 @@ public class Project {
 			try {
 				
 				// Program Main
-				Output.getOutput().exportFile(generarProgramMain(), getName()+"_PROGRAM_MAIN");
+				Output.getOutput().exportFile(generarProgramMain(), getName()+"_PROGRAM_MAIN",outputDir);
 				
 				//Var Global
-				Output.getOutput().exportFile(getGlobalVar(globalVars()), getName()+"_VAR_GLOBAL");
+				Output.getOutput().exportFile(getGlobalVar(globalVars()), getName()+"_VAR_GLOBAL",outputDir);
 				
 				//Function Block --> uno por cada grafcet
 				for (Grafcet g : listG) {
-					Output.getOutput().exportFile(g.generateFunctionBlock(),"FUNCTION_BLOCK_"+g.getName());
+					Output.getOutput().exportFile(g.generateFunctionBlock(),"FUNCTION_BLOCK_"+g.getName(),outputDir);
 				}
 				
 			} catch (Exception e) {
@@ -318,5 +325,7 @@ public class Project {
 		return signals;
 		
 	}
+
+	
 	
 }

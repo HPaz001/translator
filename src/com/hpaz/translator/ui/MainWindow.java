@@ -8,6 +8,8 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -25,6 +27,14 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
+
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+import org.xml.sax.XMLReader;
+import org.xml.sax.helpers.XMLReaderFactory;
+
+import com.hpaz.translator.grafcetelements.Project;
+import com.hpaz.translator.preprocess.Preprocess;
 
 public class MainWindow extends JFrame {
 
@@ -113,6 +123,7 @@ public class MainWindow extends JFrame {
 				" Compatibilidad con ", TitledBorder.LEFT, TitledBorder.TOP, null, new Color(0, 0, 0)));
 
 		JRadioButton rdbtnLenguageST = new JRadioButton("Structured Text (ST)");
+		rdbtnLenguageST.setEnabled(false);
 		rdbtnLenguageST.setSelected(true);
 		rdbtnLenguageST.setBounds(20, 26, 204, 23);
 		panelLanguage.add(rdbtnLenguageST);
@@ -153,6 +164,7 @@ public class MainWindow extends JFrame {
 				String xmlPath = textFieldInput.getText();
 				String outputPath = textFieldOutput.getText();
 				String selectedCompatibility = choiceCompatibility.getSelectedItem();
+				String language = "st";
 
 				if (xmlPath.isEmpty() || outputPath.isEmpty() || selectedCompatibility.isEmpty()) {
 					JOptionPane.showMessageDialog(contentPane,
@@ -177,12 +189,25 @@ public class MainWindow extends JFrame {
 							    JOptionPane.ERROR_MESSAGE);
 						//System.out.println("El Directorio de salida no existe");
 					} else {
-						JOptionPane.showMessageDialog(contentPane,
-							    "Todos los datos son correctos, se procedera a tratar el XML",
-							    "Datos correctos",
-							    JOptionPane.DEFAULT_OPTION);
-						//System.out.println("");
-						// TODO todo esta bien, llamar al algoritmo
+						try {		
+							// Creamos la factoria de parseadores por defecto
+							XMLReader reader = XMLReaderFactory.createXMLReader();
+							// Añadimos nuestro manejador al reader
+							//reader.setContentHandler(Preprocess.getMyPreprocess().addVarsPreprocess(pNomPro, planguage, pCompatibility));
+							reader.setContentHandler(new Preprocess(xmlPath, outputPath, language, selectedCompatibility));
+							
+							// Procesamos el xml
+							//file.replace(";","");
+							reader.parse(new InputSource(new FileInputStream(xmlPath)));
+							
+							//genero el fichero de salida
+							//FormatoSalida.getSalida().exportarFichero();
+							dispose();
+							new ConfigWindow().setVisible(true);
+							
+						} catch (Exception ex) {
+							ex.printStackTrace();
+						}// TODO todo esta bien, llamar al algoritmo
 					}
 				}
 			}

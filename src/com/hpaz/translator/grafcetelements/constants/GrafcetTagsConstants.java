@@ -17,9 +17,9 @@ public class GrafcetTagsConstants {
 	public static final String NODE_TAG = "node";
 	public static final String JUMP_TAG = "jump";
 	public static final String COMMENT_TAG = "comment";
-	public static final String PROGRAM_OPT1 = "T";
-	public static final String PROGRAM_OPT2 = "PL";
-	public static final String PROGRAM_OPT3 = "PC";
+	public static final String PROGRAM_OPT1 = "PLC Beckhoff (TwinCAT)";
+	public static final String PROGRAM_OPT2 = "PLC TSX Micro (PL7Pro)";
+	public static final String PROGRAM_OPT3 = "PLCOpen";
 	public static final Object ACTION_FORCING_ORDER = "forcing order";
 	public static final Object ACTION_CONDITIONAL = "conditional";
 	

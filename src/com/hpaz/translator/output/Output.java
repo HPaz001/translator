@@ -11,7 +11,6 @@ import java.util.LinkedList;
 public class Output {
 
 	private static String FILESYSTEM_SEPARATOR = FileSystems.getDefault().getSeparator();
-	private static String OUTPUT_FOLDER = "output";
 	private static String FILE_EXTENSION = ".txt";
 
 	private static Output myOutput = new Output();
@@ -26,7 +25,7 @@ public class Output {
 	 * text : lista de String.
 	 * name : nombre del fichero sin las extension.
 	 */
-	public void exportFile(LinkedList<String> text, String name) throws Exception {
+	public void exportFile(LinkedList<String> text, String name, String outputFolder) throws Exception {
 
 		// Inicializamos variables que necesitaremos
 		File fichero = null;
@@ -34,7 +33,7 @@ public class Output {
 		FileWriter fw = null;
 		PrintWriter wr = null;// new PrintWriter(fw);
 		// indico el nombre que tendra el fichero
-		fichero = new File(OUTPUT_FOLDER + FILESYSTEM_SEPARATOR + name + FILE_EXTENSION);
+		fichero = new File(outputFolder + FILESYSTEM_SEPARATOR + name + FILE_EXTENSION);
 		fichero.createNewFile();
 
 		try {

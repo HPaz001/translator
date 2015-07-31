@@ -1,5 +1,6 @@
 package com.hpaz.translator.preprocess;
 
+import java.nio.file.FileSystems;
 import java.util.LinkedList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -15,6 +16,7 @@ import com.hpaz.translator.grafcetelements.Sequence;
 import com.hpaz.translator.grafcetelements.Step;
 import com.hpaz.translator.grafcetelements.Transition;
 import com.hpaz.translator.grafcetelements.constants.GrafcetTagsConstants;
+import com.hpaz.translator.ui.ConfigWindow;
 
 public class Preprocess extends DefaultHandler {
 	/**
@@ -23,9 +25,7 @@ public class Preprocess extends DefaultHandler {
 	 * @author hpaz
 	 *
 	 */
-	private static String file; // ruta del file xml
-	private static String outputDir; // ruta del directorio de salida
-
+	
 	// creo las variables necesarias para guardar la informacion de etiquetas
 	private Grafcet grafcet;
 	private Jump jump;
@@ -50,16 +50,22 @@ public class Preprocess extends DefaultHandler {
 	/* private static Preprocess myPreprocess; */
 
 	
-	public Preprocess(String pNamePro, String pLanguage, String pCompatibility) {
+	public Preprocess(String inputXML, String outputDir, String pLanguage, String pCompatibility) {
+		
+		String separator = FileSystems.getDefault().getSeparator();
+		String fileName = inputXML.substring(inputXML.lastIndexOf(separator)+1, inputXML.length()-4); 
+		
 		language = pLanguage;
 		actualTag = "";
 		text = "";
-		nameProject = pNamePro;
+		nameProject = fileName + "_" + pLanguage;
 		isStep = false;
 		isTransition = false;
 		previousTag = "";
 		compatibility=pCompatibility;
 		this.actualSequence=0;
+		
+		Project.getProject().setOutputPath(outputDir);
 	}
 
 	// si no existe el preproceso lo creo
@@ -318,20 +324,6 @@ public class Preprocess extends DefaultHandler {
 			Project.getProject().addLanguage(language);
 			Project.getProject().addName(nameProject);
 			Project.getProject().addProgram(compatibility);
-
-			// Genero las salidas dependiendo del software de compatibilidad
-			try {//TODO ESTO DESAPARECE SE LE LLEMARA DESDE LA INTERFACE A LO QUE ESTA DENTRO DEL TRY
-				//Project.getProject().printProject();
-				Project.getProject().print();
-			
-				Project.getProject().generateSignals();
-				// Project.getProject().print(compatibility);
-				// Output.getSalida().exportarFicheroVG(Project.getProject().printVarGlobal(),
-				// nameProject);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-
 		}
 	}
 
