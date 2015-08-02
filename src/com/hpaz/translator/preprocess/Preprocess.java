@@ -3,9 +3,11 @@ package com.hpaz.translator.preprocess;
 import java.nio.file.FileSystems;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
+
 import com.hpaz.translator.grafcetelements.Action;
 import com.hpaz.translator.grafcetelements.Grafcet;
 import com.hpaz.translator.grafcetelements.Jump;
@@ -23,7 +25,7 @@ public class Preprocess extends DefaultHandler {
 	 * @author hpaz
 	 *
 	 */
-	
+
 	// creo las variables necesarias para guardar la informacion de etiquetas
 	private Grafcet grafcet;
 	private Jump jump;
@@ -47,12 +49,11 @@ public class Preprocess extends DefaultHandler {
 
 	/* private static Preprocess myPreprocess; */
 
-	
 	public Preprocess(String inputXML, String outputDir, String pLanguage, String pCompatibility) {
-		
+
 		String separator = FileSystems.getDefault().getSeparator();
-		String fileName = inputXML.substring(inputXML.lastIndexOf(separator)+1, inputXML.length()-4); 
-		
+		String fileName = inputXML.substring(inputXML.lastIndexOf(separator) + 1, inputXML.length() - 4);
+
 		language = pLanguage;
 		actualTag = "";
 		text = "";
@@ -60,9 +61,9 @@ public class Preprocess extends DefaultHandler {
 		isStep = false;
 		isTransition = false;
 		previousTag = "";
-		compatibility=pCompatibility;
-		this.actualSequence=0;
-		
+		compatibility = pCompatibility;
+		this.actualSequence = 0;
+
 		Project.getProject().setOutputPath(outputDir);
 	}
 
@@ -80,11 +81,11 @@ public class Preprocess extends DefaultHandler {
 	 */
 
 	public void startDocument() throws SAXException {
-		System.out.println("\nPrincipio del documento...");
+		// System.out.println("\nPrincipio del documento...");
 	}
 
 	public void endDocument() throws SAXException {
-		System.out.println("\nFin del documento...");
+		// System.out.println("\nFin del documento...");
 	}
 
 	/** Esto lo hace por cada etiqueta que hay */
@@ -111,12 +112,6 @@ public class Preprocess extends DefaultHandler {
 		} else if (actualTag.equals(GrafcetTagsConstants.ACTION_TAG)) {
 			action = new Action();
 
-		} else if (actualTag.equals(GrafcetTagsConstants.RE_TAG)) {
-			// si la etiqueta es re (flanco de subida)
-			// transition.activateFs();
-		} else if (actualTag.equals(GrafcetTagsConstants.FE_TAG)) {
-			// si la etiqueta es fe (flanco de bajada)
-			/// transition.activateFb();
 		} else if (actualTag.equals(GrafcetTagsConstants.HLINK_TAG)) {// road
 			road = new Road();
 
@@ -172,18 +167,18 @@ public class Preprocess extends DefaultHandler {
 					/*
 					 * añado la condicion completa, lo q habia + lo nuevo y
 					 * dejo los signos ya los cambiare en la propia transition
-					 
-					transition.setConditionComp(transition.getConditionComp() + " " + text);
-						*/
+					 * 
+					 * transition.setConditionComp(transition.getConditionComp()
+					 * + " " + text);
+					 */
 					/*
 					 * la añado en la lista por separados para tener todas las
 					 * señales por separado
-					 
-					if (text.contains("+") || text.contains("*")) {
-						transition.addListConditionSep(removeSigns(text));
-					} else {
-						transition.addListConditionSep(text);
-					}*/
+					 * 
+					 * if (text.contains("+") || text.contains("*")) {
+					 * transition.addListConditionSep(removeSigns(text)); } else
+					 * { transition.addListConditionSep(text); }
+					 */
 				}
 
 			} else if (actualTag.equals(GrafcetTagsConstants.CPL_TAG)) {// cpl
@@ -194,8 +189,8 @@ public class Preprocess extends DefaultHandler {
 
 				// si es de un comentario
 				if (previousTag.equals(GrafcetTagsConstants.COMMENT_TAG)) {
-					addComent("NOT (" + text + ")");
-
+					// TODO addComent("NOT (" + text + ")");
+					addComent(text);
 					// si es un paso la condition sera de la accion
 				} else if (isStep) {
 					/*
@@ -216,12 +211,11 @@ public class Preprocess extends DefaultHandler {
 					/*
 					 * la añado en la lista por separados para tener todas las
 					 * señales por separado
-					 
-					if (text.contains("+") || text.contains("*")) {
-						transition.addListConditionSep(removeSigns(text));
-					} else {
-						transition.addListConditionSep(text);
-					}*/
+					 * 
+					 * if (text.contains("+") || text.contains("*")) {
+					 * transition.addListConditionSep(removeSigns(text)); } else
+					 * { transition.addListConditionSep(text); }
+					 */
 				}
 
 			} else if (actualTag.equals(GrafcetTagsConstants.COMMENT_TAG)) {// comment
@@ -238,20 +232,21 @@ public class Preprocess extends DefaultHandler {
 				 */
 				if (previousTag.equals(GrafcetTagsConstants.COMMENT_TAG)) {
 					// si esta dentro de un comentario añado a cometario
-					addComent("(RE " + text + ")");
+					// TODO addComent("(RE " + text + ")");
+					addComent(text);
 
 				} else if (isStep) {
 					// Si es un step puede ser de una condicion o de una action
 					if (previousTag.equals(GrafcetTagsConstants.CONDITION_TAG)) {
-						action.setCondition(action.getCondition() + "( RE " + text+")");
+						action.setCondition(action.getCondition() + "RE " + text + "");
 					} else {
-						action.setText(action.getText() + " (RE " + text+")");
+						action.setText(action.getText() + " RE " + text + "");
 					}
 
 				} else if (isTransition) {
 					// si esta dentro de una transition
 					transition.addCondition(" (RE " + text + ")");
-					//transition.addListConditionSep(text);
+					// transition.addListConditionSep(text);
 				}
 			} else if (actualTag.equals(GrafcetTagsConstants.FE_TAG)) {
 				/*
@@ -265,15 +260,15 @@ public class Preprocess extends DefaultHandler {
 				} else if (isStep) {
 					// Si es un step puede ser de una condicion o de una action
 					if (previousTag.equals(GrafcetTagsConstants.CONDITION_TAG)) {
-						action.setCondition(action.getCondition() +" (FE " + text + ")");
+						action.setCondition(action.getCondition() + " FE " + text + "");
 					} else {
-						action.setText(action.getText() + " (FE " + text + ")");
+						action.setText(action.getText() + " FE " + text + "");
 					}
 
 				} else if (isTransition) {
 					// si esta dentro de una transition
 					transition.addCondition("(FE " + text + ")");
-					//transition.addListConditionSep(text);
+					// transition.addListConditionSep(text);
 				}
 			}
 		}
@@ -393,46 +388,38 @@ public class Preprocess extends DefaultHandler {
 		}
 	}
 
-	/** Quita el signo a el testo pasado y devuelve una lista
-	private LinkedList<String> removeSigns(String t) {
-
-		LinkedList<String> aux = new LinkedList<String>();
-
-		boolean itr = true;
-		int posS = 0;
-		text = t.trim();
-
-		while (itr) {
-
-			if (text.indexOf("+") == (-1) || text.indexOf("*") == (-1)) {
-
-				itr = false;
-				aux.add(text);
-
-			} else {
-
-				// si es un signo mas coloco en poss la posicion donde esta
-				if (text.indexOf("+") != (-1)) {
-					posS = text.indexOf("+");
-
-					// si es un signo por coloco en poss la posicion donde esta
-				} else if (text.indexOf("*") != (-1)) {
-					posS = text.indexOf("*");
-				}
-
-				/*
-				 * Añado el texto desde la posicion 0 a la del signo ya q esta
-				 * no se incluye
-				 
-				aux.add(text.substring(0, posS));
-
-				/* Dejo en text el resto del string para seguirlo tratando 
-				text = text.substring(posS + 1, text.length() + 1);
-			}
-		}
-
-		return aux;
-	} */
+	/**
+	 * Quita el signo a el testo pasado y devuelve una lista private LinkedList
+	 * <String> removeSigns(String t) {
+	 * 
+	 * LinkedList<String> aux = new LinkedList<String>();
+	 * 
+	 * boolean itr = true; int posS = 0; text = t.trim();
+	 * 
+	 * while (itr) {
+	 * 
+	 * if (text.indexOf("+") == (-1) || text.indexOf("*") == (-1)) {
+	 * 
+	 * itr = false; aux.add(text);
+	 * 
+	 * } else {
+	 * 
+	 * // si es un signo mas coloco en poss la posicion donde esta if
+	 * (text.indexOf("+") != (-1)) { posS = text.indexOf("+");
+	 * 
+	 * // si es un signo por coloco en poss la posicion donde esta } else if
+	 * (text.indexOf("*") != (-1)) { posS = text.indexOf("*"); }
+	 * 
+	 * /* Añado el texto desde la posicion 0 a la del signo ya q esta no se
+	 * incluye
+	 * 
+	 * aux.add(text.substring(0, posS));
+	 * 
+	 * /* Dejo en text el resto del string para seguirlo tratando text =
+	 * text.substring(posS + 1, text.length() + 1); } }
+	 * 
+	 * return aux; }
+	 */
 
 	/**
 	 * Añade el comentario donde le corresponde, ya que puede ser de una

@@ -3,6 +3,7 @@ package com.hpaz.translator.grafcetelements;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
+
 import com.hpaz.translator.grafcetelements.constants.GrafcetTagsConstants;
 
 
@@ -66,9 +67,11 @@ public class Step {
 		return mySet;
 	}
 
-	public void addMySet(String mySet) {
+	public void addMySet(String pMySet) {
 		if (this.mySet==null){
-			this.mySet = mySet;
+			this.mySet = pMySet;
+		}else{
+			this.mySet= mySet+" OR "+pMySet;
 		}
 	}
 
@@ -76,8 +79,12 @@ public class Step {
 		return myReset;
 	}
 
-	public void addMyReset(String myReset) {
-		this.myReset = myReset;
+	public void addMyReset(String pMyReset) {
+		if (this.myReset==null){
+			this.myReset = pMyReset;
+		}else{
+			this.myReset= myReset+" OR "+pMyReset;
+		}
 	}
 
 	public LinkedList<Action> getMyActions() {
@@ -147,6 +154,10 @@ public class Step {
 			action.printAction();
 		}
 		System.out.println("Comentario: " + this.comment);
+		System.out.println("	MI SET");
+		System.out.println("	"+this.mySet);
+		System.out.println("	MI RESET");
+		System.out.println("	"+this.myReset);
 	}
 
 	public Map<String, String> getActionStepMap() {
