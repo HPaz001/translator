@@ -1,13 +1,7 @@
 package com.hpaz.translator;
 
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.util.GregorianCalendar;
-import org.xml.sax.InputSource;  
-import org.xml.sax.SAXException;  
-import org.xml.sax.XMLReader;  
-import org.xml.sax.helpers.XMLReaderFactory;
-import com.hpaz.translator.preprocess.Preprocess;  
+ 
 
 
 public class Main {

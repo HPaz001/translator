@@ -26,9 +26,9 @@ public class Grafcet {
 	/*Lista de señales del grafcet*/
 	private LinkedList<String> signalsGrafcet; 
 	
-	private LinkedList<Jump> listJ;
-	private LinkedList<Sequence> listS;
-	private LinkedList<Road> listR;
+	private LinkedList<Jump> jumpList;
+	private LinkedList<Sequence> sequenceList;
+	private LinkedList<Road> roadList;
 	
 
 	
@@ -40,9 +40,9 @@ public class Grafcet {
 		this.setStepStartEmergency(null);
 		this.setStepStopEmergency(null);
 		this.setEmergency(false);
-		this.listJ = new LinkedList<Jump>();
-		this.listS= new LinkedList<Sequence>();
-		this.listR = new LinkedList<Road>();
+		this.jumpList = new LinkedList<Jump>();
+		this.sequenceList= new LinkedList<Sequence>();
+		this.roadList = new LinkedList<Road>();
 		this.signalsGrafcet = new LinkedList<String>();
 	}
 	
@@ -71,31 +71,31 @@ public class Grafcet {
 		this.owner = owner;
 	}
 	public LinkedList<Jump> getListJ() {
-		return listJ;
+		return jumpList;
 	}
 	public void addJump(Jump pJ) {
-		this.listJ.add(pJ);
+		this.jumpList.add(pJ);
 	}
 	public LinkedList<Sequence> getListS() {
-		return listS;
+		return sequenceList;
 	}
 	/**Recibe la secuencia y el numero rellenara la lista de seccuencias 
 	 * la posicion de la lista sera el numero de secuencia -1 */
-	public void addSeq(Sequence pS,int pIndex) {
+	public void addSequence(Sequence pSequence,int pIndex) {
 		/*la posicion de la lista sera el numero de secuencia -1 */
-		this.listS.add(pIndex-1, pS);
+		this.sequenceList.add(pIndex-1, pSequence);
 		/*al añadir la secuencial al grafcet obntengo su lista de señales
 		 *  para añadirla a la lista de señales del grafcet*/
-		this.signalsGrafcet.addAll(pS.getSignals());
+		this.signalsGrafcet.addAll(pSequence.getSignals());
 	}
-	public LinkedList<Road> getListR() {
-		return listR;
+	public LinkedList<Road> getRoadList() {
+		return roadList;
 	}
-	public void addRoad(Road pR) {
-		this.listR.add(pR);
+	public void addRoad(Road pRoad) {
+		this.roadList.add(pRoad);
 	}
 	
-	/**Si cambia si al aÃ±adir el nombre en el preproceso es GEmergencia*/
+	/**Si cambia si al anadir el nombre en el preproceso es GEmergencia*/
 	public boolean isEmergency() {
 		return emergency;
 	}
@@ -136,32 +136,28 @@ public class Grafcet {
 		this.listEmergencyStart = listEmergencyStart;
 	}
 	
-	public LinkedList<String> grafcetVarGlobalStages() {
+	public LinkedList<String> getGrafcetVarGlobalStages() {
 		LinkedList<String> vG = new LinkedList<String>();
 		vG.add("\n\t(*---"+this.name+"---*)\n\n");
 		//por cada secuencia de la lista
-		for (Sequence s : listS) {
-			vG.addAll(s.printSeqVG());
+		for (Sequence s : sequenceList) {
+			vG.addAll(s.getVarGlobalStages());
 		}
-		
 		return vG;
 	}
 	public LinkedList<String> grafcetVarGlobalSignals() {
 		LinkedList<String> vG = new LinkedList<String>();
-		//for (Sequence s : listS) {
 		
-			for (String signal : this.signalsGrafcet) {
-				vG.add("\t"+signal+"\t: BOOL;\n");
-			}
-		//	"\t"+action.getText()+"\t: BOOL;\n"
-			//vG.addAll(s.getSignals());
+		for (String signal : this.signalsGrafcet) {
+			vG.add("\t"+signal+"\t: BOOL;\n");
+		}
 		
 		return vG;
 	}
 	//genera un listado con los set y reset listos para exportar
 	public LinkedList<String> printSetReset() {
 		LinkedList<String> sR = new LinkedList<String>();
-		for (Sequence s : listS) {
+		for (Sequence s : sequenceList) {
 			sR.addAll(s.getSetReset());
 		}
 		return sR;
@@ -173,13 +169,13 @@ public class Grafcet {
 		System.out.println("Propietario: "+this.owner);
 		System.out.println("Comentario: "+this.comment);
 		
-		for (Jump j : listJ) {
+		for (Jump j : jumpList) {
 			j.printJump();
 		}
-		for (Road r : listR) {
+		for (Road r : roadList) {
 			r.printRoad();		
 		}
-		for (Sequence s : listS) {
+		for (Sequence s : sequenceList) {
 			s.printSequence();
 		}
 	}
@@ -209,7 +205,7 @@ public class Grafcet {
 		Map<String, String> actionStepMap = new HashMap<String, String>();
 		
 		//por cada secuencia del grafcet
-		for (Sequence sequence : listS) {
+		for (Sequence sequence : sequenceList) {
 				//obtengo el map de la secuencia
 				Map<String, String> auxMap =  sequence.getActionStepMap();
 				//por cada accion de auxMap
@@ -228,68 +224,68 @@ public class Grafcet {
 		return actionStepMap;	
 	}
 	/**Esta funcion rellenara las listas PreviousStepLits, PreviousTransitionList
-	 * y getNextStepLits se cada secuencia, que nos serviran luego
+	 * y getNextStepLits de cada secuencia, que nos serviran luego
 	 * a la hora de rellenar los set y reset de cada etapa*/
 	public void fillPreviousNextListsSequences(){
 		/*por cada salto */
-		for (Jump j : listJ) {
+		for (Jump j : jumpList) {
 			/*En un salto comienza siempre en una etapa por lo que guardo 
 			 * FromSeq salta a  ToSeq */
-			Sequence s = listS.get(j.getFromSeq());
-			int sizeTrans = s.getList().size()-1;
-			int sizeStep = s.getList().size()-2;
-			Transition t = (Transition) s.getList().get(sizeTrans);
-			Step step = (Step) s.getList().get(sizeStep);
+			Sequence s = sequenceList.get(j.getFromSeq());
+			int sizeTrans = s.getListTransitionOrStep().size()-1;
+			int sizeStep = s.getListTransitionOrStep().size()-2;
+			Transition t = (Transition) s.getListTransitionOrStep().get(sizeTrans);
+			Step step = (Step) s.getListTransitionOrStep().get(sizeStep);
 			/*Se guardara la ultima transision y etapa de la seq(fromSeq) en la seq(toSeq)*/
-			listS.get(j.getToSeq()).addPreviousSeq("("+step.getName()+" AND "+t.getCondition()+")");
+			sequenceList.get(j.getToSeq()).addPreviousSeq("("+step.getName()+" AND "+t.getCondition()+")");
 		}
 		/*Por cada camino que tengamos*/
-		for (Road r : listR) {
+		for (Road r : roadList) {
 			//por cada secuencia de la lista de caminos	
 			for (Integer sR : r.getMySequences()) {
 
-				Sequence sIni = listS.get(r.getSeqIni());
-				Sequence sSR = listS.get(sR);	
+				Sequence sIni = sequenceList.get(r.getSeqIni());
+				Sequence sSR = sequenceList.get(sR);	
 				
 				/*Si el tipo es div or*/
 				if(r.getType().equals("div or")){
 					
 					/*Guardo en secuencia(sR) la ultima etapa de la secuencia(r.seqIni)*/
-					int sizeStep = sIni.getList().size()-1;
-					Step step = (Step) sIni.getList().get(sizeStep);
-					listS.get(sR).addPreviousSeq(step.getName());
+					int sizeStep = sIni.getListTransitionOrStep().size()-1;
+					Step step = (Step) sIni.getListTransitionOrStep().get(sizeStep);
+					sequenceList.get(sR).addPreviousSeq(step.getName());
 					
 					/*Guardar en la secuencia(r.SeqIni) la primera etapa de la secuencia(sR) */
-					Step step0 = (Step) sSR.getList().get(0);
-					listS.get(r.getSeqIni()).addNextSeq(step0.getName());
+					Step step0 = (Step) sSR.getListTransitionOrStep().get(0);
+					sequenceList.get(r.getSeqIni()).addNextSeq(step0.getName());
 					
 					
 					/*Si el tipo es div and*/
 				}else if(r.getType().equals("div and")){
 					
 					/*Guardo en secuencia(sR) la ultima etapa y transicion de la secuencia(r.seqIni)*/
-					int sizeTrans = sIni.getList().size()-1;				
-					Transition t = (Transition) sIni.getList().get(sizeTrans);
-					int sizeStep = sIni.getList().size()-2;
-					Step step = (Step) sIni.getList().get(sizeStep);
-					listS.get(sR).addPreviousSeq("("+step.getName()+" AND "+t.getCondition()+")");
+					int sizeTrans = sIni.getListTransitionOrStep().size()-1;				
+					Transition t = (Transition) sIni.getListTransitionOrStep().get(sizeTrans);
+					int sizeStep = sIni.getListTransitionOrStep().size()-2;
+					Step step = (Step) sIni.getListTransitionOrStep().get(sizeStep);
+					sequenceList.get(sR).addPreviousSeq("("+step.getName()+" AND "+t.getCondition()+")");
 					
 					/*Guardar en la secuencia(r.SeqIni) la primera etapa de la secuencia(sR) */
-					Step step0 = (Step) sSR.getList().get(0);
-					listS.get(r.getSeqIni()).addNextSeq(step0.getName());
+					Step step0 = (Step) sSR.getListTransitionOrStep().get(0);
+					sequenceList.get(r.getSeqIni()).addNextSeq(step0.getName());
 					
 					
 					/*Si el tipo es conv or*/
 				}else if (r.getType().equals("conv or")){
 
 					/*Guardo en la secuencia(sR) la primera etapa de la secuencia(r.seqIni)*/
-					Step step = (Step) sIni.getList().get(0);
-					listS.get(sR).addNextSeq(step.getName());
+					Step step = (Step) sIni.getListTransitionOrStep().get(0);
+					sequenceList.get(sR).addNextSeq(step.getName());
 					
 					/*Guardar en la secuencia(r.SeqIni) la ultima transicion de secuencia(sR) */
-					int sizeTrans = sSR.getList().size()-1;				
-					Transition t = (Transition) sIni.getList().get(sizeTrans);
-					listS.get(r.getSeqIni()).addPreviousSeq(t.getCondition());
+					int sizeTrans = sSR.getListTransitionOrStep().size()-1;				
+					Transition t = (Transition) sIni.getListTransitionOrStep().get(sizeTrans);
+					sequenceList.get(r.getSeqIni()).addPreviousSeq(t.getCondition());
 					
 					
 					
@@ -297,13 +293,13 @@ public class Grafcet {
 				} else if(r.getType().equals("conv and")){
 					
 					/*Guardo en la secuencia(sR) la primera etapa de la secuencia(r.seqIni)*/
-					Step step = (Step) sIni.getList().get(0);
-					listS.get(sR).addNextSeq(step.getName());
+					Step step = (Step) sIni.getListTransitionOrStep().get(0);
+					sequenceList.get(sR).addNextSeq(step.getName());
 					
 					/*Guardar en la secuencia(r.SeqIni) la ultima etapa de secuencia(sR) */
-					int sizeStep = sSR.getList().size()-1;
-					Step step0 = (Step) sSR.getList().get(sizeStep);
-					listS.get(r.getSeqIni()).addPreviousSeq(step0.getName());
+					int sizeStep = sSR.getListTransitionOrStep().size()-1;
+					Step step0 = (Step) sSR.getListTransitionOrStep().get(sizeStep);
+					sequenceList.get(r.getSeqIni()).addPreviousSeq(step0.getName());
 				}
 			}
 		}
@@ -311,6 +307,7 @@ public class Grafcet {
 	public LinkedList<String> generateFunctionBlock(){
 		LinkedList<String> functionBlock = new LinkedList<String>();
 		String actualStep="", auxSet="",auxReset="";
+		
 		functionBlock.add("\nFUNCTION_BLOCK "+getName()+"\n\tVAR_INPUT"
 				+ "\n\t\tInit\t:BOOL;\n\t\tReset\t:BOOL;\n\tEND_VAR"
 				+ "\n\tVAR_OUTPUT\n\tEND_VAR\n\tVAR\n\tEND_VAR");
@@ -319,15 +316,15 @@ public class Grafcet {
 				+getName().substring(1, getName().length())+"\n"
 				+getComment()
 				+ "\n-----------------------------------------------*)");
+		
 		//por cada seccuencia
-		for (Sequence seq : listS) {
+		for (Sequence seq : sequenceList) {
 			//recorro la lista de la secuencia
 			//Object obj : seq.getList()
-			for (int i = 0; i < seq.getList().size(); i++) {	
+			for (int i = 0; i < seq.getListTransitionOrStep().size(); i++) {	
 				/*Si es una etapa*/
-				if(seq.getList().get(i) instanceof Step){
-					actualStep=((Step) seq.getList().get(i)).getName();
-					//int index=seq.getList().indexOf(seq.getList().get(i));
+				if(seq.getListTransitionOrStep().get(i) instanceof Step){
+					actualStep=((Step) seq.getListTransitionOrStep().get(i)).getName();
 					String aux="";
 					
 					/*Busco el Set a una etapa*/
@@ -337,49 +334,48 @@ public class Grafcet {
 						for (String pre : seq.getPreviousList()){
 							aux=aux+" OR "+pre;
 						}				
-					/*Si no es el primer elemento de la lista
-					 * pero es el segundo quiere decir q no tiene etapa antes*/
+					/*Si no es el primer elemento de la lista, pero es el segundo quiere decir q no tiene etapa antes*/
 					}else if (i==1){
-						Step sAux= (Step) seq.getList().get(i);
-						Transition tAux= (Transition) seq.getList().get(i-1);
+						Transition tAux= (Transition) seq.getListTransitionOrStep().get(i-1);
+						Step sAux= (Step) seq.getListTransitionOrStep().get(i);
 						aux="("+sAux.getName()+" AND "+tAux.getCondition()+")";
 					}else{
-						Step sAux= (Step) seq.getList().get(i-2);
-						Transition tAux= (Transition) seq.getList().get(i-1);
+						Step sAux= (Step) seq.getListTransitionOrStep().get(i-2);
+						Transition tAux= (Transition) seq.getListTransitionOrStep().get(i-1);
 						aux="("+sAux.getName()+" AND "+tAux.getCondition()+")";
 					}
-					/*AÃ±ado el Set a una etapa*/
-					((Step) seq.getList().get(i)).addMySet(aux);
-					aux ="";
+					/*Anado el Set a una etapa*/
+					((Step) seq.getListTransitionOrStep().get(i)).addMySet(aux);
+					
 					
 					/*Busco el Reset a una etapa*/
+					aux ="";
 					//si hay dos objetos mas en la lista 
-				
-					
-					if(seq.getList().size() > (i+2)){
+					if(seq.getListTransitionOrStep().size() > (i+2)){
 						//si ese segundo objeto es una etapa
-						if(seq.getList().get(i+2) instanceof Step){
-							Step sAux= (Step) seq.getList().get(i+2);
+						if(seq.getListTransitionOrStep().get(i+2) instanceof Step){
+							Step sAux= (Step) seq.getListTransitionOrStep().get(i+2);
 							aux=sAux.getName();
 						}
 					}else{
 						//por cada elemento de de la lista next
-						for (String nex : seq.getNextLits()){
-							aux=aux+" OR "+nex;
+						for (String next : seq.getNextLits()){
+							aux = aux + " OR " + next;
 						}
 					}
 					/*AÃ±adir el Reset a una etapa*/
-					((Step) seq.getList().get(i)).addMyReset(aux);
+					((Step) seq.getListTransitionOrStep().get(i)).addMyReset(aux);
 					
 					
 					//Relleno la lista con los Set-Reset
 					functionBlock.add("\n(* Set -Reset ___________________________"
-							+ "_____________________________________ "+actualStep
-							+" *)");
-					String set=((Step) seq.getList().get(i)).getMySet();
-					String reset =((Step) seq.getList().get(i)).getMyReset();
+							+ "_____________________________________ "+actualStep+" *)");
+					
+					String set=((Step) seq.getListTransitionOrStep().get(i)).getMySet();
+					String reset =((Step) seq.getListTransitionOrStep().get(i)).getMyReset();
+					
 					//si es una etapa inicial
-					if(((Step) seq.getList().get(i)).getType().equals("initial")){
+					if(((Step) seq.getListTransitionOrStep().get(i)).getType().equals("initial")){
 						auxSet = "\n\tIF ( "+set+" OR Init ) THEN\n\t\t"+actualStep+":=1;";
 						auxReset = "\n\tEND_IF;\n\tIF ( "+reset+" OR Reset ) THEN\n\t\t"+actualStep+":=0;";	
 					}else {
@@ -404,12 +400,12 @@ public class Grafcet {
 			s.getEmergency();
 			
 			if(s.getStepStartEmergency() != -1){		
-				Step stepStart = (Step) s.getList().get(s.getStepStartEmergency());
+				Step stepStart = (Step) s.getListTransitionOrStep().get(s.getStepStartEmergency());
 				setStepStartEmergency(stepStart.getName());
 				setListEmergencyStart(stepStart.getGrafcetsStartEmergency());
 				
 			}	else if(s.getStepStopEmergency() != -1){
-				Step stepStop = (Step) s.getList().get(s.getStepStopEmergency());
+				Step stepStop = (Step) s.getListTransitionOrStep().get(s.getStepStopEmergency());
 				setStepStopEmergency(stepStop.getName());
 				setListEmergencyStop(stepStop.getGrafcetsStopEmergency());
 			}

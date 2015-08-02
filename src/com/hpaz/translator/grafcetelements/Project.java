@@ -18,7 +18,15 @@ public class Project {
 		ST --> Texto estructurado.
 		LD --> Diagrama de escalera.
 		FBD --> Diagrama de bloques funcionales.
-		SFC --> Grafico de funciones secuenciales.*/
+		SFC --> Grafico de funciones secuenciales.
+		
+		 LADDER DIAGRAM (LD) o lenguaje (diagrama) de contactos;
+		 FUNCTION BLOCK DIAGRAM (FBD) o esquema de bloques funcionales;
+		 INSTRUCTION LIST (IL) o lista de instrucciones;
+		 STRUCTURED TEXT (ST) o lenguaje textual estructurado;
+		 SEQUENTIAL FUNCTION CHART (SFC) o diagrama funcional de secuencias
+		(basado en el GRAFCET).
+		*/
 	private String language;
 	
 	/** PL -> PLC TSX Micro (PL7Pro), T -> PLC Beckhoff (TwinCAT), PC -> PLCOpen */
@@ -26,7 +34,10 @@ public class Project {
 	
 	private String outputDir;
 	
-	private LinkedList<Grafcet> listG;
+	private LinkedList<Grafcet> listGrafcet;
+	private LinkedList<Timer> listTimers;
+	private LinkedList<Counter> listCounters;
+	
 
 	private static Project project = new Project();
 
@@ -34,7 +45,8 @@ public class Project {
 		this.name = null;
 		this.language = null;
 		this.program = null;
-		this.listG = new LinkedList<Grafcet>();
+		this.listGrafcet = new LinkedList<Grafcet>();
+		
 	}
 
 	public static Project getProject() {
@@ -74,21 +86,37 @@ public class Project {
 	}
 
 	public LinkedList<Grafcet> getListG() {
-		return listG;
+		return listGrafcet;
 	}
 
 	public void addGrafcet(Grafcet g) {
-		this.listG.add(g);
+		this.listGrafcet.add(g);
+	}
+	
+	public LinkedList<Timer> getListTimers() {
+		return listTimers;
 	}
 
-	public LinkedList<String> globalVars() {
+	public void addListTimers(LinkedList<Timer> listTimers) {
+		this.listTimers = listTimers;
+	}
+
+	public LinkedList<Counter> getListCounters() {
+		return listCounters;
+	}
+
+	public void addListCounters(LinkedList<Counter> listCounters) {
+		this.listCounters = listCounters;
+	}
+	
+	public LinkedList<String> generateGlobalVars() {
 		LinkedList<String> vG = new LinkedList<String>();
 			
-		for (Grafcet g : listG) {
-			vG.addAll(g.grafcetVarGlobalStages());
+		for (Grafcet g : listGrafcet) {
+			vG.addAll(g.getGrafcetVarGlobalStages());
 		}
 		vG.add("\n\t(*---Señales---*)\n\n");
-		for (Grafcet g : listG) {
+		for (Grafcet g : listGrafcet) {
 			vG.addAll(g.grafcetVarGlobalSignals());
 		}
 
@@ -100,7 +128,7 @@ public class Project {
 		System.out.println("Nombre: " + getName());
 		System.out.println("Lenguaje: " + getLanguage());
 		System.out.println("Compatibilidad: " + getProgram());
-		for (Grafcet g : listG) {
+		for (Grafcet g : listGrafcet) {
 			g.printGrafcet();
 		}
 		
@@ -110,16 +138,17 @@ public class Project {
 	public void print() {
 		generateEmergencyData();
 		if (program.equalsIgnoreCase(GrafcetTagsConstants.PROGRAM_OPT1)) { // Twincat		
-			try {
+			try {	
 				
+				printProject();
 				// Program Main
-				Output.getOutput().exportFile(generarProgramMain(), getName()+"_PROGRAM_MAIN",outputDir);
+				//Output.getOutput().exportFile(generateProgramMain(), getName()+"_PROGRAM_MAIN",outputDir);
 				
 				//Var Global
-				Output.getOutput().exportFile(getGlobalVar(globalVars()), getName()+"_VAR_GLOBAL",outputDir);
+				//Output.getOutput().exportFile(getGlobalVars(generateGlobalVars()), getName()+"_VAR_GLOBAL",outputDir);
 				
 				//Function Block --> uno por cada grafcet
-				for (Grafcet g : listG) {
+				for (Grafcet g : listGrafcet) {
 					Output.getOutput().exportFile(g.generateFunctionBlock(),"FUNCTION_BLOCK_"+g.getName(),outputDir);
 				}
 				
@@ -137,7 +166,7 @@ public class Project {
 	/**
 	 * @return
 	 */
-	private LinkedList<String> generarProgramMain() {
+	private LinkedList<String> generateProgramMain() {
 		
 		LinkedList<String> aux = new LinkedList<String>();
 		LinkedList<String> listEmergency = new LinkedList<String>();
@@ -145,7 +174,7 @@ public class Project {
 		Map<String, String> actionStepMap = new HashMap<String, String>();
 		String gName;
 		
-		for (Grafcet grafcet : listG) {
+		for (Grafcet grafcet : listGrafcet) {
 			//guardo solo el nombre del grafcet q sera Gxxxxxxxxx
 			gName=grafcet.getName();
 			aux.add(gName);
@@ -278,7 +307,7 @@ public class Project {
 	/**Este metodo se encargara de obtener las variables globales correspondientes a TwinCAT
 	 * Pre:
 	 * Post: devolvera una lista de String*/
-	private LinkedList<String> getGlobalVar(LinkedList<String> text){
+	private LinkedList<String> getGlobalVars(LinkedList<String> text){
 		LinkedList<String> t = new LinkedList<String>();
 		t.add("VAR_GLOBAL\n");
 		t.addAll(text);
@@ -325,6 +354,8 @@ public class Project {
 		return signals;
 		
 	}
+
+
 
 	
 	

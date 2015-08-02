@@ -19,26 +19,27 @@ public class Transition {
 		return condition;
 	}
 	public void addCondition(String pCondition) {
-		
-		/*
-		 * añado la condicion completa, lo q habia + lo nuevo y
-		 * dejo los signos ya los cambiare en la propia transition
-		 */
-		this.condition = this.condition+ " " +pCondition;
-		//transition.setConditionComp(transition.getConditionComp() + " " + text);
-
-		/*
-		 * la anado en la lista por separados para tener todas las
-		 * senales por separado
-		 */
-		/*Le quito los espacios para luego poder usar 
-		 * las expresiones regulares sin problema*/
-		String aux = pCondition.trim();
-		aux = aux.replaceAll("\\(|RE|\\)|NOT|FE", "");
-		if (aux.contains("+") || aux.contains("*")) {			
-			addListConditionSep(removeSigns(aux));
-		} else {
-			addListConditionSep(aux.trim());
+		if(!(pCondition.equals("=1")) && !(pCondition.equals("true"))){
+			/*
+			 * añado la condicion completa, lo q habia + lo nuevo y
+			 * dejo los signos ya los cambiare en la propia transition
+			 */
+			this.condition = this.condition+ " " +pCondition;
+			//transition.setConditionComp(transition.getConditionComp() + " " + text);
+	
+			/*
+			 * la anado en la lista por separados para tener todas las
+			 * senales por separado
+			 */
+			/*Le quito los espacios para luego poder usar 
+			 * las expresiones regulares sin problema*/
+			String aux = pCondition.trim();
+			aux = aux.replaceAll("\\(|RE|\\)|NOT|FE", "");
+			if (aux.contains("+") || aux.contains("*")) {			
+				addListConditionSep(removeSigns(aux));
+			} else {
+				addListConditionSep(aux.trim());
+			}
 		}
 	}
 	
@@ -75,9 +76,11 @@ public class Transition {
 		
 		return aux;
 	}
-	/**Este metodo cambia los simbolos + o * del texto por AND y OR */
+	
+	//TODO hacerlo con expresiones regulares
+	/**Este metodo cambia los simbolos + o * del texto por AND y OR
 	private String changeSigns(String text) {
-
+		
 		if (text.indexOf("+") != -1) {
 			text = text.replace("+", " OR ");
 		}
@@ -87,7 +90,9 @@ public class Transition {
 
 		return text;
 
-	}
+	} */
+	
+	
 	public void printTransition(){
 		analyzeReviews();
 		System.out.println("----- TRANSITION ------");

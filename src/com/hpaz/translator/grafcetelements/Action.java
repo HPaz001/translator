@@ -4,8 +4,6 @@ import java.util.LinkedList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.hpaz.translator.grafcetelements.constants.GrafcetTagsConstants;
-
 public class Action {
 	private String type;
 	private String text;

@@ -134,7 +134,7 @@ public class Step {
 		this.grafcetsStartEmergency = grafcetsStartEmergency;
 	}
 	
-	public String printStepVG() {
+	public String printStepGlobalVar() {
 		String s = "\t" + this.name + "\t: BOOL;\n";
 		return s;
 	}

@@ -7,7 +7,7 @@ import java.util.Map;
 
 public class Sequence {
 	private int idSeq;
-	private LinkedList<Object> list;// puede tener tanto transiciones como pasos
+	private LinkedList<Object> listTransitionOrStep;// puede tener tanto transiciones como pasos
 	private LinkedList<String> signals; 	
 	private LinkedList<String> previousList; 
 	private LinkedList<String> nextLits; 
@@ -19,7 +19,7 @@ public class Sequence {
 	
 
 	public Sequence() {
-		this.list = new LinkedList<Object>();
+		this.listTransitionOrStep = new LinkedList<Object>();
 		this.signals = new LinkedList<String>();
 		this.previousList=new LinkedList<String>();
 		this.nextLits= new LinkedList<String>();
@@ -32,27 +32,12 @@ public class Sequence {
 	public void setIdSeq(int id) {
 		this.idSeq = id;
 	}
-	public LinkedList<Object> getList() {
-		return list;
+	public LinkedList<Object> getListTransitionOrStep() {
+		return listTransitionOrStep;
 	}
 	public LinkedList<String> getSignals() {
 		return signals;
 	}
-	/**puede ser una transition o un step*/
-	public void addTorS(Object pTorS) {
-		if (pTorS instanceof Transition){
-			signals.addAll(((Transition) pTorS).getConditionSep());
-		}else if(pTorS instanceof Step){
-			for (Action action : ((Step) pTorS).getMyActions()) {
-				String act = action.getText();
-				if(!act.equals("") && !action.isEmergency()){
-					signals.add(action.getText());
-				}
-			}		
-		}
-		this.list.add(pTorS);
-	}
-	
 	public LinkedList<String> getPreviousList() {
 		return previousList;
 	}
@@ -78,31 +63,48 @@ public class Sequence {
 		StepStartEmergency = stepStartEmergency;
 	}
 	
-	public LinkedList<String> printSeqVG(){
+	/**puede ser una transition o un step*/
+	public void addTransitionOrStep(Object pTransitionOrStep) {
+		if (pTransitionOrStep instanceof Transition){
+			signals.addAll(((Transition) pTransitionOrStep).getConditionSep());
+		}else if(pTransitionOrStep instanceof Step){
+			for (Action action : ((Step) pTransitionOrStep).getMyActions()) {
+				String act = action.getText();
+				if(!act.equals("") && !action.isEmergency()){
+					signals.add(action.getText());
+				}
+			}		
+		}
+		this.listTransitionOrStep.add(pTransitionOrStep);
+	}
+		
+	public LinkedList<String> getVarGlobalStages(){
+		
 		LinkedList<String> auxSignals = new LinkedList<String>();
 		LinkedList<String> auxStages= new LinkedList<String>();
+		
 		auxSignals.add("\n\t(*---Señales---*)\n\n");
-		for (Object st : list) {/*puede ser una transition o un step*/
-			if (st instanceof Transition){
+		/*puede ser una transition o un step*/
+		for (Object st : listTransitionOrStep) {
+			/*if (st instanceof Transition){
 				//signals.addAll(((Transition) st).printTransVG());
 				auxSignals.addAll(((Transition) st).printTransVG());
 				
-			}else if(st instanceof Step){
-				auxStages.add(((Step) st).printStepVG());
-				for (Action action : ((Step) st).getMyActions()) {
+			}else */if(st instanceof Step){
+				auxStages.add(((Step) st).printStepGlobalVar());
+			/*	for (Action action : ((Step) st).getMyActions()) {
 					String act = action.getText();
 					if(!act.equals("")){
-						//signals.add("\t"+action.getText()+"\t: BOOL;\n");
 						auxSignals.add("\t"+action.getText()+"\t: BOOL;\n");
 					}
-				}
+				}*/
 				
 				
 			}
 		}
 		
 		//esto lo hago para que queden primero las señales y despues las etapas
-		auxSignals.addAll(auxStages);
+		//auxSignals.addAll(auxStages);
 		
 		return auxStages;
 		
@@ -130,7 +132,7 @@ public class Sequence {
 	public void printSequence(){
 		System.out.println("----- SEQUENCE ------");
 		System.out.println("ID secuencia : "+this.idSeq);
-		for (Object o : list) {
+		for (Object o : listTransitionOrStep) {
 			if(o instanceof Transition){
 				((Transition) o).printTransition();
 			}else if (o instanceof Step){
@@ -145,7 +147,7 @@ public class Sequence {
 		Map<String, String> actionStepMap = new HashMap<String, String>();
 		
 		//por cada objeto de la lista
-		for (Object stepOrTransition : list) {
+		for (Object stepOrTransition : listTransitionOrStep) {
 			//si es de tipo step
 			if (stepOrTransition instanceof Step){
 				//busco la acciones del step y la guardo en auxMap				
@@ -168,8 +170,8 @@ public class Sequence {
 	}
 	public void getEmergency(){
 		/*Por cada step de la secuencia*/
-		for (int i = 0; i < getList().size(); i++) {
-			Object step = getList().get(i);
+		for (int i = 0; i < getListTransitionOrStep().size(); i++) {
+			Object step = getListTransitionOrStep().get(i);
 			if(step instanceof Step){
 				/*llamo a get emergency del step para que rellene los 
 				 * datos correspondientes en caso de que sea un step de emergencia*/

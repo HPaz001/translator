@@ -1,7 +1,6 @@
 package com.hpaz.translator.preprocess;
 
 import java.nio.file.FileSystems;
-import java.util.LinkedList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.xml.sax.Attributes;
@@ -16,7 +15,6 @@ import com.hpaz.translator.grafcetelements.Sequence;
 import com.hpaz.translator.grafcetelements.Step;
 import com.hpaz.translator.grafcetelements.Transition;
 import com.hpaz.translator.grafcetelements.constants.GrafcetTagsConstants;
-import com.hpaz.translator.ui.ConfigWindow;
 
 public class Preprocess extends DefaultHandler {
 	/**
@@ -196,7 +194,7 @@ public class Preprocess extends DefaultHandler {
 
 				// si es de un comentario
 				if (previousTag.equals(GrafcetTagsConstants.COMMENT_TAG)) {
-					addComent(text);
+					addComent("NOT (" + text + ")");
 
 					// si es un paso la condition sera de la accion
 				} else if (isStep) {
@@ -240,14 +238,14 @@ public class Preprocess extends DefaultHandler {
 				 */
 				if (previousTag.equals(GrafcetTagsConstants.COMMENT_TAG)) {
 					// si esta dentro de un comentario añado a cometario
-					addComent(text);
+					addComent("(RE " + text + ")");
 
 				} else if (isStep) {
 					// Si es un step puede ser de una condicion o de una action
 					if (previousTag.equals(GrafcetTagsConstants.CONDITION_TAG)) {
-						action.setCondition(action.getCondition() + " RE " + text);
+						action.setCondition(action.getCondition() + "( RE " + text+")");
 					} else {
-						action.setText(action.getText() + " RE " + text);
+						action.setText(action.getText() + " (RE " + text+")");
 					}
 
 				} else if (isTransition) {
@@ -267,14 +265,14 @@ public class Preprocess extends DefaultHandler {
 				} else if (isStep) {
 					// Si es un step puede ser de una condicion o de una action
 					if (previousTag.equals(GrafcetTagsConstants.CONDITION_TAG)) {
-						action.setCondition(action.getCondition() + " FE " + text);
+						action.setCondition(action.getCondition() +" (FE " + text + ")");
 					} else {
-						action.setText(action.getText() + " FE " + text);
+						action.setText(action.getText() + " (FE " + text + ")");
 					}
 
 				} else if (isTransition) {
 					// si esta dentro de una transition
-					transition.addCondition(" (FE " + text + ")");
+					transition.addCondition("(FE " + text + ")");
 					//transition.addListConditionSep(text);
 				}
 			}
@@ -289,22 +287,22 @@ public class Preprocess extends DefaultHandler {
 		// (secuencias)
 
 		if (actualTag.equals(GrafcetTagsConstants.SEQUENCE_TAG)) {// Sequence
-			// añado la secuencia al grafcet
-			grafcet.addSeq(sequence, actualSequence);
+			// anado la secuencia al grafcet
+			grafcet.addSequence(sequence, actualSequence);
 			actualSequence = 0;
 
 		} else if (actualTag.equals(GrafcetTagsConstants.ACTION_TAG)) { // Action
-			// añado la accion al step
+			// anado la accion al step
 			step.addAction(action);
 
 		} else if (actualTag.equals(GrafcetTagsConstants.STEP_TAG)) {// Step
-			// añado el step a la secuencia
-			sequence.addTorS(step);
+			// anado el step a la secuencia
+			sequence.addTransitionOrStep(step);
 			isStep = false;
 
 		} else if (actualTag.equals(GrafcetTagsConstants.TRANSITION_TAG)) { // Transition
-			// añado la transicion a la secuencia
-			sequence.addTorS(transition);
+			// anado la transicion a la secuencia
+			sequence.addTransitionOrStep(transition);
 			isTransition = false;
 
 		} else if (actualTag.equals(GrafcetTagsConstants.HLINK_TAG)) { // hlink
@@ -331,7 +329,7 @@ public class Preprocess extends DefaultHandler {
 	private void processingAttributes(String pNameAtt, String pAtt) {
 
 		if (actualTag.equals(GrafcetTagsConstants.GRAFCET_TAG)) {// Grafcet
-			// añado el tipo, nombre, comentario y propietario
+			// aNado el tipo, nombre, comentario y propietario
 			if (pNameAtt.equals("type")) {
 				grafcet.setType(pAtt);
 			} else if (pNameAtt.equals("name")) {
