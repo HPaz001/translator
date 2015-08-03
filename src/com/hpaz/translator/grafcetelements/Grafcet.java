@@ -291,6 +291,12 @@ public class Grafcet {
 					 */
 					sequenceList.get(road.getSeqIni()).addPreviousSequencesList(numSequencesRoad);
 					sequenceList.get(numSequencesRoad).addNextSequencesList(road.getSeqIni());
+					
+					if(road.getType().equals("conv and")){
+						//busco la primera etapa de la secuencia road.SeqInit y activar setAnd=true;
+						Step step = sequenceList.get(road.getSeqIni()).getFirstStep();
+						step.setAnd(true);
+					}
 				}
 				/*
 				 * Sequence sequenceRoadIni =
@@ -441,24 +447,32 @@ public class Grafcet {
 	public LinkedList<String> getPreviousStepAndTransitionFromSequence(LinkedList<Integer> sequenceIDList,
 			String previousTransition) {
 		LinkedList<String> previousStepAndTransitionList = new LinkedList<String>();
-
+		//por cada lista de idSecuencias 
 		for (Integer sequenceID : sequenceIDList) {
+			//obtengo la secuencia con ese ID
 			Sequence sequence = this.sequenceList.get(sequenceID);
+			//Creo una variable para la transicion y la inicializo a null
 			Transition trans = null;
+			String transName = null;
+			//Si no me han pasado una transicion por parametro
 			if (previousTransition == null) {
 				trans = sequence.getLastTransition();
+				if(trans!=null){
+					transName=trans.getCondition();
+				}
+			}else{
+				transName = previousTransition;
 			}
+			
 			Step step = sequence.getLastStep();
-			if (step == null) {
+			
+			if (step == null && transName==null ) {
 				previousStepAndTransitionList.addAll(getPreviousStepAndTransitionFromSequence(
 						sequence.getPreviousSequencesList(), previousTransition));
-			} else {
-				String transName = null;
-				if (trans != null) {
-					transName = trans.getCondition();
-				} else {
-					transName = previousTransition;
-				}
+			} else if (step == null && transName!=null ) {
+				previousStepAndTransitionList.addAll(getPreviousStepAndTransitionFromSequence(
+						sequence.getPreviousSequencesList(), transName));
+			}else if (step != null && transName!=null ){
 				previousStepAndTransitionList.add("(" + step.getName() + " AND " + transName + ")");
 			}
 		}
@@ -484,7 +498,7 @@ public class Grafcet {
 	// TODO AGREGAR SET Y RESET A UN STEP
 	public void addSetAndResetToStep() {
 
-		String trans = null;
+		//String trans = null;
 		for (Sequence seq : sequenceList) {
 			for (int i = 0; i < seq.getListTransitionOrStep().size(); i++) {
 

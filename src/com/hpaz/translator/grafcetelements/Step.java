@@ -1,5 +1,6 @@
 package com.hpaz.translator.grafcetelements;
 
+import java.awt.List;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -15,6 +16,7 @@ public class Step {
 	private String comment;//comentario del step
 	private String mySet;
 	private String myReset;
+	private boolean and;
 	
 	/**Para saber la etepa de la emergencia,
 	 * Devuelve stop o start*/
@@ -35,6 +37,7 @@ public class Step {
 		this.myActions = new LinkedList<Action>();
 		this.stopEmergency=false;
 		this.startEmergency=false;
+		this.setAnd(false);
 	}
 
 	public String getType() {
@@ -70,8 +73,32 @@ public class Step {
 	public void addMySet(String pMySet) {
 		if (this.mySet==null){
 			this.mySet = pMySet;
-		}else{
-			this.mySet= mySet+" OR "+pMySet;
+		}else if(!mySet.contains(pMySet)){
+			if(isAnd()){
+				String newSet =null;
+				/*Quito los parentesis y espacios de pMyReset*/
+				String aux = pMySet.replaceAll("\\(|\\)", "");
+				
+				/* Luego sustituyo el AND */
+				aux = aux.replaceAll("AND", ",");
+				
+				aux=aux.trim();
+				/*uso string.split(",") para separarlo en una lista */
+				String[] list  = aux.split(",");
+				for (int i = 0; i < list.length; i++) {
+					String s = list[i].trim();
+					if(!mySet.contains(s)){
+						if(newSet!=null){
+							newSet= newSet + " AND " + list[i];
+						}else{
+							newSet= list[i];
+						}
+					}
+				}
+				this.mySet= mySet+" AND "+newSet;
+			}else{
+				this.mySet= mySet+" OR "+pMySet;
+			}
 		}
 	}
 
@@ -82,8 +109,8 @@ public class Step {
 	public void addMyReset(String pMyReset) {
 		if (this.myReset==null){
 			this.myReset = pMyReset;
-		}else{
-			this.myReset= myReset+" OR "+pMyReset;
+		}else if(!myReset.contains(pMyReset)){
+			this.myReset= myReset+" OR "+pMyReset;			
 		}
 	}
 
@@ -173,5 +200,13 @@ public class Step {
 			}
 		}
 		return actionStepMap;
+	}
+
+	public boolean isAnd() {
+		return and;
+	}
+
+	public void setAnd(boolean and) {
+		this.and = and;
 	}
 }

@@ -34,8 +34,8 @@ public class Road {
 		return seqIni;
 	}
 
-	public void setSeqIni(int seqIni) {
-		this.seqIni = seqIni - 1;
+	public void setSeqIni(int pSeqIni) {
+		this.seqIni = pSeqIni - 1;
 	}
 
 	/*

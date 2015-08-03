@@ -139,6 +139,14 @@ public class Sequence {
 	public void printSequence() {
 		System.out.println("----- SEQUENCE ------");
 		System.out.println("ID secuencia : " + this.idSeq);
+		System.out.println("----- PREVIOUS SequencesList");
+		for (Integer i : previousSequencesList) {
+			System.out.println(i);
+		}
+		System.out.println("----- NEXT SequencesList");
+		for (Integer i : nextSequencesList) {
+			System.out.println(i);
+		}
 		for (Object o : listTransitionOrStep) {
 			if (o instanceof Transition) {
 				((Transition) o).printTransition();
@@ -146,6 +154,7 @@ public class Sequence {
 				((Step) o).printStep();
 			}
 		}
+		
 	}
 
 	public Map<String, String> getActionStepMap() {
@@ -204,8 +213,11 @@ public class Sequence {
 	}
 
 	public void addPreviousSequencesList(Integer previousSequences) {
-		// compruebo que no este para no repetir
-		if (!previousSequencesList.equals(previousSequences)) {
+		
+		if(previousSequencesList.isEmpty()){
+			this.previousSequencesList.add(previousSequences);	
+			// compruebo que no este para no repetir
+		}else if (!previousSequencesList.equals(previousSequences)) {
 			this.previousSequencesList.add(previousSequences);
 		}
 
@@ -216,13 +228,15 @@ public class Sequence {
 	}
 
 	public void addNextSequencesList(Integer nextSequences) {
-		if (nextSequencesList.equals(nextSequences)) {
+		if(nextSequencesList.isEmpty()){
+			this.nextSequencesList.add(nextSequences);
+		}else if (!nextSequencesList.equals(nextSequences)) {
 			this.nextSequencesList.add(nextSequences);
 		}
 	}
 
 	public Transition getLastTransition() {
-
+		
 		for (int i = listTransitionOrStep.size() - 1; i >= 0; i--) {
 			if (listTransitionOrStep.get(i) instanceof Transition) {
 				return (Transition) listTransitionOrStep.get(i);
