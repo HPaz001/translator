@@ -76,6 +76,7 @@ public class Sequence {
 	/** puede ser una transition o un step */
 	public void addTransitionOrStep(Object pTransitionOrStep) {
 		if (pTransitionOrStep instanceof Transition) {
+			((Transition) pTransitionOrStep).analyzeReviews();
 			signals.addAll(((Transition) pTransitionOrStep).getConditionSep());
 		} else if (pTransitionOrStep instanceof Step) {
 			for (Action action : ((Step) pTransitionOrStep).getMyActions()) {

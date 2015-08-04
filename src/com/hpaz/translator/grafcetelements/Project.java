@@ -147,19 +147,19 @@ public class Project {
 		if (program.equalsIgnoreCase(GrafcetTagsConstants.PROGRAM_OPT1)) { // Twincat
 			try {
 
-				printProject();
+				//printProject();
 				// Program Main
-				// Output.getOutput().exportFile(generateProgramMain(),
-				// getName()+"_PROGRAM_MAIN",outputDir);
+				Output.getOutput().exportFile(generateProgramMain(),
+						getName()+"_PROGRAM_MAIN",outputDir);
 
 				// Var Global
-				// Output.getOutput().exportFile(getGlobalVars(generateGlobalVars()),
-				// getName()+"_VAR_GLOBAL",outputDir);
+				Output.getOutput().exportFile(getGlobalVars(generateGlobalVars()),
+						getName()+"_VAR_GLOBAL",outputDir);
 
 				// Function Block --> uno por cada grafcet
 				for (Grafcet g : listGrafcet) {
-					Output.getOutput().exportFile(g.generateFunctionBlock(), "FUNCTION_BLOCK_" + g.getName(),
-							outputDir);
+					Output.getOutput().exportFile(g.generateFunctionBlock(), 
+							"FUNCTION_BLOCK_" + g.getName(),outputDir);
 				}
 
 			} catch (Exception e) {
@@ -363,11 +363,12 @@ public class Project {
 
 	public LinkedList<String> generateSignals() {
 		LinkedList<String> signals = new LinkedList<String>();
-		// TODO faltan las señales de los comentarios
+		
 		for (Grafcet g : getListG()) {
 			// si el grafcet es el de emergencia relleno la lista de emergencia
 			signals.addAll(g.getListSignalsGrafcet());
 		}
+		
 		signals = removeDuplicates(signals);
 		// TODO Eliminar este for q imprime por consola
 		for (String string : signals) {

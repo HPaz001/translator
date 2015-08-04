@@ -189,7 +189,6 @@ public class Preprocess extends DefaultHandler {
 
 				// si es de un comentario
 				if (previousTag.equals(GrafcetTagsConstants.COMMENT_TAG)) {
-					// TODO addComent("NOT (" + text + ")");
 					addComent(text);
 					// si es un paso la condition sera de la accion
 				} else if (isStep) {
@@ -207,15 +206,6 @@ public class Preprocess extends DefaultHandler {
 					 * dejo los signos ya los cambiare en la propia transition
 					 */
 					transition.addCondition("(NOT (" + text + "))");
-
-					/*
-					 * la añado en la lista por separados para tener todas las
-					 * señales por separado
-					 * 
-					 * if (text.contains("+") || text.contains("*")) {
-					 * transition.addListConditionSep(removeSigns(text)); } else
-					 * { transition.addListConditionSep(text); }
-					 */
 				}
 
 			} else if (actualTag.equals(GrafcetTagsConstants.COMMENT_TAG)) {// comment
@@ -232,7 +222,6 @@ public class Preprocess extends DefaultHandler {
 				 */
 				if (previousTag.equals(GrafcetTagsConstants.COMMENT_TAG)) {
 					// si esta dentro de un comentario añado a cometario
-					// TODO addComent("(RE " + text + ")");
 					addComent(text);
 
 				} else if (isStep) {
@@ -268,7 +257,7 @@ public class Preprocess extends DefaultHandler {
 				} else if (isTransition) {
 					// si esta dentro de una transition
 					transition.addCondition("(FE " + text + ")");
-					// transition.addListConditionSep(text);
+				
 				}
 			}
 		}
@@ -370,12 +359,6 @@ public class Preprocess extends DefaultHandler {
 
 		} else if (actualTag.equals(GrafcetTagsConstants.NODE_TAG)) { // node
 			// guardo las dos secuencias de las q viene o va en el road
-			/*
-			 * if (road.getSeqOne() == 0) {
-			 * road.setSeqOne(Integer.parseInt(pAtt)); } else if
-			 * (road.getSeqTwo() == 0) { road.setSeqTwo(Integer.parseInt(pAtt));
-			 * }
-			 */
 			road.addSequences(Integer.parseInt(pAtt));
 
 		} else if (actualTag.equals(GrafcetTagsConstants.JUMP_TAG)) {// jump
