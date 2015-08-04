@@ -3,6 +3,8 @@ package com.hpaz.translator.grafcetelements;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.hpaz.translator.grafcetelements.constants.GrafcetTagsConstants;
 import com.hpaz.translator.output.Output;
@@ -45,6 +47,8 @@ public class Project {
 		this.language = null;
 		this.program = null;
 		this.listGrafcet = new LinkedList<Grafcet>();
+		this.listTimers = new LinkedList<Timer>();
+		this.listCounters = new LinkedList<Counter>();
 
 	}
 
@@ -370,10 +374,31 @@ public class Project {
 		}
 		
 		signals = removeDuplicates(signals);
-		// TODO Eliminar este for q imprime por consola
+		// TODO 
 		for (String string : signals) {
 			System.out.println(string);
+			Pattern pat = Pattern.compile("^Temp.*/X[0-9]./[0-9].*");
+			Matcher mat = pat.matcher(string);
+			if(mat.matches()){
+				Timer timer = new Timer();
+				String[] list = string.split("/");
+				
+				//TOD PENSAR COMO HACER PARA COMPARRALO PORQ NO LO HACE BIEN
+				if(listTimers.contains(timer)){
+					int index = listTimers.indexOf(list[0]);
+					listTimers.get(index).addStepNameTimer(list[1]);
+				}else{
+					timer.fillTimer(list);
+					listTimers.add(timer);
+				}
+				 
+			}
+					
 		}
+		for (Timer tim : getListTimers()) {
+			tim.printConsole();
+		}
+		
 		return signals;
 
 	}

@@ -59,14 +59,10 @@ public class Transition {
 		String s="";
 		LinkedList<String> aux= new LinkedList<String>();
 		/*Para añadir expresiones regulares*/
-		Pattern pat = Pattern.compile("^Temp.*");
 		for (String cS : conditionSep) {
 			if(!(cS.equals("=1")) && !(cS.equals("true"))){
-				Matcher mat = pat.matcher(cS);
-				if(!mat.matches()){
 					s="\t"+cS+"\t: BOOL;\n";
 					aux.add(s);
-				}
 			}
 			
 		}

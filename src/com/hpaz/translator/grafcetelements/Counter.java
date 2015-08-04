@@ -6,15 +6,17 @@ package com.hpaz.translator.grafcetelements;
 
 public class Counter {
 	private String nameCounter;
+	private String typeCounter;
 	
 	public Counter(){
 		this.nameCounter=null;
+		this.addTypeCounter(null);
 	}
 	
-	public enum typeCounter
+	/*public enum typeCounter
 	{
 		CTU,CTD,CTUD
-	}
+	}*/
 
 	public String getNameCounter() {
 		return nameCounter;
@@ -22,6 +24,14 @@ public class Counter {
 
 	public void addNameCounter(String pNameCounter) {
 		this.nameCounter = pNameCounter;
+	}
+
+	public String getTypeCounter() {
+		return typeCounter;
+	}
+
+	public void addTypeCounter(String typeCounter) {
+		this.typeCounter = typeCounter;
 	}
 
 	
