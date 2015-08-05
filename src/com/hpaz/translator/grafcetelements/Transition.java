@@ -115,7 +115,16 @@ public class Transition {
 				Matcher mat = pat.matcher(list[i]);
 				if (mat.matches()) {
 					// si tiene una asignacion añado a la lista cond sep
-					addListConditionSep(list[i].trim());
+					String [] listSep = list[i].trim().split(":=|==|\\*");//TODO REVISAR
+					for (int j = 0; j < listSep.length; j++) {
+						Pattern patt = Pattern.compile("[0-9]|X[0-9]|[0-9][a-z A-Z]");
+						Matcher matt = pat.matcher(listSep[i]);
+						if(!matt.matches()){
+							addListConditionSep(listSep[i]);
+						}
+						
+					}
+							
 				}
 			}
 
