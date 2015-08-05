@@ -1,10 +1,4 @@
 package com.hpaz.translator.grafcetelements;
-//TODO temporizadores exp reg
-/*De esta forma puedo comparar etapa y tiempo en la transicion
-Pattern temp = Pattern.compile("^Temp.*.=[0-9].*");
-En una transicion
-Pattern temp = Pattern.compile("^Temp.*./X.[0-9]./[0-9].*");
-*/
 
 public class Timer {
 	private String nameTimer;

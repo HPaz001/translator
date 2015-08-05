@@ -73,7 +73,8 @@ public class Sequence {
 		StepStartEmergency = stepStartEmergency;
 	}
 
-	/** puede ser una transition o un step */
+	/**Este metodo añade una transicion o un step a la lista listTransitionOrStep
+	 * Pero antes de esto genera y guarda las señales correspondientes */
 	public void addTransitionOrStep(Object pTransitionOrStep) {
 		if (pTransitionOrStep instanceof Transition) {
 			((Transition) pTransitionOrStep).analyzeReviews();
@@ -81,6 +82,7 @@ public class Sequence {
 		} else if (pTransitionOrStep instanceof Step) {
 			for (Action action : ((Step) pTransitionOrStep).getMyActions()) {
 				String act = action.getText();
+				//TODO controlar aqui los contadores los temp en la transicion
 				if (!act.equals("") && !action.isEmergency()) {
 					signals.add(action.getText());
 				}

@@ -1,6 +1,5 @@
 package com.hpaz.translator.grafcetelements;
 
-import java.awt.List;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -69,7 +68,6 @@ public class Step {
 	public String getMySet() {
 		return mySet;
 	}
-	//TODO MIRAR SET DE ETAPA X34 PONE (X33 AND )
 	public void addMySet(String pMySet) {
 		if (this.mySet==null){
 			this.mySet = pMySet;

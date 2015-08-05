@@ -1,28 +1,22 @@
 package com.hpaz.translator.ui;
 
-import java.awt.BorderLayout;
+import java.awt.Choice;
+import java.awt.Color;
 import java.awt.EventQueue;
-
+import java.awt.Font;
+import java.awt.Panel;
+import java.awt.ScrollPane;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-
+import javax.swing.border.LineBorder;
+import javax.swing.border.TitledBorder;
 import com.hpaz.translator.grafcetelements.Project;
 import com.hpaz.translator.ui.constants.ConfigConstants;
-
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import javax.swing.border.TitledBorder;
-import javax.swing.border.LineBorder;
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.ScrollPane;
-import javax.swing.JTable;
-import javax.swing.JLabel;
-import javax.swing.Box;
-import java.awt.Choice;
-import java.awt.Panel;
 
 public class ConfigWindow extends JFrame {
 
@@ -159,7 +153,7 @@ public class ConfigWindow extends JFrame {
 	
 	private void exportOutputToFiles(){
 		// Genero las salidas dependiendo del software de compatibilidad
-		try {//TODO ESTO DESAPARECE SE LE LLEMARA DESDE LA INTERFACE A LO QUE ESTA DENTRO DEL TRY
+		try {//TODO exportOutputToFiles
 			//Project.getProject().printProject();
 			Project.getProject().print();
 		

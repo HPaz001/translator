@@ -3,8 +3,6 @@ package com.hpaz.translator.grafcetelements;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import com.hpaz.translator.grafcetelements.constants.GrafcetTagsConstants;
 import com.hpaz.translator.output.Output;
@@ -97,8 +95,8 @@ public class Project {
 	 * losSetAnReset
 	 */
 	public void addGrafcet(Grafcet g) {
-		//g.fillPreviousNextListsSequences();
-		//g.generateSetAndReset();
+		// g.fillPreviousNextListsSequences();
+		// g.generateSetAndReset();
 		g.fillPreviousAndNextSequencesLists();
 		g.addSetAndResetToStep();
 		this.listGrafcet.add(g);
@@ -108,8 +106,8 @@ public class Project {
 		return listTimers;
 	}
 
-	public void addListTimers(LinkedList<Timer> listTimers) {
-		this.listTimers = listTimers;
+	public void addTimer(Timer pTimer) {
+		this.listTimers.add(pTimer);
 	}
 
 	public LinkedList<Counter> getListCounters() {
@@ -151,19 +149,18 @@ public class Project {
 		if (program.equalsIgnoreCase(GrafcetTagsConstants.PROGRAM_OPT1)) { // Twincat
 			try {
 
-				//printProject();
+				// printProject();
 				// Program Main
-				Output.getOutput().exportFile(generateProgramMain(),
-						getName()+"_PROGRAM_MAIN",outputDir);
+				Output.getOutput().exportFile(generateProgramMain(), getName() + "_PROGRAM_MAIN", outputDir);
 
 				// Var Global
-				Output.getOutput().exportFile(getGlobalVars(generateGlobalVars()),
-						getName()+"_VAR_GLOBAL",outputDir);
+				Output.getOutput().exportFile(getGlobalVars(generateGlobalVars()), getName() + "_VAR_GLOBAL",
+						outputDir);
 
 				// Function Block --> uno por cada grafcet
 				for (Grafcet g : listGrafcet) {
-					Output.getOutput().exportFile(g.generateFunctionBlock(), 
-							"FUNCTION_BLOCK_" + g.getName(),outputDir);
+					Output.getOutput().exportFile(g.generateFunctionBlock(), "FUNCTION_BLOCK_" + g.getName(),
+							outputDir);
 				}
 
 			} catch (Exception e) {
@@ -367,54 +364,52 @@ public class Project {
 
 	public LinkedList<String> generateSignals() {
 		LinkedList<String> signals = new LinkedList<String>();
-		
 		for (Grafcet g : getListG()) {
 			// si el grafcet es el de emergencia relleno la lista de emergencia
 			signals.addAll(g.getListSignalsGrafcet());
 		}
-		
+
 		signals = removeDuplicates(signals);
+		// TODO recordar quitar este for y el siguiente
 		for (String string : signals) {
 			System.out.println(string);
-			Pattern pat = Pattern.compile("^Temp.*/X[0-9]./[0-9].*");
-			Matcher mat = pat.matcher(string);
-			if(mat.matches()){
-				Timer timer = new Timer();
-				String[] list = string.split("/");
-				timer.addNameTimer(list[0]);
-	
-				int index = equalsTimer(timer);
-				if(index != (-1)){
-					listTimers.get(index).addStepNameTimer(list[1]);
-				}else{
-					timer.fillTimer(list);
-					listTimers.add(timer);
-				}
-				 
-			}
-					
 		}
-		//TODO recordar quitar este for y el System.out.println(string); 
+
 		for (Timer tim : getListTimers()) {
 			tim.printConsole();
 		}
-		
+
 		return signals;
 
 	}
-	
-	/**Busca en la lista de temporizadores si existe devuelve su indice de lo contrario devuelve -1*/
-	private int equalsTimer(Timer pTimer){
+
+	/**
+	 * Busca en la lista de temporizadores si existe devuelve su indice de lo
+	 * contrario devuelve -1
+	 */
+	public int equalsTimer(Timer pTimer) {
 		int indexTimer = -1;
 		int indexAux = 0;
-		while (indexTimer == (-1) &&  indexAux < listTimers.size()){
-			if(listTimers.get(indexAux).equals(pTimer)){
+		while (indexTimer == (-1) && indexAux < listTimers.size()) {
+			if (listTimers.get(indexAux).equals(pTimer)) {
 				indexTimer = indexAux;
-				
+
 			}
-			indexAux ++;	
+			indexAux++;
 		}
 		return indexTimer;
+	}
+	/**En el segundo string se guardara separado por coma el tipo de procedencia y el tipo de dato
+	 * */
+	public Map<String, String> generateSignalsMainWindow() {
+		Map<String, String> signals = new HashMap<>();
+		LinkedList<String> aux = generateSignals();
+		for (String string : ) {
+			System.out.println(string);
+		}
+		
+		return signals;
+		
 	}
 
 }
