@@ -3,6 +3,8 @@ package com.hpaz.translator.grafcetelements;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Sequence {
 	private int idSeq;
@@ -84,7 +86,40 @@ public class Sequence {
 				String act = action.getText();
 				//TODO controlar aqui los contadores los temp en la transicion
 				if (!act.equals("") && !action.isEmergency()) {
-					signals.add(action.getText());
+					//si es un contador o un temporizador solo guardo el nombre
+					//el creo el contador
+					String aux = action.getText();
+					Pattern patTemp = Pattern.compile("^Temp.*=[0-9][a-z A-Z]");
+					Matcher matTemp = patTemp.matcher(aux.trim());
+					if(matTemp.matches()){
+						//TODO ?¿?¿? compruebo que el tiempo es el correcto ?¿
+						//int time = Integer.parseInt(aux.replaceAll("=|[a-z A-Z]", ""));
+						aux = aux.substring(0, aux.indexOf("="));
+					}else {
+						Pattern patCount = Pattern.compile("^Cont.*=[0-9]$");
+						Matcher matCount = patTemp.matcher(aux.trim());
+						if(matCount.matches()){
+							/*si es un contador con una asignacion directa, 
+							 * compruebo si existe en la lista
+							 * si no existe lo creo y añado y si exite le añado la etapa*/
+							//TODO tengo q pedir ejemplo de contador en la programacion para saber si esto esta bien 
+							aux = aux.substring(0, aux.indexOf("="));
+							int index = Project.getProject().equalsCount(aux);
+							
+							if(index == (-1)){
+								Counter cont = new Counter();
+								cont.addNameCounter(aux);
+								cont.addStepCountes(((Step) pTransitionOrStep).getName());
+								//TODO contADOR obtengo el numero
+								aux = action.getText().substring(action.getText().indexOf("=")+1, action.getText().length());	
+								Project.getProject().addCounter(cont);
+							}else{
+								Project.getProject().getListCounters().get(index).addStepCountes(((Step) pTransitionOrStep).getName());
+							}
+						}
+					}
+					signals.add(aux);
+					
 				}
 			}
 		}

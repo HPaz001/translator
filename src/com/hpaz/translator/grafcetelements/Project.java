@@ -37,6 +37,8 @@ public class Project {
 	private LinkedList<Grafcet> listGrafcet;
 	private LinkedList<Timer> listTimers;
 	private LinkedList<Counter> listCounters;
+	private LinkedList<String> listTimersUI;
+	private LinkedList<String> listCountersUI;
 
 	private static Project project = new Project();
 
@@ -47,6 +49,8 @@ public class Project {
 		this.listGrafcet = new LinkedList<Grafcet>();
 		this.listTimers = new LinkedList<Timer>();
 		this.listCounters = new LinkedList<Counter>();
+		this.listCountersUI = new LinkedList<String>();
+		this.listTimersUI = new LinkedList<String>();
 
 	}
 
@@ -56,7 +60,6 @@ public class Project {
 
 	public void setOutputPath(String outputDir) {
 		this.outputDir = outputDir;
-
 	}
 
 	private String getName() {
@@ -107,6 +110,7 @@ public class Project {
 	}
 
 	public void addTimer(Timer pTimer) {
+		this.listTimersUI.add(pTimer.getNameTimer());
 		this.listTimers.add(pTimer);
 	}
 
@@ -114,8 +118,16 @@ public class Project {
 		return listCounters;
 	}
 
-	public void addListCounters(LinkedList<Counter> listCounters) {
-		this.listCounters = listCounters;
+	public void addCounter(Counter pCounters) {
+		this.listCountersUI.add(pCounters.getNameCounter());
+		this.listCounters.add(pCounters);
+	}
+	public LinkedList<String> getListTimersUI() {
+		return listTimersUI;
+	}
+
+	public LinkedList<String> getListCountersUI() {
+		return listCountersUI;
 	}
 
 	public LinkedList<String> generateGlobalVars() {
@@ -399,17 +411,24 @@ public class Project {
 		}
 		return indexTimer;
 	}
-	/**En el segundo string se guardara separado por coma el tipo de procedencia y el tipo de dato
-	 * */
-	public Map<String, String> generateSignalsMainWindow() {
-		Map<String, String> signals = new HashMap<>();
-		LinkedList<String> aux = generateSignals();
-		for (String string : ) {
-			System.out.println(string);
+	
+	/**
+	 * Busca en la lista de contadores si existe devuelve su indice de lo
+	 * contrario devuelve -1
+	 */
+	public int equalsCount(String pNameTimer) {
+		int indexTimer = -1;
+		int indexAux = 0;
+		while (indexTimer == (-1) && indexAux < listTimers.size()) {
+			if (listCounters.get(indexAux).equals(pNameTimer)) {
+				indexTimer = indexAux;
+			}
+			indexAux++;
 		}
-		
-		return signals;
-		
+		return indexTimer;
 	}
+
+
+
 
 }
