@@ -374,7 +374,6 @@ public class Project {
 		}
 		
 		signals = removeDuplicates(signals);
-		// TODO 
 		for (String string : signals) {
 			System.out.println(string);
 			Pattern pat = Pattern.compile("^Temp.*/X[0-9]./[0-9].*");
@@ -382,10 +381,10 @@ public class Project {
 			if(mat.matches()){
 				Timer timer = new Timer();
 				String[] list = string.split("/");
-				
-				//TOD PENSAR COMO HACER PARA COMPARRALO PORQ NO LO HACE BIEN
-				if(listTimers.contains(timer)){
-					int index = listTimers.indexOf(list[0]);
+				timer.addNameTimer(list[0]);
+	
+				int index = equalsTimer(timer);
+				if(index != (-1)){
 					listTimers.get(index).addStepNameTimer(list[1]);
 				}else{
 					timer.fillTimer(list);
@@ -395,12 +394,27 @@ public class Project {
 			}
 					
 		}
+		//TODO recordar quitar este for y el System.out.println(string); 
 		for (Timer tim : getListTimers()) {
 			tim.printConsole();
 		}
 		
 		return signals;
 
+	}
+	
+	/**Busca en la lista de temporizadores si existe devuelve su indice de lo contrario devuelve -1*/
+	private int equalsTimer(Timer pTimer){
+		int indexTimer = -1;
+		int indexAux = 0;
+		while (indexTimer == (-1) &&  indexAux < listTimers.size()){
+			if(listTimers.get(indexAux).equals(pTimer)){
+				indexTimer = indexAux;
+				
+			}
+			indexAux ++;	
+		}
+		return indexTimer;
 	}
 
 }

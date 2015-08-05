@@ -23,11 +23,13 @@ public class Timer {
 		this.time = 0;
 	}
 	public Timer fillTimer(String[] list){
-		this.nameTimer = list[0];
+		//this.nameTimer = list[0];
 		this.addStepNameTimer(list[1]);
 		String aux = list[2];
-		aux.replaceAll("[0-9]", "");
-		this.addTypeTimer(aux.trim());
+		//Extraigo el texto sin numero
+		aux = aux.replaceAll("[0-9]", "");
+		this.addTypeTime(aux.trim());
+		//Extraigo el numero sin texto
 		aux = list[2].replaceAll("[a-z]|[A-Z]", "");
 		this.time = Integer.parseInt(aux.trim());
 		
@@ -95,8 +97,8 @@ public class Timer {
 		System.out.println("typeTimer: "+this.typeTimer);
 		
 	}
-	public boolean contains(String pName) {
-		return this.nameTimer.equals(pName);
+	public boolean equals(Timer tim) {
+		return this.nameTimer.equals(tim.getNameTimer());
 	}
 
 }
