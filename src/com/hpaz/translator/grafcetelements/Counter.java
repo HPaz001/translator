@@ -1,7 +1,7 @@
 package com.hpaz.translator.grafcetelements;
 
-//TODO cont expr reg
-/*Pattern cont = Pattern.compile("^Cont.*.=[0-9]$");*/
+
+/*TODO Contador etapas init .. Creo que se deben guardar las etapas cuando se inicializan y en q etapas*/
 
 
 public class Counter {
@@ -51,6 +51,11 @@ public class Counter {
 			this.stepCountes = this.stepCountes + " OR " + stepCountes;
 		}
 		
+	}
+	public void printConsole() {
+		System.out.println("getNameCounter: "+getNameCounter());
+		System.out.println("getStepCountes: "+getStepCountes());
+		System.out.println("getTypeCounter: "+getTypeCounter());
 	}
 
 	

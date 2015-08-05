@@ -97,7 +97,7 @@ public class Sequence {
 						aux = aux.substring(0, aux.indexOf("="));
 					}else {
 						Pattern patCount = Pattern.compile("^Cont.*=[0-9]$");
-						Matcher matCount = patTemp.matcher(aux.trim());
+						Matcher matCount = patCount.matcher(aux.trim());
 						if(matCount.matches()){
 							/*si es un contador con una asignacion directa, 
 							 * compruebo si existe en la lista

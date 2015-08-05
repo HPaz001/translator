@@ -387,10 +387,15 @@ public class Project {
 			System.out.println(string);
 		}
 
-		for (Timer tim : getListTimers()) {
-			tim.printConsole();
+		for (String tim : getListTimersUI()) {
+			//tim.printConsole();
+			System.out.println("TEMPO ------ "+tim);
 		}
-
+		
+		for (String count : getListCountersUI()) {
+			//count.printConsole();
+			System.out.println("CONTADOR -------"+count);
+		}
 		return signals;
 
 	}
