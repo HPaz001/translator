@@ -63,7 +63,7 @@ public class Counter {
 		String globalsVar ="";
 		
 		if(this.typeCounter.equals(GrafcetTagsConstants.typeCounter.CTD)){
-			globalsVar= "\t" + this.nameCounter + "\t: "+this.typeCounter+";\n"+
+			globalsVar= 
 					"\t" + this.nameCounter + "CD\t: BOOL;\n"+
 					"\t" + this.nameCounter + "LOAD\t: BOOL;\n"+
 					"\t" + this.nameCounter + "PV\t: INT;\n"+
@@ -71,7 +71,7 @@ public class Counter {
 					"\t" + this.nameCounter + "CV\t: INT;\n";
 					
 		}else if(this.typeCounter.equals(GrafcetTagsConstants.typeCounter.CTU)){
-			globalsVar= "\t" + this.nameCounter + "\t: "+this.typeCounter+";\n"+
+			globalsVar= 
 					"\t" + this.nameCounter + "CU\t: BOOL;\n"+
 					"\t" + this.nameCounter + "RESET\t: BOOL;\n"+
 					"\t" + this.nameCounter + "PV\t: INT;\n"+
@@ -79,7 +79,7 @@ public class Counter {
 					"\t" + this.nameCounter + "CV\t: INT;\n";
 			
 		}else if(this.typeCounter.equals(GrafcetTagsConstants.typeCounter.CTUD)){
-			globalsVar= "\t" + this.nameCounter + "\t: "+this.typeCounter+";\n"+
+			globalsVar= 
 					"\t" + this.nameCounter + "CU\t: BOOL;\n"+
 					"\t" + this.nameCounter + "CD\t: BOOL;\n"+
 					"\t" + this.nameCounter + "RESET\t: BOOL;\n"+
@@ -94,12 +94,14 @@ public class Counter {
 		
 	}
 
-	public String generateProgramMainCounter(){
-		String programMain = ""; 
+	public String []  generateProgramMainCounter(){
+		String []  programMain = new String[2]; 
+		
 				if(this.typeCounter.equals(GrafcetTagsConstants.typeCounter.CTD)){
 										
 					//TODO contador inicializaciones preguntar q falta
-					programMain = this.nameCounter+"CD:= " + this.nameCounter + "CD,"+
+					programMain[0] ="\t" + this.nameCounter + "\t: "+this.typeCounter+";\n";
+					programMain[1] = this.nameCounter+"CD:= " + this.nameCounter + "CD,"+
 							" LOAD:= " + this.nameCounter + "LOAD,"+
 							" PV:= " + this.nameCounter + "PV,"+
 							" Q=> " + this.nameCounter + "Q,"+
@@ -109,7 +111,8 @@ public class Counter {
 				}else if(this.typeCounter.equals(GrafcetTagsConstants.typeCounter.CTU)){
 					
 					//TODO contador inicializaciones preguntar q falta
-					programMain = this.nameCounter+"(CU:= " + this.nameCounter + "CU ," +
+					programMain[0] ="\t" + this.nameCounter + "\t: "+this.typeCounter+";\n";
+					programMain[1] = this.nameCounter+"(CU:= " + this.nameCounter + "CU ," +
 							" RESET:= " + this.nameCounter + "RESET,"+
 							" PV:= " + this.nameCounter + "PV,"+
 							" Q=> " + this.nameCounter + "Q,"+
@@ -118,7 +121,8 @@ public class Counter {
 				}else if(this.typeCounter.equals(GrafcetTagsConstants.typeCounter.CTUD)){
 					
 					//TODO contador inicializaciones preguntar q falta
-					programMain = this.nameCounter+"(CU:= " + this.nameCounter + "CU ," +
+					programMain[0] ="\t" + this.nameCounter + "\t: "+this.typeCounter+";\n";
+					programMain[1] = this.nameCounter+"(CU:= " + this.nameCounter + "CU ," +
 							"CD:= " + this.nameCounter + "CD,"+
 							" RESET:= " + this.nameCounter + "RESET,"+
 							" LOAD:= " + this.nameCounter + "LOAD,"+

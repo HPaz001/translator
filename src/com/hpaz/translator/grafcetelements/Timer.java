@@ -95,8 +95,7 @@ public class Timer {
 		return this.nameTimer.equals(tim.getNameTimer());
 	}
 	public String generateGlobalsVarTimer(){
-		String globalsVar = "\t" + this.nameTimer + "\t: "+this.typeTimer+";\n"+
-							"\t" + this.nameTimer + "Q\t: BOOL;\n"+
+		String globalsVar = "\t" + this.nameTimer + "Q\t: BOOL;\n"+
 							"\t" + this.nameTimer + "IN\t: BOOL;\n" +
 							"\t" + this.nameTimer + "PT\t: TIME;\n" +
 							"\t" + this.nameTimer + "ET\t: TIME;\n";
@@ -104,14 +103,16 @@ public class Timer {
 		return globalsVar;
 		
 	}
-
-	public String generateProgramMainTimer(){
-		String programMain = 
-							"\t" + this.nameTimer + "IN:="+this.stepNameTimer+";\n" +
-							"\t" + this.nameTimer + "PT:= T#" +this.time +this.typeTime+";\n" +
-							"\t" + this.nameTimer + "(IN:="+this.nameTimer+"IN , PT:="+this.nameTimer+
-									"PT , Q=>"+this.nameTimer+"Q , ET=> "+this.nameTimer+"ET);\n";
+	/**Devuelve un array de string donde el primero corresponde a las variables 
+	 * del program main y el segundo al programa en si*/
+	public String[] generateProgramMainTimer(){
+		String []  programMain = {"\t" + this.nameTimer + "\t: "+this.typeTimer+";\n",
+								 "\t" + this.nameTimer + "IN:="+this.stepNameTimer+";\n" +
+								"\t" + this.nameTimer + "PT:= T#" +this.time +this.typeTime+";\n" +
+								"\t" + this.nameTimer + "(IN:="+this.nameTimer+"IN , PT:="+this.nameTimer+
+										"PT , Q=>"+this.nameTimer+"Q , ET=> "+this.nameTimer+"ET);\n"};
 		
+			
 		return programMain;
 		
 	}
