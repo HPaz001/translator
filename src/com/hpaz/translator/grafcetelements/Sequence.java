@@ -89,13 +89,16 @@ public class Sequence {
 					//si es un contador o un temporizador solo guardo el nombre
 					//el creo el contador
 					String aux = action.getText();
+					//TODO NO SE PORQ NO LO DETECTA LA REGEX ESTA BIEN
 					Pattern patTemp = Pattern.compile("^Temp.*=[0-9][a-z A-Z]");
-					Matcher matTemp = patTemp.matcher(aux.trim());
-					if(matTemp.matches()){
-						//TODO ?¿?¿? compruebo que el tiempo es el correcto ?¿
-						//int time = Integer.parseInt(aux.replaceAll("=|[a-z A-Z]", ""));
-						aux = aux.substring(0, aux.indexOf("="));
-					}else {
+					Matcher matTemp = patTemp.matcher(aux);
+					
+					//TODO ?¿?¿? compruebo que el tiempo es el correcto ?¿
+					//int time = Integer.parseInt(aux.replaceAll("=|[a-z A-Z]", ""));
+					//aux = aux.substring(0, aux.indexOf("="));
+					
+					if(!matTemp.matches()){
+						
 						Pattern patCount = Pattern.compile("^Cont.*=[0-9]$");
 						Matcher matCount = patCount.matcher(aux.trim());
 						if(matCount.matches()){
@@ -110,15 +113,16 @@ public class Sequence {
 								Counter cont = new Counter();
 								cont.addNameCounter(aux);
 								cont.addStepCountes(((Step) pTransitionOrStep).getName());
-								//TODO contADOR obtengo el numero
-								aux = action.getText().substring(action.getText().indexOf("=")+1, action.getText().length());	
+								//TODO contador obtengo el numero?
+								//aux = action.getText().substring(action.getText().indexOf("=")+1, action.getText().length());	
 								Project.getProject().addCounter(cont);
 							}else{
 								Project.getProject().getListCounters().get(index).addStepCountes(((Step) pTransitionOrStep).getName());
 							}
 						}
+						signals.add(aux);
 					}
-					signals.add(aux);
+					
 					
 				}
 			}

@@ -9,8 +9,6 @@ import com.hpaz.translator.output.Output;
 
 public class Project {
 
-	// TODO Crear en project funciones de getVariables y setVariables
-
 	/** Nombre del fichero que se ha importado, sin extension */
 	private String name;
 
@@ -142,6 +140,14 @@ public class Project {
 		}
 
 		return removeDuplicates(vG);
+	}
+	
+	public void setProjectVariablesFromUserInterface(Map<String,String> variablesMap){
+		//TODO pasar el mapa de variables a donde sea
+		
+		for (String key : variablesMap.keySet()){
+			System.out.println("key -> " + key + ", value -> " + variablesMap.get(key));
+		}
 	}
 
 	public void printProject() {
@@ -432,6 +438,7 @@ public class Project {
 		}
 		return indexTimer;
 	}
+
 
 
 
