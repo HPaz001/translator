@@ -93,14 +93,16 @@ public class Sequence {
 					Pattern patTemp = Pattern.compile("^Temp.*=[0-9][a-z A-Z]");
 					Matcher matTemp = patTemp.matcher(aux);
 					
-					//TODO ?¿?¿? compruebo que el tiempo es el correcto ?¿
+					//TODO ?¿?¿? compruebo que el tiempo del contador es el correcto ?¿
 					//int time = Integer.parseInt(aux.replaceAll("=|[a-z A-Z]", ""));
 					//aux = aux.substring(0, aux.indexOf("="));
 					
+					//Excluyo los temporizadores
 					if(!matTemp.matches()){
 						
 						Pattern patCount = Pattern.compile("^Cont.*=[0-9]$");
 						Matcher matCount = patCount.matcher(aux.trim());
+						
 						if(matCount.matches()){
 							/*si es un contador con una asignacion directa, 
 							 * compruebo si existe en la lista
@@ -120,7 +122,7 @@ public class Sequence {
 								Project.getProject().getListCounters().get(index).addStepCountes(((Step) pTransitionOrStep).getName());
 							}
 						}
-						signals.add(aux);
+						signals.add(action.getText());
 					}
 					
 					

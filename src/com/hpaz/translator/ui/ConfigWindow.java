@@ -164,9 +164,6 @@ public class ConfigWindow extends JFrame {
 				}
 			});
 		}
-
-		// TODO Auto-generated method stub
-
 	}
 
 	private void createTimersViewsWithAlgorithmElements() {
@@ -198,8 +195,6 @@ public class ConfigWindow extends JFrame {
 			});
 			panelTemp.add(choiceTempName);
 		}
-		// TODO Auto-generated method stub
-
 	}
 
 	private void createSignalViewsWithAlgorithmElements() {
@@ -275,9 +270,6 @@ public class ConfigWindow extends JFrame {
 			}
 
 		}
-
-		// TODO Auto-generated method stub
-
 	}
 
 	private void sendVariablesConfigToAlgorithm() {
@@ -312,7 +304,7 @@ public class ConfigWindow extends JFrame {
 		try {// TODO exportOutputToFiles
 				// Project.getProject().printProject();
 			Project.getProject().print();
-			
+			//TODO Hacer que el mensaje cierre la ventana 
 			JOptionPane.showMessageDialog(contentPane, "Se han generado los ficheros de su proyecto en la carpeta seleccionada.", "Finalizado",
 					JOptionPane.OK_OPTION);
 

@@ -16,7 +16,7 @@ public class ConfigConstants {
 	 words (W) -16 bits;
 	 double words (D) - 32 bits.
 	 word real con coma flotante (F) - 32 bits */
-	public static final String SIGNAL_VARIABLE_TYPE_BOOLEAN = "Booleana";
+	public static final String SIGNAL_VARIABLE_TYPE_BOOLEAN = "Bool";
 	public static final String SIGNAL_VARIABLE_TYPE_BYTE = "Byte";
 	public static final String SIGNAL_VARIABLE_TYPE_WORD = "Word";
 	public static final String SIGNAL_VARIABLE_TYPE_DOUBLEWORD = "Double Word";	

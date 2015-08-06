@@ -1,5 +1,6 @@
 package com.hpaz.translator.grafcetelements;
 
+import com.hpaz.translator.grafcetelements.constants.GrafcetTagsConstants;
 
 /*TODO Contador etapas init .. Creo que se deben guardar las etapas cuando se inicializan y en q etapas*/
 
@@ -57,6 +58,78 @@ public class Counter {
 		System.out.println("getStepCountes: "+getStepCountes());
 		System.out.println("getTypeCounter: "+getTypeCounter());
 	}
+	
+	public String generateGlobalsVarCounter(){
+		String globalsVar ="";
+		
+		if(this.typeCounter.equals(GrafcetTagsConstants.typeCounter.CTD)){
+			globalsVar= "\t" + this.nameCounter + "\t: "+this.typeCounter+";\n"+
+					"\t" + this.nameCounter + "CD\t: BOOL;\n"+
+					"\t" + this.nameCounter + "LOAD\t: BOOL;\n"+
+					"\t" + this.nameCounter + "PV\t: INT;\n"+
+					"\t" + this.nameCounter + "Q\t: BOOL;\n"+
+					"\t" + this.nameCounter + "CV\t: INT;\n";
+					
+		}else if(this.typeCounter.equals(GrafcetTagsConstants.typeCounter.CTU)){
+			globalsVar= "\t" + this.nameCounter + "\t: "+this.typeCounter+";\n"+
+					"\t" + this.nameCounter + "CU\t: BOOL;\n"+
+					"\t" + this.nameCounter + "RESET\t: BOOL;\n"+
+					"\t" + this.nameCounter + "PV\t: INT;\n"+
+					"\t" + this.nameCounter + "Q\t: BOOL;\n"+
+					"\t" + this.nameCounter + "CV\t: INT;\n";
+			
+		}else if(this.typeCounter.equals(GrafcetTagsConstants.typeCounter.CTUD)){
+			globalsVar= "\t" + this.nameCounter + "\t: "+this.typeCounter+";\n"+
+					"\t" + this.nameCounter + "CU\t: BOOL;\n"+
+					"\t" + this.nameCounter + "CD\t: BOOL;\n"+
+					"\t" + this.nameCounter + "RESET\t: BOOL;\n"+
+					"\t" + this.nameCounter + "LOAD\t: BOOL;\n"+
+					"\t" + this.nameCounter + "PV\t: INT;\n"+
+					"\t" + this.nameCounter + "QU\t: BOOL;\n"+
+					"\t" + this.nameCounter + "QD\t: BOOL;\n"+
+					"\t" + this.nameCounter + "CV\t: INT;\n";
+		}
+			
+		return globalsVar;
+		
+	}
 
+	public String generateProgramMainCounter(){
+		String programMain = ""; 
+				if(this.typeCounter.equals(GrafcetTagsConstants.typeCounter.CTD)){
+										
+					//TODO contador inicializaciones preguntar q falta
+					programMain = this.nameCounter+"CD:= " + this.nameCounter + "CD,"+
+							" LOAD:= " + this.nameCounter + "LOAD,"+
+							" PV:= " + this.nameCounter + "PV,"+
+							" Q=> " + this.nameCounter + "Q,"+
+							" CV=> " + this.nameCounter + "CV);";
+					
+							
+				}else if(this.typeCounter.equals(GrafcetTagsConstants.typeCounter.CTU)){
+					
+					//TODO contador inicializaciones preguntar q falta
+					programMain = this.nameCounter+"(CU:= " + this.nameCounter + "CU ," +
+							" RESET:= " + this.nameCounter + "RESET,"+
+							" PV:= " + this.nameCounter + "PV,"+
+							" Q=> " + this.nameCounter + "Q,"+
+							" CV=> " + this.nameCounter + "CV);";
+					
+				}else if(this.typeCounter.equals(GrafcetTagsConstants.typeCounter.CTUD)){
+					
+					//TODO contador inicializaciones preguntar q falta
+					programMain = this.nameCounter+"(CU:= " + this.nameCounter + "CU ," +
+							"CD:= " + this.nameCounter + "CD,"+
+							" RESET:= " + this.nameCounter + "RESET,"+
+							" LOAD:= " + this.nameCounter + "LOAD,"+
+							" PV:= " + this.nameCounter + "PV,"+
+							" QU=> " + this.nameCounter + "QU,"+
+							" QD=> " + this.nameCounter + "QD,"+
+							" CV=> " + this.nameCounter + "CV);";
+				}
+		
+		return programMain;
+		
+	}
 	
 }

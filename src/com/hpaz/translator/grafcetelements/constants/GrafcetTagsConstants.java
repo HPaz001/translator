@@ -17,8 +17,12 @@ public class GrafcetTagsConstants {
 	public static final String NODE_TAG = "node";
 	public static final String JUMP_TAG = "jump";
 	public static final String COMMENT_TAG = "comment";
-	public static final Object ACTION_FORCING_ORDER = "forcing order";
-	public static final Object ACTION_CONDITIONAL = "conditional";
+	public static final String ACTION_FORCING_ORDER = "forcing order";
+	public static final String ACTION_CONDITIONAL = "conditional";
+	public static enum typeCounter
+	{
+		CTU,CTD,CTUD
+	}
 	
 	//TODO Esto deberia estar en otra clase ya que no forma parte de elementos de grafcet
 	public static final String PROGRAM_OPT1 = "PLC Beckhoff (TwinCAT)";
