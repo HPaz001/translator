@@ -60,6 +60,8 @@ public class Transition {
 						if(!Project.getProject().getList_FE_and_RE().contains(aux_FE_RE)){
 							Project.getProject().add_FE_and_RE(aux_FE_RE);
 						}
+						auxString= aux_FE_RE+".Q";
+						
 					}
 					
 					//añado a las lista d señales por separado sin el RE y FE
@@ -68,7 +70,7 @@ public class Transition {
 			}
 			
 			//Añado la condicion
-			this.condition = this.condition + " " + pCondition;
+			this.condition = this.condition + " " + auxString;
 		}
 	}
 

@@ -145,10 +145,6 @@ public class Project {
 			vG.addAll(g.getGrafcetVarGlobalStages());
 		}
 		vG.add("\n\t(*---Señales---*)\n\n");
-		//TODO AQUI LAS SEÑALES
-		/*for (Grafcet g : listGrafcet) {
-			vG.addAll(g.grafcetVarGlobalSignals());
-		}*/
 
 		vG.add("\tINIT\t:BOOL;\n\tRESET\t:BOOL;\n");
 		

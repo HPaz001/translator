@@ -71,21 +71,49 @@ public class Step {
 		return mySet;
 	}
 	public void addMySet(String pMySet) {
+		String set = pMySet;
+		
+		Pattern patTemp = Pattern.compile(".*Temp.*/X[0-9]{1,}/[0-9]{1,}[a-z A-Z]{1,}.*");
+		Matcher matTemp = patTemp.matcher(pMySet);
+		Pattern patCont = Pattern.compile(".*Cont.*==[0-9]{1,}.*");
+		Matcher matCont = patCont.matcher(pMySet);
+		
+		
+		if (matTemp.matches()) {
+			set = pMySet.replaceAll("/X[0-9]{1,}/[0-9]{1,}[a-z A-Z]{1,}", "Q");
+		}
+		
+		if (matCont.matches()) {
+			//obtengo el nombre del contador
+			String string = pMySet.substring(0,pMySet.indexOf("=="))+"Q";
+			set = string + pMySet.substring(pMySet.indexOf("=="),pMySet.length());
+		}
+				
 		if (this.mySet==null){
-			this.mySet = pMySet;
-		}else if(!mySet.contains(pMySet)){
+			
+			this.mySet = set;
+			
+		}else if(!mySet.contains(set)){
+			
 			if(isAnd()){
+				
 				String newSet =null;
+				
 				/*Quito los parentesis*/
-				String aux = pMySet.replaceAll("\\(|\\)", "");
+				String aux = set.replaceAll("\\(|\\)", "");
+				
 				/*Los separo y quito los AND para poder comparar el elemento y asi q no se repita*/
 				String[] list  = aux.split("AND");
+				
 				//Por cada elemento de la lista que obtengo
 				for (int i = 0; i < list.length; i++) {
-					//Quito espacios en blanco
-					String s = list[i];
+					
+					//Quito espacios en blanco delante y detras
+					String s = list[i].trim();
+					
 					//Si el elemento no esta en el set lo añado
 					if(!mySet.contains(s)){
+						
 						//Si hay set anteriores añado el AND
 						if(newSet!=null){
 							newSet= newSet + " AND " + s;
@@ -96,7 +124,7 @@ public class Step {
 				}
 				this.mySet= mySet+" AND "+newSet;
 			}else{
-				this.mySet= mySet+" OR "+pMySet;
+				this.mySet= mySet+" OR "+set;
 			}
 		}
 	}

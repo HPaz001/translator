@@ -227,14 +227,14 @@ public class Preprocess extends DefaultHandler {
 				} else if (isStep) {
 					// Si es un step puede ser de una condicion o de una action
 					if (previousTag.equals(GrafcetTagsConstants.CONDITION_TAG)) {
-						action.setCondition(action.getCondition() + "RE " + text + "");
+						action.setCondition(action.getCondition() + " RE " + text + "");
 					} else {
 						action.setText(action.getText() + " RE " + text + "");
 					}
 
 				} else if (isTransition) {
 					// si esta dentro de una transition
-					transition.addCondition(" (RE " + text + ")");
+					transition.addCondition(" RE " + text + "");
 					// transition.addListConditionSep(text);
 				}
 			} else if (actualTag.equals(GrafcetTagsConstants.FE_TAG)) {
@@ -247,6 +247,7 @@ public class Preprocess extends DefaultHandler {
 					addComent(" FE "+text);
 
 				} else if (isStep) {
+					//TODO ACTION EL SET HAY Q HACER LA SUMA EN ACTION
 					// Si es un step puede ser de una condicion o de una action
 					if (previousTag.equals(GrafcetTagsConstants.CONDITION_TAG)) {
 						action.setCondition(action.getCondition() + " FE " + text + "");
@@ -256,7 +257,7 @@ public class Preprocess extends DefaultHandler {
 
 				} else if (isTransition) {
 					// si esta dentro de una transition
-					transition.addCondition("(FE " + text + ")");
+					transition.addCondition(" FE " + text + "");
 				
 				}
 			}

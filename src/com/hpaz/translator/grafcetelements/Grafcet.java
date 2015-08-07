@@ -443,15 +443,10 @@ public class Grafcet {
 					String set = ((Step) obj).getMySet();
 					String reset = ((Step) obj).getMyReset();
 					
-					Pattern patTemp = Pattern.compile("Temp.*/X[0-9]./[0-9].*");
-					Matcher matTemp = patTemp.matcher(set);
-					if (matTemp.matches()) {
-						set = set.replaceAll("/X[0-9]./[0-9]", "Q");
-					}
-					Pattern patCont = Pattern.compile("Cont.*==[0-9]");
-					Matcher matCont = patCont.matcher(set);
-					if (matCont.matches()) {
-						set = set.replaceAll("==[0-9]", "Q");
+					
+					//TODO AQUI ESTABA SET RESET
+					
+					
 						/* TODO Contadores como se escriben en el Function Bloc segun el tipo
 						int index = Project.getProject().equalsCount(set.substring(set.indexOf("Cont"), set.indexOf("==")).trim());
 						if(index != -1){
@@ -466,7 +461,7 @@ public class Grafcet {
 								set = set.replaceAll("/X[0-9]./[0-9]", "QD");
 							}				
 						}*/
-					}
+					
 							
 					
 					// si es una etapa inicial
