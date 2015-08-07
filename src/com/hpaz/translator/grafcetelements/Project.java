@@ -41,7 +41,9 @@ public class Project {
 	private LinkedList<String> listCountersUI;
 	//PAra guardar las variables con flancos de subida o bajada
 	private LinkedList<String> list_FE_and_RE;
-
+	
+	private Map<String,String> assignments;
+	
 	private Map<String, String> listUI;
 
 	LinkedList<String> signalsProject;
@@ -60,6 +62,7 @@ public class Project {
 		this.listUI = null;
 		this.signalsProject = new LinkedList<String>();
 		this.list_FE_and_RE =new LinkedList<String>();
+	
 	}
 
 	public static Project getProject() {
@@ -238,12 +241,16 @@ public class Project {
 			try {
 
 				// printProject();
-				// Program Main
-				Output.getOutput().exportFile(generateProgramMain(), getName() + "_PROGRAM_MAIN", outputDir);
-
+				
 				// Var Global
 				Output.getOutput().exportFile(getGlobalVars(generateGlobalVars()), getName() + "_VAR_GLOBAL",
 						outputDir);
+				
+				
+				// Program Main
+				Output.getOutput().exportFile(generateProgramMain(), getName() + "_PROGRAM_MAIN", outputDir);
+
+				
 
 				// Function Block --> uno por cada grafcet
 				for (Grafcet g : listGrafcet) {
@@ -390,21 +397,81 @@ public class Project {
 			listaProgramMain.add("\t\tReset" + n + "\t: BOOL;\n");
 		}
 
-		listaProgramMain.add("\n\t\tXInit\t:BOOL;\n\t\tXReset\t:BOOL;\n\n\tEND_VAR\n");
+		listaProgramMain.add("\n\t\tXInit\t:BOOL;\n\t\tXReset\t:BOOL;\n");
+		
+		/*Por cada temporizador y contador */
+		for (Timer timer : this.listTimers) {
+			listaProgramMain.add("\n\t\t"+timer.getNameTimer()+"\t:"+timer.getTypeTimer()+";\n");
+		}
+		for (Counter count : this.listCounters) {
+			listaProgramMain.add("\n\t\t"+count.getNameCounter()+"\t:"+count.getTypeCounter()+";\n");
+		}
+		listaProgramMain.add("\n\tEND_VAR\n");
+		
 		listaProgramMain.add("\n\t(*---------------------------------------------*)\n");
 		listaProgramMain.add("\n\tXInit:=INIT;\n\tXReset:=RESET;\n\n");
-
+		
+		for (String string : this.list_FE_and_RE) {
+			listaProgramMain.add("\n\t"+string+"(CLK:="+string.substring(2,string.length())+" , Q=> );\n\n");
+		}
 		/*
-		 * Aqui deberian estar las señales de entrada y salida q se preguntaran
-		 * al usuario
-		 */
+			SolModoAuto:=FPMarcha.Q;
+			
+			FinProces:=X20; */
+		//Asignaciones que estan en la transition
+		for (String assig : assignments.keySet()) {
+			
+			String auxString = assignments.get(assig);
+			
+			//Si la palabra contiene un RE o FE
+			Pattern patRE_FE = Pattern.compile(".* RE .*| .* FE .*");
+			Matcher matRE_FE = patRE_FE.matcher(auxString);
+			
+			if(matRE_FE.matches()){
+				auxString = auxString.replace(" ", "");
+				auxString = auxString+".Q";
+			}
+			
+			listaProgramMain.add("\n\t"+assig.trim()+":="+auxString+";\n");
+		}
 
 		/* Anado la lista de emergencia */
 		listaProgramMain.addAll(pEmergency);
 
 		listaProgramMain.add("\n\n");
 		for (String action : pInit.keySet()) {
-			listaProgramMain.add("\t" + action + ":=" + pInit.get(action) + ";\n");
+			String aux = action;
+		
+			//Si es un temporizador
+			Pattern patTemp = Pattern.compile("^Temp.*=[0-9]{1,}[a-z A-Z]{1,}");
+			Matcher matTemp = patTemp.matcher(aux.trim());
+			
+			//si es un contador 
+			Pattern patCont = Pattern.compile("^Cont.*=[0-9]{1,}$|^Cont.*=Cont.*\\+[0-9]|^Cont.*=Cont.*\\-[0-9]");
+			Matcher matCont = patCont.matcher(aux.trim());
+
+			//forzado de emergencia
+			Pattern patEmer = Pattern.compile("^F/G.*");
+			Matcher matEmer= patEmer.matcher(aux.trim());
+			
+			if (matTemp.matches()) {
+				aux=aux.replaceAll("=[0-9]{1,}[a-z A-Z]{1,}", "").trim();
+				int index = equalsTimer(aux);
+				Timer timer = listTimers.get(index);
+				listaProgramMain.add("\n"+timer.getNameTimer()+"IN:="+pInit.get(action)+";\n");
+				listaProgramMain.add("\n"+timer.getNameTimer()+"PT:=T#"+timer.getTime()+timer.getTypeTime()+";");
+				listaProgramMain.add("\n"+timer.getNameTimer()+"(IN:="+timer.getNameTimer()+"IN , PT:="+
+						timer.getNameTimer()+"PT , Q=>"+timer.getNameTimer()+"Q , ET=> "+timer.getNameTimer()+"ET);");
+			}else if(matCont.matches()) {
+				//TODO PROGRAM MAIN si es contador aun no se q hacer 
+				
+				
+				//Si no es el forzado de emergencia de mergencia
+				
+			}else if(!matEmer.matches() && !matCont.matches()){
+				listaProgramMain.add("\t" + aux + ":=" + pInit.get(action) + ";\n");
+			}
+			
 		}
 
 		listaProgramMain.add("\nEND_PROGRAM\n");
@@ -509,6 +576,21 @@ public class Project {
 
 	public void add_FE_and_RE(String p_FE_and_RE) {
 		this.list_FE_and_RE.add(p_FE_and_RE);
+	}
+
+	public Map<String,String> getAssignments() {
+		return assignments;
+	}
+
+	
+	/**Este metodo creara un Map de asignaciones en caso de que la transicion tenga*/
+	public void addAssignments(String pSignal, String pAssignment) {
+		// TODO REVISAR 
+		if(this.assignments==null){
+			this.assignments = new HashMap<String, String>();	
+		}
+		this.assignments.put(pSignal, pAssignment);
+		
 	}
 
 

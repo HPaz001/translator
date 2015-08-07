@@ -149,7 +149,7 @@ public class Transition {
 				Matcher mat = pat.matcher(list[i]);
 				if (mat.matches()) {
 					//para guardar las asignaciones
-					assignment(list[i].substring(0, list[0].indexOf(":=")),list[i].substring(list[0].indexOf(":=")+2, list[0].length()));
+					Project.getProject().addAssignments(list[i].substring(0, list[0].indexOf(":=")),list[i].substring(list[0].indexOf(":=")+2, list[0].length()));
 					// si tiene una asignacion añado a la lista de condiciones separadas
 					String [] listSep = list[i].trim().split(":=|==|\\*");
 					for (int j = 0; j < listSep.length; j++) {
@@ -178,7 +178,7 @@ public class Transition {
 
 		}
 	}
-	/**Este metodo creara un Map de asignaciones en caso de que la transicion tenga*/
+	/**Este metodo creara un Map de asignaciones en caso de que la transicion tenga
 	private void assignment(String pSignal, String pAssignment) {
 		// TODO REVISAR 
 		if(this.assignments==null){
@@ -187,7 +187,7 @@ public class Transition {
 		}
 		this.assignments.put(pSignal, pAssignment);
 		
-	}
+	}*/
 
 	public boolean isAssignmentSignal() {
 		return assignmentSignal;
