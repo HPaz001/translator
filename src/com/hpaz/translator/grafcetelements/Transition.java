@@ -35,6 +35,9 @@ public class Transition {
 			
 			/* Quito parentesis y NOT*/
 			aux = aux.replaceAll("\\(|\\)|NOT", "");
+			//esta la uso para el RE y FE
+			String auxString = aux;
+			
 			//Si tiene signos lo mando a la funcion de separar
 			if (aux.contains("+") || aux.contains("*")) {
 				addListConditionSep(removeSigns(aux));
@@ -51,9 +54,12 @@ public class Transition {
 					
 					//Si la palabra contiene un RE o FE
 					Pattern patRE_FE = Pattern.compile(".* RE .*| .* FE .*");
-					Matcher matRE_FE = patRE_FE.matcher(pCondition);
+					Matcher matRE_FE = patRE_FE.matcher(auxString);
 					if(matRE_FE.matches()){
-						String aux_FE_RE = pCondition.replace(" ", "");
+						String aux_FE_RE = auxString.replace(" ", "");
+						if(!Project.getProject().getList_FE_and_RE().contains(aux_FE_RE)){
+							Project.getProject().add_FE_and_RE(aux_FE_RE);
+						}
 					}
 					
 					//añado a las lista d señales por separado sin el RE y FE
