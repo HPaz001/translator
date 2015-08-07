@@ -39,6 +39,8 @@ public class Project {
 	private LinkedList<Counter> listCounters;
 	private LinkedList<String> listTimersUI;
 	private LinkedList<String> listCountersUI;
+	//PAra guardar las variables con flancos de subida o bajada
+	private LinkedList<String> list_FE_and_RE;
 
 	private Map<String, String> listUI;
 
@@ -57,7 +59,7 @@ public class Project {
 		this.listTimersUI = new LinkedList<String>();
 		this.listUI = null;
 		this.signalsProject = new LinkedList<String>();
-
+		this.list_FE_and_RE =new LinkedList<String>();
 	}
 
 	public static Project getProject() {
@@ -147,7 +149,14 @@ public class Project {
 		/*for (Grafcet g : listGrafcet) {
 			vG.addAll(g.grafcetVarGlobalSignals());
 		}*/
-		//F0 AT %I*	:BOOL; ("\t" + signal + "AT %++" map "+\t: "++";\n");
+
+		vG.add("\tINIT\t:BOOL;\n\tRESET\t:BOOL;\n");
+		
+		for (String string : this.list_FE_and_RE) {
+			vG.add("\t"+string+"\t:"+string.charAt(0)+"_TRIG;\n");
+		}
+		
+		
 		//por cada una de las señales del proyecto
 		for (String string : this.signalsProject) {
 			//Si esta en el hashMap t la UI 
@@ -176,29 +185,30 @@ public class Project {
 						typeData = "S";
 					}
 					
-					vG.add("\t" + string + " AT %"+ typeData +"*\t: "+typeVar+";\n");
+					vG.add("\t" + string + " AT %"+ typeData +"* : "+typeVar+";\n");
 				}
 				//la eimino del HashMap
 				this.listUI.remove(string);
 			}
 		}
-		vG.add("\n");
+		vG.add("\n\t(*---Temporizadores---*)\n\n");
 		//Si aun quedan elementos en el HashMAp
 		if(!this.listUI.isEmpty()){
 			//Por cada temporizador
-			for (Timer timer : this.listTimers) {
-				String type = this.listUI.get(timer.getNameTimer());
-				timer.addTypeTimer(type);
-				vG.add(timer.getGlobalsVarTimer());
+			for (int i = 0; i < this.listTimers.size(); i++) {
+				String type = this.listUI.get(this.listTimers.get(i).getNameTimer());
+				this.listTimers.get(i).addTypeTimer(type);
+				vG.add(this.listTimers.get(i).getGlobalsVarTimer());
 			}
-			vG.add("\n");
+			vG.add("\n\t(*---Contadores---*)\n\n");
 			//Por cada Contador
-			for (Counter count : this.listCounters) {
-				System.out.println("hay contadores");
-				String type = this.listUI.get(count.getNameCounter());
-				count.addTypeCounter(type);
-				vG.add(count.getGlobalsVarCounter());
-			}
+			for (int j = 0; j < this.listCounters.size(); j++) {
+				System.out.println("Contador");
+				String type = this.listUI.get(this.listCounters.get(j).getNameCounter());
+				this.listCounters.get(j).addTypeCounter(type);
+				vG.add(this.listCounters.get(j).getGlobalsVarCounter());
+			}	
+		
 		}
 		
 		//TODO mirar si es necesario este removeDuplicates
@@ -208,9 +218,9 @@ public class Project {
 	public void setProjectVariablesFromUserInterface(Map<String,String> variablesMap){
 		//TODO pasar el mapa de variables a donde sea
 		this.listUI = variablesMap;
-		/*for (String key : variablesMap.keySet()){
+		for (String key : variablesMap.keySet()){
 			System.out.println("key -> " + key + ", value -> " + variablesMap.get(key));
-		}*/
+		}
 		
 	}
 
@@ -424,11 +434,10 @@ public class Project {
 	private LinkedList<String> removeDuplicates(LinkedList<String> listDuplicate) {
 
 		LinkedList<String> listwithoutduplicates = new LinkedList<String>();
-		LinkedList<String> aux = listDuplicate;
 
-		for (String s : aux) {
-			if (!listwithoutduplicates.contains(s)) {
-				listwithoutduplicates.add(s);
+		for (String string : listDuplicate) {
+			if (!listwithoutduplicates.contains(string)) {
+				listwithoutduplicates.add(string);
 			}
 		}
 
@@ -447,11 +456,12 @@ public class Project {
 	
 	private void generateSignalsProject() {
 		LinkedList<String> signals = new LinkedList<String>();
+		
 		for (Grafcet g : getListG()) {
 			// si el grafcet es el de emergencia relleno la lista de emergencia
 			signals.addAll(g.getListSignalsGrafcet());
 		}
-
+		//signals.addAll(this.listGrafcet.get(0).getListSignalsGrafcet());
 		signals = removeDuplicates(signals);
 		
 		this.signalsProject = signals;
@@ -468,11 +478,11 @@ public class Project {
 	 * Busca en la lista de temporizadores si existe devuelve su indice de lo
 	 * contrario devuelve -1
 	 */
-	public int equalsTimer(Timer pTimer) {
+	public int equalsTimer(String pNameTimer) {
 		int indexTimer = -1;
 		int indexAux = 0;
 		while (indexTimer == (-1) && indexAux < listTimers.size()) {
-			if (listTimers.get(indexAux).equals(pTimer)) {
+			if (listTimers.get(indexAux).equals(pNameTimer)) {
 				indexTimer = indexAux;
 
 			}
@@ -485,16 +495,24 @@ public class Project {
 	 * Busca en la lista de contadores si existe devuelve su indice de lo
 	 * contrario devuelve -1
 	 */
-	public int equalsCount(String pNameTimer) {
-		int indexTimer = -1;
+	public int equalsCount(String pNameCounter) {
+		int indexCounter = -1;
 		int indexAux = 0;
-		while (indexTimer == (-1) && indexAux < listTimers.size()) {
-			if (listCounters.get(indexAux).equals(pNameTimer)) {
-				indexTimer = indexAux;
+		while (indexCounter == (-1) && indexAux < listTimers.size()) {
+			if (listCounters.get(indexAux).equals(pNameCounter)) {
+				indexCounter = indexAux;
 			}
 			indexAux++;
 		}
-		return indexTimer;
+		return indexCounter;
+	}
+
+	public LinkedList<String> getList_FE_and_RE() {
+		return list_FE_and_RE;
+	}
+
+	public void add_FE_and_RE(String p_FE_and_RE) {
+		this.list_FE_and_RE.add(p_FE_and_RE);
 	}
 
 

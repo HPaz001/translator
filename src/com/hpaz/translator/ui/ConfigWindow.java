@@ -204,7 +204,7 @@ public class ConfigWindow extends JFrame {
 			Panel panelSignal = new Panel();
 			// para no poner los tem y cont
 			Pattern pat = Pattern.compile(
-					"^Temp.*/X[0-9]./[0-9].*|^Cont.*==[0-9]$|^Cont.*=Cont.*\\+[0-9]|^Cont.*=Cont.*\\-[0-9]$|^Cont.*\\+\\+[0-9]$|^Cont.*\\-\\-+[0-9]$");
+					"^Temp.*/X[0-9]./[0-9].*|^Cont.*==[0-9]$|^Cont.*=Cont.*\\+[0-9]|^Cont.*=Cont.*\\-[0-9]");
 			Matcher mat = pat.matcher(string);
 
 			if (!mat.matches()) {
@@ -234,7 +234,7 @@ public class ConfigWindow extends JFrame {
 				choiceSignalVariableType.addItem(ConfigConstants.SIGNAL_VARIABLE_TYPE_WORD);
 				choiceSignalVariableType.addItem(ConfigConstants.SIGNAL_VARIABLE_TYPE_DOUBLEWORD);
 				panelSignal.add(choiceSignalVariableType);
-
+				
 				choiceSignalDataType.addItemListener(new ItemListener() {
 					@Override
 					public void itemStateChanged(ItemEvent e) {
@@ -304,9 +304,11 @@ public class ConfigWindow extends JFrame {
 		try {// TODO exportOutputToFiles
 				// Project.getProject().printProject();
 			Project.getProject().print();
-			//TODO Hacer que el mensaje cierre la ventana 
+			//TODO Hacer que el mensaje cierre la ventana
+			
 			JOptionPane.showMessageDialog(contentPane, "Se han generado los ficheros de su proyecto en la carpeta seleccionada.", "Finalizado",
-					JOptionPane.OK_OPTION);
+					JOptionPane.DEFAULT_OPTION);
+			dispose();
 
 			// Project.getProject().print(compatibility);
 			// Output.getSalida().exportarFicheroVG(Project.getProject().printVarGlobal(),

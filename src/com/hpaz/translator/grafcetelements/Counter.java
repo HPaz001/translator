@@ -60,23 +60,24 @@ public class Counter {
 	}
 	
 	public String getGlobalsVarCounter(){
+		
 		String globalsVar ="";
 		
-		if(this.typeCounter.equals(GrafcetTagsConstants.typeCounter.CTD)){
+		if(this.typeCounter.equals("CTD")){
 			globalsVar= "\t" + this.nameCounter + "CD\t: BOOL;\n"+
 					"\t" + this.nameCounter + "LOAD\t: BOOL;\n"+
 					"\t" + this.nameCounter + "PV\t: INT;\n"+
 					"\t" + this.nameCounter + "Q\t: BOOL;\n"+
 					"\t" + this.nameCounter + "CV\t: INT;\n";
 					
-		}else if(this.typeCounter.equals(GrafcetTagsConstants.typeCounter.CTU)){
+		}else if(this.typeCounter.equals("CTU")){
 			globalsVar= "\t" + this.nameCounter + "CU\t: BOOL;\n"+
 					"\t" + this.nameCounter + "RESET\t: BOOL;\n"+
 					"\t" + this.nameCounter + "PV\t: INT;\n"+
 					"\t" + this.nameCounter + "Q\t: BOOL;\n"+
 					"\t" + this.nameCounter + "CV\t: INT;\n";
 			
-		}else if(this.typeCounter.equals(GrafcetTagsConstants.typeCounter.CTUD)){
+		}else if(this.typeCounter.equals("CTUD")){
 			globalsVar= "\t" + this.nameCounter + "CU\t: BOOL;\n"+
 					"\t" + this.nameCounter + "CD\t: BOOL;\n"+
 					"\t" + this.nameCounter + "RESET\t: BOOL;\n"+
@@ -94,7 +95,7 @@ public class Counter {
 	public String []  getProgramMainCounter(){
 		String []  programMain = new String[2]; 
 		
-				if(this.typeCounter.equals(GrafcetTagsConstants.typeCounter.CTD)){
+				if(this.typeCounter.equals("CTD")){
 										
 					//TODO contador inicializaciones preguntar q falta
 					programMain[0] ="\t" + this.nameCounter + "\t: "+this.typeCounter+";\n";
@@ -105,7 +106,7 @@ public class Counter {
 							" CV=> " + this.nameCounter + "CV);";
 					
 							
-				}else if(this.typeCounter.equals(GrafcetTagsConstants.typeCounter.CTU)){
+				}else if(this.typeCounter.equals("CTU")){
 					
 					//TODO contador inicializaciones preguntar q falta
 					programMain[0] ="\t" + this.nameCounter + "\t: "+this.typeCounter+";\n";
@@ -115,7 +116,7 @@ public class Counter {
 							" Q=> " + this.nameCounter + "Q,"+
 							" CV=> " + this.nameCounter + "CV);";
 					
-				}else if(this.typeCounter.equals(GrafcetTagsConstants.typeCounter.CTUD)){
+				}else if(this.typeCounter.equals("CTUD")){
 					
 					//TODO contador inicializaciones preguntar q falta
 					programMain[0] ="\t" + this.nameCounter + "\t: "+this.typeCounter+";\n";

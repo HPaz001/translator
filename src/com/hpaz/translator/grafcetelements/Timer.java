@@ -91,8 +91,8 @@ public class Timer {
 		System.out.println("typeTimer: "+this.typeTimer);
 		
 	}
-	public boolean equals(Timer tim) {
-		return this.nameTimer.equals(tim.getNameTimer());
+	public boolean equals(String tim) {
+		return this.nameTimer.equals(tim);
 	}
 	public String getGlobalsVarTimer(){
 		String globalsVar = "\t" + this.nameTimer + "Q\t: BOOL;\n"+

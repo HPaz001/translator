@@ -13,9 +13,7 @@ public class Transition {
 	private boolean assignmentSignal;
 	private Map<String,String> assignments;
 
-	public Map<String, String> getAssignments() {
-		return assignments;
-	}
+	
 
 	public Transition() {
 		this.condition = "";
@@ -30,42 +28,41 @@ public class Transition {
 	}
 
 	public void addCondition(String pCondition) {
+		//Si no es 1 o true
 		if (!(pCondition.equals("=1")) && !(pCondition.equals("true"))) {
-			/*
-			 * aÃ±ado la condicion completa, lo q habia + lo nuevo y dejo los
-			 * signos ya los cambiare en la propia transition
-			 */
-			String auxCondition = pCondition;
 			
-			//Si tiene flancos de subida o bajada
-			Pattern pat = Pattern.compile(" RE | FE ");
-			Matcher mat = pat.matcher(auxCondition);
-			if (mat.matches()) {
-				
-			}
-							
-			/* Añado las señales por separado a la lista */
-			/* Quito los espacios */
 			String aux = pCondition;
 			
-			/* Quito los prefijos */
-			aux = aux.replaceAll("\\(|\\)|NOT", "").trim();
+			/* Quito parentesis y NOT*/
+			aux = aux.replaceAll("\\(|\\)|NOT", "");
+			//Si tiene signos lo mando a la funcion de separar
 			if (aux.contains("+") || aux.contains("*")) {
 				addListConditionSep(removeSigns(aux));
+				
+				//Si no tiene signos
 			} else {
+				//Si es un temporizador lo mando a la funcio que lo trata
 				Pattern patCondSep = Pattern.compile("^Temp.*/X[0-9]./[0-9].*");
 				Matcher matCondSep = patCondSep.matcher(aux.trim());
 				if (matCondSep.matches()) {
 					addTempToListProject(aux.trim());
-				}
-				if(aux.contains(" RE ")){
-					addListConditionSep(aux.replaceAll(" RE ", "").trim());
-					auxCondition = aux.trim()+".Q";
-				}				
+				}else{
+					//Si no es temporizador
+					
+					//Si la palabra contiene un RE o FE
+					Pattern patRE_FE = Pattern.compile(".* RE .*| .* FE .*");
+					Matcher matRE_FE = patRE_FE.matcher(pCondition);
+					if(matRE_FE.matches()){
+						String aux_FE_RE = pCondition.replace(" ", "");
+					}
+					
+					//añado a las lista d señales por separado sin el RE y FE
+					addListConditionSep(aux.replaceAll(" RE | FE ", "").trim());
+				}			
 			}
 			
 			//Añado la condicion
-			this.condition = this.condition + " " + auxCondition;
+			this.condition = this.condition + " " + pCondition;
 		}
 	}
 
@@ -90,6 +87,10 @@ public class Transition {
 		this.conditionSep.add(l);
 	}
 
+	public Map<String, String> getAssignments() {
+		return this.assignments;
+	}
+	
 	public LinkedList<String> printTransVG() {
 		String s = "";
 		LinkedList<String> aux = new LinkedList<String>();
@@ -132,20 +133,32 @@ public class Transition {
 			String aux = this.comment.replaceAll("\\(\\*|\\*\\)", "");
 			// Si tiene coma separo en un array co slip
 			String[] list = aux.split(",");
-			// analizo el comentario al añadirlo para saber si contiene señales
-			// nuevas a añadir a la lista
+			/* analizo el comentario al añadirlo para saber si contiene señales
+			 nuevas a añadir a la lista*/
 			for (int i = 0; i < list.length; i++) {
+				//Si tiene una asignacion
 				Pattern pat = Pattern.compile(".*:=.*");
 				Matcher mat = pat.matcher(list[i]);
 				if (mat.matches()) {
+					//para guardar las asignaciones
 					assignment(list[i].substring(0, list[0].indexOf(":=")),list[i].substring(list[0].indexOf(":=")+2, list[0].length()));
 					// si tiene una asignacion añado a la lista de condiciones separadas
 					String [] listSep = list[i].trim().split(":=|==|\\*");
 					for (int j = 0; j < listSep.length; j++) {
-						//TODO REVISAR reges X20
-						Pattern patS = Pattern.compile("[0-9]|^X[0-9]$");
-						Matcher matS = patS.matcher(listSep[j].trim());
+						//Si es solo un numero o X seguido de un numero
+						Pattern patS = Pattern.compile("^[0-9]{1,}|^X[0-9]{1,}$");
+						String auxString =listSep[j];
+						Matcher matS = patS.matcher(auxString.trim());
 						if(!matS.matches()){
+							//Si la palabra contiene un RE o FE
+							Pattern patRE_FE = Pattern.compile(".* RE .*| .* FE .*");
+							Matcher matRE_FE = patRE_FE.matcher(listSep[j]);
+							if(matRE_FE.matches()){
+								String aux_FE_RE = auxString.replace(" ", "");
+								if(!Project.getProject().getList_FE_and_RE().contains(aux_FE_RE)){
+									Project.getProject().add_FE_and_RE(aux_FE_RE);
+								}
+							}
 							String signal = listSep[j].replaceAll("NOT|RE|FE", "");
 							addListConditionSep(signal.trim());
 						}
@@ -158,13 +171,13 @@ public class Transition {
 		}
 	}
 	/**Este metodo creara un Map de asignaciones en caso de que la transicion tenga*/
-	private void assignment(String pSignal, String pallocation) {
+	private void assignment(String pSignal, String pAssignment) {
 		// TODO REVISAR 
 		if(this.assignments==null){
 			this.assignments = new HashMap<String, String>();
 			this.assignmentSignal=true;
 		}
-		this.assignments.put(pSignal, pallocation);
+		this.assignments.put(pSignal, pAssignment);
 		
 	}
 
@@ -194,19 +207,22 @@ public class Transition {
 
 		return aux;
 	}
-
+	
+	/**Separa la transicion del temporizador y crea el temporizador con los valores correspondientes*/
 	private void addTempToListProject(String pString) {
-		Timer timer = new Timer();
+		
 		String[] listTemp = pString.split("/");
-		timer.addNameTimer(listTemp[0]);
+		
 		// busco el indice del temp si ya esta en la lista
-		int index = Project.getProject().equalsTimer(timer);
+		int index = Project.getProject().equalsTimer(listTemp[0]);
 		// Si el temporizador ya esta en la lista solo añado la etapa
 		if (index != (-1)) {
 			Project.getProject().getListTimers().get(index).addStepNameTimer(listTemp[1]);
 			// Si no esta en la lista de temporizadores creo uno nuevo y lo
 			// añado
 		} else {
+			Timer timer = new Timer();
+			timer.addNameTimer(listTemp[0]);
 			timer.fillTimer(listTemp);
 			Project.getProject().addTimer(timer);
 
