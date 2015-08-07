@@ -4,6 +4,10 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import com.hpaz.translator.grafcetelements.constants.GrafcetTagsConstants;
 
 public class Grafcet {
 
@@ -434,9 +438,37 @@ public class Grafcet {
 					functionBlock.add("\n(* Set -Reset ___________________________"
 							+ "_____________________________________ " + actualStep + " *)");
 
+					//compruebo si el set contienen la salida de un tep o un cont
+					
 					String set = ((Step) obj).getMySet();
 					String reset = ((Step) obj).getMyReset();
-
+					
+					Pattern patTemp = Pattern.compile("Temp.*/X[0-9]./[0-9].*");
+					Matcher matTemp = patTemp.matcher(set);
+					if (matTemp.matches()) {
+						set = set.replaceAll("/X[0-9]./[0-9]", "Q");
+					}
+					Pattern patCont = Pattern.compile("Cont.*==[0-9]");
+					Matcher matCont = patCont.matcher(set);
+					if (matCont.matches()) {
+						set = set.replaceAll("==[0-9]", "Q");
+						/* TODO Contadores como se escriben en el Function Bloc segun el tipo
+						int index = Project.getProject().equalsCount(set.substring(set.indexOf("Cont"), set.indexOf("==")).trim());
+						if(index != -1){
+							String type = Project.getProject().getListCounters().get(index).getTypeCounter();
+							if(type.equals(GrafcetTagsConstants.typeCounter.CTD)){
+								set = set.replaceAll("/X[0-9]./[0-9]", "Q");
+							}else if(type.equals(GrafcetTagsConstants.typeCounter.CTU)){
+								set = set.replaceAll("/X[0-9]./[0-9]", "Q");
+							}else if(type.equals(GrafcetTagsConstants.typeCounter.CTUD)){
+								//no se cuando poner cada uno
+								set = set.replaceAll("/X[0-9]./[0-9]", "QU"); 
+								set = set.replaceAll("/X[0-9]./[0-9]", "QD");
+							}				
+						}*/
+					}
+							
+					
 					// si es una etapa inicial
 					if (((Step) obj).getType().equals("initial")) {
 						auxSet = "\n\tIF ( " + set + " OR Init ) THEN\n\t\t" + actualStep + ":=1;";

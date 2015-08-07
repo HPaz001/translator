@@ -3,6 +3,8 @@ package com.hpaz.translator.grafcetelements;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.hpaz.translator.grafcetelements.constants.GrafcetTagsConstants;
 
@@ -74,22 +76,21 @@ public class Step {
 		}else if(!mySet.contains(pMySet)){
 			if(isAnd()){
 				String newSet =null;
-				/*Quito los parentesis y espacios de pMyReset*/
+				/*Quito los parentesis*/
 				String aux = pMySet.replaceAll("\\(|\\)", "");
-				
-				/* Luego sustituyo el AND */
-				aux = aux.replaceAll("AND", ",");
-				
-				aux=aux.trim();
-				/*uso string.split(",") para separarlo en una lista */
-				String[] list  = aux.split(",");
+				/*Los separo y quito los AND para poder comparar el elemento y asi q no se repita*/
+				String[] list  = aux.split("AND");
+				//Por cada elemento de la lista que obtengo
 				for (int i = 0; i < list.length; i++) {
-					String s = list[i].trim();
+					//Quito espacios en blanco
+					String s = list[i];
+					//Si el elemento no esta en el set lo añado
 					if(!mySet.contains(s)){
+						//Si hay set anteriores añado el AND
 						if(newSet!=null){
-							newSet= newSet + " AND " + list[i];
+							newSet= newSet + " AND " + s;
 						}else{
-							newSet= list[i];
+							newSet= s;
 						}
 					}
 				}
@@ -203,7 +204,7 @@ public class Step {
 	public boolean isAnd() {
 		return and;
 	}
-
+	/**Se llama si la convergencia es and*/
 	public void setAnd(boolean and) {
 		this.and = and;
 	}

@@ -94,7 +94,7 @@ public class Timer {
 	public boolean equals(Timer tim) {
 		return this.nameTimer.equals(tim.getNameTimer());
 	}
-	public String generateGlobalsVarTimer(){
+	public String getGlobalsVarTimer(){
 		String globalsVar = "\t" + this.nameTimer + "Q\t: BOOL;\n"+
 							"\t" + this.nameTimer + "IN\t: BOOL;\n" +
 							"\t" + this.nameTimer + "PT\t: TIME;\n" +
@@ -105,7 +105,7 @@ public class Timer {
 	}
 	/**Devuelve un array de string donde el primero corresponde a las variables 
 	 * del program main y el segundo al programa en si*/
-	public String[] generateProgramMainTimer(){
+	public String[] getProgramMainTimer(){
 		String []  programMain = {"\t" + this.nameTimer + "\t: "+this.typeTimer+";\n",
 								 "\t" + this.nameTimer + "IN:="+this.stepNameTimer+";\n" +
 								"\t" + this.nameTimer + "PT:= T#" +this.time +this.typeTime+";\n" +

@@ -1,6 +1,8 @@
 package com.hpaz.translator.grafcetelements;
 
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -8,11 +10,19 @@ public class Transition {
 	private String condition; // texto de condicion
 	private LinkedList<String> conditionSep;
 	private String comment;
+	private boolean assignmentSignal;
+	private Map<String,String> assignments;
+
+	public Map<String, String> getAssignments() {
+		return assignments;
+	}
 
 	public Transition() {
 		this.condition = "";
 		this.conditionSep = new LinkedList<String>();
 		this.comment = "";
+		this.assignmentSignal=false;
+		
 	}
 
 	public String getCondition() {
@@ -25,23 +35,37 @@ public class Transition {
 			 * aÃ±ado la condicion completa, lo q habia + lo nuevo y dejo los
 			 * signos ya los cambiare en la propia transition
 			 */
-			this.condition = this.condition + " " + pCondition;
-
+			String auxCondition = pCondition;
+			
+			//Si tiene flancos de subida o bajada
+			Pattern pat = Pattern.compile(" RE | FE ");
+			Matcher mat = pat.matcher(auxCondition);
+			if (mat.matches()) {
+				
+			}
+							
 			/* Añado las señales por separado a la lista */
 			/* Quito los espacios */
-			String aux = pCondition.trim();
+			String aux = pCondition;
+			
 			/* Quito los prefijos */
-			aux = aux.replaceAll("\\(|RE|\\)|NOT|FE", "");
+			aux = aux.replaceAll("\\(|\\)|NOT", "").trim();
 			if (aux.contains("+") || aux.contains("*")) {
 				addListConditionSep(removeSigns(aux));
 			} else {
-				Pattern pat = Pattern.compile("^Temp.*/X[0-9]./[0-9].*");
-				Matcher mat = pat.matcher(aux.trim());
-				if (mat.matches()) {
+				Pattern patCondSep = Pattern.compile("^Temp.*/X[0-9]./[0-9].*");
+				Matcher matCondSep = patCondSep.matcher(aux.trim());
+				if (matCondSep.matches()) {
 					addTempToListProject(aux.trim());
 				}
-				addListConditionSep(aux.trim());
+				if(aux.contains(" RE ")){
+					addListConditionSep(aux.replaceAll(" RE ", "").trim());
+					auxCondition = aux.trim()+".Q";
+				}				
 			}
+			
+			//Añado la condicion
+			this.condition = this.condition + " " + auxCondition;
 		}
 	}
 
@@ -114,13 +138,16 @@ public class Transition {
 				Pattern pat = Pattern.compile(".*:=.*");
 				Matcher mat = pat.matcher(list[i]);
 				if (mat.matches()) {
-					// si tiene una asignacion añado a la lista cond sep
-					String [] listSep = list[i].trim().split(":=|==|\\*");//TODO REVISAR
+					assignment(list[i].substring(0, list[0].indexOf(":=")),list[i].substring(list[0].indexOf(":=")+2, list[0].length()));
+					// si tiene una asignacion añado a la lista de condiciones separadas
+					String [] listSep = list[i].trim().split(":=|==|\\*");
 					for (int j = 0; j < listSep.length; j++) {
-						Pattern patt = Pattern.compile("[0-9]|X[0-9]|[0-9][a-z A-Z]");
-						Matcher matt = pat.matcher(listSep[i]);
-						if(!matt.matches()){
-							addListConditionSep(listSep[i]);
+						//TODO REVISAR reges X20
+						Pattern patS = Pattern.compile("[0-9]|^X[0-9]$");
+						Matcher matS = patS.matcher(listSep[j].trim());
+						if(!matS.matches()){
+							String signal = listSep[j].replaceAll("NOT|RE|FE", "");
+							addListConditionSep(signal.trim());
 						}
 						
 					}
@@ -129,17 +156,20 @@ public class Transition {
 			}
 
 		}
+	}
+	/**Este metodo creara un Map de asignaciones en caso de que la transicion tenga*/
+	private void assignment(String pSignal, String pallocation) {
+		// TODO REVISAR 
+		if(this.assignments==null){
+			this.assignments = new HashMap<String, String>();
+			this.assignmentSignal=true;
+		}
+		this.assignments.put(pSignal, pallocation);
+		
+	}
 
-		/*
-		 * if(!getComment().isEmpty()){ //Si es un comentario llevara
-		 * obligatoriamente (* comentario *) por lo q le quito String aux =
-		 * getComment().substring(3, getComment().length()-2); int index
-		 * =aux.indexOf(":=");
-		 * 
-		 * if(index > (-1)){ System.err.println(aux); String aux1=
-		 * aux.substring(1, index); aux=aux.substring(index+2,aux.length());
-		 * System.err.println(aux1); System.err.println(aux); } }
-		 */
+	public boolean isAssignmentSignal() {
+		return assignmentSignal;
 	}
 
 	/** Quita el signo a el texto pasado y devuelve una lista */

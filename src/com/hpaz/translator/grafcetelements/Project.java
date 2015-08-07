@@ -3,6 +3,8 @@ package com.hpaz.translator.grafcetelements;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.hpaz.translator.grafcetelements.constants.GrafcetTagsConstants;
 import com.hpaz.translator.output.Output;
@@ -38,6 +40,10 @@ public class Project {
 	private LinkedList<String> listTimersUI;
 	private LinkedList<String> listCountersUI;
 
+	private Map<String, String> listUI;
+
+	LinkedList<String> signalsProject;
+	
 	private static Project project = new Project();
 
 	private Project() {
@@ -49,6 +55,8 @@ public class Project {
 		this.listCounters = new LinkedList<Counter>();
 		this.listCountersUI = new LinkedList<String>();
 		this.listTimersUI = new LinkedList<String>();
+		this.listUI = null;
+		this.signalsProject = new LinkedList<String>();
 
 	}
 
@@ -135,19 +143,75 @@ public class Project {
 			vG.addAll(g.getGrafcetVarGlobalStages());
 		}
 		vG.add("\n\t(*---Señales---*)\n\n");
-		for (Grafcet g : listGrafcet) {
+		//TODO AQUI LAS SEÑALES
+		/*for (Grafcet g : listGrafcet) {
 			vG.addAll(g.grafcetVarGlobalSignals());
+		}*/
+		//F0 AT %I*	:BOOL; ("\t" + signal + "AT %++" map "+\t: "++";\n");
+		//por cada una de las señales del proyecto
+		for (String string : this.signalsProject) {
+			//Si esta en el hashMap t la UI 
+			if(this.listUI.containsKey(string)){
+				//la uso
+				String type = this.listUI.get(string);
+				
+				Pattern pat = Pattern.compile(".*:$");
+				Matcher mat = pat.matcher(type);
+				
+				//Si el tipo indica que es una señal
+				if (!mat.matches()) {
+					String [] typeDiv = type.split(":");
+					String typeData=typeDiv[0];
+					String typeVar=typeDiv[1];
+					//ya tengo el tipo de dato y de variable, ahora por cada una de ellas se excribe distinto
+					if(typeData.equals("Entrada")){
+						typeData = "I";
+					}else if(typeData.equals("Salida")){
+						typeData = "Q";
+					}else if(typeData.equals("Memoria")){
+						typeData = "M";
+					}else if(typeData.equals("Constante")){
+						typeData = "C";
+					}else if(typeData.equals("Sistema")){
+						typeData = "S";
+					}
+					
+					vG.add("\t" + string + " AT %"+ typeData +"*\t: "+typeVar+";\n");
+				}
+				//la eimino del HashMap
+				this.listUI.remove(string);
+			}
 		}
-
+		vG.add("\n");
+		//Si aun quedan elementos en el HashMAp
+		if(!this.listUI.isEmpty()){
+			//Por cada temporizador
+			for (Timer timer : this.listTimers) {
+				String type = this.listUI.get(timer.getNameTimer());
+				timer.addTypeTimer(type);
+				vG.add(timer.getGlobalsVarTimer());
+			}
+			vG.add("\n");
+			//Por cada Contador
+			for (Counter count : this.listCounters) {
+				System.out.println("hay contadores");
+				String type = this.listUI.get(count.getNameCounter());
+				count.addTypeCounter(type);
+				vG.add(count.getGlobalsVarCounter());
+			}
+		}
+		
+		//TODO mirar si es necesario este removeDuplicates
 		return removeDuplicates(vG);
 	}
 	
 	public void setProjectVariablesFromUserInterface(Map<String,String> variablesMap){
 		//TODO pasar el mapa de variables a donde sea
-		
-		for (String key : variablesMap.keySet()){
+		this.listUI = variablesMap;
+		/*for (String key : variablesMap.keySet()){
 			System.out.println("key -> " + key + ", value -> " + variablesMap.get(key));
-		}
+		}*/
+		
 	}
 
 	public void printProject() {
@@ -379,8 +443,9 @@ public class Project {
 			}
 		}
 	}
-
-	public LinkedList<String> generateSignals() {
+	
+	
+	private void generateSignalsProject() {
 		LinkedList<String> signals = new LinkedList<String>();
 		for (Grafcet g : getListG()) {
 			// si el grafcet es el de emergencia relleno la lista de emergencia
@@ -388,22 +453,15 @@ public class Project {
 		}
 
 		signals = removeDuplicates(signals);
-		// TODO recordar quitar este for y el siguiente
-		for (String string : signals) {
-			System.out.println(string);
-		}
-
-		for (String tim : getListTimersUI()) {
-			//tim.printConsole();
-			System.out.println("TEMPO ------ "+tim);
-		}
 		
-		for (String count : getListCountersUI()) {
-			//count.printConsole();
-			System.out.println("CONTADOR -------"+count);
-		}
-		return signals;
+		this.signalsProject = signals;
+	
 
+	}
+	
+	public LinkedList<String> getSignalsProject() {
+		generateSignalsProject();
+		return this.signalsProject;
 	}
 
 	/**
@@ -438,6 +496,7 @@ public class Project {
 		}
 		return indexTimer;
 	}
+
 
 
 

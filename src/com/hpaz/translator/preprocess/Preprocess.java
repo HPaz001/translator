@@ -189,7 +189,7 @@ public class Preprocess extends DefaultHandler {
 
 				// si es de un comentario
 				if (previousTag.equals(GrafcetTagsConstants.COMMENT_TAG)) {
-					addComent(text);
+					addComent(" NOT "+text);
 					// si es un paso la condition sera de la accion
 				} else if (isStep) {
 					/*
@@ -222,7 +222,7 @@ public class Preprocess extends DefaultHandler {
 				 */
 				if (previousTag.equals(GrafcetTagsConstants.COMMENT_TAG)) {
 					// si esta dentro de un comentario añado a cometario
-					addComent(text);
+					addComent(" RE "+text);
 
 				} else if (isStep) {
 					// Si es un step puede ser de una condicion o de una action
@@ -244,7 +244,7 @@ public class Preprocess extends DefaultHandler {
 				 */
 				if (previousTag.equals(GrafcetTagsConstants.COMMENT_TAG)) {
 					// si esta dentro de un comentario añado a cometario
-					addComent(text);
+					addComent(" FE "+text);
 
 				} else if (isStep) {
 					// Si es un step puede ser de una condicion o de una action
@@ -370,39 +370,6 @@ public class Preprocess extends DefaultHandler {
 			}
 		}
 	}
-
-	/**
-	 * Quita el signo a el testo pasado y devuelve una lista private LinkedList
-	 * <String> removeSigns(String t) {
-	 * 
-	 * LinkedList<String> aux = new LinkedList<String>();
-	 * 
-	 * boolean itr = true; int posS = 0; text = t.trim();
-	 * 
-	 * while (itr) {
-	 * 
-	 * if (text.indexOf("+") == (-1) || text.indexOf("*") == (-1)) {
-	 * 
-	 * itr = false; aux.add(text);
-	 * 
-	 * } else {
-	 * 
-	 * // si es un signo mas coloco en poss la posicion donde esta if
-	 * (text.indexOf("+") != (-1)) { posS = text.indexOf("+");
-	 * 
-	 * // si es un signo por coloco en poss la posicion donde esta } else if
-	 * (text.indexOf("*") != (-1)) { posS = text.indexOf("*"); }
-	 * 
-	 * /* Añado el texto desde la posicion 0 a la del signo ya q esta no se
-	 * incluye
-	 * 
-	 * aux.add(text.substring(0, posS));
-	 * 
-	 * /* Dejo en text el resto del string para seguirlo tratando text =
-	 * text.substring(posS + 1, text.length() + 1); } }
-	 * 
-	 * return aux; }
-	 */
 
 	/**
 	 * Añade el comentario donde le corresponde, ya que puede ser de una

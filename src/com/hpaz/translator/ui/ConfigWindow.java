@@ -198,13 +198,13 @@ public class ConfigWindow extends JFrame {
 	}
 
 	private void createSignalViewsWithAlgorithmElements() {
-		LinkedList<String> signalNamesList = Project.getProject().generateSignals();
+		LinkedList<String> signalNamesList = Project.getProject().getSignalsProject();
 
 		for (String string : signalNamesList) {
 			Panel panelSignal = new Panel();
 			// para no poner los tem y cont
 			Pattern pat = Pattern.compile(
-					"^Temp.*/X[0-9]./[0-9].*|^Cont.*==[0-9]$|^Cont.*=[0-9]$|^Cont.*=Cont.*\\+[0-9]|^Cont.*=Cont.*\\-[0-9]$");
+					"^Temp.*/X[0-9]./[0-9].*|^Cont.*==[0-9]$|^Cont.*=Cont.*\\+[0-9]|^Cont.*=Cont.*\\-[0-9]$|^Cont.*\\+\\+[0-9]$|^Cont.*\\-\\-+[0-9]$");
 			Matcher mat = pat.matcher(string);
 
 			if (!mat.matches()) {

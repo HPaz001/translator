@@ -54,33 +54,30 @@ public class Counter {
 		
 	}
 	public void printConsole() {
-		System.out.println("getNameCounter: "+getNameCounter());
-		System.out.println("getStepCountes: "+getStepCountes());
-		System.out.println("getTypeCounter: "+getTypeCounter());
+		System.out.println("getNameCounter: "+nameCounter);
+		System.out.println("getStepCountes: "+stepCountes);
+		System.out.println("getTypeCounter: "+typeCounter);
 	}
 	
-	public String generateGlobalsVarCounter(){
+	public String getGlobalsVarCounter(){
 		String globalsVar ="";
 		
 		if(this.typeCounter.equals(GrafcetTagsConstants.typeCounter.CTD)){
-			globalsVar= 
-					"\t" + this.nameCounter + "CD\t: BOOL;\n"+
+			globalsVar= "\t" + this.nameCounter + "CD\t: BOOL;\n"+
 					"\t" + this.nameCounter + "LOAD\t: BOOL;\n"+
 					"\t" + this.nameCounter + "PV\t: INT;\n"+
 					"\t" + this.nameCounter + "Q\t: BOOL;\n"+
 					"\t" + this.nameCounter + "CV\t: INT;\n";
 					
 		}else if(this.typeCounter.equals(GrafcetTagsConstants.typeCounter.CTU)){
-			globalsVar= 
-					"\t" + this.nameCounter + "CU\t: BOOL;\n"+
+			globalsVar= "\t" + this.nameCounter + "CU\t: BOOL;\n"+
 					"\t" + this.nameCounter + "RESET\t: BOOL;\n"+
 					"\t" + this.nameCounter + "PV\t: INT;\n"+
 					"\t" + this.nameCounter + "Q\t: BOOL;\n"+
 					"\t" + this.nameCounter + "CV\t: INT;\n";
 			
 		}else if(this.typeCounter.equals(GrafcetTagsConstants.typeCounter.CTUD)){
-			globalsVar= 
-					"\t" + this.nameCounter + "CU\t: BOOL;\n"+
+			globalsVar= "\t" + this.nameCounter + "CU\t: BOOL;\n"+
 					"\t" + this.nameCounter + "CD\t: BOOL;\n"+
 					"\t" + this.nameCounter + "RESET\t: BOOL;\n"+
 					"\t" + this.nameCounter + "LOAD\t: BOOL;\n"+
@@ -93,8 +90,8 @@ public class Counter {
 		return globalsVar;
 		
 	}
-
-	public String []  generateProgramMainCounter(){
+	/**Devuelve un array con dos elemetos en uno la iniciacion del tipo de count (var del program main) y en otro parte del program main*/
+	public String []  getProgramMainCounter(){
 		String []  programMain = new String[2]; 
 		
 				if(this.typeCounter.equals(GrafcetTagsConstants.typeCounter.CTD)){

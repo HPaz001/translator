@@ -52,13 +52,6 @@ public class Sequence {
 		return signals;
 	}
 
-	/*
-	 * public LinkedList<String> getPreviousList() { return previousList; }
-	 * public void addPreviousSeq(String previousSeq) {
-	 * this.previousList.add(previousSeq); } public LinkedList<String>
-	 * getNextLits() { return nextLits; } public void addNextSeq(String nextSeq)
-	 * { this.nextLits.add(nextSeq); }
-	 */
 	public int getStepStopEmergency() {
 		return stepStopEmergency;
 	}
@@ -78,54 +71,62 @@ public class Sequence {
 	/**Este metodo añade una transicion o un step a la lista listTransitionOrStep
 	 * Pero antes de esto genera y guarda las señales correspondientes */
 	public void addTransitionOrStep(Object pTransitionOrStep) {
+		
 		if (pTransitionOrStep instanceof Transition) {
+			
 			((Transition) pTransitionOrStep).analyzeReviews();
 			signals.addAll(((Transition) pTransitionOrStep).getConditionSep());
+			
 		} else if (pTransitionOrStep instanceof Step) {
+			
 			for (Action action : ((Step) pTransitionOrStep).getMyActions()) {
+				
 				String act = action.getText();
 				//TODO controlar aqui los contadores los temp en la transicion
 				if (!act.equals("") && !action.isEmergency()) {
-					//si es un contador o un temporizador solo guardo el nombre
-					//el creo el contador
-					String aux = action.getText();
+					
+					String aux = action.getText().trim();
+					
 					//TODO NO SE PORQ NO LO DETECTA LA REGEX ESTA BIEN
-					Pattern patTemp = Pattern.compile("^Temp.*=[0-9][a-z A-Z]");
+					Pattern patTemp = Pattern.compile("^Temp.*=.*");
 					Matcher matTemp = patTemp.matcher(aux);
 					
 					//TODO ?¿?¿? compruebo que el tiempo del contador es el correcto ?¿
 					//int time = Integer.parseInt(aux.replaceAll("=|[a-z A-Z]", ""));
 					//aux = aux.substring(0, aux.indexOf("="));
 					
-					//Excluyo los temporizadores
+					//Si no es un temporizador
 					if(!matTemp.matches()){
-						
+						//Expresion regular para detectar una asignacion de contador
 						Pattern patCount = Pattern.compile("^Cont.*=[0-9]$");
 						Matcher matCount = patCount.matcher(aux.trim());
-						
+						//Si es un contador
 						if(matCount.matches()){
-							/*si es un contador con una asignacion directa, 
-							 * compruebo si existe en la lista
-							 * si no existe lo creo y añado y si exite le añado la etapa*/
+							
 							//TODO tengo q pedir ejemplo de contador en la programacion para saber si esto esta bien 
-							aux = aux.substring(0, aux.indexOf("="));
+							
+							//Me quedo solo con el nombre del contador
+							aux = aux.substring(0, aux.indexOf("=")).trim();
+							//Compruebo si el contador existe en la lista
 							int index = Project.getProject().equalsCount(aux);
 							
+							//Si index == -1 es q no encontro un contador con ese nombre
 							if(index == (-1)){
+								//Creo el contador y lo relleno
 								Counter cont = new Counter();
 								cont.addNameCounter(aux);
 								cont.addStepCountes(((Step) pTransitionOrStep).getName());
-								//TODO contador obtengo el numero?
-								//aux = action.getText().substring(action.getText().indexOf("=")+1, action.getText().length());	
 								Project.getProject().addCounter(cont);
-							}else{
+								
+							}else{//Si index != -1 es q habia un contador con ese nombre, asi q guardo la etapa.
 								Project.getProject().getListCounters().get(index).addStepCountes(((Step) pTransitionOrStep).getName());
 							}
+						}else{
+							//Si no es una inicializacion de temp o cont lo añado a la lista de señales
+							signals.add(action.getText());
 						}
-						signals.add(action.getText());
+						
 					}
-					
-					
 				}
 			}
 		}
@@ -140,20 +141,8 @@ public class Sequence {
 		auxSignals.add("\n\t(*---Señales---*)\n\n");
 		/* puede ser una transition o un step */
 		for (Object st : listTransitionOrStep) {
-			/*
-			 * if (st instanceof Transition){ //signals.addAll(((Transition)
-			 * st).printTransVG()); auxSignals.addAll(((Transition)
-			 * st).printTransVG());
-			 * 
-			 * }else
-			 */if (st instanceof Step) {
+			if (st instanceof Step) {
 				auxStages.add(((Step) st).printStepGlobalVar());
-				/*
-				 * for (Action action : ((Step) st).getMyActions()) { String act
-				 * = action.getText(); if(!act.equals("")){
-				 * auxSignals.add("\t"+action.getText()+"\t: BOOL;\n"); } }
-				 */
-
 			}
 		}
 
@@ -164,14 +153,6 @@ public class Sequence {
 
 	}
 
-	/*
-	 * public LinkedList<String> generateListSignals(){ for (Object st : list)
-	 * {/*puede ser una transition o un step if (st instanceof Transition){
-	 * signals.addAll(((Transition) st).getConditionSep()); }else if(st
-	 * instanceof Step){ for (Action action : ((Step) st).getMyActions()) {
-	 * String act = action.getText(); if(!act.equals("")){
-	 * signals.add(action.getText()); } } } } return signals; }
-	 */
 	/**
 	 * Devuelve un listado con los set y reset correspondientes a cada objeto de
 	 * la secuencia
