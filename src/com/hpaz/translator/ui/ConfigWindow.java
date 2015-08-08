@@ -4,6 +4,7 @@ import java.awt.Choice;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.LayoutManager;
 import java.awt.Panel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,10 +13,12 @@ import java.awt.event.ItemListener;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.concurrent.locks.AbstractOwnableSynchronizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.swing.BoxLayout;
+import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -60,6 +63,8 @@ public class ConfigWindow extends JFrame {
 	 * Create the frame.
 	 */
 	public ConfigWindow() {
+		setResizable(false);
+		setTitle("Traductor");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 699, 747);
 		contentPane = new JPanel();
@@ -70,18 +75,18 @@ public class ConfigWindow extends JFrame {
 		JPanel panelSignal = new JPanel();
 		panelSignal.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0), 1, true), " Se\u00F1ales ",
 				TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panelSignal.setBounds(10, 11, 663, 180);
+		panelSignal.setBounds(10, 30, 663, 270);
 		panelSignal.setLayout(null);
 		contentPane.add(panelSignal);
 
 		scrollPanelSignalContainer = new JPanel();
 		scrollPanelSignalContainer.setLayout(new BoxLayout(scrollPanelSignalContainer, BoxLayout.Y_AXIS));
-		scrollPanelSignalContainer.setBounds(10, 21, 643, 149);
+		scrollPanelSignalContainer.setBounds(10, 21, 643, 240);
 
 		createSignalViewsWithAlgorithmElements();
 
 		JScrollPane scrollPanelSignal = new JScrollPane(scrollPanelSignalContainer);
-		scrollPanelSignal.setBounds(10, 21, 643, 149);
+		scrollPanelSignal.setBounds(10, 21, 643, 240);
 		scrollPanelSignal.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		scrollPanelSignal.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		panelSignal.add(scrollPanelSignal);
@@ -89,18 +94,18 @@ public class ConfigWindow extends JFrame {
 		JPanel panelTemp = new JPanel();
 		panelTemp.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0), 1, true), " Temporizadores ",
 				TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
-		panelTemp.setBounds(10, 212, 663, 180);
+		panelTemp.setBounds(10, 320, 663, 130);
 		contentPane.add(panelTemp);
 		panelTemp.setLayout(null);
 
 		scrollPanelTempContainer = new JPanel();
 		scrollPanelTempContainer.setLayout(new BoxLayout(scrollPanelTempContainer, BoxLayout.Y_AXIS));
-		scrollPanelTempContainer.setBounds(10, 21, 643, 149);
+		scrollPanelTempContainer.setBounds(10, 15, 643, 99);
 
 		createTimersViewsWithAlgorithmElements();
 
 		JScrollPane scrollPanelTemp = new JScrollPane(scrollPanelTempContainer);
-		scrollPanelTemp.setBounds(10, 21, 643, 149);
+		scrollPanelTemp.setBounds(10, 21, 643, 99);
 		scrollPanelTemp.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		scrollPanelTemp.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		panelTemp.add(scrollPanelTemp);
@@ -108,18 +113,18 @@ public class ConfigWindow extends JFrame {
 		JPanel paneCounter = new JPanel();
 		paneCounter.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0), 1, true), " Contadores ",
 				TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
-		paneCounter.setBounds(10, 414, 663, 180);
+		paneCounter.setBounds(10, 470, 663, 130);
 		contentPane.add(paneCounter);
 		paneCounter.setLayout(null);
 
 		scrollPanelCounterContainer = new JPanel();
 		scrollPanelCounterContainer.setLayout(new BoxLayout(scrollPanelCounterContainer, BoxLayout.Y_AXIS));
-		scrollPanelCounterContainer.setBounds(10, 21, 643, 149);
+		scrollPanelCounterContainer.setBounds(10, 15, 643, 99);
 
 		createCountersViewsWithAlgorithmElements();
 
 		JScrollPane scrollPanelCounter = new JScrollPane(scrollPanelCounterContainer);
-		scrollPanelCounter.setBounds(10, 21, 643, 149);
+		scrollPanelCounter.setBounds(10, 21, 643, 99);
 		scrollPanelCounter.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		scrollPanelCounter.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		paneCounter.add(scrollPanelCounter);
@@ -139,14 +144,34 @@ public class ConfigWindow extends JFrame {
 		LinkedList<String> counterNamesList = Project.getProject().getListCountersUI();
 
 		numberOfVariables += counterNamesList.size();
+		
+		if (counterNamesList.size() > 0){ 
+			Panel panelSignal = new Panel();
+			panelSignal.setLayout(null);
+			panelSignal.setBounds(0, 0, 350, 25);
+			scrollPanelCounterContainer.add(panelSignal);
+
+			JLabel lblSignalNameLabel = new JLabel("Nombre de variable");
+			lblSignalNameLabel.setHorizontalAlignment(0);
+			lblSignalNameLabel.setBounds(0, 5, 190, 14);
+			panelSignal.add(lblSignalNameLabel);
+			
+			JLabel lblSignalTypeLabel = new JLabel("Tipo de contador");
+			lblSignalTypeLabel.setHorizontalAlignment(0);
+			lblSignalTypeLabel.setBounds(200, 5, 140, 14);
+			panelSignal.add(lblSignalTypeLabel);
+
+		}
 
 		for (String string : counterNamesList) {
 			Panel panelCount = new Panel();
-			panelCount.setBounds(0, 0, 663, 25);
-			panelCount.setName(string);
+			panelCount.setBounds(0, 0, 350, 25);
+			panelCount.setLayout(null);
 			scrollPanelCounterContainer.add(panelCount);
 
 			JLabel lblCounterName = new JLabel(string);
+			lblCounterName.setHorizontalAlignment(0);
+			lblCounterName.setBounds(0, 5, 190, 14);
 			panelCount.add(lblCounterName);
 
 			Choice choiceCounterName = new Choice();
@@ -155,6 +180,7 @@ public class ConfigWindow extends JFrame {
 			choiceCounterName.addItem(ConfigConstants.SIGNAL_COUNTER_TYPE_CTU);
 			choiceCounterName.addItem(ConfigConstants.SIGNAL_COUNTER_TYPE_CTUD);
 			choiceCounterName.addItem(ConfigConstants.SIGNAL_COUNTER_TYPE_NOCOUNTER);
+			choiceCounterName.setBounds(200, 5, 140, 14);
 			panelCount.add(choiceCounterName);
 
 			choiceCounterName.addItemListener(new ItemListener() {
@@ -170,14 +196,34 @@ public class ConfigWindow extends JFrame {
 		LinkedList<String> timerNamesList = Project.getProject().getListTimersUI();
 
 		numberOfVariables += timerNamesList.size();
+		
+		if (timerNamesList.size() > 0){ 
+			Panel panelSignal = new Panel();
+			panelSignal.setLayout(null);
+			panelSignal.setBounds(0, 0, 350, 25);
+			scrollPanelTempContainer.add(panelSignal);
+
+			JLabel lblSignalNameLabel = new JLabel("Nombre de variable");
+			lblSignalNameLabel.setHorizontalAlignment(0);
+			lblSignalNameLabel.setBounds(0, 5, 190, 14);
+			panelSignal.add(lblSignalNameLabel);
+			
+			JLabel lblSignalTypeLabel = new JLabel("Tipo de temporizador");
+			lblSignalTypeLabel.setHorizontalAlignment(0);
+			lblSignalTypeLabel.setBounds(200, 5, 140, 14);
+			panelSignal.add(lblSignalTypeLabel);
+
+		}
 
 		for (String string : timerNamesList) {
 			Panel panelTemp = new Panel();
-			panelTemp.setName(string);
-			panelTemp.setBounds(0, 0, 663, 25);
+			panelTemp.setLayout(null);
+			panelTemp.setBounds(0, 0, 350, 25);
 			scrollPanelTempContainer.add(panelTemp);
 
 			JLabel lblTempName = new JLabel(string);
+			lblTempName.setHorizontalAlignment(0);
+			lblTempName.setBounds(0, 5, 190, 14);
 			panelTemp.add(lblTempName);
 
 			Choice choiceTempName = new Choice();
@@ -186,7 +232,7 @@ public class ConfigWindow extends JFrame {
 			choiceTempName.addItem(ConfigConstants.SIGNAL_TEMP_TYPE_TOFF);
 			choiceTempName.addItem(ConfigConstants.SIGNAL_TEMP_TYPE_TP);
 			choiceTempName.addItem(ConfigConstants.SIGNAL_TEMP_TYPE_NOTEMP);
-
+			choiceTempName.setBounds(200, 5, 140, 14);
 			choiceTempName.addItemListener(new ItemListener() {
 				@Override
 				public void itemStateChanged(ItemEvent e) {
@@ -199,9 +245,33 @@ public class ConfigWindow extends JFrame {
 
 	private void createSignalViewsWithAlgorithmElements() {
 		LinkedList<String> signalNamesList = Project.getProject().getSignalsProject();
+		
+		if (signalNamesList.size() > 0){
+			Panel panelSignal = new Panel();
+			panelSignal.setLayout(null);
+			panelSignal.setBounds(0, 0, 500, 25);
+			scrollPanelSignalContainer.add(panelSignal);
+
+			JLabel lblSignalNameLabel = new JLabel("Nombre de variable");
+			lblSignalNameLabel.setHorizontalAlignment(0);
+			lblSignalNameLabel.setBounds(0, 5, 190, 14);
+			panelSignal.add(lblSignalNameLabel);
+			
+			JLabel lblSignalTypeLabel = new JLabel("Tipo de dato");
+			lblSignalTypeLabel.setHorizontalAlignment(0);
+			lblSignalTypeLabel.setBounds(200, 5, 140, 14);
+			panelSignal.add(lblSignalTypeLabel);
+
+			
+			JLabel lblSignalVariableTypeLabel = new JLabel("Tipo de variable");
+			lblSignalVariableTypeLabel.setBounds(350, 5, 140, 14);
+			lblSignalVariableTypeLabel.setHorizontalAlignment(0);
+			panelSignal.add(lblSignalVariableTypeLabel);
+		}
 
 		for (String string : signalNamesList) {
 			Panel panelSignal = new Panel();
+			panelSignal.setLayout(null);
 			// para no poner los tem y cont
 			Pattern pat = Pattern.compile(
 					"^Temp.*/X[0-9]./[0-9].*|^Cont.*==[0-9]$|^Cont.*=Cont.*\\+[0-9]|^Cont.*=Cont.*\\-[0-9]");
@@ -209,13 +279,13 @@ public class ConfigWindow extends JFrame {
 
 			if (!mat.matches()) {
 				numberOfVariables++;
-				panelSignal.setBounds(0, 0, 663, 25);
-				panelSignal.setName(string);
+				panelSignal.setBounds(0, 0, 500, 30);
 				scrollPanelSignalContainer.add(panelSignal);
 
 				JLabel lblSignalName = new JLabel(string);
 				panelSignal.add(lblSignalName);
-				lblSignalName.setBounds(21, 41, 46, 14);
+				lblSignalName.setBounds(0, 5, 190, 15);
+				lblSignalName.setHorizontalAlignment(0);
 
 				Choice choiceSignalDataType = new Choice();
 				choiceSignalDataType.addItem("");
@@ -225,6 +295,7 @@ public class ConfigWindow extends JFrame {
 				choiceSignalDataType.addItem(ConfigConstants.SIGNAL_DATA_TYPE_MEMORY);
 				choiceSignalDataType.addItem(ConfigConstants.SIGNAL_DATA_TYPE_SYSTEM);
 				choiceSignalDataType.addItem(ConfigConstants.SIGNAL_DATA_TYPE_NOSIGNAL);
+				choiceSignalDataType.setBounds(200, 5, 140, 14);
 				panelSignal.add(choiceSignalDataType);
 
 				Choice choiceSignalVariableType = new Choice();
@@ -233,6 +304,7 @@ public class ConfigWindow extends JFrame {
 				choiceSignalVariableType.addItem(ConfigConstants.SIGNAL_VARIABLE_TYPE_BYTE);
 				choiceSignalVariableType.addItem(ConfigConstants.SIGNAL_VARIABLE_TYPE_WORD);
 				choiceSignalVariableType.addItem(ConfigConstants.SIGNAL_VARIABLE_TYPE_DOUBLEWORD);
+				choiceSignalVariableType.setBounds(350, 5, 140, 14);
 				panelSignal.add(choiceSignalVariableType);
 				
 				choiceSignalDataType.addItemListener(new ItemListener() {
