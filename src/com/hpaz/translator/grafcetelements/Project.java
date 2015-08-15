@@ -179,7 +179,7 @@ public class Project {
 					}else if(typeData.equals("Memoria")){
 						typeData = "M";
 					}else if(typeData.equals("Constante")){
-						typeData = "C";
+						typeData = "K";
 					}else if(typeData.equals("Sistema")){
 						typeData = "S";
 					}
