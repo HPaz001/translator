@@ -1,6 +1,8 @@
 package com.hpaz.translator.preprocess;
 
 import java.nio.file.FileSystems;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -21,9 +23,7 @@ import com.hpaz.translator.grafcetelements.constants.GrafcetTagsConstants;
 public class Preprocess extends DefaultHandler {
 	/**
 	 * Recoger informacion del XML
-	 * 
 	 * @author hpaz
-	 *
 	 */
 
 	// creo las variables necesarias para guardar la informacion de etiquetas
@@ -42,29 +42,26 @@ public class Preprocess extends DefaultHandler {
 									// transition
 	private String actualTag;
 	private String previousTag;
-	private String language;// el lenguaje al que se quiere pasar
-	private String nameProject;
-	private String compatibility;
-	private int actualSequence;
+	//private int actualSequence;
+	
 
 	/* private static Preprocess myPreprocess; */
 
 	public Preprocess(String inputXML, String outputDir, String pLanguage, String pCompatibility) {
-
+		this.actualTag = "";
+		this.text = "";
+		this.isStep = false;
+		this.isTransition = false;
+		this.previousTag = "";
+		//this.actualSequence = 0;
+		
 		String separator = FileSystems.getDefault().getSeparator();
 		String fileName = inputXML.substring(inputXML.lastIndexOf(separator) + 1, inputXML.length() - 4);
-
-		language = pLanguage;
-		actualTag = "";
-		text = "";
-		nameProject = fileName + "_" + pLanguage;
-		isStep = false;
-		isTransition = false;
-		previousTag = "";
-		compatibility = pCompatibility;
-		this.actualSequence = 0;
-
-		Project.getProject().setOutputPath(outputDir);
+		Project.getProject().addName(fileName + "_" + pLanguage);
+		Project.getProject().addOutputPath(outputDir);
+		Project.getProject().addLanguage(pLanguage);
+		Project.getProject().addProgram(pCompatibility);
+		
 	}
 
 	// si no existe el preproceso lo creo
@@ -79,14 +76,11 @@ public class Preprocess extends DefaultHandler {
 	 * nameProject = pNamePro; isStep = false; isTransition = false; previousTag
 	 * = ""; compatibility=pCompatibility; }
 	 */
-
-	public void startDocument() throws SAXException {
-		// System.out.println("\nPrincipio del documento...");
-	}
-
-	public void endDocument() throws SAXException {
-		// System.out.println("\nFin del documento...");
-	}
+	
+	/**Detecta el principio del documento*/
+	public void startDocument() throws SAXException {}
+	/**Detecta el fin del documento*/
+	public void endDocument() throws SAXException {}
 
 	/** Esto lo hace por cada etiqueta que hay */
 	public void startElement(String uri, String localName, String name, Attributes attributes) throws SAXException {
@@ -97,36 +91,106 @@ public class Preprocess extends DefaultHandler {
 
 		if (actualTag.equals(GrafcetTagsConstants.GRAFCET_TAG)) {
 			grafcet = new Grafcet();
-
+			grafcet.fillAttributes(processingAttributes(attributes));
+			
 		} else if (actualTag.equals(GrafcetTagsConstants.SEQUENCE_TAG)) {
 			sequence = new Sequence();
-
+			sequence.fillAttributes(processingAttributes(attributes));
+			
 		} else if (actualTag.equals(GrafcetTagsConstants.STEP_TAG)) {
 			step = new Step();
 			isStep = true;
-
+			step.fillAttributes(processingAttributes(attributes));
+			
 		} else if (actualTag.equals(GrafcetTagsConstants.TRANSITION_TAG)) {
 			transition = new Transition();
 			isTransition = true;
-
+			
 		} else if (actualTag.equals(GrafcetTagsConstants.ACTION_TAG)) {
 			action = new Action();
-
+			action.fillAttributes(processingAttributes(attributes));
 		} else if (actualTag.equals(GrafcetTagsConstants.HLINK_TAG)) {// road
 			road = new Road();
-
+			road.fillAttributes(processingAttributes(attributes));
 		} else if (actualTag.equals(GrafcetTagsConstants.JUMP_TAG)) {
 			jump = new Jump();
+			jump.fillAttributes(processingAttributes(attributes));
+	
+		}else if (actualTag.equals(GrafcetTagsConstants.NODE_TAG)) { // node
+			// guardo las dos secuencias de las q viene o va en el road
+			road.addSequences(Integer.parseInt(attributes.getValue(0)));
 
 		}
 
-		// Recorremos los atributos de la etiqueta actual
-		for (int i = 0; i < attributes.getLength(); i++) {
+		// Recorro los atributos de la etiqueta actual
+		/*for (int i = 0; i < attributes.getLength(); i++) {
 			// este metodo guarda cada atributo en su correspondiente clase
 			processingAttributes(attributes.getQName(i), attributes.getValue(i));
 
-		}
+		}*/
 	}
+	
+	/** Guarda cada atributo en su correspondiente clase */
+	/*private void processingAttributes(String pNameAtt, String pValueAtt) {
+
+		if (actualTag.equals(GrafcetTagsConstants.GRAFCET_TAG)) {// Grafcet
+			// aNado el tipo, nombre, comentario y propietario
+			if (pNameAtt.equals("type")) {
+				grafcet.setType(pValueAtt);
+			} else if (pNameAtt.equals("name")) {
+				 Para añadir expresiones regulares 
+				Pattern pat = Pattern.compile("^GEmergencia.*|^GEmergency.*");
+				Matcher mat = pat.matcher(pValueAtt);
+				if (mat.matches()) {
+					grafcet.setEmergency(true);
+				}
+				grafcet.setName(pValueAtt);
+			} else if (pNameAtt.equals("comment")) {
+				grafcet.setComment(pValueAtt);
+			} else if (pNameAtt.equals("owner")) {
+				grafcet.setOwner(pValueAtt);
+			}
+
+		} else if (actualTag.equals(GrafcetTagsConstants.SEQUENCE_TAG)) {// Sequence
+			// añado el id
+			actualSequence = Integer.parseInt(pValueAtt);
+			sequence.setIdSeq(Integer.parseInt(pValueAtt));
+
+		} else if (actualTag.equals(GrafcetTagsConstants.STEP_TAG)) {// Step
+			// añado tipo y nombre
+			if (pNameAtt.equals("type")) {
+				step.setType(pValueAtt);
+			} else if (pNameAtt.equals("name")) {
+				step.setName(pValueAtt);
+			}
+
+		} else if (actualTag.equals(GrafcetTagsConstants.ACTION_TAG)) {// action
+			// añado el tipo
+			action.setType(pValueAtt);
+
+		} else if (actualTag.equals(GrafcetTagsConstants.HLINK_TAG)) {// hlink
+			// Si hay una convergencia o divergencia estara en la etiketa hlink,
+			// guardaremos si es diver o conver
+			// guardo en road el tipo, de q secuencia viene
+			if (pNameAtt.equals("seqid")) {
+				road.setSeqIni(Integer.parseInt(pValueAtt));
+			} else if (pNameAtt.equals("type")) {
+				road.setType(pValueAtt);
+			}
+
+		} else if (actualTag.equals(GrafcetTagsConstants.NODE_TAG)) { // node
+			// guardo las dos secuencias de las q viene o va en el road
+			road.addSequences(Integer.parseInt(pValueAtt));
+
+		} else if (actualTag.equals(GrafcetTagsConstants.JUMP_TAG)) {// jump
+			// añado desde y a donde
+			if (pNameAtt.equals("seqid_from")) {
+				jump.setFromSeq(Integer.parseInt(pValueAtt));
+			} else if (pNameAtt.equals("seqid_to")) {
+				jump.setToSeq(Integer.parseInt(pValueAtt));
+			}
+		}
+	}*/
 
 	/** Para obtener los textos que hay dentro de una etiqueta */
 	public void characters(char[] ch, int start, int length) throws SAXException {
@@ -141,18 +205,14 @@ public class Preprocess extends DefaultHandler {
 
 		// si la etiqueta tiene texto
 		if (text != null && !text.isEmpty()) {
-
 			// si la etiqueta es text entonces es el texto de una accion
 			if (actualTag.equals(GrafcetTagsConstants.TEXT_TAG)) {
-				// step.setAction(step.getAction() + text);
 				action.setText(action.getText() + text);
-
 				/*
 				 * Si la etiqueta es condition, puede ser de una transition o de
 				 * un step ya que la acction puede ser condicionada
 				 */
 			} else if (actualTag.equals(GrafcetTagsConstants.CONDITION_TAG)) { // condition
-
 				// si es un paso la condition sera de la accion
 				if (isStep) {
 					/*
@@ -273,8 +333,8 @@ public class Preprocess extends DefaultHandler {
 
 		if (actualTag.equals(GrafcetTagsConstants.SEQUENCE_TAG)) {// Sequence
 			// anado la secuencia al grafcet
-			grafcet.addSequence(sequence, actualSequence);
-			actualSequence = 0;
+			grafcet.addSequence(sequence);
+			//actualSequence = 0;
 
 		} else if (actualTag.equals(GrafcetTagsConstants.ACTION_TAG)) { // Action
 			// anado la accion al step
@@ -301,76 +361,17 @@ public class Preprocess extends DefaultHandler {
 		} else if (actualTag.equals(GrafcetTagsConstants.GRAFCET_TAG)) { // Grafcet
 			// añado el grafcet al proyecto
 			Project.getProject().addGrafcet(grafcet);
-
-		} else if (actualTag.equals(GrafcetTagsConstants.PROJECT_TAG)) {// project
-			// añado el lenguaje y el nombre del proyecto
-			Project.getProject().addLanguage(language);
-			Project.getProject().addName(nameProject);
-			Project.getProject().addProgram(compatibility);
 		}
 	}
-
-	/** Guarda cada atributo en su correspondiente clase */
-	private void processingAttributes(String pNameAtt, String pAtt) {
-
-		if (actualTag.equals(GrafcetTagsConstants.GRAFCET_TAG)) {// Grafcet
-			// aNado el tipo, nombre, comentario y propietario
-			if (pNameAtt.equals("type")) {
-				grafcet.setType(pAtt);
-			} else if (pNameAtt.equals("name")) {
-				/* Para añadir expresiones regulares */
-				Pattern pat = Pattern.compile("^GEmergencia.*|^GEmergency.*");
-				Matcher mat = pat.matcher(pAtt);
-				if (mat.matches()) {
-					grafcet.setEmergency(true);
-				}
-				grafcet.setName(pAtt);
-			} else if (pNameAtt.equals("comment")) {
-				grafcet.setComment(pAtt);
-			} else if (pNameAtt.equals("owner")) {
-				grafcet.setOwner(pAtt);
-			}
-
-		} else if (actualTag.equals(GrafcetTagsConstants.SEQUENCE_TAG)) {// Sequence
-			// añado el id
-			actualSequence = Integer.parseInt(pAtt);
-			sequence.setIdSeq(Integer.parseInt(pAtt));
-
-		} else if (actualTag.equals(GrafcetTagsConstants.STEP_TAG)) {// Step
-			// añado tipo y nombre
-			if (pNameAtt.equals("type")) {
-				step.setType(pAtt);
-			} else if (pNameAtt.equals("name")) {
-				step.setName(pAtt);
-			}
-
-		} else if (actualTag.equals(GrafcetTagsConstants.ACTION_TAG)) {// action
-			// añado el tipo
-			action.setType(pAtt);
-
-		} else if (actualTag.equals(GrafcetTagsConstants.HLINK_TAG)) {// hlink
-			// Si hay una convergencia o divergencia estara en la etiketa hlink,
-			// guardaremos si es diver o conver
-			// guardo en road el tipo, de q secuencia viene
-			if (pNameAtt.equals("seqid")) {
-				road.setSeqIni(Integer.parseInt(pAtt));
-			} else if (pNameAtt.equals("type")) {
-				road.setType(pAtt);
-			}
-
-		} else if (actualTag.equals(GrafcetTagsConstants.NODE_TAG)) { // node
-			// guardo las dos secuencias de las q viene o va en el road
-			road.addSequences(Integer.parseInt(pAtt));
-
-		} else if (actualTag.equals(GrafcetTagsConstants.JUMP_TAG)) {// jump
-			// añado desde y a donde
-			if (pNameAtt.equals("seqid_from")) {
-				jump.setFromSeq(Integer.parseInt(pAtt));
-			} else if (pNameAtt.equals("seqid_to")) {
-				jump.setToSeq(Integer.parseInt(pAtt));
-			}
+	
+	private Map<String, String> processingAttributes(Attributes pAttributes) {
+		Map<String, String> auxVar = new HashMap<String, String>();
+		for (int i = 0; i < pAttributes.getLength(); i++) {
+			auxVar.put(pAttributes.getQName(i), pAttributes.getValue(i));
 		}
+		return auxVar;
 	}
+	
 
 	/**
 	 * Añade el comentario donde le corresponde, ya que puede ser de una

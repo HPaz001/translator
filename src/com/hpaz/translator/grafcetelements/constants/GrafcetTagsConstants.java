@@ -19,6 +19,7 @@ public class GrafcetTagsConstants {
 	public static final String COMMENT_TAG = "comment";
 	public static final String ACTION_FORCING_ORDER = "forcing order";
 	public static final String ACTION_CONDITIONAL = "conditional";
+	
 	public static enum typeCounter
 	{
 		CTU,CTD,CTUD

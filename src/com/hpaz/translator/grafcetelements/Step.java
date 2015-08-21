@@ -40,6 +40,12 @@ public class Step {
 		this.startEmergency=false;
 		this.setAnd(false);
 	}
+	
+	public void fillAttributes(Map<String, String> pAttributes) {
+		// anado tipo y nombre
+		this.type= pAttributes.get("type");
+		this.name= pAttributes.get("name");
+	}
 
 	public String getType() {
 		return type;

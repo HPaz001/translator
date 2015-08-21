@@ -54,6 +54,7 @@ public class Project {
 		this.name = null;
 		this.language = null;
 		this.program = null;
+		this.outputDir = null;
 		this.listGrafcet = new LinkedList<Grafcet>();
 		this.listTimers = new LinkedList<Timer>();
 		this.listCounters = new LinkedList<Counter>();
@@ -69,8 +70,8 @@ public class Project {
 		return project;
 	}
 
-	public void setOutputPath(String outputDir) {
-		this.outputDir = outputDir;
+	public void addOutputPath(String pOutputDir) {
+		this.outputDir = pOutputDir;
 	}
 
 	private String getName() {
@@ -223,7 +224,7 @@ public class Project {
 		
 	}
 
-	public void printProject() {
+	/*public void printProject() {
 		System.out.println("----- PROJECT ------");
 		System.out.println("Nombre: " + getName());
 		System.out.println("Lenguaje: " + getLanguage());
@@ -232,7 +233,7 @@ public class Project {
 			g.printGrafcet();
 		}
 
-	}
+	}*/
 
 	/** Este metodo devuelve */
 	public void print() {

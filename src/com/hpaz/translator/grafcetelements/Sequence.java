@@ -35,6 +35,11 @@ public class Sequence {
 		this.stepStopEmergency = -1;
 		this.StepStartEmergency = -1;
 	}
+	public void fillAttributes(Map<String, String> pAttributes) {
+		// anado el id
+		this.idSeq = Integer.parseInt(pAttributes.get("id"));			
+	}
+
 
 	public int getIdSeq() {
 		return idSeq;
@@ -288,4 +293,5 @@ public class Sequence {
 		return null;
 	}
 
+	
 }

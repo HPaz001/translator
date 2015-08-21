@@ -1,6 +1,7 @@
 package com.hpaz.translator.grafcetelements;
 
 import java.util.LinkedList;
+import java.util.Map;
 
 public class Road {
 	/**
@@ -20,6 +21,13 @@ public class Road {
 
 	public Road() {
 		this.mySequences = new LinkedList<Integer>();
+	}
+	public void fillAttributes(Map<String, String> pAttributes) {
+		// Si hay una convergencia o divergencia estara en la etiketa hlink,
+					// guardaremos si es diver o conver
+					// guardo en road el tipo, de q secuencia viene
+		this.seqIni = Integer.parseInt(pAttributes.get("seqid"))-1;
+		this.type = pAttributes.get("type");	
 	}
 
 	public String getType() {
@@ -63,4 +71,6 @@ public class Road {
 		System.out.println("Tipo camino: " + this.type);
 
 	}
+
+	
 }

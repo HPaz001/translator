@@ -20,10 +20,11 @@ public class Grafcet {
 	private boolean emergency;
 	/** Para saber las etepas de la emergencia */
 	private String stepStopEmergency;
-	private String StepStartEmergency;
+	private String stepStartEmergency;
 	/** Lista de grafcets que se fuerzan en la emergencia */
 	private LinkedList<String> listEmergencyStop;
 	private LinkedList<String> listEmergencyStart;
+	
 	/* Lista de señales del grafcet */
 	private LinkedList<String> signalsGrafcet;
 
@@ -32,49 +33,62 @@ public class Grafcet {
 	private LinkedList<Road> roadList;
 
 	public Grafcet() {
-		this.type = "";
-		this.name = "";
-		this.comment = "";
-		this.owner = "";
-		this.setStepStartEmergency(null);
-		this.setStepStopEmergency(null);
-		this.setEmergency(false);
+		this.type = null;
+		this.name = null;
+		this.comment = null;
+		this.owner = null;
+		this.emergency = false;
+		this.stepStartEmergency = null;
+		this.stepStopEmergency= null;
+		this.listEmergencyStop = new LinkedList<String>();
+		this.listEmergencyStart = new LinkedList<String>();
+		this.signalsGrafcet = new LinkedList<String>();
 		this.jumpList = new LinkedList<Jump>();
 		this.sequenceList = new LinkedList<Sequence>();
 		this.roadList = new LinkedList<Road>();
-		this.signalsGrafcet = new LinkedList<String>();
 	}
-
+	
+	public void fillAttributes (Map<String, String> pAttributes){
+		this.type = pAttributes.get("type");
+		this.name = pAttributes.get("name");
+		this.comment = pAttributes.get("comment");
+		this.owner = pAttributes.get("owner");
+		Pattern pat = Pattern.compile("^GEmergencia.*|^GEmergency.*");
+		Matcher mat = pat.matcher(getName());
+		if (mat.matches()) {
+			this.emergency=true;
+		}
+		printGrafcet();
+		
+	}
+	
 	public String getType() {
 		return type;
-	}
-
-	public void setType(String type) {
-		this.type = type;
 	}
 
 	public String getName() {
 		return name;
 	}
 
+	/*public void setType(String type) {
+		this.type = type;
+	}
 	public void setName(String name) {
 		this.name = name;
 	}
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
+	public void setOwner(String owner) {
+		this.owner = owner;
+	}*/
 
 	public String getComment() {
 		return comment;
 	}
 
-	public void setComment(String comment) {
-		this.comment = comment;
-	}
-
 	public String getOwner() {
 		return owner;
-	}
-
-	public void setOwner(String owner) {
-		this.owner = owner;
 	}
 
 	public LinkedList<Jump> getListJ() {
@@ -93,7 +107,7 @@ public class Grafcet {
 	 * Recibe la secuencia y el numero rellenara la lista de seccuencias la
 	 * posicion de la lista sera el numero de secuencia -1
 	 */
-	public void addSequence(Sequence pSequence, int pIndex) {
+	public void addSequence(Sequence pSequence) {
 		/*
 		 * obntengo su lista de señales de la secuencia para añadirla a la lista
 		 * de señales del grafcet
@@ -117,9 +131,9 @@ public class Grafcet {
 		return emergency;
 	}
 
-	public void setEmergency(boolean emergency) {
+	/*public void setEmergency(boolean emergency) {
 		this.emergency = emergency;
-	}
+	}*/
 
 	public String getStepStopEmergency() {
 		return stepStopEmergency;
@@ -130,11 +144,11 @@ public class Grafcet {
 	}
 
 	public String getStepStartEmergency() {
-		return StepStartEmergency;
+		return stepStartEmergency;
 	}
 
-	public void setStepStartEmergency(String stepStartEmergency) {
-		StepStartEmergency = stepStartEmergency;
+	public void setStepStartEmergency(String pStepStartEmergency) {
+		this.stepStartEmergency = pStepStartEmergency;
 	}
 
 	public LinkedList<String> getListEmergencyStop() {
@@ -189,7 +203,7 @@ public class Grafcet {
 		System.out.println("Propietario: " + this.owner);
 		System.out.println("Comentario: " + this.comment);
 
-		for (Jump j : jumpList) {
+		/*for (Jump j : jumpList) {
 			j.printJump();
 		}
 		for (Road r : roadList) {
@@ -197,7 +211,7 @@ public class Grafcet {
 		}
 		for (Sequence s : sequenceList) {
 			s.printSequence();
-		}
+		}*/
 	}
 
 	/** Este metodo devuelve la primera parte del PROGRAM MAIN */

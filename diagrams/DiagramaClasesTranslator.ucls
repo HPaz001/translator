@@ -1,0 +1,401 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class-diagram version="1.1.8" icons="true" always-add-relationships="false" generalizations="true" realizations="true" 
+  associations="true" dependencies="false" nesting-relationships="true">  
+  <enumeration id="1" language="java" 
+    name="com.hpaz.translator.grafcetelements.constants.GrafcetTagsConstants.typeCounter" project="translator" 
+    file="/translator/src/com/hpaz/translator/grafcetelements/constants/GrafcetTagsConstants.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="341" y="545"/>    
+    <display autosize="true" stereotype="false" package="false" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </enumeration>  
+  <class id="2" language="java" name="com.hpaz.translator.grafcetelements.constants.GrafcetTagsConstants" 
+    project="translator" file="/translator/src/com/hpaz/translator/grafcetelements/constants/GrafcetTagsConstants.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="340" y="497"/>    
+    <display autosize="true" stereotype="false" package="false" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="3" language="java" name="com.hpaz.translator.grafcetelements.Counter" project="translator" 
+    file="/translator/src/com/hpaz/translator/grafcetelements/Counter.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="449" y="357"/>    
+    <display autosize="true" stereotype="false" package="false" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="4" language="java" name="com.hpaz.translator.grafcetelements.Jump" project="translator" 
+    file="/translator/src/com/hpaz/translator/grafcetelements/Jump.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="565" y="185"/>    
+    <display autosize="true" stereotype="false" package="false" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="5" language="java" name="com.hpaz.translator.grafcetelements.Action" project="translator" 
+    file="/translator/src/com/hpaz/translator/grafcetelements/Action.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="596" y="71"/>    
+    <display autosize="true" stereotype="false" package="false" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="6" language="java" name="com.hpaz.translator.grafcetelements.Grafcet" project="translator" 
+    file="/translator/src/com/hpaz/translator/grafcetelements/Grafcet.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="389" y="187"/>    
+    <display autosize="true" stereotype="false" package="false" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="7" language="java" name="com.hpaz.translator.grafcetelements.Project" project="translator" 
+    file="/translator/src/com/hpaz/translator/grafcetelements/Project.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="391" y="255"/>    
+    <display autosize="true" stereotype="false" package="false" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="8" language="java" name="com.hpaz.translator.grafcetelements.Timer" project="translator" 
+    file="/translator/src/com/hpaz/translator/grafcetelements/Timer.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="339" y="358"/>    
+    <display autosize="true" stereotype="false" package="false" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="9" language="java" name="com.hpaz.translator.grafcetelements.Step" project="translator" 
+    file="/translator/src/com/hpaz/translator/grafcetelements/Step.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="596" y="-6"/>    
+    <display autosize="true" stereotype="false" package="false" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="10" language="java" name="com.hpaz.translator.grafcetelements.Sequence" project="translator" 
+    file="/translator/src/com/hpaz/translator/grafcetelements/Sequence.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="185" y="187"/>    
+    <display autosize="true" stereotype="false" package="false" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="11" language="java" name="com.hpaz.translator.grafcetelements.Transition" project="translator" 
+    file="/translator/src/com/hpaz/translator/grafcetelements/Transition.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="152" y="83"/>    
+    <display autosize="true" stereotype="false" package="false" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="12" language="java" name="com.hpaz.translator.grafcetelements.Road" project="translator" 
+    file="/translator/src/com/hpaz/translator/grafcetelements/Road.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="286" y="102"/>    
+    <display autosize="true" stereotype="false" package="false" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="13" language="java" name="com.hpaz.translator.output.PostProcess" project="translator" 
+    file="/translator/src/com/hpaz/translator/output/PostProcess.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="481" y="496"/>    
+    <display autosize="true" stereotype="false" package="false" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="14" language="java" name="com.hpaz.translator.output.Output" project="translator" 
+    file="/translator/src/com/hpaz/translator/output/Output.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="466" y="549"/>    
+    <display autosize="true" stereotype="false" package="false" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="15" language="java" name="com.hpaz.translator.preprocess.Preprocess" project="translator" 
+    file="/translator/src/com/hpaz/translator/preprocess/Preprocess.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="337" y="-158"/>    
+    <display autosize="true" stereotype="false" package="false" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="16" language="java" name="com.hpaz.translator.ui.constants.ConfigConstants" project="translator" 
+    file="/translator/src/com/hpaz/translator/ui/constants/ConfigConstants.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="321" y="601"/>    
+    <display autosize="true" stereotype="false" package="false" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="17" language="java" name="com.hpaz.translator.ui.ConfigWindow" project="translator" 
+    file="/translator/src/com/hpaz/translator/ui/ConfigWindow.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="313" y="645"/>    
+    <display autosize="true" stereotype="false" package="false" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="18" language="java" name="com.hpaz.translator.ui.InstructionsWindow" project="translator" 
+    file="/translator/src/com/hpaz/translator/ui/InstructionsWindow.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="327" y="689"/>    
+    <display autosize="true" stereotype="false" package="false" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="19" language="java" name="com.hpaz.translator.ui.VariableInitWindow" project="translator" 
+    file="/translator/src/com/hpaz/translator/ui/VariableInitWindow.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="485" y="646"/>    
+    <display autosize="true" stereotype="false" package="false" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="20" language="java" name="com.hpaz.translator.ui.MainProgramWindow" project="translator" 
+    file="/translator/src/com/hpaz/translator/ui/MainProgramWindow.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="490" y="688"/>    
+    <display autosize="true" stereotype="false" package="false" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <association id="21">    
+    <end type="SOURCE" refId="9" navigable="false">      
+      <attribute id="22" name="myActions">        
+        <position height="18" width="59" x="486" y="22"/>      
+      </attribute>      
+      <multiplicity id="23" minimum="0" maximum="2147483647">        
+        <position height="16" width="21" x="548" y="41"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="5" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="24">    
+    <end type="SOURCE" refId="7" navigable="false">      
+      <attribute id="25" name="listGrafcet">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="26" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="6" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="27">    
+    <end type="SOURCE" refId="15" navigable="false">      
+      <attribute id="28" name="step">        
+        <position height="18" width="29" x="529" y="-51"/>      
+      </attribute>      
+      <multiplicity id="29" minimum="0" maximum="1">        
+        <position height="16" width="23" x="567" y="-36"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="9" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="30">    
+    <end type="SOURCE" refId="13" navigable="false">      
+      <attribute id="31" name="myPostProcess">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="32" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="13" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="33">    
+    <end type="SOURCE" refId="6" navigable="false">      
+      <attribute id="34" name="roadList">        
+        <position height="18" width="47" x="276" y="135"/>      
+      </attribute>      
+      <multiplicity id="35" minimum="0" maximum="2147483647">        
+        <position height="16" width="21" x="297" y="121"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="12" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="36">    
+    <end type="SOURCE" refId="6" navigable="false">      
+      <attribute id="37" name="sequenceList">        
+        <position height="18" width="73" x="259" y="188"/>      
+      </attribute>      
+      <multiplicity id="38" minimum="0" maximum="2147483647">        
+        <position height="16" width="21" x="237" y="188"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="10" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="39">    
+    <end type="SOURCE" refId="15" navigable="false">      
+      <attribute id="40" name="jump">        
+        <position height="18" width="30" x="533" y="125"/>      
+      </attribute>      
+      <multiplicity id="41" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="4" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="42">    
+    <end type="SOURCE" refId="15" navigable="false">      
+      <attribute id="43" name="transition">        
+        <position height="18" width="52" x="123" y="36"/>      
+      </attribute>      
+      <multiplicity id="44" minimum="0" maximum="1">        
+        <position height="16" width="23" x="140" y="53"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="11" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="45">    
+    <end type="SOURCE" refId="15" navigable="false">      
+      <attribute id="46" name="road">        
+        <position height="18" width="30" x="296" y="49"/>      
+      </attribute>      
+      <multiplicity id="47" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="12" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <nesting id="48">    
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="1"/>  
+  </nesting>  
+  <association id="49">    
+    <end type="SOURCE" refId="7" navigable="false">      
+      <attribute id="50" name="listTimers">        
+        <position height="18" width="53" x="312" y="318"/>      
+      </attribute>      
+      <multiplicity id="51" minimum="0" maximum="2147483647">        
+        <position height="16" width="21" x="364" y="319"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="8" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="52">    
+    <end type="SOURCE" refId="14" navigable="false">      
+      <attribute id="53" name="myOutput">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="54" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="14" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="55">    
+    <end type="SOURCE" refId="7" navigable="false">      
+      <attribute id="56" name="project">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="57" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="7" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="58">    
+    <end type="SOURCE" refId="15" navigable="false">      
+      <attribute id="59" name="action">        
+        <position height="18" width="37" x="598" y="22"/>      
+      </attribute>      
+      <multiplicity id="60" minimum="0" maximum="1">        
+        <position height="16" width="23" x="598" y="37"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="5" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="61">    
+    <end type="SOURCE" refId="15" navigable="false">      
+      <attribute id="62" name="grafcet">        
+        <position height="18" width="43" x="385" y="129"/>      
+      </attribute>      
+      <multiplicity id="63" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="6" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="64">    
+    <end type="SOURCE" refId="15" navigable="false">      
+      <attribute id="65" name="sequence">        
+        <position height="18" width="56" x="144" y="139"/>      
+      </attribute>      
+      <multiplicity id="66" minimum="0" maximum="1">        
+        <position height="16" width="23" x="166" y="156"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="10" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="67">    
+    <end type="SOURCE" refId="6" navigable="false">      
+      <attribute id="68" name="jumpList">        
+        <position height="18" width="47" x="457" y="188"/>      
+      </attribute>      
+      <multiplicity id="69" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="4" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="70">    
+    <end type="SOURCE" refId="7" navigable="false">      
+      <attribute id="71" name="listCounters">        
+        <position height="18" width="65" x="419" y="323"/>      
+      </attribute>      
+      <multiplicity id="72" minimum="0" maximum="2147483647">        
+        <position height="16" width="21" x="486" y="325"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="3" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+    sort-features="false" accessors="true" visibility="true">    
+    <attributes public="true" package="true" protected="true" private="true" static="true"/>    
+    <operations public="true" package="true" protected="true" private="true" static="true"/>  
+  </classifier-display>  
+  <association-display labels="true" multiplicity="true"/>
+</class-diagram>
