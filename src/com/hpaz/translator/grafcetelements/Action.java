@@ -7,6 +7,7 @@ import java.util.regex.Pattern;
 
 public class Action {
 	private String type;
+	//guarda el texto de la accion
 	private String text;
 	private String condition;
 	private String comment;//comentario de la accion
@@ -16,8 +17,8 @@ public class Action {
 	
 	public Action() {
 		this.type="";
-		this.text="";
-		this.condition="";
+		this.text=null;
+		this.condition=null;
 		this.comment="";
 		this.startEmergency=new LinkedList<String>();
 		this.stopEmergency=new LinkedList<String>();
@@ -36,14 +37,22 @@ public class Action {
 	public String getText() {
 		return text;
 	}
-	public void setText(String text) {
-		this.text = text;
+	public void addText(String pText) {
+		if (getText() == null){
+			this.text = pText;
+		}else {
+			this.text = getText() + " " + pText;
+		}
 	}
 	public String getCondition() {
 		return condition;
 	}
-	public void setCondition(String condition) {
-		this.condition = condition;
+	public void addCondition(String pCondition) {
+		if (getCondition() == null){
+			this.condition = pCondition;
+		}else {
+			this.condition = getCondition() + " " + pCondition;
+		}
 	}
 	public String getComment() {
 		return comment;

@@ -1,6 +1,5 @@
 package com.hpaz.translator.grafcetelements;
 
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -18,7 +17,7 @@ public class Transition {
 	public Transition() {
 		this.condition = "";
 		this.conditionSep = new LinkedList<String>();
-		this.comment = "";
+		this.comment = null;
 		this.assignmentSignal=false;
 		
 	}
@@ -28,13 +27,14 @@ public class Transition {
 	}
 
 	public void addCondition(String pCondition) {
+		
 		//Si no es 1 o true
 		if (!(pCondition.equals("=1")) && !(pCondition.equals("true"))) {
 			
 			String aux = pCondition;
 			
-			/* Quito parentesis y NOT*/
-			aux = aux.replaceAll("\\(|\\)|NOT", "");
+			/* Quito parentesis*/
+			aux = aux.replaceAll("\\(|\\)", "");
 			//esta la uso para el RE y FE
 			String auxString = aux;
 			
@@ -43,34 +43,35 @@ public class Transition {
 				addListConditionSep(removeSigns(aux));
 				
 				//Si no tiene signos
-			} else {
-				//Si es un temporizador lo mando a la funcio que lo trata
+			}else {
+				
 				Pattern patCondSep = Pattern.compile("^Temp.*/X[0-9]./[0-9].*");
 				Matcher matCondSep = patCondSep.matcher(aux.trim());
+				//Si es un temporizador lo mando a la funcio que lo trata
 				if (matCondSep.matches()) {
 					addTempToListProject(aux.trim());
-				}else{
-					//Si no es temporizador
 					
-					//Si la palabra contiene un RE o FE
+				//Si no es temporizador
+				}else{
+					
 					Pattern patRE_FE = Pattern.compile(".* RE .*| .* FE .*");
 					Matcher matRE_FE = patRE_FE.matcher(auxString);
+					//Si la palabra contiene un RE o FE
 					if(matRE_FE.matches()){
 						String aux_FE_RE = auxString.replace(" ", "");
 						if(!Project.getProject().getList_FE_and_RE().contains(aux_FE_RE)){
 							Project.getProject().add_FE_and_RE(aux_FE_RE);
 						}
 						auxString= aux_FE_RE+".Q";
-						
 					}
 					
-					//añado a las lista d señales por separado sin el RE y FE
-					addListConditionSep(aux.replaceAll(" RE | FE ", "").trim());
+					//añado a las lista d señales por separado sin el RE, FE
+					addListConditionSep(aux.replaceAll(" RE | FE | NOT ", "").trim());
 				}			
 			}
 			
 			//Añado la condicion
-			this.condition = this.condition + " " + auxString;
+			this.condition = getCondition() + " " + auxString;
 		}
 	}
 
@@ -78,9 +79,14 @@ public class Transition {
 		return comment;
 	}
 
-	public void setComment(String comment) {
+	public void addComment(String pComment) {
 		// le quito los espacios en blanco antes de guardarlo
-		this.comment = comment.trim();
+		if (getComment() == null){
+			this.comment = pComment;
+		}else {
+			this.comment = getComment() + " " + pComment;
+		}
+
 	}
 
 	public LinkedList<String> getConditionSep() {
@@ -136,7 +142,7 @@ public class Transition {
 		 * por coma al igual que si tiene texto normal deltro del comentario
 		 * despues de una asignacion
 		 */
-		if (!this.comment.isEmpty()) {
+		if (this.comment != null) {
 			/* le quito los */
 			String aux = this.comment.replaceAll("\\(\\*|\\*\\)", "");
 			// Si tiene coma separo en un array co slip
@@ -148,8 +154,11 @@ public class Transition {
 				Pattern pat = Pattern.compile(".*:=.*");
 				Matcher mat = pat.matcher(list[i]);
 				if (mat.matches()) {
+					String auxAss = list[i].substring(list[0].indexOf(":=")+2, list[0].length());
+					auxAss = auxAss.replace(" * ", " AND ");
+					auxAss = auxAss.replace(" + ", " OR ");
 					//para guardar las asignaciones
-					Project.getProject().addAssignments(list[i].substring(0, list[0].indexOf(":=")),list[i].substring(list[0].indexOf(":=")+2, list[0].length()));
+					Project.getProject().addAssignments(list[i].substring(0, list[0].indexOf(":=")),auxAss);
 					// si tiene una asignacion añado a la lista de condiciones separadas
 					String [] listSep = list[i].trim().split(":=|==|\\*");
 					for (int j = 0; j < listSep.length; j++) {
@@ -198,7 +207,7 @@ public class Transition {
 
 		LinkedList<String> aux = new LinkedList<String>();
 		// Quito espacios
-		String text = t.trim();
+		String text = t.replaceAll(" NOT ", "").trim();
 		// Remplazo los signos por coma
 		text = text.replaceAll("\\+|\\*|\\·", ",");
 		// convierto en un array de string

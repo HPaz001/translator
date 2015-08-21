@@ -11,19 +11,14 @@ public class Sequence {
 	private LinkedList<Object> listTransitionOrStep;// puede tener tanto
 													// transiciones como pasos
 	private LinkedList<String> signals;
-	/*
-	 * private LinkedList<String> previousList; private LinkedList<String>
-	 * nextLits;
-	 */
+
 	/** Se guarda el indice de las secuencias anteriores a esta */
 	private LinkedList<Integer> previousSequencesList;
 	/** Se guarda el indice de las secuencias siguientes a esta */
 	private LinkedList<Integer> nextSequencesList;
 
-	/**
-	 * Para saber la etepa de la emergencia, en ellos guardare el indice de la
-	 * etapa
-	 */
+	/**Para saber la etepa de la emergencia, en ellos guardare el indice de la
+	 * etapa*/
 	private int stepStopEmergency;
 	private int StepStartEmergency;
 
@@ -88,7 +83,7 @@ public class Sequence {
 				
 				String act = action.getText();
 				//TODO controlar aqui los contadores los temp en la transicion
-				if (!act.equals("") && !action.isEmergency()) {
+				if (act !=null && !action.isEmergency()) {
 					
 					String aux = action.getText().trim();
 					

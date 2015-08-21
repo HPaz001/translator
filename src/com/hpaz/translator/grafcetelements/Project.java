@@ -31,15 +31,15 @@ public class Project {
 	 * PL -> PLC TSX Micro (PL7Pro), T -> PLC Beckhoff (TwinCAT), PC -> PLCOpen
 	 */
 	private String program;
-
 	private String outputDir;
 
 	private LinkedList<Grafcet> listGrafcet;
 	private LinkedList<Timer> listTimers;
 	private LinkedList<Counter> listCounters;
+	
 	private LinkedList<String> listTimersUI;
 	private LinkedList<String> listCountersUI;
-	//PAra guardar las variables con flancos de subida o bajada
+	//Para guardar las variables con flancos de subida o bajada
 	private LinkedList<String> list_FE_and_RE;
 	
 	private Map<String,String> assignments;
@@ -83,17 +83,10 @@ public class Project {
 			this.name = name;
 	}
 
-	private String getLanguage() {
-		return this.language;
-	}
 
 	public void addLanguage(String language) {
 		if (this.language == null)
 			this.language = language;
-	}
-
-	private String getProgram() {
-		return this.program;
 	}
 
 	public void addProgram(String program) {
@@ -110,8 +103,6 @@ public class Project {
 	 * losSetAnReset
 	 */
 	public void addGrafcet(Grafcet g) {
-		// g.fillPreviousNextListsSequences();
-		// g.generateSetAndReset();
 		g.fillPreviousAndNextSequencesLists();
 		g.addSetAndResetToStep();
 		this.listGrafcet.add(g);
@@ -132,6 +123,7 @@ public class Project {
 
 	public void addCounter(Counter pCounters) {
 		this.listCountersUI.add(pCounters.getNameCounter());
+		System.out.println(pCounters.getNameCounter());
 		this.listCounters.add(pCounters);
 	}
 	public LinkedList<String> getListTimersUI() {
@@ -159,7 +151,7 @@ public class Project {
 		
 		//por cada una de las señales del proyecto
 		for (String string : this.signalsProject) {
-			//Si esta en el hashMap t la UI 
+			//Si esta en el hashMap de la UI 
 			if(this.listUI.containsKey(string)){
 				//la uso
 				String type = this.listUI.get(string);
@@ -467,7 +459,7 @@ public class Project {
 				//TODO PROGRAM MAIN si es contador aun no se q hacer 
 				
 				
-				//Si no es el forzado de emergencia de mergencia
+				//Si no es el forzado de emergencia de emergencia
 				
 			}else if(!matEmer.matches() && !matCont.matches()){
 				listaProgramMain.add("\t" + aux + ":=" + pInit.get(action) + ";\n");
@@ -522,10 +514,9 @@ public class Project {
 		LinkedList<String> signals = new LinkedList<String>();
 		
 		for (Grafcet g : getListG()) {
-			// si el grafcet es el de emergencia relleno la lista de emergencia
+			
 			signals.addAll(g.getListSignalsGrafcet());
 		}
-		//signals.addAll(this.listGrafcet.get(0).getListSignalsGrafcet());
 		signals = removeDuplicates(signals);
 		
 		this.signalsProject = signals;

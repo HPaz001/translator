@@ -7,8 +7,6 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.hpaz.translator.grafcetelements.constants.GrafcetTagsConstants;
-
 public class Grafcet {
 
 	private String type;
@@ -57,9 +55,7 @@ public class Grafcet {
 		Matcher mat = pat.matcher(getName());
 		if (mat.matches()) {
 			this.emergency=true;
-		}
-		printGrafcet();
-		
+		}		
 	}
 	
 	public String getType() {
@@ -70,19 +66,6 @@ public class Grafcet {
 		return name;
 	}
 
-	/*public void setType(String type) {
-		this.type = type;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
-	public void setComment(String comment) {
-		this.comment = comment;
-	}
-	public void setOwner(String owner) {
-		this.owner = owner;
-	}*/
-
 	public String getComment() {
 		return comment;
 	}
@@ -90,82 +73,42 @@ public class Grafcet {
 	public String getOwner() {
 		return owner;
 	}
-
+	
 	public LinkedList<Jump> getListJ() {
 		return jumpList;
-	}
-
-	public void addJump(Jump pJ) {
-		this.jumpList.add(pJ);
 	}
 
 	public LinkedList<Sequence> getListS() {
 		return sequenceList;
 	}
-
-	/**
-	 * Recibe la secuencia y el numero rellenara la lista de seccuencias la
-	 * posicion de la lista sera el numero de secuencia -1
-	 */
-	public void addSequence(Sequence pSequence) {
-		/*
-		 * obntengo su lista de señales de la secuencia para añadirla a la lista
-		 * de señales del grafcet
-		 */
-		this.signalsGrafcet.addAll(pSequence.getSignals());
-		/* la posicion de la lista sera el numero de secuencia -1 */
-		this.sequenceList.add(/* pIndex-1, */pSequence);
-
-	}
-
+	
 	public LinkedList<Road> getRoadList() {
 		return roadList;
 	}
-
-	public void addRoad(Road pRoad) {
-		this.roadList.add(pRoad);
-	}
-
+	
 	/** Si cambia si al anadir el nombre en el preproceso es GEmergencia */
 	public boolean isEmergency() {
 		return emergency;
 	}
 
-	/*public void setEmergency(boolean emergency) {
-		this.emergency = emergency;
-	}*/
-
 	public String getStepStopEmergency() {
 		return stepStopEmergency;
 	}
 
-	public void setStepStopEmergency(String stepStopEmergency) {
-		this.stepStopEmergency = stepStopEmergency;
-	}
+	
 
 	public String getStepStartEmergency() {
 		return stepStartEmergency;
 	}
-
-	public void setStepStartEmergency(String pStepStartEmergency) {
-		this.stepStartEmergency = pStepStartEmergency;
-	}
-
+	
 	public LinkedList<String> getListEmergencyStop() {
 		return listEmergencyStop;
 	}
-
-	public void setListEmergencyStop(LinkedList<String> listEmergencyStop) {
-		this.listEmergencyStop = listEmergencyStop;
-	}
-
+	
 	public LinkedList<String> getListEmergencyStart() {
 		return listEmergencyStart;
 	}
-
-	public void setListEmergencyStart(LinkedList<String> listEmergencyStart) {
-		this.listEmergencyStart = listEmergencyStart;
-	}
+	
 
 	public LinkedList<String> getGrafcetVarGlobalStages() {
 		LinkedList<String> vG = new LinkedList<String>();
@@ -196,14 +139,14 @@ public class Grafcet {
 		return sR;
 	}
 
-	public void printGrafcet() {
+/*	public void printGrafcet() {
 		System.out.println("----- GRAFCET ------");
 		System.out.println("Nombre: " + this.name);
 		System.out.println("Tipo: " + this.type);
 		System.out.println("Propietario: " + this.owner);
 		System.out.println("Comentario: " + this.comment);
 
-		/*for (Jump j : jumpList) {
+		for (Jump j : jumpList) {
 			j.printJump();
 		}
 		for (Road r : roadList) {
@@ -211,8 +154,8 @@ public class Grafcet {
 		}
 		for (Sequence s : sequenceList) {
 			s.printSequence();
-		}*/
-	}
+		}
+	}*/
 
 	/** Este metodo devuelve la primera parte del PROGRAM MAIN */
 	public String printVar() {
@@ -254,6 +197,43 @@ public class Grafcet {
 		return actionStepMap;
 	}
 
+	
+	/**
+	 * Recibe la secuencia y el numero rellenara la lista de seccuencias la
+	 * posicion de la lista sera el numero de secuencia -1
+	 */
+	public void addSequence(Sequence pSequence) {
+		/*
+		 * obntengo su lista de señales de la secuencia para añadirla a la lista
+		 * de señales del grafcet
+		 */
+		this.signalsGrafcet.addAll(pSequence.getSignals());
+		/* la posicion de la lista sera el numero de secuencia -1 */
+		this.sequenceList.add(/* pIndex-1, */pSequence);
+
+	}
+
+	public void addRoad(Road pRoad) {
+		this.roadList.add(pRoad);
+	}
+	
+	public void addJump(Jump pJ) {
+		this.jumpList.add(pJ);
+	}
+
+	public void setStepStopEmergency(String stepStopEmergency) {
+		this.stepStopEmergency = stepStopEmergency;
+	}
+	public void setStepStartEmergency(String pStepStartEmergency) {
+		this.stepStartEmergency = pStepStartEmergency;
+	}
+	public void setListEmergencyStop(LinkedList<String> listEmergencyStop) {
+		this.listEmergencyStop = listEmergencyStop;
+	}
+	public void setListEmergencyStart(LinkedList<String> listEmergencyStart) {
+		this.listEmergencyStart = listEmergencyStart;
+	}
+	
 	/**
 	 * Esta funcion rellenara las listas PreviousStepLits,
 	 * PreviousTransitionList y getNextStepLits de cada secuencia, que nos
@@ -360,18 +340,22 @@ public class Grafcet {
 	 * componen un grafcet
 	 */
 	public void addSetAndResetToStep() {
-
+		//por cada secuencia de la lista
 		for (Sequence seq : sequenceList) {
+			//ppr cada lista de transiciones o pasao de la secuencia
 			for (int i = 0; i < seq.getListTransitionOrStep().size(); i++) {
-
+				//si es un paso
 				if (seq.getListTransitionOrStep().get(i) instanceof Step) {
-
+					
 					Step actualStep = (Step) seq.getListTransitionOrStep().get(i);
 
 					// Rellenamos el Set
+					
+					//inicializo variables auxiliares
 					LinkedList<String> previousStepAndTransitions = new LinkedList<String>();
 					Transition previousTransition = null;
 					Step previousStep = null;
+					
 					for (int previousIndex = i - 1; previousIndex >= 0; previousIndex--) {
 						if (seq.getListTransitionOrStep().get(previousIndex) instanceof Step && previousStep == null) {
 							previousStep = (Step) seq.getListTransitionOrStep().get(previousIndex);

@@ -32,7 +32,7 @@ public class Step {
 	public Step() {
 		this.type = "";
 		this.name = "";
-		this.comment = "";
+		this.comment = null;
 		this.mySet=null;
 		this.myReset=null;
 		this.myActions = new LinkedList<Action>();
@@ -67,8 +67,12 @@ public class Step {
 		return comment;
 	}
 
-	public void setComment(String comment) {
-		this.comment = comment;
+	public void addComment(String pComment) {
+		if (getComment() == null){
+			this.comment = pComment;
+		}else {
+			this.comment = getComment() + " " + pComment;
+		}
 	}
 	
 	
@@ -140,10 +144,10 @@ public class Step {
 	}
 
 	public void addMyReset(String pMyReset) {
-		if (this.myReset==null){
+		if (getMyReset()==null){
 			this.myReset = pMyReset;
-		}else if(!myReset.contains(pMyReset)){
-			this.myReset= myReset+" OR "+pMyReset;			
+		}else if(!getMyReset().contains(pMyReset)){
+			this.myReset= getMyReset()+" OR "+pMyReset;			
 		}
 	}
 
@@ -239,7 +243,7 @@ public class Step {
 		return and;
 	}
 	/**Se llama si la convergencia es and*/
-	public void setAnd(boolean and) {
-		this.and = and;
+	public void setAnd(boolean pAnd) {
+		this.and = pAnd;
 	}
 }
