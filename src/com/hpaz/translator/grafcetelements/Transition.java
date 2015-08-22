@@ -30,26 +30,26 @@ public class Transition {
 		
 		//Si no es 1 o true
 		if (!(pCondition.equals("=1")) && !(pCondition.equals("true"))) {
+			//Quito parentesos y negados
+			String auxConditionSep = pCondition.replaceAll("\\(|\\)| NOT ", "");
+			//Quito solo parentesis
+			String auxConditionCompl = pCondition.replaceAll("\\(|\\)", "");
 			
-			String aux = pCondition;
-			
-			/* Quito parentesis*/
-			aux = aux.replaceAll("\\(|\\)", "");
 			//esta la uso para el RE y FE
-			String auxString = aux;
+			String auxString = auxConditionSep;
 			
 			//Si tiene signos lo mando a la funcion de separar
-			if (aux.contains("+") || aux.contains("*")) {
-				addListConditionSep(removeSigns(aux));
+			if (auxConditionSep.contains("+") || auxConditionSep.contains("*")) {
+				addListConditionSep(removeSigns(auxConditionSep));
 				
 				//Si no tiene signos
 			}else {
 				
 				Pattern patCondSep = Pattern.compile("^Temp.*/X[0-9]./[0-9].*");
-				Matcher matCondSep = patCondSep.matcher(aux.trim());
+				Matcher matCondSep = patCondSep.matcher(auxConditionSep.trim());
 				//Si es un temporizador lo mando a la funcio que lo trata
 				if (matCondSep.matches()) {
-					addTempToListProject(aux.trim());
+					addTempToListProject(auxConditionSep.trim());
 					
 				//Si no es temporizador
 				}else{
@@ -66,12 +66,12 @@ public class Transition {
 					}
 					
 					//añado a las lista d señales por separado sin el RE, FE
-					addListConditionSep(aux.replaceAll(" RE | FE | NOT ", "").trim());
+					addListConditionSep(auxConditionSep.replaceAll(" RE | FE ", "").trim());
 				}			
 			}
 			
-			//Añado la condicion
-			this.condition = getCondition() + " " + auxString;
+			//Añado la condicion sin quitarle nada
+			this.condition = getCondition() + " " + changeSign(auxConditionCompl);
 		}
 	}
 
@@ -155,8 +155,7 @@ public class Transition {
 				Matcher mat = pat.matcher(list[i]);
 				if (mat.matches()) {
 					String auxAss = list[i].substring(list[0].indexOf(":=")+2, list[0].length());
-					auxAss = auxAss.replace(" * ", " AND ");
-					auxAss = auxAss.replace(" + ", " OR ");
+					auxAss=changeSign(auxAss);
 					//para guardar las asignaciones
 					Project.getProject().addAssignments(list[i].substring(0, list[0].indexOf(":=")),auxAss);
 					// si tiene una asignacion añado a la lista de condiciones separadas
@@ -207,7 +206,7 @@ public class Transition {
 
 		LinkedList<String> aux = new LinkedList<String>();
 		// Quito espacios
-		String text = t.replaceAll(" NOT ", "").trim();
+		String text = t.trim();
 		// Remplazo los signos por coma
 		text = text.replaceAll("\\+|\\*|\\·", ",");
 		// convierto en un array de string
@@ -221,8 +220,15 @@ public class Transition {
 			}
 			aux.add(list[i]);
 		}
-
+		
 		return aux;
+	}
+	/**Modifico los signos + * por OR AND*/
+	private String changeSign (String pString){
+		String s = pString;
+		s = s.replace(" * ", " AND ");
+		s = s.replace(" + ", " OR ");
+		return s;
 	}
 	
 	/**Separa la transicion del temporizador y crea el temporizador con los valores correspondientes*/

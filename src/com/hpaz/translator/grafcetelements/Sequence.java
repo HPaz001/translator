@@ -82,9 +82,8 @@ public class Sequence {
 			for (Action action : ((Step) pTransitionOrStep).getMyActions()) {
 				
 				String act = action.getText();
-				//TODO controlar aqui los contadores los temp en la transicion
-				if (act !=null && !action.isEmergency()) {
-					
+				//si hay una accion y NO es una emergencia
+				if (act != null && !action.isEmergency()) {
 					String aux = action.getText().trim();
 					
 					//TODO NO SE PORQ NO LO DETECTA LA REGEX ESTA BIEN
@@ -97,9 +96,11 @@ public class Sequence {
 					
 					//Si no es un temporizador
 					if(!matTemp.matches()){
+						
 						//Expresion regular para detectar una asignacion de contador
 						Pattern patCount = Pattern.compile("^Cont.*=[0-9]$");
 						Matcher matCount = patCount.matcher(aux.trim());
+						
 						//Si es un contador
 						if(matCount.matches()){
 							
@@ -121,8 +122,8 @@ public class Sequence {
 							}else{//Si index != -1 es q habia un contador con ese nombre, asi q guardo la etapa.
 								Project.getProject().getListCounters().get(index).addStepCountes(((Step) pTransitionOrStep).getName());
 							}
+						//Sino es un temporizador, ni un contador, ni emergencia
 						}else{
-							//Si no es una inicializacion de temp o cont lo añado a la lista de señales
 							signals.add(action.getText());
 						}
 						

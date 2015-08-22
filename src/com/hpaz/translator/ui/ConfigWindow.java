@@ -46,11 +46,11 @@ public class ConfigWindow extends JFrame {
 		setContentPane(contentPane);
 
 		textFieldInput = new JTextField();
-		textFieldInput.setBounds(20, 64, 392, 25);
+		textFieldInput.setBounds(30, 64, 444, 25);
 		textFieldInput.setColumns(256);
 
 		JButton buttonInputSelect = new JButton("Examinar");
-		buttonInputSelect.setBounds(412, 63, 89, 27);
+		buttonInputSelect.setBounds(484, 63, 89, 27);
 		buttonInputSelect.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				JFileChooser fileChooser = new JFileChooser();
@@ -74,11 +74,11 @@ public class ConfigWindow extends JFrame {
 		label.setFont(new Font("Verdana", Font.BOLD, 18));
 
 		textFieldOutput = new JTextField();
-		textFieldOutput.setBounds(20, 153, 392, 25);
+		textFieldOutput.setBounds(30, 153, 444, 25);
 		textFieldOutput.setColumns(256);
 
 		JButton buttonOutputSelect = new JButton("Examinar");
-		buttonOutputSelect.setBounds(412, 152, 89, 27);
+		buttonOutputSelect.setBounds(484, 150, 89, 27);
 		buttonOutputSelect.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				JFileChooser fileChooser = new JFileChooser();
@@ -93,13 +93,13 @@ public class ConfigWindow extends JFrame {
 		});
 
 		JPanel panelLanguage = new JPanel();
-		panelLanguage.setBounds(48, 197, 248, 173);
+		panelLanguage.setBounds(30, 205, 248, 173);
 		panelLanguage.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0), 1, true), " Lenguaje de salida ",
 				TitledBorder.LEFT, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		panelLanguage.setToolTipText("");
 
 		JPanel panelCompatibility = new JPanel();
-		panelCompatibility.setBounds(325, 227, 248, 116);
+		panelCompatibility.setBounds(323, 225, 248, 116);
 		panelCompatibility.setToolTipText("");
 		panelCompatibility.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0), 1, true),
 				" Compatibilidad con ", TitledBorder.LEFT, TitledBorder.TOP, null, new Color(0, 0, 0)));
@@ -140,7 +140,7 @@ public class ConfigWindow extends JFrame {
 		panelCompatibility.add(choiceCompatibility);
 
 		JButton btnNewButton = new JButton("Iniciar");
-		btnNewButton.setBounds(364, 409, 137, 43);
+		btnNewButton.setBounds(131, 400, 137, 43);
 		btnNewButton.setFont(new Font("Verdana", Font.PLAIN, 18));
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -216,7 +216,7 @@ public class ConfigWindow extends JFrame {
 			}
 		});
 		btnVolverAlMenu.setFont(new Font("Verdana", Font.PLAIN, 18));
-		btnVolverAlMenu.setBounds(103, 409, 179, 43);
+		btnVolverAlMenu.setBounds(336, 400, 179, 43);
 		contentPane.add(btnVolverAlMenu);
 
 	}

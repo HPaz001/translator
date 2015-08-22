@@ -51,8 +51,9 @@ public class Grafcet {
 		this.name = pAttributes.get("name");
 		this.comment = pAttributes.get("comment");
 		this.owner = pAttributes.get("owner");
+		
 		Pattern pat = Pattern.compile("^GEmergencia.*|^GEmergency.*");
-		Matcher mat = pat.matcher(getName());
+		Matcher mat = pat.matcher(getName().trim());
 		if (mat.matches()) {
 			this.emergency=true;
 		}		

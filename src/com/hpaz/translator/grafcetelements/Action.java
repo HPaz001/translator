@@ -43,6 +43,12 @@ public class Action {
 		}else {
 			this.text = getText() + " " + pText;
 		}
+		Pattern pat = Pattern.compile("^F/G.*");
+		Matcher mat = pat.matcher(getText());
+		if(mat.matches()){
+			this.emergency=true;
+		}
+		
 	}
 	public String getCondition() {
 		return condition;
@@ -128,8 +134,6 @@ public class Action {
 		}else if(pOpc.equals("start")){
 			this.startEmergency.addAll(auxtList);
 		}
-		//Modifico la boleana
-		this.emergency=true;
 		
 	}
 

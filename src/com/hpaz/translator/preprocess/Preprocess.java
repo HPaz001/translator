@@ -139,9 +139,9 @@ public class Preprocess extends DefaultHandler {
 				if (previousTag.equals(GrafcetTagsConstants.COMMENT_TAG)) {
 					addComent(" NOT "+ text);
 				} else if (isStep) {
-					action.addCondition("(NOT (" + text + "))");
+					action.addCondition("( NOT (" + text + "))");
 				} else if (isTransition) {
-					transition.addCondition("(NOT (" + text + "))");
+					transition.addCondition("( NOT (" + text + "))");
 				}
 			} else if (actualTag.equals(GrafcetTagsConstants.COMMENT_TAG)) {// comment
 				addComent(text);
