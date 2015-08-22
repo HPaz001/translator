@@ -156,36 +156,42 @@ public class Step {
 	}
 
 	public void addAction(Action pAction) {
-		this.myActions.add(pAction);
-		/*Si el tipò de accion es de forcing order*/
-		if (pAction.getType().equals(GrafcetTagsConstants.ACTION_FORCING_ORDER)){
-			/*Llamo al get emergencia de la accion para rellenar los datos 
-			 * de la emergencia en caso de que lo sea*/
-			String aux = pAction.getEmergency();
-			/*Si es una emergencia tendre que saber de que tipo es
-			 * para rellenar las variables correspondientes*/
-			if(aux.equalsIgnoreCase("stop")){
-				setStopEmergency(true);
-				setGrafcetsStopEmergency(pAction.getStopEmergency());
-			}else if(aux.equalsIgnoreCase("start")){
-				setStartEmergency(true);
-				setGrafcetsStartEmergency(pAction.getStartEmergency());
+		Action auxAction = pAction;
+		Pattern pat = Pattern.compile("^F/G.*");
+		Matcher mat = pat.matcher(auxAction.getText());
+		//si la accion es una emergencia
+		if(mat.matches() && auxAction.getType().equals(GrafcetTagsConstants.ACTION_FORCING_ORDER)){
+			auxAction.addEmergency(true);
+			//relleno las listas
+			auxAction.getEmergency();
+		
+		/*Si la accion es de emergencia*/
+		//if (auxAction.isEmergency()){
+			/*Si la lista de start contiene elemento es forzado de inicio*/
+			if(!auxAction.getStartEmergency().isEmpty()){
+				addStartEmergency(true);
+				addGrafcetsStartEmergency(pAction.getStartEmergency());
+				/*Si la lista de stop contiene elemento es forzado de parada*/
+			}else if(!auxAction.getStopEmergency().isEmpty()){
+				addStopEmergency(true);
+				addGrafcetsStopEmergency(pAction.getStopEmergency());
 			}
 		}
+		this.myActions.add(auxAction);
 	}
 
 	public boolean isStopEmergency() {
 		return stopEmergency;
 	}
 
-	public void setStopEmergency(boolean stopEmergency) {
+	public void addStopEmergency(boolean stopEmergency) {
 		this.stopEmergency = stopEmergency;
 	}
 	public boolean isStartEmergency() {
 		return startEmergency;
 	}
 
-	public void setStartEmergency(boolean startEmergency) {
+	public void addStartEmergency(boolean startEmergency) {
 		this.startEmergency = startEmergency;
 	}
 
@@ -193,16 +199,16 @@ public class Step {
 		return grafcetsStopEmergency;
 	}
 
-	public void setGrafcetsStopEmergency(LinkedList<String> grafcetsStopEmergency) {
-		this.grafcetsStopEmergency = grafcetsStopEmergency;
+	public void addGrafcetsStopEmergency(LinkedList<String> pGrafcetsStopEmergency) {
+		this.grafcetsStopEmergency = pGrafcetsStopEmergency;
 	}
 
 	public LinkedList<String> getGrafcetsStartEmergency() {
 		return grafcetsStartEmergency;
 	}
 
-	public void setGrafcetsStartEmergency(LinkedList<String> grafcetsStartEmergency) {
-		this.grafcetsStartEmergency = grafcetsStartEmergency;
+	public void addGrafcetsStartEmergency(LinkedList<String> pGrafcetsStartEmergency) {
+		this.grafcetsStartEmergency = pGrafcetsStartEmergency;
 	}
 	
 	public String printStepGlobalVar() {
@@ -210,7 +216,7 @@ public class Step {
 		return s;
 	}
 
-	public void printStep() {
+	/*public void printStep() {
 		System.out.println("----- STEP ------");
 		System.out.println("Nombre: " + this.name);
 		System.out.println("Tipo: " + this.type);
@@ -222,7 +228,7 @@ public class Step {
 		System.out.println("	"+this.mySet);
 		System.out.println("	MI RESET");
 		System.out.println("	"+this.myReset);
-	}
+	}*/
 
 	public Map<String, String> getActionStepMap() {
 		Map<String, String> actionStepMap = new HashMap<String, String>();

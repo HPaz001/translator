@@ -36,18 +36,18 @@ public class Project {
 	private LinkedList<Grafcet> listGrafcet;
 	private LinkedList<Timer> listTimers;
 	private LinkedList<Counter> listCounters;
-	
+
 	private LinkedList<String> listTimersUI;
 	private LinkedList<String> listCountersUI;
-	//Para guardar las variables con flancos de subida o bajada
+	// Para guardar las variables con flancos de subida o bajada
 	private LinkedList<String> list_FE_and_RE;
-	
-	private Map<String,String> assignments;
-	
+
+	private Map<String, String> assignments;
+
 	private Map<String, String> listUI;
 
 	LinkedList<String> signalsProject;
-	
+
 	private static Project project = new Project();
 
 	private Project() {
@@ -62,8 +62,8 @@ public class Project {
 		this.listTimersUI = new LinkedList<String>();
 		this.listUI = null;
 		this.signalsProject = new LinkedList<String>();
-		this.list_FE_and_RE =new LinkedList<String>();
-	
+		this.list_FE_and_RE = new LinkedList<String>();
+
 	}
 
 	public static Project getProject() {
@@ -82,7 +82,6 @@ public class Project {
 		if (this.name == null)
 			this.name = name;
 	}
-
 
 	public void addLanguage(String language) {
 		if (this.language == null)
@@ -105,8 +104,8 @@ public class Project {
 	public void addGrafcet(Grafcet g) {
 		g.fillPreviousAndNextSequencesLists();
 		g.addSetAndResetToStep();
-		//si es el de emergencia genero las listas correspondientes
-		if(g.isEmergency()){
+		// si es el de emergencia genero las listas correspondientes
+		if (g.isEmergency()) {
 			g.getEmergency();
 		}
 		this.listGrafcet.add(g);
@@ -130,6 +129,7 @@ public class Project {
 		System.out.println(pCounters.getNameCounter());
 		this.listCounters.add(pCounters);
 	}
+
 	public LinkedList<String> getListTimersUI() {
 		return listTimersUI;
 	}
@@ -147,59 +147,61 @@ public class Project {
 		vG.add("\n\t(*---Señales---*)\n\n");
 
 		vG.add("\tINIT\t:BOOL;\n\tRESET\t:BOOL;\n");
-		
+
 		for (String string : this.list_FE_and_RE) {
-			vG.add("\t"+string+"\t:"+string.charAt(0)+"_TRIG;\n");
+			vG.add("\t" + string + "\t:" + string.charAt(0) + "_TRIG;\n");
 		}
-		
-		//creo una lista para cada tipo de senal
+
+		// creo una lista para cada tipo de senal
 		LinkedList<String> signalI = new LinkedList<String>();
 		LinkedList<String> signalQ = new LinkedList<String>();
 		LinkedList<String> signalM = new LinkedList<String>();
 		LinkedList<String> signalK = new LinkedList<String>();
 		LinkedList<String> signalS = new LinkedList<String>();
-		
-		//por cada una de las señales del proyecto
+
+		// por cada una de las señales del proyecto
 		for (String string : this.signalsProject) {
-			//Si esta en el hashMap de la UI 
-			if(this.listUI.containsKey(string)){
-				//la uso
+			// Si esta en el hashMap de la UI
+			if (this.listUI.containsKey(string)) {
+				// la uso
 				String type = this.listUI.get(string);
-				
+
 				Pattern pat = Pattern.compile(".*:$");
 				Matcher mat = pat.matcher(type);
-								
-				//Si el tipo indica que es una señal
+
+				// Si el tipo indica que es una señal
 				if (!mat.matches()) {
-					String [] typeDiv = type.split(":");
-					String typeData=typeDiv[0];
-					String typeVar=typeDiv[1];
-					
-					//ya tengo el tipo de dato y de variable, ahora por cada una de ellas se excribe distinto
-					if(typeData.equals("Entrada")){
-						//typeData = "I";
-						signalI.add("\t" + string + " AT %I* : "+typeVar+";\n");
-					}else if(typeData.equals("Salida")){
-						//typeData = "Q";
-						signalQ.add("\t" + string + " AT %Q* : "+typeVar+";\n");
-					}else if(typeData.equals("Memoria")){
-						//typeData = "M";
-						signalM.add("\t" + string + " AT %M* : "+typeVar+";\n");
-					}else if(typeData.equals("Constante")){
-						//typeData = "K";
-						signalK.add("\t" + string + " AT %K* : "+typeVar+";\n");
-					}else if(typeData.equals("Sistema")){
-						//typeData = "S";
-						signalS.add("\t" + string + " AT %S* : "+typeVar+";\n");
+					String[] typeDiv = type.split(":");
+					String typeData = typeDiv[0];
+					String typeVar = typeDiv[1];
+
+					// ya tengo el tipo de dato y de variable, ahora por cada
+					// una de ellas se excribe distinto
+					if (typeData.equals("Entrada")) {
+						// typeData = "I";
+						signalI.add("\t" + string + " AT %I* : " + typeVar + ";\n");
+					} else if (typeData.equals("Salida")) {
+						// typeData = "Q";
+						signalQ.add("\t" + string + " AT %Q* : " + typeVar + ";\n");
+					} else if (typeData.equals("Memoria")) {
+						// typeData = "M";
+						signalM.add("\t" + string + " AT %M* : " + typeVar + ";\n");
+					} else if (typeData.equals("Constante")) {
+						// typeData = "K";
+						signalK.add("\t" + string + " AT %K* : " + typeVar + ";\n");
+					} else if (typeData.equals("Sistema")) {
+						// typeData = "S";
+						signalS.add("\t" + string + " AT %S* : " + typeVar + ";\n");
 					}
-					
-					//vG.add("\t" + string + " AT %"+ typeData +"* : "+typeVar+";\n");
-				}			
-				//la eimino del HashMap
+
+					// vG.add("\t" + string + " AT %"+ typeData +"* :
+					// "+typeVar+";\n");
+				}
+				// la eimino del HashMap
 				this.listUI.remove(string);
 			}
 		}
-		//uno las listas de las distintas señales
+		// uno las listas de las distintas señales
 		vG.add("\n\t\t(*---Entradas---*)\n\n");
 		vG.addAll(signalI);
 		vG.add("\n\t\t(*---Salidas---*)\n\n");
@@ -211,64 +213,59 @@ public class Project {
 		vG.add("\n\t\t(*---Constantes---*)\n\n");
 		vG.addAll(signalK);
 		vG.add("\n\t(*---Temporizadores---*)\n\n");
-		//Si aun quedan elementos en el HashMAp
-		if(!this.listUI.isEmpty()){
-			//Por cada temporizador
+		// Si aun quedan elementos en el HashMAp
+		if (!this.listUI.isEmpty()) {
+			// Por cada temporizador
 			for (int i = 0; i < this.listTimers.size(); i++) {
 				String type = this.listUI.get(this.listTimers.get(i).getNameTimer());
 				this.listTimers.get(i).addTypeTimer(type);
 				vG.add(this.listTimers.get(i).getGlobalsVarTimer());
 			}
 			vG.add("\n\t(*---Contadores---*)\n\n");
-			//Por cada Contador
+			// Por cada Contador
 			for (int j = 0; j < this.listCounters.size(); j++) {
 				System.out.println("Contador");
 				String type = this.listUI.get(this.listCounters.get(j).getNameCounter());
 				this.listCounters.get(j).addTypeCounter(type);
 				vG.add(this.listCounters.get(j).getGlobalsVarCounter());
-			}	
-		
+			}
+
 		}
 		return vG;
 	}
-	
-	public void setProjectVariablesFromUserInterface(Map<String,String> variablesMap){
-		//TODO pasar el mapa de variables a donde sea
+
+	public void setProjectVariablesFromUserInterface(Map<String, String> variablesMap) {
 		this.listUI = variablesMap;
-		/*for (String key : variablesMap.keySet()){
-			System.out.println("key -> " + key + ", value -> " + variablesMap.get(key));
-		}*/
-		
+		/*
+		 * for (String key : variablesMap.keySet()){ System.out.println(
+		 * "key -> " + key + ", value -> " + variablesMap.get(key)); }
+		 */
+
 	}
 
-	/*public void printProject() {
-		System.out.println("----- PROJECT ------");
-		System.out.println("Nombre: " + getName());
-		System.out.println("Lenguaje: " + getLanguage());
-		System.out.println("Compatibilidad: " + getProgram());
-		for (Grafcet g : listGrafcet) {
-			g.printGrafcet();
-		}
-
-	}*/
+	/*
+	 * public void printProject() { System.out.println("----- PROJECT ------");
+	 * System.out.println("Nombre: " + getName()); System.out.println(
+	 * "Lenguaje: " + getLanguage()); System.out.println("Compatibilidad: " +
+	 * getProgram()); for (Grafcet g : listGrafcet) { g.printGrafcet(); }
+	 * 
+	 * }
+	 */
 
 	/** Este metodo devuelve */
 	public void print() {
-		//generateEmergencyData();
+		// generateEmergencyData();
 		if (program.equalsIgnoreCase(GrafcetTagsConstants.PROGRAM_OPT1)) { // Twincat
 			try {
 
 				// printProject();
-				
+
 				// Var Global
 				Output.getOutput().exportFile(getGlobalVars(generateGlobalVars()), getName() + "_VAR_GLOBAL",
 						outputDir);
-				
-				
+
 				// Program Main
 				Output.getOutput().exportFile(generateProgramMain(), getName() + "_PROGRAM_MAIN", outputDir);
-
-				
 
 				// Function Block --> uno por cada grafcet
 				for (Grafcet g : listGrafcet) {
@@ -297,7 +294,7 @@ public class Project {
 
 		Map<String, String> actionStepMap = new HashMap<String, String>();
 		String gName;
-
+		// por cada grafcet del proyecto
 		for (Grafcet grafcet : listGrafcet) {
 			// guardo solo el nombre del grafcet q sera Gxxxxxxxxx
 			gName = grafcet.getName();
@@ -320,7 +317,7 @@ public class Project {
 				if (grafcet.compareStartAndStopLists()) {
 					bol = true;
 				}
-				//Anado los forzados de cad agrafcet
+				// Anado los forzados de cad agrafcet
 				listEmergency.addAll(generateListEmergency(grafcet.getListEmergencyStart(),
 						grafcet.getListEmergencyStop(), bol, stepStop, stepStart));
 
@@ -338,7 +335,8 @@ public class Project {
 		return getProgramMain(aux, listEmergency, actionStepMap);
 
 	}
-	/**Genera las paradas e inicios de los forzados de emergencia*/
+
+	/** Genera las paradas e inicios de los forzados de emergencia */
 	private LinkedList<String> generateListEmergency(LinkedList<String> pListStop, LinkedList<String> pListStart,
 			boolean pEquals, String pStepStop, String pStepStart) {
 		LinkedList<String> aux = new LinkedList<String>();
@@ -347,9 +345,9 @@ public class Project {
 		if (pEquals) {
 			for (String e : pListStop) {
 				emerg = e.trim();
-				aux.add("\n\tInit" + emerg.trim() + ":=" + pStepStart + ";\n");
-				aux.add("\tReset" + emerg + ":=" + pStepStop + ";\n");
-				aux.add("\t" + emerg + "(Init:=(XInit OR Init" + emerg + "), Reset:=(XReset OR Reset" + emerg
+				aux.add("\n\tInit" + emerg.trim() + ":=" + pStepStart + ";");
+				aux.add("\n\tReset" + emerg + ":=" + pStepStop + ";\n");
+				aux.add("\n\t" + emerg + "(Init:=(XInit OR Init" + emerg + "), Reset:=(XReset OR Reset" + emerg
 						+ "));\n");
 			}
 		} else {
@@ -360,15 +358,15 @@ public class Project {
 					// la otra lista
 					if (pListStart.contains(e)) {
 						emerg = e.trim();
-						aux.add("\n\tInit" + emerg + ":=" + pStepStart + ";\n");
-						aux.add("\tReset" + emerg + ":=" + pStepStop + ";\n");
-						aux.add("\t" + emerg + "(Init:=(XInit OR Init" + emerg + "), Reset:=(XReset OR Reset" + emerg
+						aux.add("\n\tInit" + emerg + ":=" + pStepStart + ";");
+						aux.add("\n\tReset" + emerg + ":=" + pStepStop + ";");
+						aux.add("\n\t" + emerg + "(Init:=(XInit OR Init" + emerg + "), Reset:=(XReset OR Reset" + emerg
 								+ "));\n");
 					} else {
 						emerg = e.trim();
 						// aux.add("\n\tInit"+emerg+":="+pStepStart+";\n");
-						aux.add("\tReset" + emerg + ":=" + pStepStop + ";\n");
-						aux.add("\t" + emerg + "(Init:=(XInit), Reset:=(XReset OR Reset" + emerg + "));\n");
+						aux.add("\n\tReset" + emerg + ":=" + pStepStop + ";");
+						aux.add("\n\t" + emerg + "(Init:=(XInit), Reset:=(XReset OR Reset" + emerg + "));\n");
 					}
 				}
 			} else {
@@ -377,15 +375,15 @@ public class Project {
 					// la otra lista
 					if (pListStop.contains(e)) {
 						emerg = e.trim();
-						aux.add("\n\tInit" + emerg + ":=" + pStepStart + ";\n");
-						aux.add("\tReset" + emerg + ":=" + pStepStop + ";\n");
-						aux.add("\t" + emerg + "(Init:=(XInit OR Init" + emerg + "), Reset:=(XReset OR Reset" + emerg
+						aux.add("\n\tInit" + emerg + ":=" + pStepStart + ";");
+						aux.add("\n\tReset" + emerg + ":=" + pStepStop + ";");
+						aux.add("\n\t" + emerg + "(Init:=(XInit OR Init" + emerg + "), Reset:=(XReset OR Reset" + emerg
 								+ "));\n");
 					} else {
 						emerg = e.trim();
-						aux.add("\n\tInit" + emerg + ":=" + pStepStart + ";\n");
+						aux.add("\n\tInit" + emerg + ":=" + pStepStart + ";");
 						// aux.add("\tReset"+emerg+":="+pStepStop+";\n");
-						aux.add("\t" + emerg + "(Init:=(XInit OR Init" + emerg + "), Reset:=(XReset));\n");
+						aux.add("\n\t" + emerg + "(Init:=(XInit OR Init" + emerg + "), Reset:=(XReset));\n");
 					}
 				}
 			}
@@ -417,81 +415,78 @@ public class Project {
 		}
 
 		listaProgramMain.add("\n\t\tXInit\t:BOOL;\n\t\tXReset\t:BOOL;\n");
-		
-		/*Por cada temporizador y contador */
+
+		/* Por cada temporizador y contador */
 		for (Timer timer : this.listTimers) {
-			listaProgramMain.add("\n\t\t"+timer.getNameTimer()+"\t:"+timer.getTypeTimer()+";\n");
+			listaProgramMain.add("\n\t\t" + timer.getNameTimer() + "\t:" + timer.getTypeTimer() + ";\n");
 		}
 		for (Counter count : this.listCounters) {
-			listaProgramMain.add("\n\t\t"+count.getNameCounter()+"\t:"+count.getTypeCounter()+";\n");
+			listaProgramMain.add("\n\t\t" + count.getNameCounter() + "\t:" + count.getTypeCounter() + ";\n");
 		}
 		listaProgramMain.add("\n\tEND_VAR\n");
-		
+
 		listaProgramMain.add("\n\t(*---------------------------------------------*)\n");
 		listaProgramMain.add("\n\tXInit:=INIT;\n\tXReset:=RESET;\n\n");
-		
+
 		for (String string : this.list_FE_and_RE) {
-			listaProgramMain.add("\n\t"+string+"(CLK:="+string.substring(2,string.length())+" , Q=> );");
+			listaProgramMain.add("\n\t" + string + "(CLK:=" + string.substring(2, string.length()) + " , Q=> );");
 		}
 		/*
-			SolModoAuto:=FPMarcha.Q;
-			
-			FinProces:=X20; */
-		//Asignaciones que estan en la transition
+		 * SolModoAuto:=FPMarcha.Q; FinProces:=X20;
+		 */
+		// Asignaciones que estan en la transition
 		for (String assig : assignments.keySet()) {
-			
 			String auxString = assignments.get(assig);
-			
-			//Si la palabra contiene un RE o FE
+
+			// Si la palabra contiene un RE o FE
 			Pattern patRE_FE = Pattern.compile(".* RE .*| .* FE .*");
 			Matcher matRE_FE = patRE_FE.matcher(auxString);
-			
-			if(matRE_FE.matches()){
+
+			if (matRE_FE.matches()) {
 				auxString = auxString.replace(" ", "");
-				auxString = auxString+".Q";
+				auxString = auxString + ".Q";
 			}
-			
-			listaProgramMain.add("\n\t"+assig.trim()+":="+auxString+";");
+
+			listaProgramMain.add("\n\t" + assig.trim() + ":=" + auxString + ";");
 		}
-		//por cada grafcet que se encuentra en el forzado de emergencia
-		
-		
-		/* Anado la lista de emergencia */
+
+		/* Anado la lista de emergencia y forzados */
 		listaProgramMain.addAll(pEmergency);
 
 		listaProgramMain.add("\n\n");
 		for (String action : pInit.keySet()) {
 			String aux = action.trim();
-		
-			//temporizador
+
+			// temporizador
 			Pattern patTemp = Pattern.compile("^Temp.*=[0-9]{1,}[a-z A-Z]{1,}");
 			Matcher matTemp = patTemp.matcher(aux);
-			
-			//contador 
+
+			// contador
 			Pattern patCont = Pattern.compile("^Cont.*=[0-9]{1,}$|^Cont.*=Cont.*\\+[0-9]|^Cont.*=Cont.*\\-[0-9]");
 			Matcher matCont = patCont.matcher(aux);
 
-			//forzado de emergencia
+			// forzado de emergencia
 			Pattern patEmer = Pattern.compile("^F/G.*");
-			Matcher matEmer= patEmer.matcher(aux);
-			
+			Matcher matEmer = patEmer.matcher(aux);
+
 			if (matTemp.matches()) {
-				aux=aux.replaceAll("=[0-9]{1,}[a-z A-Z]{1,}", "").trim();
+				aux = aux.replaceAll("=[0-9]{1,}[a-z A-Z]{1,}", "").trim();
 				int index = equalsTimer(aux);
 				Timer timer = listTimers.get(index);
-				listaProgramMain.add("\n\t"+timer.getNameTimer()+"IN:="+pInit.get(action)+";");
-				listaProgramMain.add("\n\t"+timer.getNameTimer()+"PT:=T#"+timer.getTime()+timer.getTypeTime()+";");
-				listaProgramMain.add("\n\t"+timer.getNameTimer()+"(IN:="+timer.getNameTimer()+"IN , PT:="+
-						timer.getNameTimer()+"PT , Q=>"+timer.getNameTimer()+"Q , ET=> "+timer.getNameTimer()+"ET);");
-			}else if(matCont.matches()) {
-				//TODO PROGRAM MAIN si es contador aun no se q hacer 
-				
-				
-				//Si no es el forzado de emergencia , contador o temp
-			}else if(!matEmer.matches() && !matCont.matches() && !matTemp.matches()){
+				listaProgramMain.add("\n\t" + timer.getNameTimer() + "IN:=" + pInit.get(action) + ";");
+				listaProgramMain
+						.add("\n\t" + timer.getNameTimer() + "PT:=T#" + timer.getTime() + timer.getTypeTime() + ";");
+				listaProgramMain.add("\n\t" + timer.getNameTimer() + "(IN:=" + timer.getNameTimer() + "IN , PT:="
+						+ timer.getNameTimer() + "PT , Q=>" + timer.getNameTimer() + "Q , ET=> " + timer.getNameTimer()
+						+ "ET);");
+			} else if (matCont.matches()) {
+				// TODO PROGRAM MAIN si es contador aun no se q hacer
+
+				// Si no es el forzado de emergencia , contador o temp
+			} else if (!matEmer.matches() && !matCont.matches() && !matTemp.matches()) {
 				listaProgramMain.add("\t" + aux + ":=" + pInit.get(action) + ";\n");
 			}
-			
+
 		}
 
 		listaProgramMain.add("\nEND_PROGRAM\n");
@@ -527,30 +522,25 @@ public class Project {
 		return listwithoutduplicates;
 	}
 
-	/*public void generateEmergencyData() {
-		for (Grafcet g : getListG()) {
-			// si el grafcet es el de emergencia relleno la lista de emergencia
-			if (g.isEmergency()) {
-				g.getEmergency();
-			}
-		}
-	}*/
-	
-	
+	/*
+	 * public void generateEmergencyData() { for (Grafcet g : getListG()) { //
+	 * si el grafcet es el de emergencia relleno la lista de emergencia if
+	 * (g.isEmergency()) { g.getEmergency(); } } }
+	 */
+
 	private void generateSignalsProject() {
 		LinkedList<String> signals = new LinkedList<String>();
-		
+
 		for (Grafcet g : getListG()) {
-			
+
 			signals.addAll(g.getListSignalsGrafcet());
 		}
 		signals = removeDuplicates(signals);
-		
+
 		this.signalsProject = signals;
-	
 
 	}
-	
+
 	public LinkedList<String> getSignalsProject() {
 		generateSignalsProject();
 		return this.signalsProject;
@@ -572,7 +562,7 @@ public class Project {
 		}
 		return indexTimer;
 	}
-	
+
 	/**
 	 * Busca en la lista de contadores si existe devuelve su indice de lo
 	 * contrario devuelve -1
@@ -597,24 +587,21 @@ public class Project {
 		this.list_FE_and_RE.add(p_FE_and_RE);
 	}
 
-	public Map<String,String> getAssignments() {
+	public Map<String, String> getAssignments() {
 		return assignments;
 	}
 
-	
-	/**Este metodo creara un Map de asignaciones en caso de que la transicion tenga*/
+	/**
+	 * Este metodo creara un Map de asignaciones en caso de que la transicion
+	 * tenga
+	 */
 	public void addAssignments(String pSignal, String pAssignment) {
-		// TODO REVISAR 
-		if(this.assignments==null){
-			this.assignments = new HashMap<String, String>();	
+		// TODO REVISAR
+		if (this.assignments == null) {
+			this.assignments = new HashMap<String, String>();
 		}
 		this.assignments.put(pSignal, pAssignment);
-		
+
 	}
-
-
-
-
-
 
 }

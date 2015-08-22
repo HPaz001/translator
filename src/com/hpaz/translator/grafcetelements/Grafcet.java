@@ -222,17 +222,17 @@ public class Grafcet {
 		this.jumpList.add(pJ);
 	}
 
-	public void setStepStopEmergency(String stepStopEmergency) {
-		this.stepStopEmergency = stepStopEmergency;
+	public void addStepStopEmergency(String pStepStopEmergency) {
+		this.stepStopEmergency = pStepStopEmergency;
 	}
-	public void setStepStartEmergency(String pStepStartEmergency) {
+	public void addStepStartEmergency(String pStepStartEmergency) {
 		this.stepStartEmergency = pStepStartEmergency;
 	}
-	public void setListEmergencyStop(LinkedList<String> listEmergencyStop) {
-		this.listEmergencyStop = listEmergencyStop;
+	public void addListEmergencyStop(LinkedList<String> pListEmergencyStop) {
+		this.listEmergencyStop = pListEmergencyStop;
 	}
-	public void setListEmergencyStart(LinkedList<String> listEmergencyStart) {
-		this.listEmergencyStart = listEmergencyStart;
+	public void setListEmergencyStart(LinkedList<String> pListEmergencyStart) {
+		this.listEmergencyStart = pListEmergencyStart;
 	}
 	
 	/**
@@ -488,17 +488,17 @@ public class Grafcet {
 
 		for (Sequence s : getListS()) {
 
-			s.getEmergency();
+			//s.getEmergency();
 
 			if (s.getStepStartEmergency() != -1) {
 				Step stepStart = (Step) s.getListTransitionOrStep().get(s.getStepStartEmergency());
-				setStepStartEmergency(stepStart.getName());
+				addStepStartEmergency(stepStart.getName());
 				setListEmergencyStart(stepStart.getGrafcetsStartEmergency());
 
 			} else if (s.getStepStopEmergency() != -1) {
 				Step stepStop = (Step) s.getListTransitionOrStep().get(s.getStepStopEmergency());
-				setStepStopEmergency(stepStop.getName());
-				setListEmergencyStop(stepStop.getGrafcetsStopEmergency());
+				addStepStopEmergency(stepStop.getName());
+				addListEmergencyStop(stepStop.getGrafcetsStopEmergency());
 			}
 
 		}

@@ -187,7 +187,7 @@ public class ConfigWindow extends JFrame {
 							
 						} catch (Exception ex) {
 							ex.printStackTrace();
-						}// TODO todo esta bien, llamar al algoritmo
+						}
 					}
 				}
 			}

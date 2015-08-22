@@ -48,7 +48,6 @@ public class InstructionsWindow extends JDialog {
 			textPane.setText("<html>"+allText+"</html>");
 			
 		}catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			textPane.setText("Ha ocurido un error al leer el fichero.");
 		}

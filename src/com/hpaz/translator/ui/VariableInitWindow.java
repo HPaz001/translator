@@ -373,10 +373,9 @@ public class VariableInitWindow extends JFrame {
 
 	private void exportOutputToFiles() {
 		// Genero las salidas dependiendo del software de compatibilidad
-		try {// TODO exportOutputToFiles
+		try {
 				// Project.getProject().printProject();
 			Project.getProject().print();
-			//TODO Hacer que el mensaje cierre la ventana
 			
 			JOptionPane.showMessageDialog(contentPane, "Se han generado los ficheros de su proyecto en la carpeta seleccionada.", "Finalizado",
 					JOptionPane.DEFAULT_OPTION);

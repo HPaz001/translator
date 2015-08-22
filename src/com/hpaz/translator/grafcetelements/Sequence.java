@@ -20,7 +20,7 @@ public class Sequence {
 	/**Para saber la etepa de la emergencia, en ellos guardare el indice de la
 	 * etapa*/
 	private int stepStopEmergency;
-	private int StepStartEmergency;
+	private int stepStartEmergency;
 
 	public Sequence() {
 		this.listTransitionOrStep = new LinkedList<Object>();
@@ -28,7 +28,7 @@ public class Sequence {
 		this.previousSequencesList = new LinkedList<Integer>();
 		this.nextSequencesList = new LinkedList<Integer>();
 		this.stepStopEmergency = -1;
-		this.StepStartEmergency = -1;
+		this.stepStartEmergency = -1;
 	}
 	public void fillAttributes(Map<String, String> pAttributes) {
 		// anado el id
@@ -56,18 +56,18 @@ public class Sequence {
 		return stepStopEmergency;
 	}
 
-	public void setStepStopEmergency(int stepStopEmergency) {
-		this.stepStopEmergency = stepStopEmergency;
-	}
+/*	public void addStepStopEmergency(int pStepStopEmergency) {
+		this.stepStopEmergency = pStepStopEmergency;
+	}*/
 
 	public int getStepStartEmergency() {
-		return StepStartEmergency;
+		return stepStartEmergency;
 	}
 
-	public void setStepStartEmergency(int stepStartEmergency) {
-		StepStartEmergency = stepStartEmergency;
+	/*public void addStepStartEmergency(int pStepStartEmergency) {
+		this.stepStartEmergency = pStepStartEmergency;
 	}
-
+*/
 	/**Este metodo añade una transicion o un step a la lista listTransitionOrStep
 	 * Pero antes de esto genera y guarda las señales correspondientes */
 	public void addTransitionOrStep(Object pTransitionOrStep) {
@@ -82,6 +82,7 @@ public class Sequence {
 			for (Action action : ((Step) pTransitionOrStep).getMyActions()) {
 				
 				String act = action.getText();
+				
 				//si hay una accion y NO es una emergencia
 				if (act != null && !action.isEmergency()) {
 					String aux = action.getText().trim();
@@ -128,6 +129,13 @@ public class Sequence {
 						}
 						
 					}
+					// si hay acction y es emergencia
+				}else if (act != null && action.isEmergency()){
+					if (((Step) pTransitionOrStep).isStartEmergency()) {
+						stepStartEmergency = listTransitionOrStep.size();
+					} else if (((Step) pTransitionOrStep).isStopEmergency()) {
+						stepStopEmergency=listTransitionOrStep.size();
+					}
 				}
 			}
 		}
@@ -162,7 +170,7 @@ public class Sequence {
 		return null;
 	}
 
-	public void printSequence() {
+/*	public void printSequence() {
 		System.out.println("----- SEQUENCE ------");
 		System.out.println("ID secuencia : " + this.idSeq);
 		System.out.println("----- PREVIOUS SequencesList");
@@ -181,7 +189,7 @@ public class Sequence {
 			}
 		}
 		
-	}
+	}*/
 
 	public Map<String, String> getActionStepMap() {
 		/*
@@ -214,25 +222,25 @@ public class Sequence {
 		return actionStepMap;
 	}
 
-	public void getEmergency() {
-		/* Por cada step de la secuencia */
+/*	public void getEmergency() {
+		 Por cada step de la secuencia 
 		for (int i = 0; i < getListTransitionOrStep().size(); i++) {
 			Object step = getListTransitionOrStep().get(i);
 			if (step instanceof Step) {
-				/*
+				
 				 * llamo a get emergency del step para que rellene los datos
 				 * correspondientes en caso de que sea un step de emergencia
-				 */
+				 
 				// ((Step) step).getEmergency();
 				// si es una etapa de emergencia guardo en el tipo la etapa
 				if (((Step) step).isStartEmergency()) {
-					setStepStartEmergency(i);
+					addStepStartEmergency(i);
 				} else if (((Step) step).isStopEmergency()) {
-					setStepStopEmergency(i);
+					addStepStopEmergency(i);
 				}
 			}
 		}
-	}
+	}*/
 
 	public LinkedList<Integer> getPreviousSequencesList() {
 		return previousSequencesList;

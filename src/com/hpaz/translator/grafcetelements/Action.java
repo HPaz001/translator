@@ -26,29 +26,21 @@ public class Action {
 	}
 	public void fillAttributes(Map<String, String> pAttributes) {
 		// aÃ±ado el tipo
-		this.type = pAttributes.get("type");		
+		this.type = pAttributes.get("type");
 	}
 	public String getType() {
 		return type;
-	}
-	public void setType(String type) {
-		this.type = type;
 	}
 	public String getText() {
 		return text;
 	}
 	public void addText(String pText) {
+		//añado el testo de la accion me va llegando por partes
 		if (getText() == null){
 			this.text = pText;
 		}else {
 			this.text = getText() + " " + pText;
-		}
-		Pattern pat = Pattern.compile("^F/G.*");
-		Matcher mat = pat.matcher(getText());
-		if(mat.matches()){
-			this.emergency=true;
-		}
-		
+		}		
 	}
 	public String getCondition() {
 		return condition;
@@ -85,55 +77,46 @@ public class Action {
 		System.out.println("	Comentario: " + getComment());
 	}
 	
-	/**Para saber la etepa de la emergencia,
-	 * Devuelve stop o start*/
-	public String getEmergency() {
-		String s="";
+	/**Llama a la funcion de generado de listas de emergencia*/
+	public void getEmergency() {
+		
 		/*Uso expresiones regulares*/
 		/*Emergencia forzado a stop*/
-		Pattern pat = Pattern.compile("^F/G.*.>\\{\\}$");
-		Matcher mat = pat.matcher(getText());
+		Pattern pat = Pattern.compile("^F/G.*.> \\{\\}$");
+		Matcher mat = pat.matcher(getText().trim());
 		if(mat.matches()){
-			s= "stop";
-			generateListEmergency(getText(),s);
+			this.stopEmergency.addAll(generateListEmergency());
 		}else{
 			/*Emergencia forzado a start*/
-			Pattern pat1 = Pattern.compile("^F/G.*.>\\{X.[0-9]\\}$");
-			Matcher mat1 = pat1.matcher(getText());
+			Pattern pat1 = Pattern.compile("^F/G.*.> \\{X.[0-9]\\}$");
+			Matcher mat1 = pat1.matcher(getText().trim());
 			if(mat1.matches()){
-				s= "start";	
-				generateListEmergency(getText(),s);
+				this.startEmergency.addAll(generateListEmergency());
 			}
 		}
 		
-		return s;
 	}
 	
-	private void generateListEmergency(String pText, String pOpc) {
-		LinkedList<String> auxtList=new LinkedList<String>();
+	private LinkedList<String> generateListEmergency() {
+		LinkedList<String> returnList=new LinkedList<String>();
 		//Quito los espacios en blanco
-		String  auxText = pText.trim();
-		//Me quedo solo con los nombres de los grafcets
-		auxText = auxText.replaceAll("F/G|>\\{\\}|>\\{X.[0-9]\\}|>\\{X0\\}", "");
-		boolean aux=true;
-		int cont = 0;
-	
-		while(aux){
-			cont=auxText.indexOf(",");
-			if(cont!=(-1)){
-				auxtList.add(auxText.substring(0,cont));
-				auxText=auxText.substring(cont+1, auxText.length());
-			}else{
-				auxtList.add(auxText);
-				aux=false;
-			}
+		String  auxText = getText().trim();
+		//Me quedo solo con los nombres de los grafcets separados por ,
+		auxText = auxText.replaceAll("F/G|>|\\{\\}|\\{X.[0-9]\\}|\\{X0\\}| ", "");
+		//boolean aux=true;
+		//int cont = 0;
+		//separo por coma
+		String [] auxLis = auxText.split(",");
+		//por cada elemento de las lista
+		for (int i = 0; i < auxLis.length; i++) {
+			//guardo el nombre de un grafcet
+			returnList.add(auxLis[i].trim());
 		}
-		
-		if(pOpc.equals("stop")){
-			this.stopEmergency.addAll(auxtList);
-		}else if(pOpc.equals("start")){
-			this.startEmergency.addAll(auxtList);
-		}
+		//devuelvo la lista
+		return returnList;
+	}
+	public void addEmergency(boolean b) {
+		this.emergency = b;
 		
 	}
 
