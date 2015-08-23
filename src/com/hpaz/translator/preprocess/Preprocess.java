@@ -137,23 +137,14 @@ public class Preprocess extends DefaultHandler {
 			} else if (actualTag.equals(GrafcetTagsConstants.CPL_TAG)) {// cpl
 				// si es de un comentario
 				System.out.println("actualTag.equals(GrafcetTagsConstants.CPL_TAG)");
-				
 				if (previousTag.equals(GrafcetTagsConstants.COMMENT_TAG)) {
-					System.out.println("previousTag.equals(GrafcetTagsConstants.COMMENT_TAG)");
-					System.out.println(" NOT "+ text);
 					addComent(" NOT "+ text);
-				} else if (previousTag.equals(GrafcetTagsConstants.TEXT_TAG)) {
-					System.out.println("previousTag.equals(GrafcetTagsConstants.TEXT_TAG)");
-					System.out.println("( NOT (" + text + "))");
+				} else if (isStep) {
 					action.addCondition("( NOT (" + text + "))");
-				} else if (previousTag.equals(GrafcetTagsConstants.CONDITION_TAG)) {
-					System.out.println("previousTag.equals(GrafcetTagsConstants.CONDITION_TAG)");
-					System.out.println("( NOT (" + text + "))");
+				} else if (isTransition) {
 					transition.addCondition("( NOT (" + text + "))");
 				}
 			} else if (actualTag.equals(GrafcetTagsConstants.COMMENT_TAG)) {// comment
-				System.out.println("actualTag.equals(GrafcetTagsConstants.COMMENT_TAG)");
-				System.out.println(text);
 				addComent(text);
 				/*si la etiqueta es re (flanco de subida) Puede estar en :
 				 * Action, transitio, comment*/

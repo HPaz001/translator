@@ -52,24 +52,22 @@ public class Transition {
 					addTempToListProject(auxConditionSep.trim());
 					
 				//Si no es temporizador
-				}else{
-					
-					Pattern patRE_FE = Pattern.compile(".* RE .*| .* FE .*");
-					Matcher matRE_FE = patRE_FE.matcher(auxString);
-					//Si la palabra contiene un RE o FE
-					if(matRE_FE.matches()){
-						String aux_FE_RE = auxString.replace(" ", "");
-						if(!Project.getProject().getList_FE_and_RE().contains(aux_FE_RE)){
-							Project.getProject().add_FE_and_RE(aux_FE_RE);
-						}
-						auxString= aux_FE_RE+".Q";
-					}
-					
+				}else{				
 					//añado a las lista d señales por separado sin el RE, FE
 					addListConditionSep(auxConditionSep.replaceAll(" RE | FE ", "").trim());
 				}			
 			}
-			
+			Pattern patRE_FE = Pattern.compile(".* RE .*| .* FE .*");
+			Matcher matRE_FE = patRE_FE.matcher(auxConditionCompl);
+			//Si la palabra contiene un RE o FE
+			if(matRE_FE.matches()){
+				String aux_FE_RE = auxConditionCompl.replace(" ", "");
+				if(!Project.getProject().getList_FE_and_RE().contains(aux_FE_RE)){
+					Project.getProject().add_FE_and_RE(aux_FE_RE);
+				}
+				
+				auxConditionCompl= aux_FE_RE+".Q";
+			}
 			//Añado la condicion sin quitarle nada
 			this.condition = getCondition() + " " + changeSign(auxConditionCompl);
 			
