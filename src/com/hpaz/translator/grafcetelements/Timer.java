@@ -54,9 +54,9 @@ public class Timer {
 
 	public void addStepNameTimer(String pStepNameTimer) {
 		if(stepNameTimer==null){
-			this.stepNameTimer = pStepNameTimer;
+			this.stepNameTimer = "RE "+pStepNameTimer;
 		} else{
-			this.stepNameTimer = this.stepNameTimer + " OR " + pStepNameTimer;
+			this.stepNameTimer = this.stepNameTimer + " OR RE " + pStepNameTimer;
 		}
 	}
 
@@ -83,14 +83,14 @@ public class Timer {
 	public void addTypeTime(String tipeTime) {
 		this.typeTime = tipeTime;
 	}
-	public void printConsole() {
+/*	public void printConsole() {
 		System.out.println("nameTimer: "+getNameTimer());
 		System.out.println("stepNameTimer: "+getStepNameTimer());
 		System.out.println("time: "+getTime());
 		System.out.println("typeTime: "+getTypeTime());
 		System.out.println("typeTimer: "+this.typeTimer);
 		
-	}
+	}*/
 	public boolean equals(String tim) {
 		return this.nameTimer.equals(tim);
 	}

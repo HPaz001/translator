@@ -25,6 +25,8 @@ import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLReaderFactory;
 
+import com.hpaz.translator.grafcetelements.Project;
+import com.hpaz.translator.grafcetelements.constants.GrafcetTagsConstants;
 import com.hpaz.translator.preprocess.Preprocess;
 
 public class ConfigWindow extends JFrame {
@@ -183,7 +185,17 @@ public class ConfigWindow extends JFrame {
 							reader.parse(new InputSource(new FileInputStream(xmlPath)));
 							
 							dispose();
-							new VariableInitWindow().setVisible(true);
+							if (selectedCompatibility.equalsIgnoreCase(GrafcetTagsConstants.PROGRAM_OPT1)) { // Twincat
+								new VariableInitWindow().setVisible(true);
+							}
+							else{
+								Project.getProject().print();
+								JOptionPane.showMessageDialog(contentPane, "Se han generado los ficheros de su proyecto en la carpeta seleccionada.", "Finalizado",
+										JOptionPane.DEFAULT_OPTION);
+								dispose();
+								new MainProgramWindow().setVisible(true);
+
+							}
 							
 						} catch (Exception ex) {
 							ex.printStackTrace();
