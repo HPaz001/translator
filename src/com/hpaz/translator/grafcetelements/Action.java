@@ -6,6 +6,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Action {
+	//guarda el tipo de la accion
 	private String type;
 	//guarda el texto de la accion
 	private String text;
@@ -69,13 +70,13 @@ public class Action {
 		return emergency;
 	}
 	
-	public void printAction(){
+	/*public void printAction(){
 		System.out.println("----- ACTION ------");
 		System.out.println("Accion  : " + getText());
 		System.out.println("	Tipo: " + getType());
 		System.out.println("	Condicion: " + getCondition());
 		System.out.println("	Comentario: " + getComment());
-	}
+	}*/
 	
 	/**Llama a la funcion de generado de listas de emergencia*/
 	public void getEmergency() {

@@ -39,8 +39,8 @@ public class Transition {
 			String auxString = auxConditionSep;
 			
 			//Si tiene signos lo mando a la funcion de separar
-			if (auxConditionSep.contains("+") || auxConditionSep.contains("*")) {
-				addListConditionSep(removeSigns(auxConditionSep));
+			if (auxString.contains("+") || auxString.contains("*")) {
+				addListConditionSep(removeSigns(auxString));
 				
 				//Si no tiene signos
 			}else {
@@ -72,6 +72,7 @@ public class Transition {
 			
 			//Añado la condicion sin quitarle nada
 			this.condition = getCondition() + " " + changeSign(auxConditionCompl);
+			
 		}
 	}
 
@@ -145,37 +146,54 @@ public class Transition {
 		if (this.comment != null) {
 			/* le quito los */
 			String aux = this.comment.replaceAll("\\(\\*|\\*\\)", "");
-			// Si tiene coma separo en un array co slip
+			// Separo por coma, es decir en cada linea habra una unica asignacion
 			String[] list = aux.split(",");
 			/* analizo el comentario al añadirlo para saber si contiene señales
 			 nuevas a añadir a la lista*/
 			for (int i = 0; i < list.length; i++) {
-				//Si tiene una asignacion
+				
 				Pattern pat = Pattern.compile(".*:=.*");
 				Matcher mat = pat.matcher(list[i]);
+				//Si tiene una asignacion parte1:=parte2
 				if (mat.matches()) {
-					String auxAss = list[i].substring(list[0].indexOf(":=")+2, list[0].length());
-					auxAss=changeSign(auxAss);
-					//para guardar las asignaciones
-					Project.getProject().addAssignments(list[i].substring(0, list[0].indexOf(":=")),auxAss);
-					// si tiene una asignacion añado a la lista de condiciones separadas
-					String [] listSep = list[i].trim().split(":=|==|\\*");
+					//guardo la parte1
+					String string1 = list[i].substring(0, list[0].indexOf(":=")).trim();
+					//guardo la parte2
+					String string2 = list[i].substring(list[0].indexOf(":=")+2, list[0].length()).trim();
+					
+					//le cambio los signos por AND u OR
+					string1=changeSign(string1);
+					string2=changeSign(string2);
+					
+					//Guardo en la lista de asignaciones del proyecto
+					Project.getProject().addAssignments(string1,string2);
+					
+					//Separo ambas partes para añadir en la lista de señales 
+					String [] listSep = list[i].trim().split(":=|==|\\*|\\+|\\·");
+					
 					for (int j = 0; j < listSep.length; j++) {
-						//Si es solo un numero o X seguido de un numero
+						
 						Pattern patS = Pattern.compile("^[0-9]{1,}|^X[0-9]{1,}$");
 						String auxString =listSep[j];
 						Matcher matS = patS.matcher(auxString.trim());
+						//Si no es un numero solo o una XNumero
 						if(!matS.matches()){
-							//Si la palabra contiene un RE o FE
+							//Para deterctar RE y FE
 							Pattern patRE_FE = Pattern.compile(".* RE .*| .* FE .*");
 							Matcher matRE_FE = patRE_FE.matcher(listSep[j]);
+							//Si contiene un RE o FE
 							if(matRE_FE.matches()){
+								//Quito los espacios
 								String aux_FE_RE = auxString.replace(" ", "");
+								
+								//Si el elemento no esta en la lista de FE-RE del proyecto
 								if(!Project.getProject().getList_FE_and_RE().contains(aux_FE_RE)){
+									//Añado a la lista de FE_and_RE del proyecto
 									Project.getProject().add_FE_and_RE(aux_FE_RE);
 								}
 							}
-							String signal = listSep[j].replaceAll("NOT|RE|FE", "");
+							//Quito los NOT, RE o FE para añadir a la lista de señales del proyecto
+							String signal = listSep[j].replaceAll(" NOT | RE | FE ", "");
 							addListConditionSep(signal.trim());
 						}
 						

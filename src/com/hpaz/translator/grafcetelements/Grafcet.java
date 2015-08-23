@@ -343,7 +343,7 @@ public class Grafcet {
 	public void addSetAndResetToStep() {
 		//por cada secuencia de la lista
 		for (Sequence seq : sequenceList) {
-			//ppr cada lista de transiciones o pasao de la secuencia
+			//por cada lista de transiciones o paso de la secuencia
 			for (int i = 0; i < seq.getListTransitionOrStep().size(); i++) {
 				//si es un paso
 				if (seq.getListTransitionOrStep().get(i) instanceof Step) {

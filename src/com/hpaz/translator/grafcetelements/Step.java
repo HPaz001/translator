@@ -82,29 +82,30 @@ public class Step {
 	}
 	public void addMySet(String pMySet) {
 		String set = pMySet;
-		
+		//Para detectar temporizador
 		Pattern patTemp = Pattern.compile(".*Temp.*/X[0-9]{1,}/[0-9]{1,}[a-z A-Z]{1,}.*");
 		Matcher matTemp = patTemp.matcher(pMySet);
+		//Para detectar contadores
 		Pattern patCont = Pattern.compile(".*Cont.*==[0-9]{1,}.*");
 		Matcher matCont = patCont.matcher(pMySet);
 		
-		
+		//Si es un temporizador
 		if (matTemp.matches()) {
 			set = pMySet.replaceAll("/X[0-9]{1,}/[0-9]{1,}[a-z A-Z]{1,}", "Q");
 		}
-		
+		//Si es un contador
 		if (matCont.matches()) {
 			//obtengo el nombre del contador
 			String string = pMySet.substring(0,pMySet.indexOf("=="))+"Q";
 			set = string + pMySet.substring(pMySet.indexOf("=="),pMySet.length());
 		}
-				
+		//Si no se ha añadido un set se añade	
 		if (this.mySet==null){
-			
 			this.mySet = set;
-			
+		
+			//Si ya hay set añadidos compruebo que no exista  
 		}else if(!mySet.contains(set)){
-			
+			//Si se une con una divergencia en AND
 			if(isAnd()){
 				
 				String newSet =null;
@@ -235,11 +236,11 @@ public class Step {
 		for (Action action : myActions) {
 			if(!action.getText().equals("")){
 				String aux = getName();
+				//si la accion tiene una condicion
 				if (action.getType().equals(GrafcetTagsConstants.ACTION_CONDITIONAL)){
 					aux = "("+aux+" AND " + action.getCondition()+")";			
-				}else{
-					actionStepMap.put(action.getText(), aux);
 				}
+				actionStepMap.put(action.getText(), aux);	
 			}
 		}
 		return actionStepMap;

@@ -432,7 +432,7 @@ public class Project {
 			listaProgramMain.add("\n\t" + string + "(CLK:=" + string.substring(2, string.length()) + " , Q=> );");
 		}
 		/*
-		 * SolModoAuto:=FPMarcha.Q; FinProces:=X20;
+		 * SolModoAuto:=REMarcha.Q; FinProces:=X20;
 		 */
 		// Asignaciones que estan en la transition
 		for (String assig : assignments.keySet()) {
@@ -469,7 +469,9 @@ public class Project {
 			Pattern patEmer = Pattern.compile("^F/G.*");
 			Matcher matEmer = patEmer.matcher(aux);
 
-			if (matTemp.matches()) {
+			if (!matEmer.matches() && !matCont.matches() && !matTemp.matches()) {
+				listaProgramMain.add("\n\t" + aux + ":=" + pInit.get(action) + ";");
+			}else if (matTemp.matches()) {
 				aux = aux.replaceAll("=[0-9]{1,}[a-z A-Z]{1,}", "").trim();
 				int index = equalsTimer(aux);
 				Timer timer = listTimers.get(index);
@@ -483,9 +485,7 @@ public class Project {
 				// TODO PROGRAM MAIN si es contador aun no se q hacer
 
 				// Si no es el forzado de emergencia , contador o temp
-			} else if (!matEmer.matches() && !matCont.matches() && !matTemp.matches()) {
-				listaProgramMain.add("\t" + aux + ":=" + pInit.get(action) + ";\n");
-			}
+			} 
 
 		}
 
