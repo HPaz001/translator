@@ -18,4 +18,6 @@
  	<P><U>Asignar:</U> Nombre = Numero Tiempo
  	<I>Ejemplo: </I> TempCalor = 2 Seg	</P>
  	
+ 	
+ <P><U>No usar puntos en los nombres variables</U> </P>
 </BODY>

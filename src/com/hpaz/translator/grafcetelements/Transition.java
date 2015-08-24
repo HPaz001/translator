@@ -5,6 +5,8 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.hpaz.translator.grafcetelements.constants.GrafcetTagsConstants;
+
 public class Transition {
 	private String condition; // texto de condicion
 	private LinkedList<String> conditionSep;
@@ -65,8 +67,9 @@ public class Transition {
 				if(!Project.getProject().getList_FE_and_RE().contains(aux_FE_RE)){
 					Project.getProject().add_FE_and_RE(aux_FE_RE);
 				}
-				
-				auxConditionCompl= aux_FE_RE+".Q";
+				if(Project.getProject().getProgram().equalsIgnoreCase(GrafcetTagsConstants.PROGRAM_OPT1)){
+					auxConditionCompl= aux_FE_RE+".Q";
+				}
 			}
 			//Añado la condicion sin quitarle nada
 			this.condition = getCondition() + " " + changeSign(auxConditionCompl);

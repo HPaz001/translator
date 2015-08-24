@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 import javax.swing.JDialog;
 import javax.swing.JLabel;
@@ -39,7 +41,8 @@ public class InstructionsWindow extends JDialog {
 			String allText = "";
 			this.getClass().getCanonicalName();
 			
-			BufferedReader br = new BufferedReader(new FileReader(new File ("src/com/hpaz/translator/ui/files/instructions.txt")));
+			InputStream in = this.getClass().getResourceAsStream("files/instructions.txt");
+			BufferedReader br = new BufferedReader(new InputStreamReader(in));
 			
 			while((currentLine = br.readLine()) != null){
 				allText += currentLine + "<br>";

@@ -7,6 +7,8 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang3.text.WordUtils;
+
 public class Grafcet {
 
 	private String type;
@@ -16,7 +18,7 @@ public class Grafcet {
 
 	/* Variables que se usararn solo si el grafcet es de emergencia */
 	private boolean emergency;
-	/** Para saber las etepas de la emergencia */
+	/** Para saber las etapas de la emergencia */
 	private String stepStopEmergency;
 	private String stepStartEmergency;
 	/** Lista de grafcets que se fuerzan en la emergencia */
@@ -231,7 +233,7 @@ public class Grafcet {
 	public void addListEmergencyStop(LinkedList<String> pListEmergencyStop) {
 		this.listEmergencyStop = pListEmergencyStop;
 	}
-	public void setListEmergencyStart(LinkedList<String> pListEmergencyStart) {
+	public void addListEmergencyStart(LinkedList<String> pListEmergencyStart) {
 		this.listEmergencyStart = pListEmergencyStart;
 	}
 	
@@ -482,6 +484,93 @@ public class Grafcet {
 		return functionBlock;
 
 	}
+	
+	public LinkedList<String> generateSequentialPart(String pAuxStepStartEmergency, String pAuxStepStopEmergency) {
+		LinkedList<String> listSP = new LinkedList<String>();
+		
+		String actualStep = "", auxSet = "", auxReset = "";
+				
+		listSP.add("\n(*---------------------------------------\n" + getName().substring(1, getName().length())
+				+ "\n" + getComment() + "\n-----------------------------------------------*)");
+		
+		// por cada seccuencia
+		for (Sequence seq : sequenceList) {
+			// recorro la lista de la secuencia
+			// Object obj : seq.getList()
+			for (Object obj : seq.getListTransitionOrStep()) {
+				/* Si es una etapa */
+				if (obj instanceof Step) {
+					actualStep = ((Step) obj).getName();
+
+					// Relleno la lista con los Set-Reset
+					listSP.add("\n(* Set -Reset ___________________________"
+							+ "_____________________________________ " + actualStep + " *)");
+
+								
+					String set = WordUtils.capitalize(((Step) obj).getMySet());
+					
+					set.replaceAll(" RE.*//.Q ", "");
+					
+					set.replaceAll(" Not ", " NOT ");
+					set.replaceAll(" And ", " AND ");
+					set.replaceAll(" Or ", " OR ");
+					set.replaceAll(" Re ", " RE ");
+					set.replaceAll(" Fe ", " FE ");
+					
+					String reset = WordUtils.capitalize(((Step) obj).getMyReset());
+					
+					reset.replaceAll(" Not ", " NOT ");
+					reset.replaceAll(" And ", " AND ");
+					reset.replaceAll(" Or ", " OR ");
+					reset.replaceAll(" Re |Re ", " RE ");
+					reset.replaceAll(" Fe |Fe  ", " FE ");
+					
+					//TODO AQUI ESTABA SET RESET
+					
+					
+						/* TODO Contadores como se escriben en el Function Bloc segun el tipo
+						int index = Project.getProject().equalsCount(set.substring(set.indexOf("Cont"), set.indexOf("==")).trim());
+						if(index != -1){
+							String type = Project.getProject().getListCounters().get(index).getTypeCounter();
+							if(type.equals(GrafcetTagsConstants.typeCounter.CTD)){
+								set = set.replaceAll("/X[0-9]./[0-9]", "Q");
+							}else if(type.equals(GrafcetTagsConstants.typeCounter.CTU)){
+								set = set.replaceAll("/X[0-9]./[0-9]", "Q");
+							}else if(type.equals(GrafcetTagsConstants.typeCounter.CTUD)){
+								//no se cuando poner cada uno
+								set = set.replaceAll("/X[0-9]./[0-9]", "QU"); 
+								set = set.replaceAll("/X[0-9]./[0-9]", "QD");
+							}				
+						}*/
+					
+							
+					
+					// si es una etapa inicial y no es el grafcet de emergencia
+					if (((Step) obj).getType().equals("initial") && !isEmergency()) {
+						auxSet = "\n\tIF (" + set + " OR Iniciografcets"+pAuxStepStartEmergency+") THEN\n\t\t" + actualStep + ":=1;";
+						auxReset = "\n\tEND_IF;\n\tIF (" + reset + pAuxStepStopEmergency+") THEN\n\t\t" + actualStep + ":=0;";
+					} else if (!((Step) obj).getType().equals("initial") && !isEmergency()){
+						auxSet = "\n\tIF ( " + set + " ) THEN\n\t\t" + actualStep + ":=1;";
+						auxReset = "\n\tEND_IF;\n\tIF (" + reset + " OR Iniciografcets)"+ pAuxStepStopEmergency+") THEN\n\t\t" + actualStep
+								+ ":=0;";
+					}else if (((Step) obj).getType().equals("initial") && isEmergency()){
+						auxSet = "\n\tIF (" + set + " OR Iniciografcets) THEN\n\t\t" + actualStep + ":=1;";
+						auxReset = "\n\tEND_IF;\n\tIF (" + reset + ") THEN\n\t\t" + actualStep
+								+ ":=0;";
+					}else if (!((Step) obj).getType().equals("initial") && isEmergency()){
+						auxSet = "\n\tIF (" + set + ") THEN\n\t\t" + actualStep + ":=1;";
+						auxReset = "\n\tEND_IF;\n\tIF (" + reset + ") THEN\n\t\t" + actualStep
+								+ ":=0;";
+					}
+					listSP.add(auxSet);
+					listSP.add(auxReset);
+					listSP.add("\n\tEND_IF;\n");
+				}
+			}
+		}
+		return listSP;
+
+	}
 
 	/** Rellena las listas de emergencia */
 	public void getEmergency() {
@@ -493,12 +582,17 @@ public class Grafcet {
 			if (s.getStepStartEmergency() != -1) {
 				Step stepStart = (Step) s.getListTransitionOrStep().get(s.getStepStartEmergency());
 				addStepStartEmergency(stepStart.getName());
-				setListEmergencyStart(stepStart.getGrafcetsStartEmergency());
+				addListEmergencyStart(stepStart.getGrafcetsStartEmergency());
+				Project.getProject().addStepStartEmergency(stepStart.getName());
+				Project.getProject().addListEmergencyStart(stepStart.getGrafcetsStartEmergency());
 
 			} else if (s.getStepStopEmergency() != -1) {
 				Step stepStop = (Step) s.getListTransitionOrStep().get(s.getStepStopEmergency());
 				addStepStopEmergency(stepStop.getName());
 				addListEmergencyStop(stepStop.getGrafcetsStopEmergency());
+				Project.getProject().addStepStopEmergency(stepStop.getName());
+				Project.getProject().addListEmergencyStop(stepStop.getGrafcetsStopEmergency());
+				
 			}
 
 		}
@@ -515,5 +609,12 @@ public class Grafcet {
 	public LinkedList<String> getListSignalsGrafcet() {
 		return this.signalsGrafcet;
 	}
-
+	/**Devuelve un grafcet comparando su nombre*/
+	public Grafcet equals(String pName){
+		Grafcet g = null;
+		if (getName().equals(pName)){
+			g =  this;
+		}
+		return g;
+	}
 }

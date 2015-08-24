@@ -33,6 +33,10 @@ public class Project {
 	 * PL -> PLC TSX Micro (PL7Pro), T -> PLC Beckhoff (TwinCAT), PC -> PLCOpen
 	 */
 	private String program;
+	public String getProgram() {
+		return program;
+	}
+
 	private String outputDir;
 
 	private LinkedList<Grafcet> listGrafcet;
@@ -47,9 +51,22 @@ public class Project {
 	private Map<String, String> assignments;
 
 	private Map<String, String> listUI;
-	
+
 	//Se usa para guardar las asignaciones de las acciones
 	private Map<String, String> actionStepMap;
+
+
+	/** Lista de grafcets que se fuerzan en la emergencia */
+	private LinkedList<String> listEmergencyStop;
+	private LinkedList<String> listEmergencyStart;
+
+
+	/** Para saber las etapas de la emergencia */
+	private String stepStopEmergency;
+	private String stepStartEmergency;
+
+
+
 
 	LinkedList<String> signalsProject;
 
@@ -69,6 +86,10 @@ public class Project {
 		this.signalsProject = new LinkedList<String>();
 		this.list_FE_and_RE = new LinkedList<String>();
 		this.actionStepMap = new HashMap<String, String>();
+		this.listEmergencyStart =new LinkedList<String>();
+		this.listEmergencyStop =new LinkedList<String>();
+		this.stepStopEmergency=null;
+		this.stepStartEmergency=null;
 
 	}
 
@@ -143,6 +164,18 @@ public class Project {
 
 	public LinkedList<String> getListCountersUI() {
 		return listCountersUI;
+	}
+	public void addStepStopEmergency(String stepStopEmergency) {
+		this.stepStopEmergency = stepStopEmergency;
+	}
+	public void addStepStartEmergency(String stepStartEmergency) {
+		this.stepStartEmergency = stepStartEmergency;
+	}
+	public void addListEmergencyStop(LinkedList<String> pListEmergencyStop) {
+		this.listEmergencyStop.addAll(pListEmergencyStop);
+	}
+	public void addListEmergencyStart(LinkedList<String> pListEmergencyStart) {
+		this.listEmergencyStart.addAll(pListEmergencyStart);
 	}
 
 	public LinkedList<String> generateGlobalVars() {
@@ -259,7 +292,7 @@ public class Project {
 	 */
 
 	public void generateActionStepMap(Grafcet pGrafcet) {
-		
+
 		Map<String, String> auxMap = pGrafcet.getActionStepMap();
 		for (String action : auxMap.keySet()) {
 			if (actionStepMap.get(action) == null)
@@ -268,13 +301,11 @@ public class Project {
 				actionStepMap.put(action, actionStepMap.get(action) + " OR " + auxMap.get(action));
 		}
 	}
-	
+
 	/** Este metodo devuelve */
 	public void print() {
-		// generateEmergencyData();
-		if (program.equalsIgnoreCase(GrafcetTagsConstants.PROGRAM_OPT1)) { // Twincat
-			try {
-				// printProject();
+		try {
+			if (program.equalsIgnoreCase(GrafcetTagsConstants.PROGRAM_OPT1)) { // Twincat
 				// Var Global
 				Output.getOutput().exportFile(getGlobalVars(generateGlobalVars()), getName() + "_VAR_GLOBAL",
 						outputDir);
@@ -285,33 +316,21 @@ public class Project {
 					Output.getOutput().exportFile(g.generateFunctionBlock(), "FUNCTION_BLOCK_" + g.getName(),
 							outputDir);
 				}
-
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-
-		} else if (program.equalsIgnoreCase(GrafcetTagsConstants.PROGRAM_OPT2)) {// PL7PRO
-			
-			
-			try {
-				
+			} else if (program.equalsIgnoreCase(GrafcetTagsConstants.PROGRAM_OPT2)) {// PL7PRO
 				Output.getOutput().exportFile(getProgramTSXMicroSP(), getName()+"SequePart",outputDir);
-				
 				Output.getOutput().exportFile(getProgramTSXMicroCP(), getName()+"CombiPart",outputDir);
 				
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			} else if (program.equalsIgnoreCase(GrafcetTagsConstants.PROGRAM_OPT3)) {//PLCOpen PCWorx
+
 			}
-			
 
-		} else if (program.equalsIgnoreCase(GrafcetTagsConstants.PROGRAM_OPT3)) {//PLCOpen PCWorx
-
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 	/**Devuelve una lista con la parte combinacional*/
 	private LinkedList<String> getProgramTSXMicroCP() {
-		// TODO parte combinacional
+		// TODO FALLOS primera letra en mayusculas y el resto en minusculas
 		LinkedList<String> listCP = new LinkedList<String>();
 		listCP.add("(*Programación de la parte combinacional del sistema*)\n");
 		/*
@@ -321,32 +340,32 @@ public class Project {
 		for (String assig : assignments.keySet()) {
 			/*El PL7Pro solo permite variables que tenga la primera letra en mayusculas y el resto en minusculas*/
 			String auxString = assignments.get(assig);
-			
+
 			//elimino las mayusculas del texto, solo las dejo en la primera letra
 			//input.substring(0, 1).toUpperCase() + input.substring(1).toLowerCase();
 			auxString =WordUtils.capitalize(auxString);
-			
+
 			auxString.replaceAll(" Not ", " NOT ");
 			auxString.replaceAll(" And ", " AND ");
 			auxString.replaceAll(" Or ", " OR ");
 			auxString.replaceAll(" Re ", " RE ");
 			auxString.replaceAll(" Fe ", " FE ");
-			
+
 			listCP .add("\n\t" + WordUtils.capitalize(assig) + ":=" + auxString + ";");
 		}
-		
+
 		for (String action : actionStepMap.keySet()) {
 			//Dejo solo la primera letra en mayusculas
 			String aux = WordUtils.capitalize(action.trim());
-			
+
 			String auxString = WordUtils.capitalize(actionStepMap.get(action));
-			
+
 			auxString.replaceAll(" Not ", " NOT ");
 			auxString.replaceAll(" And ", " AND ");
 			auxString.replaceAll(" Or ", " OR ");
 			auxString.replaceAll(" Re ", " RE ");
 			auxString.replaceAll(" Fe ", " FE ");
-			
+
 			// temporizador
 			Pattern patTemp = Pattern.compile("^Temp.*=[0-9]{1,}[a-z A-Z]{1,}");
 			Matcher matTemp = patTemp.matcher(aux);
@@ -358,58 +377,76 @@ public class Project {
 			// forzado de emergencia
 			Pattern patEmer = Pattern.compile("^F/G.*");
 			Matcher matEmer = patEmer.matcher(aux);
-			
-			
+
+
 			//si no es temp, cont, o forzado de emergencia
 			if (!matEmer.matches() && !matCont.matches() && !matTemp.matches()) {
 				listCP.add("\n\t" + aux + ":=" + auxString + ";");
-				
+
 			}else if (matTemp.matches()) {
-				
+
 				aux = aux.replaceAll("=[0-9]{1,}[a-z A-Z]{1,}", "").trim();
 				//Busco el indice del temporizador 
 				int index = equalsTimer(aux);
 				//Obtengo el Temporizador 
 				Timer timer = listTimers.get(index);
-				
+
 				String auxStepNameTimer = WordUtils.capitalize(timer.getStepNameTimer());
-				
+
 				auxString.replaceAll(" Not ", " NOT ");
 				auxString.replaceAll(" And ", " AND ");
 				auxString.replaceAll(" Or ", " OR ");
 				auxString.replaceAll(" Re ", " RE ");					
 
 				listCP.add("\n\n(*Activación y desactivación del temporizador*)\n"
-				+ "\nIF("+auxStepNameTimer+")THEN (*RE = flanco de subida*)"
-				+ "\n\tSTART "+timer.getNameTimer()+";"
-				+ "\nELSIF("+auxStepNameTimer.replaceAll(" RE ", " FE ")+")THEN (*FE = flanco de bajada*)"
-				+ "\n\tDOWN "+timer.getNameTimer()+";"
-				+ "\nEND_IF;\n");
-				
+						+ "\nIF("+auxStepNameTimer+")THEN (*RE = flanco de subida*)"
+						+ "\n\tSTART "+timer.getNameTimer()+";"
+						+ "\nELSIF("+auxStepNameTimer.replaceAll(" RE |RE ", " FE ")+")THEN (*FE = flanco de bajada*)"
+						+ "\n\tDOWN "+timer.getNameTimer()+";"
+						+ "\nEND_IF;\n");
+
 			} else if (matCont.matches()) {
 				// TODO PROGRAM MAIN si es contador aun no se q hacer
-				listCP.add("\n\n(*Activación y desactivación de Contador*)\n"
+				listCP.add("\n\n(*Contador*)\n"
 						+ "\nIF("+""+")THEN"
-						+ "\n\tSTART "+""+";"
+						+ "\n\t "+""+";"
 						+ "\nELSIF("+""+")THEN"
-						+ "\n\tDOWN "+""+";"
+						+ "\n\t "+""+";"
 						+ "\nEND_IF;\n");
 				// Si no es el forzado de emergencia , contador o temp
 			} 
 
 		}
-		
-		
+
+
 		return listCP;
 	}
-	
+
 	/**Devuelve una lista con la parte secuencial*/
 	private LinkedList<String> getProgramTSXMicroSP() {
-		// TODO parte secuencial
+		// TODO FALLOS primera letra en mayusculas y el resto en minusculas
 		LinkedList<String> listSP = new LinkedList<String>();
-		
-		
-		
+		listSP.add("\n(*----La señal de InicioGrafcets se crea para  poner los estados iniciales a 1 ------*)\n");
+		//Obtengo el grafcet de emergencia para usar las listas y etapas
+
+		String auxStepStartEmergency ="";
+		String auxStepStopEmergency ="";
+
+		for (Grafcet grafcet : listGrafcet) {
+			String nameGrafcet = grafcet.getName().trim();
+			nameGrafcet =nameGrafcet.substring(1);
+			//en la lista de emergencia se guarda el nombre del grafcet sin la G delante
+			//si el grafcet se encuentra en la lista de emergencia de stop
+			if(listEmergencyStart.contains(nameGrafcet)){
+				auxStepStartEmergency = " OR "+stepStartEmergency;
+			}
+			//si el grafcet se encuentra en la lista de emergencia de start
+			if(listEmergencyStop.contains(nameGrafcet)){
+				auxStepStopEmergency = " OR "+stepStopEmergency;
+			}
+
+			listSP.addAll(grafcet.generateSequentialPart(auxStepStartEmergency,auxStepStopEmergency));
+		}
 		return listSP;
 	}
 
@@ -421,7 +458,7 @@ public class Project {
 		LinkedList<String> aux = new LinkedList<String>();
 		LinkedList<String> listEmergency = new LinkedList<String>();
 
-		
+
 		String gName;
 		// por cada grafcet del proyecto
 		for (Grafcet grafcet : listGrafcet) {
@@ -437,7 +474,7 @@ public class Project {
 				else
 					actionStepMap.put(action, actionStepMap.get(action) + " OR " + auxMap.get(action));
 			}
-*/
+			 */
 			// si el grafcet es el de emergencia relleno la lista de forzados
 			if (grafcet.isEmergency()) {
 				String stepStop = grafcet.getStepStopEmergency();
@@ -582,7 +619,7 @@ public class Project {
 		listaProgramMain.addAll(pEmergency);
 
 		listaProgramMain.add("\n\n");
-		
+
 		for (String action : actionStepMap.keySet()) {
 			String aux = action.trim();
 			// temporizador
@@ -596,7 +633,7 @@ public class Project {
 			// forzado de emergencia
 			Pattern patEmer = Pattern.compile("^F/G.*");
 			Matcher matEmer = patEmer.matcher(aux);
-			
+
 			//si no es temp, cont, o forzado de emergencia
 			if (!matEmer.matches() && !matCont.matches() && !matTemp.matches()) {
 				listaProgramMain.add("\n\t" + aux + ":=" + actionStepMap.get(action) + ";");
@@ -606,7 +643,7 @@ public class Project {
 				Timer timer = listTimers.get(index);
 				listaProgramMain.add("\n\t" + timer.getNameTimer() + "IN:=" + actionStepMap.get(action) + ";");
 				listaProgramMain
-						.add("\n\t" + timer.getNameTimer() + "PT:=T#" + timer.getTime() + timer.getTypeTime() + ";");
+				.add("\n\t" + timer.getNameTimer() + "PT:=T#" + timer.getTime() + timer.getTypeTime() + ";");
 				listaProgramMain.add("\n\t" + timer.getNameTimer() + "(IN:=" + timer.getNameTimer() + "IN , PT:="
 						+ timer.getNameTimer() + "PT , Q=>" + timer.getNameTimer() + "Q , ET=> " + timer.getNameTimer()
 						+ "ET);");
