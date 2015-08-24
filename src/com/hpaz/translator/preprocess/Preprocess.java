@@ -136,7 +136,6 @@ public class Preprocess extends DefaultHandler {
 				 * accion o una transicion */
 			} else if (actualTag.equals(GrafcetTagsConstants.CPL_TAG)) {// cpl
 				// si es de un comentario
-				System.out.println("actualTag.equals(GrafcetTagsConstants.CPL_TAG)");
 				if (previousTag.equals(GrafcetTagsConstants.COMMENT_TAG)) {
 					addComent(" NOT "+ text);
 				} else if (isStep) {

@@ -134,7 +134,6 @@ public class Project {
 
 	public void addCounter(Counter pCounters) {
 		this.listCountersUI.add(pCounters.getNameCounter());
-		System.out.println(pCounters.getNameCounter());
 		this.listCounters.add(pCounters);
 	}
 
@@ -232,7 +231,6 @@ public class Project {
 			vG.add("\n\t(*---Contadores---*)\n\n");
 			// Por cada Contador
 			for (int j = 0; j < this.listCounters.size(); j++) {
-				System.out.println("Contador");
 				String type = this.listUI.get(this.listCounters.get(j).getNameCounter());
 				this.listCounters.get(j).addTypeCounter(type);
 				vG.add(this.listCounters.get(j).getGlobalsVarCounter());
@@ -297,9 +295,9 @@ public class Project {
 			
 			try {
 				
-				Output.getOutput().exportFile(getProgramTSXMicroSP(), getName()+"CombiPart",outputDir);
+				Output.getOutput().exportFile(getProgramTSXMicroSP(), getName()+"SequePart",outputDir);
 				
-				Output.getOutput().exportFile(getProgramTSXMicroCP(), getName()+"SequePart",outputDir);
+				Output.getOutput().exportFile(getProgramTSXMicroCP(), getName()+"CombiPart",outputDir);
 				
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
@@ -315,7 +313,7 @@ public class Project {
 	private LinkedList<String> getProgramTSXMicroCP() {
 		// TODO parte combinacional
 		LinkedList<String> listCP = new LinkedList<String>();
-		
+		listCP.add("(*Programación de la parte combinacional del sistema*)\n");
 		/*
 		 * SolModoAuto:=REMarcha.Q; FinProces:=X20;
 		 */
@@ -364,9 +362,6 @@ public class Project {
 			
 			//si no es temp, cont, o forzado de emergencia
 			if (!matEmer.matches() && !matCont.matches() && !matTemp.matches()) {
-				//elimino las mayusculas del texto, solo las dejo en la primera letra
-				//input.substring(0, 1).toUpperCase() + input.substring(1).toLowerCase();
-				
 				listCP.add("\n\t" + aux + ":=" + auxString + ";");
 				
 			}else if (matTemp.matches()) {
@@ -376,6 +371,7 @@ public class Project {
 				int index = equalsTimer(aux);
 				//Obtengo el Temporizador 
 				Timer timer = listTimers.get(index);
+				
 				String auxStepNameTimer = WordUtils.capitalize(timer.getStepNameTimer());
 				
 				auxString.replaceAll(" Not ", " NOT ");
@@ -383,16 +379,21 @@ public class Project {
 				auxString.replaceAll(" Or ", " OR ");
 				auxString.replaceAll(" Re ", " RE ");					
 
-				String s = "\n(*Activación y desactivación del temporizador*)"
+				listCP.add("\n\n(*Activación y desactivación del temporizador*)\n"
 				+ "\nIF("+auxStepNameTimer+")THEN (*RE = flanco de subida*)"
 				+ "\n\tSTART "+timer.getNameTimer()+";"
 				+ "\nELSIF("+auxStepNameTimer.replaceAll(" RE ", " FE ")+")THEN (*FE = flanco de bajada*)"
 				+ "\n\tDOWN "+timer.getNameTimer()+";"
-				+ "\nEND_IF;";
+				+ "\nEND_IF;\n");
 				
 			} else if (matCont.matches()) {
 				// TODO PROGRAM MAIN si es contador aun no se q hacer
-
+				listCP.add("\n\n(*Activación y desactivación de Contador*)\n"
+						+ "\nIF("+""+")THEN"
+						+ "\n\tSTART "+""+";"
+						+ "\nELSIF("+""+")THEN"
+						+ "\n\tDOWN "+""+";"
+						+ "\nEND_IF;\n");
 				// Si no es el forzado de emergencia , contador o temp
 			} 
 
