@@ -1,0 +1,653 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://www.kw-software.com/xml/PLCopen/TC6_XML_V10_KW.xsd">
+	<fileHeader companyName="Phoenix Contact" companyURL="www.kw-software.com"
+		productName="PC WORX" productVersion="5.20" productRelease="Build 155"
+		creationDateTime="2015-07-23T13:03:20" contentDescription="" />
+	<contentHeader name="Movil" version="1437649400"
+		modificationDateTime="2015-07-23T13:03:20">
+		<coordinateInfo>
+			<pageSize x="999" y="999" />
+			<fbd>
+				<scaling x="2" y="2" />
+			</fbd>
+			<ld>
+				<scaling x="2" y="2" />
+			</ld>
+			<sfc>
+				<scaling x="2" y="2" />
+			</sfc>
+		</coordinateInfo>
+	</contentHeader>
+	<types>
+		<dataTypes />
+		<pous>
+			<pou name="GMovil" pouType="functionBlock" lastChange="2015-07-11T12:45:48">
+				<interface>
+					<inputVars retain="false">
+						<variable name="Init" group="Default">
+							<type>
+								<BOOL />
+							</type>
+						</variable>
+						<variable name="Reset" group="Default">
+							<type>
+								<BOOL />
+							</type>
+						</variable>
+					</inputVars>
+					<externalVars retain="false">
+						<variable name="ProdNorm" group="Default">
+							<type>
+								<BOOL />
+							</type>
+						</variable>
+						<variable name="X20" group="Default">
+							<type>
+								<BOOL />
+							</type>
+						</variable>
+						<variable name="X21" group="Default">
+							<type>
+								<BOOL />
+							</type>
+						</variable>
+						<variable name="X22" group="Default">
+							<type>
+								<BOOL />
+							</type>
+						</variable>
+						<variable name="X23" group="Default">
+							<type>
+								<BOOL />
+							</type>
+						</variable>
+						<variable name="X24" group="Default">
+							<type>
+								<BOOL />
+							</type>
+						</variable>
+						<variable name="X13" group="Default">
+							<type>
+								<BOOL />
+							</type>
+						</variable>
+						<variable name="TempQ" group="Default">
+							<type>
+								<BOOL />
+							</type>
+						</variable>
+						<variable name="F0" group="Default">
+							<type>
+								<BOOL />
+							</type>
+						</variable>
+						<variable name="F1" group="Default">
+							<type>
+								<BOOL />
+							</type>
+						</variable>
+					</externalVars>
+				</interface>
+				<body>
+					<ST>
+						<worksheet name="GMovil">
+							<html xmlns="http://www.w3.org/1999/xhtml">
+								<p xmlns="http://www.w3.org/1999/xhtml" xml:space="preserve">(*---------------------------------------------------------------------------------------------------------------------------------------<br /> GMovil:  <br />-----------------------------------------------------------------------------------------------------------------------------------------*)<br /><br />(* Set -Reset ________________________________________________________________X20*)<br />IF((X24 AND TempQ) OR Init ) THEN<br /> X20:=1;<br />END_IF;<br /><br />IF (X21 OR Reset) THEN<br /> X20:=0;<br />END_IF;<br /><br />(*Set -Reset ________________________________________________________________X21*)<br />IF(X20 AND ProdNorm)THEN<br /> X21:=1;<br />END_IF;<br /><br />IF ((X22 OR X13) OR Init OR Reset)THEN<br /> X21:=0;<br />END_IF;<br /><br />(*Set -Reset ________________________________________________________________X22*)<br />IF(X21 AND F1)THEN<br /> X22:=1;<br />END_IF;<br /><br />IF(X23 OR Init OR Reset)THEN<br />  X22:=0;<br />END_IF;<br /><br />(*Set -Reset ________________________________________________________________X23*)<br />IF(X22 AND TempQ)THEN<br /> X23:=1;<br />END_IF;<br /><br />IF(X24 OR Init OR  Reset) THEN<br /> X23:=0;<br />END_IF;<br /><br />(*Set -Reset ________________________________________________________________X24*)<br />IF(X23 AND F0)THEN<br /> X24:=1;<br />END_IF;<br /><br />IF(X20 OR Init OR  Reset) THEN<br /> X24:=0;<br />END_IF;<br /></p>
+							</html>
+						</worksheet>
+					</ST>
+				</body>
+				<documentation>
+					<html xmlns="http://www.w3.org/1999/xhtml">
+						<div xmlns="http://www.w3.org/1999/xhtml" xml:space="preserve"
+							id="MWTDESCRIPTION" wsName="GMovilT" />
+					</html>
+				</documentation>
+			</pou>
+			<pou name="GEmergencia" pouType="functionBlock" lastChange="2015-07-11T12:03:01">
+				<interface>
+					<inputVars retain="false">
+						<variable name="Init" group="Default">
+							<type>
+								<BOOL />
+							</type>
+						</variable>
+						<variable name="Reset" group="Default">
+							<type>
+								<BOOL />
+							</type>
+						</variable>
+					</inputVars>
+					<externalVars retain="false">
+						<variable name="X30" group="Default">
+							<type>
+								<BOOL />
+							</type>
+						</variable>
+						<variable name="X31" group="Default">
+							<type>
+								<BOOL />
+							</type>
+						</variable>
+						<variable name="X32" group="Default">
+							<type>
+								<BOOL />
+							</type>
+						</variable>
+						<variable name="X33" group="Default">
+							<type>
+								<BOOL />
+							</type>
+						</variable>
+						<variable name="X34" group="Default">
+							<type>
+								<BOOL />
+							</type>
+						</variable>
+						<variable name="X35" group="Default">
+							<type>
+								<BOOL />
+							</type>
+						</variable>
+						<variable name="Inicio" group="Default">
+							<type>
+								<BOOL />
+							</type>
+						</variable>
+						<variable name="SolEmergencia" group="Default">
+							<type>
+								<BOOL />
+							</type>
+						</variable>
+						<variable name="ParoEmergencia" group="Default">
+							<type>
+								<BOOL />
+							</type>
+						</variable>
+						<variable name="F0" group="Default">
+							<type>
+								<BOOL />
+							</type>
+						</variable>
+					</externalVars>
+				</interface>
+				<body>
+					<ST>
+						<worksheet name="GEmergencia">
+							<html xmlns="http://www.w3.org/1999/xhtml">
+								<p xmlns="http://www.w3.org/1999/xhtml" xml:space="preserve">(*---------------------------------------------------------------------------------------------------------------------------------------<br /> GEmergencia:  Organiza tanto el arranque como la parada del sistema para el <br />     tratamiento de emergencias<br />-----------------------------------------------------------------------------------------------------------------------------------------*)<br /><br />(* Set -Reset ________________________________________________________________X30*)<br />IF((X35 AND Inicio) OR Init ) THEN<br /> X30:=1;<br />END_IF;<br /><br />IF ((X31 OR X33) OR Reset) THEN<br /> X30:=0;<br />END_IF;<br /><br />(*Set -Reset ________________________________________________________________X31*)<br />IF(X30 AND SolEmergencia)THEN<br /> X31:=1;<br />END_IF;<br /><br />IF (X32 OR Init OR Reset)THEN<br /> X31:=0;<br />END_IF;<br /><br />(*Set -Reset ________________________________________________________________X32*)<br />IF(X31 AND F0)THEN<br /> X32:=1;<br />END_IF;<br /><br />IF(X35 OR Init OR Reset)THEN<br />  X32:=0;<br />END_IF;<br /><br />(*Set -Reset ________________________________________________________________X33*)<br />IF(X30 AND SolEmergencia)THEN<br /> X33:=1;<br />END_IF;<br /><br />IF(X34 OR Init OR  Reset) THEN<br /> X33:=0;<br />END_IF;<br /><br />(*Set -Reset ________________________________________________________________X34*)<br />IF(X33)THEN<br /> X34:=1;<br />END_IF;<br /><br />IF(X35 OR Init OR  Reset) THEN<br /> X34:=0;<br />END_IF;<br /><br />(*Set -Reset ________________________________________________________________X35*)<br />IF(X32 AND X34 AND ParoEmergencia)THEN<br /> X35:=1;<br />END_IF;<br /><br />IF(X30 OR Init OR  Reset) THEN<br /> X35:=0;<br />END_IF;<br /></p>
+							</html>
+						</worksheet>
+					</ST>
+				</body>
+				<documentation>
+					<html xmlns="http://www.w3.org/1999/xhtml">
+						<div xmlns="http://www.w3.org/1999/xhtml" xml:space="preserve"
+							id="MWTDESCRIPTION" wsName="GEmergenciaT" />
+					</html>
+				</documentation>
+			</pou>
+			<pou name="GCondIni" pouType="functionBlock" lastChange="2015-07-11T12:05:46">
+				<interface>
+					<inputVars retain="false">
+						<variable name="Init" group="Default">
+							<type>
+								<BOOL />
+							</type>
+						</variable>
+						<variable name="Reset" group="Default">
+							<type>
+								<BOOL />
+							</type>
+						</variable>
+					</inputVars>
+					<externalVars retain="false">
+						<variable name="SolCondIni" group="Default">
+							<type>
+								<BOOL />
+							</type>
+						</variable>
+						<variable name="X10" group="Default">
+							<type>
+								<BOOL />
+							</type>
+						</variable>
+						<variable name="X11" group="Default">
+							<type>
+								<BOOL />
+							</type>
+						</variable>
+						<variable name="X12" group="Default">
+							<type>
+								<BOOL />
+							</type>
+						</variable>
+						<variable name="X13" group="Default">
+							<type>
+								<BOOL />
+							</type>
+						</variable>
+						<variable name="F0" group="Default">
+							<type>
+								<BOOL />
+							</type>
+						</variable>
+					</externalVars>
+				</interface>
+				<body>
+					<ST>
+						<worksheet name="GCondIni">
+							<html xmlns="http://www.w3.org/1999/xhtml">
+								<p xmlns="http://www.w3.org/1999/xhtml" xml:space="preserve">(*---------------------------------------------------------------------------------------------------------------------------------------<br /> GCondIni:Acciones necesarias para llevar el proceso a una situación de partida <br />   conocida y segura según las condiciones iniciales y de seguridad <br />   especificadas <br />-----------------------------------------------------------------------------------------------------------------------------------------*)<br /><br />(* Set -Reset ________________________________________________________________X10*)<br />IF((X13 AND NOT SolCondIni) OR Init ) THEN<br /> X10:=1;<br />END_IF;<br /><br />IF (X11 OR Reset) THEN<br /> X10:=0;<br />END_IF;<br /><br />(*Set -Reset ________________________________________________________________X11*)<br />IF(X10 AND SolCondIni)THEN<br /> X11:=1;<br />END_IF;<br /><br />IF ((X12 OR X13) OR Init OR Reset)THEN<br /> X11:=0;<br />END_IF;<br /><br />(*Set -Reset ________________________________________________________________X12*)<br />IF(X11 AND NOT F0)THEN<br /> X12:=1;<br />END_IF;<br /><br />IF(X13 OR Init OR Reset)THEN<br />  X12:=0;<br />END_IF;<br /><br />(*Set -Reset ________________________________________________________________X13*)<br />IF((X11 AND F0) OR (X12 AND F0))THEN<br /> X13:=1;<br />END_IF;<br /><br />IF(X10 OR Init OR  Reset) THEN<br /> X13:=0;<br />END_IF;<br /></p>
+							</html>
+						</worksheet>
+					</ST>
+				</body>
+				<documentation>
+					<html xmlns="http://www.w3.org/1999/xhtml">
+						<div xmlns="http://www.w3.org/1999/xhtml" xml:space="preserve"
+							id="MWTDESCRIPTION" wsName="GCondIniT" />
+					</html>
+				</documentation>
+			</pou>
+			<pou name="ST_Main" pouType="program" lastChange="2015-07-23T13:03:20">
+				<interface>
+					<localVars retain="false">
+						<variable name="SecPrincipal" group="Default">
+							<type>
+								<derived name="GSecPrincipal" />
+							</type>
+						</variable>
+						<variable name="Movil" group="Default">
+							<type>
+								<derived name="GMovil" />
+							</type>
+						</variable>
+						<variable name="CondIni" group="Default">
+							<type>
+								<derived name="GCondIni" />
+							</type>
+						</variable>
+						<variable name="EmergenciaP" group="Default">
+							<type>
+								<derived name="GEmergencia" />
+							</type>
+						</variable>
+						<variable name="XInit" group="Default">
+							<type>
+								<BOOL />
+							</type>
+						</variable>
+						<variable name="XReset" group="Default">
+							<type>
+								<BOOL />
+							</type>
+						</variable>
+						<variable name="InitSecPrincipal" group="Default">
+							<type>
+								<BOOL />
+							</type>
+						</variable>
+						<variable name="ResetSecPrincipal" group="Default">
+							<type>
+								<BOOL />
+							</type>
+						</variable>
+						<variable name="InitMovil" group="Default">
+							<type>
+								<BOOL />
+							</type>
+						</variable>
+						<variable name="ResetMovil" group="Default">
+							<type>
+								<BOOL />
+							</type>
+						</variable>
+						<variable name="InitCondIni" group="Default">
+							<type>
+								<BOOL />
+							</type>
+						</variable>
+						<variable name="ResetCondIni" group="Default">
+							<type>
+								<BOOL />
+							</type>
+						</variable>
+						<variable name="InitEmergencia" group="Default">
+							<type>
+								<BOOL />
+							</type>
+						</variable>
+						<variable name="ResetEmergencia" group="Default">
+							<type>
+								<BOOL />
+							</type>
+						</variable>
+						<variable name="Temp" group="Default">
+							<type>
+								<derived name="TON" />
+							</type>
+						</variable>
+					</localVars>
+					<externalVars retain="false">
+						<variable name="TempQ" group="Default">
+							<type>
+								<BOOL />
+							</type>
+						</variable>
+						<variable name="TempIN" group="Default">
+							<type>
+								<BOOL />
+							</type>
+						</variable>
+						<variable name="TempPT" group="Default">
+							<type>
+								<TIME />
+							</type>
+						</variable>
+						<variable name="TempET" group="Default">
+							<type>
+								<TIME />
+							</type>
+						</variable>
+					</externalVars>
+					<localVars retain="false">
+						<variable name="FPMarcha" group="Default">
+							<type>
+								<derived name="R_TRIG" />
+							</type>
+						</variable>
+						<variable name="FPParo" group="Default">
+							<type>
+								<derived name="R_TRIG" />
+							</type>
+						</variable>
+					</localVars>
+					<externalVars retain="false">
+						<variable name="INIT" group="Default">
+							<type>
+								<BOOL />
+							</type>
+						</variable>
+						<variable name="RESET" group="Default">
+							<type>
+								<BOOL />
+							</type>
+						</variable>
+						<variable name="Marcha" group="Default">
+							<type>
+								<BOOL />
+							</type>
+						</variable>
+						<variable name="Paro" group="Default">
+							<type>
+								<BOOL />
+							</type>
+						</variable>
+						<variable name="F0" group="Default">
+							<type>
+								<BOOL />
+							</type>
+						</variable>
+						<variable name="Emergencia" group="Default">
+							<type>
+								<BOOL />
+							</type>
+						</variable>
+						<variable name="Rearme" group="Default">
+							<type>
+								<BOOL />
+							</type>
+						</variable>
+						<variable name="CDerecha" group="Default">
+							<type>
+								<BOOL />
+							</type>
+						</variable>
+						<variable name="CIzquierda" group="Default">
+							<type>
+								<BOOL />
+							</type>
+						</variable>
+						<variable name="X0" group="Default">
+							<type>
+								<BOOL />
+							</type>
+						</variable>
+						<variable name="X1" group="Default">
+							<type>
+								<BOOL />
+							</type>
+						</variable>
+						<variable name="X2" group="Default">
+							<type>
+								<BOOL />
+							</type>
+						</variable>
+						<variable name="X3" group="Default">
+							<type>
+								<BOOL />
+							</type>
+						</variable>
+						<variable name="X12" group="Default">
+							<type>
+								<BOOL />
+							</type>
+						</variable>
+						<variable name="X13" group="Default">
+							<type>
+								<BOOL />
+							</type>
+						</variable>
+						<variable name="X20" group="Default">
+							<type>
+								<BOOL />
+							</type>
+						</variable>
+						<variable name="X21" group="Default">
+							<type>
+								<BOOL />
+							</type>
+						</variable>
+						<variable name="X22" group="Default">
+							<type>
+								<BOOL />
+							</type>
+						</variable>
+						<variable name="X23" group="Default">
+							<type>
+								<BOOL />
+							</type>
+						</variable>
+						<variable name="X24" group="Default">
+							<type>
+								<BOOL />
+							</type>
+						</variable>
+						<variable name="X31" group="Default">
+							<type>
+								<BOOL />
+							</type>
+						</variable>
+						<variable name="X33" group="Default">
+							<type>
+								<BOOL />
+							</type>
+						</variable>
+						<variable name="X35" group="Default">
+							<type>
+								<BOOL />
+							</type>
+						</variable>
+						<variable name="Inicio" group="Default">
+							<type>
+								<BOOL />
+							</type>
+						</variable>
+						<variable name="SolModoAuto" group="Default">
+							<type>
+								<BOOL />
+							</type>
+						</variable>
+						<variable name="SolCondIni" group="Default">
+							<type>
+								<BOOL />
+							</type>
+						</variable>
+						<variable name="FinCondIni" group="Default">
+							<type>
+								<BOOL />
+							</type>
+						</variable>
+						<variable name="ProdNorm" group="Default">
+							<type>
+								<BOOL />
+							</type>
+						</variable>
+						<variable name="SolParoFC" group="Default">
+							<type>
+								<BOOL />
+							</type>
+						</variable>
+						<variable name="ParoFC" group="Default">
+							<type>
+								<BOOL />
+							</type>
+						</variable>
+						<variable name="FinProces" group="Default">
+							<type>
+								<BOOL />
+							</type>
+						</variable>
+						<variable name="SolEmergencia" group="Default">
+							<type>
+								<BOOL />
+							</type>
+						</variable>
+						<variable name="ParoEmergencia" group="Default">
+							<type>
+								<BOOL />
+							</type>
+						</variable>
+					</externalVars>
+					<localVars retain="false">
+						<variable name="TON_1" group="Default">
+							<type>
+								<derived name="TON" />
+							</type>
+						</variable>
+						<variable name="Cont1" group="Default">
+							<type>
+								<derived name="CTD" />
+							</type>
+						</variable>
+						<variable name="CTU_1" group="Default">
+							<type>
+								<derived name="CTU" />
+							</type>
+						</variable>
+						<variable name="CTUD_1" group="Default">
+							<type>
+								<derived name="CTUD" />
+							</type>
+						</variable>
+					</localVars>
+				</interface>
+				<body>
+					<ST>
+						<worksheet name="ST_Main">
+							<html xmlns="http://www.w3.org/1999/xhtml">
+								<p xmlns="http://www.w3.org/1999/xhtml" xml:space="preserve">XInit:=INIT;<br />XReset:=RESET;<br /><br />FPMarcha(CLK:=Marcha);<br />FPParo(CLK:=Paro);<br /><br />SolModoAuto:=FPMarcha.Q;<br />SolParoFC:=FPParo.Q;<br />FinProces:=X20;<br /><br />InitSecPrincipal:=X35;<br />ResetSecPrincipal:=X33;<br />SecPrincipal(Init:=(XInit OR InitSecPrincipal), Reset:= (XReset OR ResetSecPrincipal));<br /><br />InitCondIni:=X35;<br />ResetCondIni:=X33;<br />CondIni(Init:=(XInit OR InitCondIni), Reset:=(XReset OR ResetCondIni) );<br /><br />InitMovil:=X35;<br />ResetMovil:=X33;<br />Movil(Init:=(XInit OR InitMovil), Reset:=(XReset OR ResetMovil));<br /><br />SolEmergencia:=Emergencia;<br />ParoEmergencia:= NOT Emergencia AND Rearme;<br />EmergenciaP(Init:=(XInit OR InitEmergencia) , Reset:=ResetEmergencia );<br /><br /><br />Inicio:=X0;<br />SolCondIni:=X1;<br />ProdNorm:=X2;<br />ParoFC:=X3;<br />FinCondIni:=X13;<br /><br />(*girar a la derecha*)<br />Cderecha:=X21;<br /><br />(*girar a la izquierda*)<br />Cizquierda:=X12 OR X23 OR (X31 AND NOT F0);<br /><br />TempIN:=X22 OR  X24;<br />TempPT:=T#2s;<br />Temp(IN:=TempIN, PT:=TempPT);<br />TempQ:=Temp.Q;<br />TempET:=Temp.ET;<br /><br /></p>
+							</html>
+						</worksheet>
+					</ST>
+				</body>
+				<documentation>
+					<html xmlns="http://www.w3.org/1999/xhtml">
+						<div xmlns="http://www.w3.org/1999/xhtml" xml:space="preserve"
+							id="MWTDESCRIPTION" wsName="ST_MainT" />
+					</html>
+				</documentation>
+			</pou>
+			<pou name="GSecPrincipal" pouType="functionBlock" lastChange="2015-07-11T10:54:07">
+				<interface>
+					<externalVars retain="false">
+						<variable name="X0" group="Default">
+							<type>
+								<BOOL />
+							</type>
+						</variable>
+						<variable name="X1" group="Default">
+							<type>
+								<BOOL />
+							</type>
+						</variable>
+						<variable name="X2" group="Default">
+							<type>
+								<BOOL />
+							</type>
+						</variable>
+						<variable name="X3" group="Default">
+							<type>
+								<BOOL />
+							</type>
+						</variable>
+					</externalVars>
+					<inputVars retain="false">
+						<variable name="Init" group="Default">
+							<type>
+								<BOOL />
+							</type>
+						</variable>
+						<variable name="Reset" group="Default">
+							<type>
+								<BOOL />
+							</type>
+						</variable>
+					</inputVars>
+					<externalVars retain="false">
+						<variable name="SolModoAuto" group="Default">
+							<type>
+								<BOOL />
+							</type>
+						</variable>
+						<variable name="FinCondIni" group="Default">
+							<type>
+								<BOOL />
+							</type>
+						</variable>
+						<variable name="SolParoFC" group="Default">
+							<type>
+								<BOOL />
+							</type>
+						</variable>
+						<variable name="FinProces" group="Default">
+							<type>
+								<BOOL />
+							</type>
+						</variable>
+					</externalVars>
+				</interface>
+				<body>
+					<ST>
+						<worksheet name="GSecPrincipal">
+							<html xmlns="http://www.w3.org/1999/xhtml">
+								<p xmlns="http://www.w3.org/1999/xhtml" xml:space="preserve">(*---------------------------------------------------------------------------------------------------------------------------------------<br /> SecPrincipal:  organiza tanto el arranque del sistema en modo automático como<br />    la parada programada del mismo, generando las señales de mando <br />    que informan a producción normal sobre el estado del sistema en <br />    cada momento.  <br />-----------------------------------------------------------------------------------------------------------------------------------------*)<br /><br />(* Set -Reset ________________________________________________________________ X0 *)<br />IF((X3 AND FinProces) OR Init ) THEN<br /> X0:=1;<br />END_IF;<br /><br />IF (X1 OR Reset) THEN<br /> X0:=0;<br />END_IF;<br /><br />(*Set -Reset ________________________________________________________________X1*)<br />IF(X0 AND SolModoAuto)THEN<br /> X1:=1;<br />END_IF;<br /><br />IF (X2 OR Init OR Reset)THEN<br /> X1:=0;<br />END_IF;<br /><br />(*Set -Reset ________________________________________________________________X2*)<br />IF(X1 AND FinCondIni)THEN<br /> X2:=1;<br />END_IF;<br /><br />IF(X3 OR Init OR Reset)THEN<br />  X2:=0;<br />END_IF;<br /><br />(*Set -Reset ________________________________________________________________X3*)<br />IF(X2 AND SolParoFC)THEN<br /> X3:=1;<br />END_IF;<br /><br />IF(X0 OR Init OR  Reset) THEN<br /> X3:=0;<br />END_IF;<br /></p>
+							</html>
+						</worksheet>
+					</ST>
+				</body>
+				<documentation>
+					<html xmlns="http://www.w3.org/1999/xhtml">
+						<div xmlns="http://www.w3.org/1999/xhtml" xml:space="preserve"
+							id="MWTDESCRIPTION" wsName="GSecPrincipalT" />
+					</html>
+				</documentation>
+			</pou>
+		</pous>
+	</types>
+	<instances>
+		<configurations />
+	</instances>
+</project>

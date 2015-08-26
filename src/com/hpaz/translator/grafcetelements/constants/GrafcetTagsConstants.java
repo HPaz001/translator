@@ -20,10 +20,10 @@ public class GrafcetTagsConstants {
 	public static final String ACTION_FORCING_ORDER = "forcing order";
 	public static final String ACTION_CONDITIONAL = "conditional";
 	
-	public static enum typeCounter
+/*	public static enum typeCounter
 	{
 		CTU,CTD,CTUD
-	}
+	}*/
 	
 	//TODO Esto deberia estar en otra clase ya que no forma parte de elementos de grafcet
 	public static final String PROGRAM_OPT1 = "PLC Beckhoff (TwinCAT)";

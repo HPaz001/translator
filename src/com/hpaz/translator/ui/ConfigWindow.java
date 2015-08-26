@@ -150,53 +150,58 @@ public class ConfigWindow extends JFrame {
 				String outputPath = textFieldOutput.getText();
 				String selectedCompatibility = choiceCompatibility.getSelectedItem();
 				String language = "st";
-				//Si no estan rellenos todos los campos, mensaje de error
+				// Si no estan rellenos todos los campos, mensaje de error
 				if (xmlPath.isEmpty() || outputPath.isEmpty() || selectedCompatibility.isEmpty()) {
 					JOptionPane.showMessageDialog(contentPane,
-						    "Todos los campos del formulario tienen que estar rellenos",
-						    "Error",
-						    JOptionPane.ERROR_MESSAGE);
-					
+							"Todos los campos del formulario tienen que estar rellenos.", "Error",
+							JOptionPane.ERROR_MESSAGE);
+
 				} else {// todos los campos rellenos
 					File inputXML = new File(xmlPath);
 					File outputDir = new File(outputPath);
-					//compruebo el fichero de entrada
+					// compruebo el fichero de entrada
 					if (!inputXML.exists()) {
-						JOptionPane.showMessageDialog(contentPane,
-							    "El XML de entrada no existe",
-							    "Error",
-							    JOptionPane.ERROR_MESSAGE);
-						//compruebo el directorio de salida
+						JOptionPane.showMessageDialog(contentPane, "El XML de entrada no existe.", "Error",
+								JOptionPane.ERROR_MESSAGE);
+						// compruebo el directorio de salida
 					} else if (!outputDir.exists()) {
-						JOptionPane.showMessageDialog(contentPane,
-							    "El Directorio de salida no existe",
-							    "Error",
-							    JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(contentPane, "El Directorio de salida no existe.", "Error",
+								JOptionPane.ERROR_MESSAGE);
 					} else {
-						//si todos los datos introducidos son correctos
-						try {		
+						// si todos los datos introducidos son correctos
+						try {
 							// Creamos la factoria de parseadores por defecto
 							XMLReader reader = XMLReaderFactory.createXMLReader();
-							
-							//reader.setContentHandler(Preprocess.getMyPreprocess().addVarsPreprocess(pNomPro, planguage, pCompatibility));
-							reader.setContentHandler(new Preprocess(xmlPath, outputPath, language, selectedCompatibility));
-							
+
+							// reader.setContentHandler(Preprocess.getMyPreprocess().addVarsPreprocess(pNomPro,
+							// planguage, pCompatibility));
+
+							Preprocess preproces = new Preprocess(xmlPath, outputPath, language, selectedCompatibility);
+							reader.setContentHandler(preproces);
+
 							// Procesamos el xml
 							reader.parse(new InputSource(new FileInputStream(xmlPath)));
-							
-							dispose();
-							if (selectedCompatibility.equalsIgnoreCase(GrafcetTagsConstants.PROGRAM_OPT1)) { // Twincat
-								new VariableInitWindow().setVisible(true);
-							}
-							else{
-								Project.getProject().print();
-								JOptionPane.showMessageDialog(contentPane, "Se han generado los ficheros de su proyecto en la carpeta seleccionada.", "Finalizado",
-										JOptionPane.DEFAULT_OPTION);
-								dispose();
-								new MainProgramWindow().setVisible(true);
 
+							dispose();
+
+							if (preproces.isPreprocessFinishCorrectly()) {
+								if (selectedCompatibility.equalsIgnoreCase(GrafcetTagsConstants.PROGRAM_OPT1)) { // Twincat
+									new VariableInitWindow().setVisible(true);
+								} else {
+									Project.getProject().print();
+									JOptionPane.showMessageDialog(contentPane,
+											"Se han generado los ficheros de su proyecto en la carpeta seleccionada.",
+											"Finalizado", JOptionPane.DEFAULT_OPTION);
+									dispose();
+									new MainProgramWindow().setVisible(true);
+
+								}
+							} else {
+								JOptionPane.showMessageDialog(contentPane,
+										"El XML no tiene un formato adecuado, por favor selecione uno valido.", "Error",
+										JOptionPane.ERROR_MESSAGE);
 							}
-							
+
 						} catch (Exception ex) {
 							ex.printStackTrace();
 						}
@@ -219,7 +224,7 @@ public class ConfigWindow extends JFrame {
 		contentPane.add(panelLanguage);
 		contentPane.add(panelCompatibility);
 		contentPane.add(btnNewButton);
-		
+
 		JButton btnVolverAlMenu = new JButton("Volver al Menu");
 		btnVolverAlMenu.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {

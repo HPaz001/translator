@@ -254,5 +254,11 @@ public class Preprocess extends DefaultHandler {
 			transition.addComment(comm);
 		}
 	}
+	
+	public boolean isPreprocessFinishCorrectly(){
+		//TODO comprobar que el preproceso se ha completado correctamente (Que el XML es valido) y devolver el resultado
+		//TODO cuando se hace el preproceso si algo va mal tener una boleana global que cambie de true a false
+		return false;
+	}
 
 }
