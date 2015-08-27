@@ -40,6 +40,7 @@ public class Preprocess extends DefaultHandler {
 									// transition
 	private String actualTag;
 	private String previousTag;
+	//private boolean CorrectlyXML;
 
 
 	public Preprocess(String inputXML, String outputDir, String pLanguage, String pCompatibility) {
@@ -48,7 +49,7 @@ public class Preprocess extends DefaultHandler {
 		this.isStep = false;
 		this.isTransition = false;
 		this.previousTag = "";
-		
+		//this.CorrectlyXML=true;
 		String separator = FileSystems.getDefault().getSeparator();
 		String fileName = inputXML.substring(inputXML.lastIndexOf(separator) + 1, inputXML.length() - 4);
 		Project.getProject().addName(fileName + "_" + pLanguage);
@@ -68,21 +69,24 @@ public class Preprocess extends DefaultHandler {
 	public void startElement(String uri, String localName, String name, Attributes attributes) throws SAXException {
 		previousTag = actualTag;
 		actualTag = localName;
-
+		Map<String, String> attributesAux;
 		/* Instancio las variables segun van apareciendo su etiqueta */
 
 		if (actualTag.equals(GrafcetTagsConstants.GRAFCET_TAG)) {
 			grafcet = new Grafcet();
-			grafcet.fillAttributes(processingAttributes(attributes));
+			attributesAux = processingAttributes(attributes);
+			grafcet.fillAttributes(attributesAux);
 			
 		} else if (actualTag.equals(GrafcetTagsConstants.SEQUENCE_TAG)) {
 			sequence = new Sequence();
-			sequence.fillAttributes(processingAttributes(attributes));
+			attributesAux = processingAttributes(attributes);
+			sequence.fillAttributes(attributesAux);
 			
 		} else if (actualTag.equals(GrafcetTagsConstants.STEP_TAG)) {
 			step = new Step();
 			isStep = true;
-			step.fillAttributes(processingAttributes(attributes));
+			attributesAux = processingAttributes(attributes);
+			step.fillAttributes(attributesAux);
 			
 		} else if (actualTag.equals(GrafcetTagsConstants.TRANSITION_TAG)) {
 			transition = new Transition();
@@ -90,13 +94,16 @@ public class Preprocess extends DefaultHandler {
 			
 		} else if (actualTag.equals(GrafcetTagsConstants.ACTION_TAG)) {
 			action = new Action();
-			action.fillAttributes(processingAttributes(attributes));
+			attributesAux = processingAttributes(attributes);
+			action.fillAttributes(attributesAux);
 		} else if (actualTag.equals(GrafcetTagsConstants.HLINK_TAG)) {// road
 			road = new Road();
-			road.fillAttributes(processingAttributes(attributes));
+			attributesAux = processingAttributes(attributes);
+			road.fillAttributes(attributesAux);
 		} else if (actualTag.equals(GrafcetTagsConstants.JUMP_TAG)) {
 			jump = new Jump();
-			jump.fillAttributes(processingAttributes(attributes));
+			attributesAux = processingAttributes(attributes);
+			jump.fillAttributes(attributesAux);
 	
 		}else if (actualTag.equals(GrafcetTagsConstants.NODE_TAG)) { // node
 			// guardo las dos secuencias de las q viene o va en el road
@@ -254,11 +261,11 @@ public class Preprocess extends DefaultHandler {
 			transition.addComment(comm);
 		}
 	}
-	
+/*	
 	public boolean isPreprocessFinishCorrectly(){
 		//TODO comprobar que el preproceso se ha completado correctamente (Que el XML es valido) y devolver el resultado
 		//TODO cuando se hace el preproceso si algo va mal tener una boleana global que cambie de true a false
-		return false;
-	}
+		return this.CorrectlyXML;
+	}*/
 
 }

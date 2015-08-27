@@ -12,8 +12,8 @@ public class Timer {
 	public Timer(){
 		this.nameTimer = null;
 		this.stepNameTimer = null;
-		this.addTypeTime(null);
-		this.addTypeTimer(null);
+		this.typeTime = null;
+		this.typeTimer = null;
 		this.time = 0;
 	}
 	public Timer fillTimer(String[] list){

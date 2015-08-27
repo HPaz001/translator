@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sequence-diagram version="1.1.8" icons="true">  
+  <object id="1" language="java" name="com.hpaz.translator.preprocess.Preprocess" project="translator" 
+    file="/translator/src/com/hpaz/translator/preprocess/Preprocess.java" binary="false" label="preprocess" type="class" 
+    autoSize="true">    
+    <position height="-1" width="-1" x="325" y="0"/>    
+    <execution id="2">      
+      <position height="238" width="0" x="0" y="78"/>    
+    </execution>    
+    <execution id="4">      
+      <position height="21" width="0" x="0" y="120"/>    
+    </execution>    
+    <execution id="13">      
+      <position height="1340" width="0" x="0" y="341"/>    
+    </execution>    
+    <execution id="15">      
+      <position height="1277" width="0" x="0" y="383"/>    
+    </execution>    
+    <execution id="19">      
+      <position height="21" width="0" x="0" y="477"/>    
+    </execution>    
+    <execution id="25">      
+      <position height="21" width="0" x="0" y="689"/>    
+    </execution>    
+    <execution id="31">      
+      <position height="21" width="0" x="0" y="1095"/>    
+    </execution>    
+    <execution id="39">      
+      <position height="21" width="0" x="0" y="1273"/>    
+    </execution>    
+    <execution id="45">      
+      <position height="21" width="0" x="0" y="1409"/>    
+    </execution>    
+    <execution id="51">      
+      <position height="21" width="0" x="0" y="1545"/>    
+    </execution>  
+  </object>  
+  <object id="56" language="java" name="com.hpaz.translator.grafcetelements.Grafcet" project="translator" 
+    file="/translator/src/com/hpaz/translator/grafcetelements/Grafcet.java" binary="false" label="grafcet" type="class" 
+    autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="17">      
+      <position height="21" width="0" x="0" y="414"/>    
+    </execution>    
+    <execution id="21">      
+      <position height="89" width="0" x="0" y="508"/>    
+    </execution>    
+    <execution id="58">      
+      <position height="21" width="0" x="0" y="555"/>    
+    </execution>  
+  </object>  
+  <object id="59" language="java" name="com.hpaz.translator.grafcetelements.Sequence" project="translator" 
+    file="/translator/src/com/hpaz/translator/grafcetelements/Sequence.java" binary="false" label="sequence" 
+    type="class" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="23">      
+      <position height="21" width="0" x="0" y="630"/>    
+    </execution>    
+    <execution id="27">      
+      <position height="21" width="0" x="0" y="738"/>    
+    </execution>  
+  </object>  
+  <object id="60" language="java" name="com.hpaz.translator.grafcetelements.Step" project="translator" 
+    file="/translator/src/com/hpaz/translator/grafcetelements/Step.java" binary="false" label="step" type="class" 
+    autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="29">      
+      <position height="21" width="0" x="0" y="785"/>    
+    </execution>    
+    <execution id="33">      
+      <position height="21" width="0" x="0" y="1126"/>    
+    </execution>  
+  </object>  
+  <object id="61" language="java" name="com.hpaz.translator.grafcetelements.Transition" project="translator" 
+    file="/translator/src/com/hpaz/translator/grafcetelements/Transition.java" binary="false" label="transition" 
+    type="class" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="35">      
+      <position height="21" width="0" x="0" y="1168"/>    
+    </execution>  
+  </object>  
+  <object id="62" language="java" name="com.hpaz.translator.grafcetelements.Action" project="translator" 
+    file="/translator/src/com/hpaz/translator/grafcetelements/Action.java" binary="false" label="action" type="class" 
+    autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="37">      
+      <position height="21" width="0" x="0" y="1210"/>    
+    </execution>    
+    <execution id="41">      
+      <position height="21" width="0" x="0" y="1304"/>    
+    </execution>  
+  </object>  
+  <object id="63" language="java" name="com.hpaz.translator.grafcetelements.Road" project="translator" 
+    file="/translator/src/com/hpaz/translator/grafcetelements/Road.java" binary="false" label="road" type="class" 
+    autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="43">      
+      <position height="21" width="0" x="0" y="1346"/>    
+    </execution>    
+    <execution id="47">      
+      <position height="21" width="0" x="0" y="1440"/>    
+    </execution>    
+    <execution id="55">      
+      <position height="21" width="0" x="0" y="1618"/>    
+    </execution>  
+  </object>  
+  <object id="64" language="java" name="com.hpaz.translator.grafcetelements.Jump" project="translator" 
+    file="/translator/src/com/hpaz/translator/grafcetelements/Jump.java" binary="false" label="jump" type="class" 
+    autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="49">      
+      <position height="21" width="0" x="0" y="1482"/>    
+    </execution>    
+    <execution id="53">      
+      <position height="21" width="0" x="0" y="1576"/>    
+    </execution>  
+  </object>  
+  <object id="65" language="java" name="com.hpaz.translator.grafcetelements.Project" project="translator" 
+    file="/translator/src/com/hpaz/translator/grafcetelements/Project.java" binary="false" label="project" type="class" 
+    autoSize="true">    
+    <position height="-1" width="-1" x="1025" y="0"/>    
+    <execution id="6">      
+      <position height="21" width="160" x="1295" y="163"/>    
+    </execution>    
+    <execution id="8">      
+      <position height="21" width="160" x="1295" y="200"/>    
+    </execution>    
+    <execution id="10">      
+      <position height="21" width="160" x="1295" y="236"/>    
+    </execution>    
+    <execution id="12">      
+      <position height="21" width="160" x="1295" y="274"/>    
+    </execution>  
+  </object>  
+  <message id="3" operation="Preprocess(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">    
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="4"/>  
+  </message>  
+  <message id="5" operation="addName(java.lang.String):void">    
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="6"/>  
+  </message>  
+  <message id="7" operation="addLanguage(java.lang.String):void">    
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="8"/>  
+  </message>  
+  <message id="9" operation="addOutputPath(java.lang.String):void">    
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="10"/>  
+  </message>  
+  <message id="11" operation="addProgram(java.lang.String):void">    
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="12"/>  
+  </message>  
+  <message id="14" 
+    operation="startElement(java.lang.String,java.lang.String,java.lang.String,org.xml.sax.Attributes):void">    
+    <end type="SOURCE" refId="13"/>    
+    <end type="TARGET" refId="15"/>  
+  </message>  
+  <message id="16" operation="Grafcet()">    
+    <end type="SOURCE" refId="15"/>    
+    <end type="TARGET" refId="17"/>  
+  </message>  
+  <message id="18" operation="processingAttributes(org.xml.sax.Attributes):java.util.Map&lt;String,String&gt;">    
+    <end type="SOURCE" refId="15"/>    
+    <end type="TARGET" refId="19"/>  
+  </message>  
+  <message id="20" operation="fillAttributes(java.util.Map&lt;java.lang.String,java.lang.String&gt;):void">    
+    <end type="SOURCE" refId="15"/>    
+    <end type="TARGET" refId="21"/>  
+  </message>  
+  <message id="22" operation="Sequence()">    
+    <end type="SOURCE" refId="15"/>    
+    <end type="TARGET" refId="23"/>  
+  </message>  
+  <message id="24" operation="processingAttributes(org.xml.sax.Attributes):java.util.Map&lt;String,String&gt;">    
+    <end type="SOURCE" refId="15"/>    
+    <end type="TARGET" refId="25"/>  
+  </message>  
+  <message id="26" operation="fillAttributes(java.util.Map&lt;java.lang.String,java.lang.String&gt;):void">    
+    <end type="SOURCE" refId="15"/>    
+    <end type="TARGET" refId="27"/>  
+  </message>  
+  <message id="28" operation="Step()">    
+    <end type="SOURCE" refId="15"/>    
+    <end type="TARGET" refId="29"/>  
+  </message>  
+  <message id="30" operation="processingAttributes(org.xml.sax.Attributes):java.util.Map&lt;String,String&gt;">    
+    <end type="SOURCE" refId="15"/>    
+    <end type="TARGET" refId="31"/>  
+  </message>  
+  <message id="32" operation="fillAttributes(java.util.Map&lt;java.lang.String,java.lang.String&gt;):void">    
+    <end type="SOURCE" refId="15"/>    
+    <end type="TARGET" refId="33"/>  
+  </message>  
+  <message id="34" operation="Transition()">    
+    <end type="SOURCE" refId="15"/>    
+    <end type="TARGET" refId="35"/>  
+  </message>  
+  <message id="36" operation="Action()">    
+    <end type="SOURCE" refId="15"/>    
+    <end type="TARGET" refId="37"/>  
+  </message>  
+  <message id="38" operation="processingAttributes(org.xml.sax.Attributes):java.util.Map&lt;String,String&gt;">    
+    <end type="SOURCE" refId="15"/>    
+    <end type="TARGET" refId="39"/>  
+  </message>  
+  <message id="40" operation="fillAttributes(java.util.Map&lt;java.lang.String,java.lang.String&gt;):void">    
+    <end type="SOURCE" refId="15"/>    
+    <end type="TARGET" refId="41"/>  
+  </message>  
+  <message id="42" operation="Road()">    
+    <end type="SOURCE" refId="15"/>    
+    <end type="TARGET" refId="43"/>  
+  </message>  
+  <message id="44" operation="processingAttributes(org.xml.sax.Attributes):java.util.Map&lt;String,String&gt;">    
+    <end type="SOURCE" refId="15"/>    
+    <end type="TARGET" refId="45"/>  
+  </message>  
+  <message id="46" operation="fillAttributes(java.util.Map&lt;java.lang.String,java.lang.String&gt;):void">    
+    <end type="SOURCE" refId="15"/>    
+    <end type="TARGET" refId="47"/>  
+  </message>  
+  <message id="48" operation="Jump()">    
+    <end type="SOURCE" refId="15"/>    
+    <end type="TARGET" refId="49"/>  
+  </message>  
+  <message id="50" operation="processingAttributes(org.xml.sax.Attributes):java.util.Map&lt;String,String&gt;">    
+    <end type="SOURCE" refId="15"/>    
+    <end type="TARGET" refId="51"/>  
+  </message>  
+  <message id="52" operation="fillAttributes(java.util.Map&lt;java.lang.String,java.lang.String&gt;):void">    
+    <end type="SOURCE" refId="15"/>    
+    <end type="TARGET" refId="53"/>  
+  </message>  
+  <message id="54" operation="addSequences(java.lang.Integer):void">    
+    <end type="SOURCE" refId="15"/>    
+    <end type="TARGET" refId="55"/>  
+  </message>  
+  <message id="57" operation="getName():java.lang.String">    
+    <end type="SOURCE" refId="21"/>    
+    <end type="TARGET" refId="58"/>  
+  </message>
+</sequence-diagram>

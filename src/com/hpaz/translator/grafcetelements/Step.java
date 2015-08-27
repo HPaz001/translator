@@ -43,15 +43,15 @@ public class Step {
 	
 	public void fillAttributes(Map<String, String> pAttributes) {
 		// anado tipo y nombre
-		this.type= pAttributes.get("type");
-		this.name= pAttributes.get("name");
+		addType(pAttributes.get("type"));
+		addName(pAttributes.get("name"));
 	}
 
 	public String getType() {
 		return type;
 	}
 
-	public void setType(String type) {
+	private void addType(String type) {
 		this.type = type;
 	}
 
@@ -59,7 +59,7 @@ public class Step {
 		return name;
 	}
 
-	public void setName(String name) {
+	private void addName(String name) {
 		this.name = name;
 	}
 

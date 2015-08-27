@@ -11,22 +11,25 @@ public class Transition {
 	private String condition; // texto de condicion
 	private LinkedList<String> conditionSep;
 	private String comment;
-	private boolean assignmentSignal;
-	private Map<String,String> assignments;
+	//private boolean assignmentSignal;
+	//private Map<String,String> assignments;
 
-	
 
 	public Transition() {
 		this.condition = "";
 		this.conditionSep = new LinkedList<String>();
 		this.comment = null;
-		this.assignmentSignal=false;
+		//this.assignmentSignal=false;
 		
 	}
 
 	public String getCondition() {
 		return condition;
 	}
+
+/*	public void addAssignmentSignal(boolean assignmentSignal) {
+		this.assignmentSignal = assignmentSignal;
+	}*/
 
 	public void addCondition(String pCondition) {
 		
@@ -59,6 +62,7 @@ public class Transition {
 					addListConditionSep(auxConditionSep.replaceAll(" RE | FE ", "").trim());
 				}			
 			}
+			
 			Pattern patRE_FE = Pattern.compile(".* RE .*| .* FE .*");
 			Matcher matRE_FE = patRE_FE.matcher(auxConditionCompl);
 			//Si la palabra contiene un RE o FE
@@ -95,18 +99,15 @@ public class Transition {
 		return conditionSep;
 	}
 
-	public void addListConditionSep(LinkedList<String> l) {
+	private void addListConditionSep(LinkedList<String> l) {
 		this.conditionSep.addAll(l);
 	}
 
-	public void addListConditionSep(String l) {
+	private void addListConditionSep(String l) {
 		this.conditionSep.add(l);
 	}
 
-	public Map<String, String> getAssignments() {
-		return this.assignments;
-	}
-	
+
 	public LinkedList<String> printTransVG() {
 		String s = "";
 		LinkedList<String> aux = new LinkedList<String>();
@@ -122,7 +123,7 @@ public class Transition {
 		return aux;
 	}
 
-	public void printTransition() {
+/*	public void printTransition() {
 		System.out.println("----- TRANSITION ------");
 		System.out.println("Condicion completa: " + this.condition);
 		System.out.println("Condicion por partes: ");
@@ -131,7 +132,7 @@ public class Transition {
 		}
 		System.out.println("Comentario: " + this.comment);
 	}
-
+*/
 	/**
 	 * Analiza el comentario de la transicion, lo descompone para buscar
 	 * posibles señales y asignaciones ARANTZA HA PEDIDO QUE SE PUEDAN COLOCAR
@@ -214,11 +215,11 @@ public class Transition {
 		}
 		this.assignments.put(pSignal, pAssignment);
 		
-	}*/
+	}
 
 	public boolean isAssignmentSignal() {
 		return assignmentSignal;
-	}
+	}*/
 
 	/** Quita el signo a el texto pasado y devuelve una lista */
 	private LinkedList<String> removeSigns(String t) {

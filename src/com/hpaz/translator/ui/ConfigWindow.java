@@ -7,6 +7,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -20,8 +23,17 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.xml.XMLConstants;
+import javax.xml.transform.Source;
+import javax.xml.transform.stream.StreamSource;
+import javax.xml.validation.Schema;
+import javax.xml.validation.SchemaFactory;
+import javax.xml.validation.Validator;
 
+import org.xml.sax.ErrorHandler;
 import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLReaderFactory;
 
@@ -170,21 +182,37 @@ public class ConfigWindow extends JFrame {
 					} else {
 						// si todos los datos introducidos son correctos
 						try {
-							// Creamos la factoria de parseadores por defecto
-							XMLReader reader = XMLReaderFactory.createXMLReader();
+							//comprobamos que el formato del XML sea correcto
+							if (isXMLCorrectly()) {
+								
+								// Creamos la factoria de parseadores por defecto
+								XMLReader reader = XMLReaderFactory.createXMLReader();
+								//llamamos a la clase que procesara el XML
+								Preprocess preproces = new Preprocess(xmlPath, outputPath, language, selectedCompatibility);
+								reader.setContentHandler(preproces);
+								// Procesamos el xml
+								reader.parse(new InputSource(new FileInputStream(xmlPath)));
+								//comprobamos que tipo de opcion ha marcado el usuario para saber si abrir las siguiente interfaz o no
+								if (selectedCompatibility.equalsIgnoreCase(GrafcetTagsConstants.PROGRAM_OPT1)) { // Twincat
+									new VariableInitWindow().setVisible(true);
+								} else {
+									Project.getProject().print();
+									JOptionPane.showMessageDialog(contentPane,
+											"Se han generado los ficheros de su proyecto en la carpeta seleccionada.",
+											"Finalizado", JOptionPane.DEFAULT_OPTION);
+									dispose();
+									new MainProgramWindow().setVisible(true);
+								}
+							} else {
+								JOptionPane.showMessageDialog(contentPane,
+										"El XML no tiene un formato adecuado, por favor selecione uno valido.", "Error",
+										JOptionPane.ERROR_MESSAGE);
+							}
+							
+							//dispose();
 
-							// reader.setContentHandler(Preprocess.getMyPreprocess().addVarsPreprocess(pNomPro,
-							// planguage, pCompatibility));
-
-							Preprocess preproces = new Preprocess(xmlPath, outputPath, language, selectedCompatibility);
-							reader.setContentHandler(preproces);
-
-							// Procesamos el xml
-							reader.parse(new InputSource(new FileInputStream(xmlPath)));
-
-							dispose();
-
-							if (preproces.isPreprocessFinishCorrectly()) {
+							
+							/*if (preproces.isPreprocessFinishCorrectly()) {
 								if (selectedCompatibility.equalsIgnoreCase(GrafcetTagsConstants.PROGRAM_OPT1)) { // Twincat
 									new VariableInitWindow().setVisible(true);
 								} else {
@@ -200,7 +228,7 @@ public class ConfigWindow extends JFrame {
 								JOptionPane.showMessageDialog(contentPane,
 										"El XML no tiene un formato adecuado, por favor selecione uno valido.", "Error",
 										JOptionPane.ERROR_MESSAGE);
-							}
+							}*/
 
 						} catch (Exception ex) {
 							ex.printStackTrace();
@@ -237,4 +265,54 @@ public class ConfigWindow extends JFrame {
 		contentPane.add(btnVolverAlMenu);
 
 	}
+
+	private boolean isXMLCorrectly(){
+		/*boolean isCorrectly = true;
+		List exceptions = new LinkedList();
+		try { // XML a validar
+			Source xmlFile = new StreamSource(new File("FICHERO_XML"));//"C:/Users/Desktop/file.xml"
+			// Esquema con el que comparar
+			Source schemaFile = new StreamSource(new File("PLANTILLA_XSD"));//"C:/Users/Desktop/schema.xsd"
+			// Preparación del esquema
+			SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+			Schema schema = schemaFactory.newSchema(schemaFile);
+			// Creación del validador
+			Validator validator = schema.newValidator();
+			// Definición del manejador de excepciones del validador
+			
+			validator.setErrorHandler(
+				new ErrorHandler() {
+					public void warning(SAXParseException exception) throws SAXException {
+						exceptions.add(exception);
+					}
+					public void fatalError(SAXParseException exception) throws SAXException {
+						exceptions.add(exception);
+					}
+					public void error(SAXParseException exception) throws SAXException {
+						exceptions.add(exception);
+					}
+				}
+			);
+			// Validación del XML
+			validator.validate(xmlFile);
+			// Resultado de la validación. Si hay errores se detalla el error y
+			// la posición exacta en el XML
+			if (exceptions.size() != 0) {
+				isCorrectly=false;
+				System.out.println("FILE " + xmlFile.getSystemId() + " IS INVALID");
+				System.out.println("NUMBER OF ERRORS: " + exceptions.size());
+				for (int i = 0; i < exceptions.size(); i++) {
+					System.out.println("Error # " +(i + 1) + ":");
+				}
+			}
+		} catch (SAXException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}*/
+		//TODO hacer XSD esta funcion devuelve solo true por el momento
+		return /*isCorrectly*/true;
+	}
+	
+
 }

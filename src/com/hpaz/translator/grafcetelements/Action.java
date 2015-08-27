@@ -16,18 +16,31 @@ public class Action {
 	private LinkedList<String> startEmergency;
 	private boolean emergency;
 	
+
+
 	public Action() {
 		this.type="";
 		this.text=null;
 		this.condition=null;
-		this.comment="";
+		this.comment=null;
 		this.startEmergency=new LinkedList<String>();
 		this.stopEmergency=new LinkedList<String>();
 		this.emergency=false;
 	}
 	public void fillAttributes(Map<String, String> pAttributes) {
 		// añado el tipo
-		this.type = pAttributes.get("type");
+		addType(pAttributes.get("type"));
+	}
+	
+	private void addType(String type) {
+		this.type = type;
+	}
+	
+	public void addStopEmergency(LinkedList<String> stopEmergency) {
+		this.stopEmergency = stopEmergency;
+	}
+	public void addStartEmergency(LinkedList<String> startEmergency) {
+		this.startEmergency = startEmergency;
 	}
 	public String getType() {
 		return type;
@@ -56,8 +69,14 @@ public class Action {
 	public String getComment() {
 		return comment;
 	}
-	public void setComment(String comment) {
-		this.comment = comment;
+	public void addComment(String comment) {
+		if (getComment() == null){
+			this.comment = comment;
+		}else {
+			this.comment = getComment()+ " " +comment;
+		}
+		
+		
 	}
 	
 	public LinkedList<String> getStopEmergency() {

@@ -35,15 +35,15 @@ public class Sequence {
 		this.idSeq = Integer.parseInt(pAttributes.get("id"));			
 	}
 
-
+	
 	public int getIdSeq() {
 		return idSeq;
 	}
-
+	/*
 	public void setIdSeq(int id) {
 		this.idSeq = id;
 	}
-
+*/
 	public LinkedList<Object> getListTransitionOrStep() {
 		return listTransitionOrStep;
 	}
@@ -56,18 +56,17 @@ public class Sequence {
 		return stepStopEmergency;
 	}
 
-/*	public void addStepStopEmergency(int pStepStopEmergency) {
-		this.stepStopEmergency = pStepStopEmergency;
-	}*/
-
 	public int getStepStartEmergency() {
 		return stepStartEmergency;
 	}
-
-	/*public void addStepStartEmergency(int pStepStartEmergency) {
-		this.stepStartEmergency = pStepStartEmergency;
+	//añade una lista de señales
+	private void  addSignals( LinkedList<String> pSignals){
+		this.signals.addAll(pSignals);
 	}
-*/
+	//añade una unica señal
+	private void  addSignal( String pSignal){
+		this.signals.add(pSignal);
+	}
 	/**Este metodo añade una transicion o un step a la lista listTransitionOrStep
 	 * Pero antes de esto genera y guarda las señales correspondientes */
 	public void addTransitionOrStep(Object pTransitionOrStep) {
@@ -75,7 +74,7 @@ public class Sequence {
 		if (pTransitionOrStep instanceof Transition) {
 			
 			((Transition) pTransitionOrStep).analyzeReviews();
-			signals.addAll(((Transition) pTransitionOrStep).getConditionSep());
+			addSignals(((Transition) pTransitionOrStep).getConditionSep());
 			
 		} else if (pTransitionOrStep instanceof Step) {
 			
@@ -85,11 +84,11 @@ public class Sequence {
 				
 				//si hay una accion y NO es una emergencia
 				if (act != null && !action.isEmergency()) {
-					String aux = action.getText().trim();
+					String actionName = action.getText().trim();
 					
 					//TODO NO SE PORQ NO LO DETECTA LA REGEX ESTA BIEN
 					Pattern patTemp = Pattern.compile("^Temp.*=.*");
-					Matcher matTemp = patTemp.matcher(aux);
+					Matcher matTemp = patTemp.matcher(actionName);
 					
 					//TODO ?¿?¿? compruebo que el tiempo del contador es el correcto ?¿
 					//int time = Integer.parseInt(aux.replaceAll("=|[a-z A-Z]", ""));
@@ -100,41 +99,41 @@ public class Sequence {
 						
 						//Expresion regular para detectar una asignacion de contador
 						Pattern patCount = Pattern.compile("^Cont.*=[0-9]$");
-						Matcher matCount = patCount.matcher(aux.trim());
+						Matcher matCount = patCount.matcher(actionName.trim());
 						
 						//Si es un contador
-						if(matCount.matches()){
-							
+						if(matCount.matches()){	
 							//TODO tengo q pedir ejemplo de contador en la programacion para saber si esto esta bien 
 							
 							//Me quedo solo con el nombre del contador
-							aux = aux.substring(0, aux.indexOf("=")).trim();
+							actionName = actionName.substring(0, actionName.indexOf("=")).trim();
+							String stepName= ((Step) pTransitionOrStep).getName();
 							//Compruebo si el contador existe en la lista
-							int index = Project.getProject().equalsCount(aux);
+							int index = Project.getProject().equalsCount(actionName);
 							
 							//Si index == -1 es q no encontro un contador con ese nombre
 							if(index == (-1)){
 								//Creo el contador y lo relleno
 								Counter cont = new Counter();
-								cont.addNameCounter(aux);
-								cont.addStepCountes(((Step) pTransitionOrStep).getName());
+								cont.addNameCounter(actionName);
+								cont.addStepCountes(stepName);
 								Project.getProject().addCounter(cont);
 								
 							}else{//Si index != -1 es q habia un contador con ese nombre, asi q guardo la etapa.
-								Project.getProject().getListCounters().get(index).addStepCountes(((Step) pTransitionOrStep).getName());
+								Project.getProject().getListCounters().get(index).addStepCountes(stepName);
 							}
 						//Sino es un temporizador, ni un contador, ni emergencia
 						}else{
-							signals.add(action.getText());
+							addSignal(actionName);
 						}
 						
 					}
 					// si hay acction y es emergencia
 				}else if (act != null && action.isEmergency()){
 					if (((Step) pTransitionOrStep).isStartEmergency()) {
-						stepStartEmergency = listTransitionOrStep.size();
+						addStepStartEmergency(listTransitionOrStep.size());
 					} else if (((Step) pTransitionOrStep).isStopEmergency()) {
-						stepStopEmergency=listTransitionOrStep.size();
+						addStepStopEmergency(listTransitionOrStep.size());
 					}
 				}
 			}
@@ -142,6 +141,14 @@ public class Sequence {
 		this.listTransitionOrStep.add(pTransitionOrStep);
 	}
 
+	private void addStepStopEmergency(int pNumber) {
+		this.stepStopEmergency=pNumber;
+		
+	}
+	private void addStepStartEmergency(int pNumber) {
+		this.stepStartEmergency=pNumber;
+		
+	}
 	public LinkedList<String> getVarGlobalStages() {
 
 		LinkedList<String> auxSignals = new LinkedList<String>();

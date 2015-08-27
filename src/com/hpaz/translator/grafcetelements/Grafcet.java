@@ -49,18 +49,38 @@ public class Grafcet {
 	}
 	
 	public void fillAttributes (Map<String, String> pAttributes){
-		this.type = pAttributes.get("type");
-		this.name = pAttributes.get("name");
-		this.comment = pAttributes.get("comment");
-		this.owner = pAttributes.get("owner");
+		addType(pAttributes.get("type"));
+		addName(pAttributes.get("name"));
+		addComment(pAttributes.get("comment"));
+		addOwner(pAttributes.get("owner"));
 		
 		Pattern pat = Pattern.compile("^GEmergencia.*|^GEmergency.*");
 		Matcher mat = pat.matcher(getName().trim());
 		if (mat.matches()) {
-			this.emergency=true;
+			addEmergency(true);
 		}		
 	}
 	
+	public void addEmergency(boolean emergency) {
+		this.emergency = emergency;
+	}
+
+	private void addType(String type) {
+		this.type = type;
+	}
+
+	private void addName(String name) {
+		this.name = name;
+	}
+
+	private void addComment(String comment) {
+		this.comment = comment;
+	}
+
+	private void addOwner(String owner) {
+		this.owner = owner;
+	}
+
 	public String getType() {
 		return type;
 	}
@@ -212,7 +232,7 @@ public class Grafcet {
 		 */
 		this.signalsGrafcet.addAll(pSequence.getSignals());
 		/* la posicion de la lista sera el numero de secuencia -1 */
-		this.sequenceList.add(/* pIndex-1, */pSequence);
+		this.sequenceList.add(pSequence.getIdSeq()-1, pSequence);
 
 	}
 
