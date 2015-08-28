@@ -1,5 +1,6 @@
 package com.hpaz.translator.grafcetelements;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -131,21 +132,41 @@ public class Project {
 	public LinkedList<Grafcet> getListG() {
 		return listGrafcet;
 	}
+	
+	public LinkedList<String> getListEmergencyStop() {
+		return listEmergencyStop;
+	}
 
+	public LinkedList<String> getListEmergencyStart() {
+		return listEmergencyStart;
+	}
+
+	public String getStepStopEmergency() {
+		return stepStopEmergency;
+	}
+
+	public String getStepStartEmergency() {
+		return stepStartEmergency;
+	}
 	/**
 	 * Anado el grafcet, pero antes genero las listas de previousAnNext y
 	 * losSetAnReset
 	 */
 	public void addGrafcet(Grafcet pGrafcet) {
-		pGrafcet.fillPreviousAndNextSequencesLists();
+		/*pGrafcet.fillPreviousAndNextSequencesLists();
 		pGrafcet.addSetAndResetToStep();
 		// si es el de emergencia genero las listas correspondientes
 		if (pGrafcet.isEmergency()) {
 			pGrafcet.getEmergency();
 		}
-		addListGrafcet(pGrafcet);
 		//genero asignaciones de accion := paso
 		generateActionStepMap(pGrafcet);
+		*/
+		
+		
+		addListGrafcet(pGrafcet);
+		
+		
 	}
 
 	private void addListGrafcet(Grafcet pGrafcet) {
@@ -326,9 +347,9 @@ public class Project {
 		
 	}
 
-	public void generateActionStepMap(Grafcet pGrafcet) {
+	public void generateActionStepMap(Map<String, String> auxMap) {
 
-		Map<String, String> auxMap = pGrafcet.getActionStepMap();
+		//Map<String, String> auxMap = pGrafcet.getActionStepMap();
 		for (String action : auxMap.keySet()) {
 			if (getActionStepMap().get(action) == null)
 				addActionStepMap(action, auxMap.get(action));
@@ -352,18 +373,25 @@ public class Project {
 					Output.getOutput().exportFile(g.generateFunctionBlock(), "FUNCTION_BLOCK_" + g.getName(),
 							outputDir);
 				}
+				
 			} else if (program.equalsIgnoreCase(GrafcetTagsConstants.PROGRAM_OPT2)) {// PL7PRO
+				
 				Output.getOutput().exportFile(getProgramTSXMicroSP(), getName()+"SequePart",outputDir);
 				Output.getOutput().exportFile(getProgramTSXMicroCP(), getName()+"CombiPart",outputDir);
 				
 			} else if (program.equalsIgnoreCase(GrafcetTagsConstants.PROGRAM_OPT3)) {//PLCOpen PCWorx
-
+				Output.getOutput().exportFile(getProgramPLCOpen(), getName()+"PLCOpen",outputDir);
 			}
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
+	private LinkedList<String> getProgramPLCOpen() {
+		// TODO HACER AQUI LA PARTE DE PLCOPEN
+		return null;
+	}
+
 	/**Devuelve una lista con la parte combinacional*/
 	private LinkedList<String> getProgramTSXMicroCP() {
 		// TODO FALLOS primera letra en mayusculas y el resto en minusculas
@@ -512,7 +540,10 @@ public class Project {
 			}
 			 */
 			// si el grafcet es el de emergencia relleno la lista de forzados
-			if (grafcet.isEmergency()) {
+			/*TODO COMENTADO PARA PROBAR SI VALE CON LAS LISTA DE EMERGENCIA SOLO 
+			 * EN EL PROJECT EN ESTE CASO SE TIENE Q DAR POR HECHO Q HABRA SOLO UN 
+			 * GRAFCET DE ENERGENCIA EN TODO EL PROYECTO
+			 * if (grafcet.isEmergency()) {
 				String stepStop = grafcet.getStepStopEmergency();
 				String stepStart = grafcet.getStepStartEmergency();
 				boolean bol = false;
@@ -522,6 +553,19 @@ public class Project {
 				// Anado los forzados de cad agrafcet
 				listEmergency.addAll(generateListEmergency(grafcet.getListEmergencyStart(),
 						grafcet.getListEmergencyStop(), bol, stepStop, stepStart));
+			*/
+				//si el grafcet es el de emergencia relleno la lista de forzados
+				if (grafcet.isEmergency()) {
+					String stepStop = getStepStopEmergency();
+					String stepStart = getStepStartEmergency();
+					boolean bol = false;
+					if (compareStartAndStopLists()) {
+						bol = true;
+					}
+				
+				// Anado los forzados de cad agrafcet
+				listEmergency.addAll(generateListEmergency(getListEmergencyStart(),
+						getListEmergencyStop(), bol, stepStop, stepStart));
 
 				/*
 				 * //Emergencia(Init:=(XInit OR IntitEmergencia) ,
@@ -536,6 +580,12 @@ public class Project {
 
 		return getProgramMain(aux, listEmergency);
 
+	}
+	//compara las dos listas de emergencia
+	public boolean compareStartAndStopLists() {
+		Collections.sort(this.listEmergencyStop);
+		Collections.sort(this.listEmergencyStart);
+		return getListEmergencyStart().equals(getListEmergencyStop());
 	}
 
 	/** Genera las paradas e inicios de los forzados de emergencia */

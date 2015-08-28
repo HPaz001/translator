@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sequence-diagram version="1.1.8" icons="true">  
+  <object id="1" language="java" name="com.hpaz.translator.ui.ConfigWindow" project="translator" 
+    file="/translator/src/com/hpaz/translator/ui/ConfigWindow.java" binary="false" label="configWindow" type="class" 
+    autoSize="true">    
+    <position height="-1" width="-1" x="80" y="0"/>    
+    <execution id="2">      
+      <position height="390" width="105" x="5" y="114"/>    
+    </execution>  
+  </object>  
+  <object id="5" language="java" name="com.hpaz.translator.grafcetelements.Project" project="translator" 
+    file="/translator/src/com/hpaz/translator/grafcetelements/Project.java" binary="false" label="project" type="class" 
+    autoSize="true">    
+    <position height="-1" width="-1" x="217" y="0"/>    
+    <execution id="4">      
+      <position height="348" width="160" x="114" y="135"/>    
+    </execution>    
+    <execution id="7">      
+      <position height="21" width="0" x="0" y="170"/>    
+    </execution>    
+    <execution id="9">      
+      <position height="21" width="0" x="0" y="222"/>    
+    </execution>    
+    <execution id="15">      
+      <position height="21" width="0" x="0" y="358"/>    
+    </execution>    
+    <execution id="17">      
+      <position height="21" width="0" x="0" y="410"/>    
+    </execution>  
+  </object>  
+  <object id="20" language="java" name="com.hpaz.translator.output.Output" project="translator" 
+    file="/translator/src/com/hpaz/translator/output/Output.java" binary="false" label="&lt;static&gt;" type="class" 
+    autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="13">      
+      <position height="21" width="0" x="0" y="295"/>    
+    </execution>  
+  </object>  
+  <object id="21" language="java" name="com.hpaz.translator.output.Output" project="translator" 
+    file="/translator/src/com/hpaz/translator/output/Output.java" binary="false" type="class" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>  
+  </object>  
+  <object id="22" language="java" name="com.hpaz.translator.output.Output" project="translator" 
+    file="/translator/src/com/hpaz/translator/output/Output.java" binary="false" type="class" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>  
+  </object>  
+  <object id="23" language="java" name="com.hpaz.translator.grafcetelements.Grafcet" project="translator" 
+    file="/translator/src/com/hpaz/translator/grafcetelements/Grafcet.java" binary="false" label="g" type="class" 
+    autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>  
+  </object>  
+  <object id="24" language="java" name="com.hpaz.translator.output.Output" project="translator" 
+    file="/translator/src/com/hpaz/translator/output/Output.java" binary="false" type="class" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>  
+  </object>  
+  <object id="25" language="java" name="com.hpaz.translator.output.Output" project="translator" 
+    file="/translator/src/com/hpaz/translator/output/Output.java" binary="false" type="class" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="11">      
+      <position height="21" width="0" x="0" y="253"/>    
+    </execution>  
+  </object>  
+  <object id="26" language="java" name="com.hpaz.translator.output.Output" project="translator" 
+    file="/translator/src/com/hpaz/translator/output/Output.java" binary="false" type="class" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="19">      
+      <position height="21" width="0" x="0" y="441"/>    
+    </execution>  
+  </object>  
+  <object id="27" language="java" name="com.hpaz.translator.output.Output" project="translator" 
+    file="/translator/src/com/hpaz/translator/output/Output.java" binary="false" label="output" type="class" 
+    autoSize="true">    
+    <position height="-1" width="-1" x="403" y="0"/>  
+  </object>  
+  <message id="3" operation="print():void">    
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="4"/>  
+  </message>  
+  <message id="6" operation="getProgramTSXMicroSP():java.util.LinkedList&lt;String&gt;">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="7"/>  
+  </message>  
+  <message id="8" operation="getName():java.lang.String">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="9"/>  
+  </message>  
+  <message id="10" 
+    operation="exportFile(java.util.LinkedList&lt;java.lang.String&gt;,java.lang.String,java.lang.String):void">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="11"/>  
+  </message>  
+  <message id="12" operation="getOutput():com.hpaz.translator.output.Output">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="13"/>  
+  </message>  
+  <message id="14" operation="getProgramTSXMicroCP():java.util.LinkedList&lt;String&gt;">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="15"/>  
+  </message>  
+  <message id="16" operation="getName():java.lang.String">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="17"/>  
+  </message>  
+  <message id="18" 
+    operation="exportFile(java.util.LinkedList&lt;java.lang.String&gt;,java.lang.String,java.lang.String):void">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="19"/>  
+  </message>
+</sequence-diagram>

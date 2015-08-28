@@ -38,10 +38,10 @@ public class Grafcet {
 		this.comment = null;
 		this.owner = null;
 		this.emergency = false;
-		this.stepStartEmergency = null;
+	/*	this.stepStartEmergency = null;
 		this.stepStopEmergency= null;
 		this.listEmergencyStop = new LinkedList<String>();
-		this.listEmergencyStart = new LinkedList<String>();
+		this.listEmergencyStart = new LinkedList<String>();*/
 		this.signalsGrafcet = new LinkedList<String>();
 		this.jumpList = new LinkedList<Jump>();
 		this.sequenceList = new LinkedList<Sequence>();
@@ -97,11 +97,11 @@ public class Grafcet {
 		return owner;
 	}
 	
-	public LinkedList<Jump> getListJ() {
+	public LinkedList<Jump> getJumpList() {
 		return jumpList;
 	}
 
-	public LinkedList<Sequence> getListS() {
+	public LinkedList<Sequence> getSequenceList() {
 		return sequenceList;
 	}
 	
@@ -113,12 +113,10 @@ public class Grafcet {
 	public boolean isEmergency() {
 		return emergency;
 	}
-
+/*
 	public String getStepStopEmergency() {
 		return stepStopEmergency;
 	}
-
-	
 
 	public String getStepStartEmergency() {
 		return stepStartEmergency;
@@ -130,7 +128,7 @@ public class Grafcet {
 	
 	public LinkedList<String> getListEmergencyStart() {
 		return listEmergencyStart;
-	}
+	}*/
 	
 
 	public LinkedList<String> getGrafcetVarGlobalStages() {
@@ -244,7 +242,7 @@ public class Grafcet {
 		this.jumpList.add(pJ);
 	}
 
-	public void addStepStopEmergency(String pStepStopEmergency) {
+/*	public void addStepStopEmergency(String pStepStopEmergency) {
 		this.stepStopEmergency = pStepStopEmergency;
 	}
 	public void addStepStartEmergency(String pStepStartEmergency) {
@@ -255,7 +253,7 @@ public class Grafcet {
 	}
 	public void addListEmergencyStart(LinkedList<String> pListEmergencyStart) {
 		this.listEmergencyStart = pListEmergencyStart;
-	}
+	}*/
 	
 	/**
 	 * Esta funcion rellenara las listas PreviousStepLits,
@@ -264,43 +262,46 @@ public class Grafcet {
 	 */
 	public void fillPreviousAndNextSequencesLists() {
 		/* por cada salto */
-		for (Jump j : jumpList) {
+		for (Jump j : getJumpList()) {
 			/*
 			 * FromSeq salta a ToSeq por lo que la seq(fromToSeq-1) tendra en
 			 * next la ToSeq-1 la seq(Toseq-1) tendra en previous fromToSeq-1
 			 */
-
-			sequenceList.get(j.getFromSeq()).addNextSequencesList(j.getToSeq());
-			sequenceList.get(j.getToSeq()).addPreviousSequencesList(j.getFromSeq());
+			int auxNumberFromSequence =j.getFromSeq();
+			int auxNumberToSequence = j.getToSeq();
+			sequenceList.get(auxNumberFromSequence).addNextSequencesList(auxNumberToSequence);
+			sequenceList.get(auxNumberToSequence).addPreviousSequencesList(auxNumberFromSequence);
 
 		}
 		/* Por cada camino que tengamos */
-		for (Road road : roadList) {
+		for (Road road : getRoadList()) {
 			// por cada secuencia de la lista de caminos
 			for (Integer numSequencesRoad : road.getSequences()) {
+				int seqIniRoad = road.getSeqIni();
+				String typeRoad = road.getType();
 				if (road.getType().equals("div or") || road.getType().equals("div and")) {
 					/*
 					 * Guardo en la secuencia roadIni.next la secuencia
 					 * numSequencesRoad y en la secuencia
 					 * numSequencesRoad.previous guardo roadIni
 					 */
-					sequenceList.get(road.getSeqIni()).addNextSequencesList(numSequencesRoad);
-					sequenceList.get(numSequencesRoad).addPreviousSequencesList(road.getSeqIni());
+					sequenceList.get(seqIniRoad).addNextSequencesList(numSequencesRoad);
+					sequenceList.get(numSequencesRoad).addPreviousSequencesList(seqIniRoad);
 
-				} else if (road.getType().equals("conv or") || road.getType().equals("conv and")) {
+				} else if (typeRoad.equals("conv or") || typeRoad.equals("conv and")) {
 					/*
 					 * Guardo en la secuencia roadIni.previous la secuencia
 					 * numSequencesRoad y en la secuencia numSequencesRoad.next
 					 * guardo roadIni
 					 */
-					sequenceList.get(road.getSeqIni()).addPreviousSequencesList(numSequencesRoad);
-					sequenceList.get(numSequencesRoad).addNextSequencesList(road.getSeqIni());
+					sequenceList.get(seqIniRoad).addPreviousSequencesList(numSequencesRoad);
+					sequenceList.get(numSequencesRoad).addNextSequencesList(seqIniRoad);
 
-					if (road.getType().equals("conv and")) {
+					if (typeRoad.equals("conv and")) {
 						// busco la primera etapa de la secuencia road.SeqInit y
 						// activar setAnd=true;
-						Step step = sequenceList.get(road.getSeqIni()).getFirstStep();
-						step.setAnd(true);
+						Step step = sequenceList.get(seqIniRoad).getFirstStep();
+						step.addAnd(true);
 					}
 				}
 			}
@@ -364,22 +365,27 @@ public class Grafcet {
 	 */
 	public void addSetAndResetToStep() {
 		//por cada secuencia de la lista
-		for (Sequence seq : sequenceList) {
+		for (Sequence seq : getSequenceList()) {
 			//por cada lista de transiciones o paso de la secuencia
 			for (int i = 0; i < seq.getListTransitionOrStep().size(); i++) {
+				
 				//si es un paso
 				if (seq.getListTransitionOrStep().get(i) instanceof Step) {
 					
 					Step actualStep = (Step) seq.getListTransitionOrStep().get(i);
 
-					// Rellenamos el Set
+					// Buscamos el Set
 					
 					//inicializo variables auxiliares
 					LinkedList<String> previousStepAndTransitions = new LinkedList<String>();
 					Transition previousTransition = null;
 					Step previousStep = null;
-					
+					/*Busca en los anteriores elementos de la lista de getListTransitionOrStep
+					 * hasta encontrar una transicion y el step del set de la etapa en la q estamos*/
+					/*TODO mirar porq estaria mejor hacer un while para q deje de mirar cuando:
+					previousStep y previousTransition sean distintos de null*/
 					for (int previousIndex = i - 1; previousIndex >= 0; previousIndex--) {
+						//busca recursivamente
 						if (seq.getListTransitionOrStep().get(previousIndex) instanceof Step && previousStep == null) {
 							previousStep = (Step) seq.getListTransitionOrStep().get(previousIndex);
 						} else if (seq.getListTransitionOrStep().get(previousIndex) instanceof Transition
@@ -390,12 +396,14 @@ public class Grafcet {
 					// si tenemos en la secuencia los anteriores lo generamos,
 					// sino lo buscamos
 					if (previousTransition != null && previousStep != null) {
-						if(!previousTransition.getCondition().equals("")){
+						
+						String auxCondition = previousTransition.getCondition();
+						String auxNameStep = previousStep.getName();
+						if(!auxCondition.equals("")){
 							previousStepAndTransitions
-							.add("(" + previousStep.getName() + " AND " + previousTransition.getCondition() + ")");
+							.add("(" + auxNameStep + " AND " + auxCondition + ")");
 						}else{
-							previousStepAndTransitions
-							.add( previousStep.getName() );
+							previousStepAndTransitions.add( auxNameStep);
 						}
 						
 					} else {
@@ -414,6 +422,7 @@ public class Grafcet {
 					// Rellenamos el Reset
 					LinkedList<String> nextSteps = new LinkedList<String>();
 					Step nextStep = null;
+					/*Buscamos en los siguientes elementos de la getListTransitionOrStep() de la secuencia */
 					for (int nextIndex = i + 1; nextIndex < seq.getListTransitionOrStep().size(); nextIndex++) {
 						if (seq.getListTransitionOrStep().get(nextIndex) instanceof Step && nextStep == null) {
 							nextStep = (Step) seq.getListTransitionOrStep().get(nextIndex);
@@ -423,7 +432,7 @@ public class Grafcet {
 					// guardamos, sino los buscamos.
 					if (nextStep != null) {
 						nextSteps.add(nextStep.getName());
-					} else {
+					} else {//Buscamos en las siguiente secuencias
 						nextSteps = getNextStepFromSequence(seq.getNextSequencesList());
 					}
 					// fijamos el reset al step
@@ -595,35 +604,44 @@ public class Grafcet {
 	/** Rellena las listas de emergencia */
 	public void getEmergency() {
 
-		for (Sequence s : getListS()) {
+		for (Sequence s : getSequenceList()) {
 
-			//s.getEmergency();
 
-			if (s.getStepStartEmergency() != -1) {
-				Step stepStart = (Step) s.getListTransitionOrStep().get(s.getStepStartEmergency());
-				addStepStartEmergency(stepStart.getName());
-				addListEmergencyStart(stepStart.getGrafcetsStartEmergency());
-				Project.getProject().addStepStartEmergency(stepStart.getName());
-				Project.getProject().addListEmergencyStart(stepStart.getGrafcetsStartEmergency());
-
-			} else if (s.getStepStopEmergency() != -1) {
-				Step stepStop = (Step) s.getListTransitionOrStep().get(s.getStepStopEmergency());
-				addStepStopEmergency(stepStop.getName());
-				addListEmergencyStop(stepStop.getGrafcetsStopEmergency());
-				Project.getProject().addStepStopEmergency(stepStop.getName());
-				Project.getProject().addListEmergencyStop(stepStop.getGrafcetsStopEmergency());
-				
+			int auxNumberStepStarEmergency =  s.getStepStartEmergency();	
+			String nameStep = "";
+			LinkedList<String> listAux = null;
+			
+			
+			if (auxNumberStepStarEmergency != -1) {
+				Step stepStart = (Step) s.getListTransitionOrStep().get(auxNumberStepStarEmergency);
+				nameStep = stepStart.getName();
+				listAux = stepStart.getGrafcetsStartEmergency();
+				/*addStepStartEmergency(nameStep);
+				addListEmergencyStart(listAux);*/
+				Project.getProject().addStepStartEmergency(nameStep);
+				Project.getProject().addListEmergencyStart(listAux);
+			} else {
+				int auxNumberStepStopEmergency = s.getStepStopEmergency();
+				if (auxNumberStepStopEmergency!= -1) {
+					Step stepStop = (Step) s.getListTransitionOrStep().get(auxNumberStepStopEmergency);
+					nameStep= stepStop.getName();
+					listAux = stepStop.getGrafcetsStopEmergency();
+					/*addStepStopEmergency(stepStop.getName());
+					addListEmergencyStop(stepStop.getGrafcetsStopEmergency());*/
+					Project.getProject().addStepStopEmergency(nameStep);
+					Project.getProject().addListEmergencyStop(listAux);
+				}	
 			}
 
 		}
 
 	}
 
-	public boolean compareStartAndStopLists() {
+	/*public boolean compareStartAndStopLists() {
 		Collections.sort(this.listEmergencyStop);
 		Collections.sort(this.listEmergencyStart);
 		return getListEmergencyStart().equals(getListEmergencyStop());
-	}
+	}*/
 
 	/** Esta lista se va rellenando al ir añadiendo una secuencia al grafcet */
 	public LinkedList<String> getListSignalsGrafcet() {

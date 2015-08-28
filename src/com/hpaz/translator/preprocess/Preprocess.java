@@ -225,8 +225,20 @@ public class Preprocess extends DefaultHandler {
 			grafcet.addJump(jump);
 
 		} else if (actualTag.equals(GrafcetTagsConstants.GRAFCET_TAG)) { // Grafcet
+			grafcet.fillPreviousAndNextSequencesLists();
+			grafcet.addSetAndResetToStep();
+			// si es el de emergencia genero las listas correspondientes
+			if (grafcet.isEmergency()) {
+				grafcet.getEmergency();
+			}
+			
+			//genero asignaciones de accion := paso
+			Map<String, String> auxMap = grafcet.getActionStepMap();
+			Project.getProject().generateActionStepMap(auxMap);
+			
 			// añado el grafcet al proyecto
 			Project.getProject().addGrafcet(grafcet);
+			
 			//si es una etiqueta de negacion
 		}else if (actualTag.equals(GrafcetTagsConstants.CPL_TAG)) { // Grafcet
 			/*vuelvo la actual tag a la antigua tag ya que si hay mas

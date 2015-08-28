@@ -250,7 +250,7 @@ public class Step {
 		return and;
 	}
 	/**Se llama si la convergencia es and*/
-	public void setAnd(boolean pAnd) {
+	public void addAnd(boolean pAnd) {
 		this.and = pAnd;
 	}
 }
