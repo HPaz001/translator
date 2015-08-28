@@ -38,7 +38,7 @@ public class Step {
 		this.myActions = new LinkedList<Action>();
 		this.stopEmergency=false;
 		this.startEmergency=false;
-		this.setAnd(false);
+		this.and=false;
 	}
 	
 	public void fillAttributes(Map<String, String> pAttributes) {

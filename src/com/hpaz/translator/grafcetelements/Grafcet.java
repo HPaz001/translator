@@ -277,7 +277,7 @@ public class Grafcet {
 		/* Por cada camino que tengamos */
 		for (Road road : roadList) {
 			// por cada secuencia de la lista de caminos
-			for (Integer numSequencesRoad : road.getMySequences()) {
+			for (Integer numSequencesRoad : road.getSequences()) {
 				if (road.getType().equals("div or") || road.getType().equals("div and")) {
 					/*
 					 * Guardo en la secuencia roadIni.next la secuencia

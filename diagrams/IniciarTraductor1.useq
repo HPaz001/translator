@@ -5,34 +5,34 @@
     autoSize="true">    
     <position height="-1" width="-1" x="325" y="0"/>    
     <execution id="2">      
-      <position height="238" width="0" x="0" y="78"/>    
+      <position height="200" width="0" x="0" y="78"/>    
     </execution>    
     <execution id="4">      
       <position height="21" width="0" x="0" y="120"/>    
     </execution>    
     <execution id="13">      
-      <position height="1340" width="0" x="0" y="341"/>    
+      <position height="1640" width="0" x="0" y="295"/>    
     </execution>    
     <execution id="15">      
-      <position height="1277" width="0" x="0" y="383"/>    
+      <position height="1577" width="0" x="0" y="337"/>    
     </execution>    
     <execution id="19">      
-      <position height="21" width="0" x="0" y="477"/>    
+      <position height="21" width="0" x="0" y="420"/>    
     </execution>    
     <execution id="25">      
-      <position height="21" width="0" x="0" y="689"/>    
+      <position height="21" width="0" x="0" y="865"/>    
     </execution>    
     <execution id="31">      
-      <position height="21" width="0" x="0" y="1095"/>    
+      <position height="21" width="0" x="0" y="1037"/>    
     </execution>    
     <execution id="39">      
-      <position height="21" width="0" x="0" y="1273"/>    
+      <position height="21" width="0" x="0" y="1280"/>    
     </execution>    
     <execution id="45">      
-      <position height="21" width="0" x="0" y="1409"/>    
+      <position height="21" width="0" x="0" y="1450"/>    
     </execution>    
     <execution id="51">      
-      <position height="21" width="0" x="0" y="1545"/>    
+      <position height="21" width="0" x="0" y="1683"/>    
     </execution>  
   </object>  
   <object id="56" language="java" name="com.hpaz.translator.grafcetelements.Grafcet" project="translator" 
@@ -40,82 +40,121 @@
     autoSize="true">    
     <position height="0" width="0" x="0" y="0"/>    
     <execution id="17">      
-      <position height="21" width="0" x="0" y="414"/>    
+      <position height="21" width="0" x="0" y="358"/>    
     </execution>    
     <execution id="21">      
-      <position height="89" width="0" x="0" y="508"/>    
+      <position height="345" width="0" x="0" y="462"/>    
     </execution>    
     <execution id="58">      
-      <position height="21" width="0" x="0" y="555"/>    
+      <position height="21" width="0" x="0" y="504"/>    
+    </execution>    
+    <execution id="60">      
+      <position height="21" width="0" x="0" y="559"/>    
+    </execution>    
+    <execution id="62">      
+      <position height="21" width="0" x="0" y="614"/>    
+    </execution>    
+    <execution id="64">      
+      <position height="21" width="0" x="0" y="666"/>    
+    </execution>    
+    <execution id="66">      
+      <position height="21" width="0" x="0" y="715"/>    
+    </execution>    
+    <execution id="68">      
+      <position height="21" width="0" x="0" y="765"/>    
     </execution>  
   </object>  
-  <object id="59" language="java" name="com.hpaz.translator.grafcetelements.Sequence" project="translator" 
+  <object id="69" language="java" name="com.hpaz.translator.grafcetelements.Sequence" project="translator" 
     file="/translator/src/com/hpaz/translator/grafcetelements/Sequence.java" binary="false" label="sequence" 
     type="class" autoSize="true">    
     <position height="0" width="0" x="0" y="0"/>    
     <execution id="23">      
-      <position height="21" width="0" x="0" y="630"/>    
+      <position height="21" width="0" x="0" y="821"/>    
     </execution>    
     <execution id="27">      
-      <position height="21" width="0" x="0" y="738"/>    
+      <position height="76" width="0" x="0" y="901"/>    
+    </execution>    
+    <execution id="71">      
+      <position height="21" width="0" x="0" y="935"/>    
     </execution>  
   </object>  
-  <object id="60" language="java" name="com.hpaz.translator.grafcetelements.Step" project="translator" 
+  <object id="72" language="java" name="com.hpaz.translator.grafcetelements.Step" project="translator" 
     file="/translator/src/com/hpaz/translator/grafcetelements/Step.java" binary="false" label="step" type="class" 
     autoSize="true">    
     <position height="0" width="0" x="0" y="0"/>    
     <execution id="29">      
-      <position height="21" width="0" x="0" y="785"/>    
+      <position height="21" width="0" x="0" y="989"/>    
     </execution>    
     <execution id="33">      
-      <position height="21" width="0" x="0" y="1126"/>    
+      <position height="128" width="0" x="0" y="1075"/>    
+    </execution>    
+    <execution id="74">      
+      <position height="21" width="0" x="0" y="1106"/>    
+    </execution>    
+    <execution id="76">      
+      <position height="21" width="0" x="0" y="1161"/>    
     </execution>  
   </object>  
-  <object id="61" language="java" name="com.hpaz.translator.grafcetelements.Transition" project="translator" 
+  <object id="77" language="java" name="com.hpaz.translator.grafcetelements.Transition" project="translator" 
     file="/translator/src/com/hpaz/translator/grafcetelements/Transition.java" binary="false" label="transition" 
     type="class" autoSize="true">    
     <position height="0" width="0" x="0" y="0"/>    
     <execution id="35">      
-      <position height="21" width="0" x="0" y="1168"/>    
+      <position height="21" width="0" x="0" y="1211"/>    
     </execution>  
   </object>  
-  <object id="62" language="java" name="com.hpaz.translator.grafcetelements.Action" project="translator" 
+  <object id="78" language="java" name="com.hpaz.translator.grafcetelements.Action" project="translator" 
     file="/translator/src/com/hpaz/translator/grafcetelements/Action.java" binary="false" label="action" type="class" 
     autoSize="true">    
     <position height="0" width="0" x="0" y="0"/>    
     <execution id="37">      
-      <position height="21" width="0" x="0" y="1210"/>    
+      <position height="21" width="0" x="0" y="1238"/>    
     </execution>    
     <execution id="41">      
-      <position height="21" width="0" x="0" y="1304"/>    
+      <position height="84" width="0" x="0" y="1315"/>    
+    </execution>    
+    <execution id="80">      
+      <position height="21" width="0" x="0" y="1357"/>    
     </execution>  
   </object>  
-  <object id="63" language="java" name="com.hpaz.translator.grafcetelements.Road" project="translator" 
+  <object id="81" language="java" name="com.hpaz.translator.grafcetelements.Road" project="translator" 
     file="/translator/src/com/hpaz/translator/grafcetelements/Road.java" binary="false" label="road" type="class" 
     autoSize="true">    
     <position height="0" width="0" x="0" y="0"/>    
     <execution id="43">      
-      <position height="21" width="0" x="0" y="1346"/>    
+      <position height="21" width="0" x="0" y="1408"/>    
     </execution>    
     <execution id="47">      
-      <position height="21" width="0" x="0" y="1440"/>    
+      <position height="140" width="0" x="0" y="1487"/>    
     </execution>    
     <execution id="55">      
-      <position height="21" width="0" x="0" y="1618"/>    
+      <position height="21" width="0" x="0" y="1872"/>    
+    </execution>    
+    <execution id="83">      
+      <position height="21" width="0" x="0" y="1529"/>    
+    </execution>    
+    <execution id="85">      
+      <position height="21" width="0" x="0" y="1585"/>    
     </execution>  
   </object>  
-  <object id="64" language="java" name="com.hpaz.translator.grafcetelements.Jump" project="translator" 
+  <object id="86" language="java" name="com.hpaz.translator.grafcetelements.Jump" project="translator" 
     file="/translator/src/com/hpaz/translator/grafcetelements/Jump.java" binary="false" label="jump" type="class" 
     autoSize="true">    
     <position height="0" width="0" x="0" y="0"/>    
     <execution id="49">      
-      <position height="21" width="0" x="0" y="1482"/>    
+      <position height="21" width="0" x="0" y="1639"/>    
     </execution>    
     <execution id="53">      
-      <position height="21" width="0" x="0" y="1576"/>    
+      <position height="140" width="0" x="0" y="1721"/>    
+    </execution>    
+    <execution id="88">      
+      <position height="21" width="0" x="0" y="1763"/>    
+    </execution>    
+    <execution id="90">      
+      <position height="21" width="0" x="0" y="1819"/>    
     </execution>  
   </object>  
-  <object id="65" language="java" name="com.hpaz.translator.grafcetelements.Project" project="translator" 
+  <object id="91" language="java" name="com.hpaz.translator.grafcetelements.Project" project="translator" 
     file="/translator/src/com/hpaz/translator/grafcetelements/Project.java" binary="false" label="project" type="class" 
     autoSize="true">    
     <position height="-1" width="-1" x="1025" y="0"/>    
@@ -123,13 +162,13 @@
       <position height="21" width="160" x="1295" y="163"/>    
     </execution>    
     <execution id="8">      
-      <position height="21" width="160" x="1295" y="200"/>    
+      <position height="21" width="160" x="1295" y="189"/>    
     </execution>    
     <execution id="10">      
-      <position height="21" width="160" x="1295" y="236"/>    
+      <position height="21" width="160" x="1295" y="212"/>    
     </execution>    
     <execution id="12">      
-      <position height="21" width="160" x="1295" y="274"/>    
+      <position height="21" width="160" x="1295" y="236"/>    
     </execution>  
   </object>  
   <message id="3" operation="Preprocess(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">    
@@ -237,8 +276,60 @@
     <end type="SOURCE" refId="15"/>    
     <end type="TARGET" refId="55"/>  
   </message>  
-  <message id="57" operation="getName():java.lang.String">    
+  <message id="57" operation="addType(java.lang.String):void">    
     <end type="SOURCE" refId="21"/>    
     <end type="TARGET" refId="58"/>  
+  </message>  
+  <message id="59" operation="addName(java.lang.String):void">    
+    <end type="SOURCE" refId="21"/>    
+    <end type="TARGET" refId="60"/>  
+  </message>  
+  <message id="61" operation="addComment(java.lang.String):void">    
+    <end type="SOURCE" refId="21"/>    
+    <end type="TARGET" refId="62"/>  
+  </message>  
+  <message id="63" operation="addOwner(java.lang.String):void">    
+    <end type="SOURCE" refId="21"/>    
+    <end type="TARGET" refId="64"/>  
+  </message>  
+  <message id="65" operation="getName():java.lang.String">    
+    <end type="SOURCE" refId="21"/>    
+    <end type="TARGET" refId="66"/>  
+  </message>  
+  <message id="67" operation="addEmergency(boolean):void">    
+    <end type="SOURCE" refId="21"/>    
+    <end type="TARGET" refId="68"/>  
+  </message>  
+  <message id="70" operation="addIdSeq(int):void">    
+    <end type="SOURCE" refId="27"/>    
+    <end type="TARGET" refId="71"/>  
+  </message>  
+  <message id="73" operation="addType(java.lang.String):void">    
+    <end type="SOURCE" refId="33"/>    
+    <end type="TARGET" refId="74"/>  
+  </message>  
+  <message id="75" operation="addName(java.lang.String):void">    
+    <end type="SOURCE" refId="33"/>    
+    <end type="TARGET" refId="76"/>  
+  </message>  
+  <message id="79" operation="addType(java.lang.String):void">    
+    <end type="SOURCE" refId="41"/>    
+    <end type="TARGET" refId="80"/>  
+  </message>  
+  <message id="82" operation="addSeqIni(int):void">    
+    <end type="SOURCE" refId="47"/>    
+    <end type="TARGET" refId="83"/>  
+  </message>  
+  <message id="84" operation="addType(java.lang.String):void">    
+    <end type="SOURCE" refId="47"/>    
+    <end type="TARGET" refId="85"/>  
+  </message>  
+  <message id="87" operation="addFromSeq(int):void">    
+    <end type="SOURCE" refId="53"/>    
+    <end type="TARGET" refId="88"/>  
+  </message>  
+  <message id="89" operation="addToSeq(int):void">    
+    <end type="SOURCE" refId="53"/>    
+    <end type="TARGET" refId="90"/>  
   </message>
 </sequence-diagram>

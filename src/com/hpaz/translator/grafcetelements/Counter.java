@@ -9,7 +9,7 @@ public class Counter {
 
 	public Counter() {
 		this.nameCounter = null;
-		this.addTypeCounter(null);
+		this.typeCounter=null;
 		this.stepCountes = null;
 	}
 

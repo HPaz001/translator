@@ -15,22 +15,22 @@ public class Jump {
 		return fromSeq;
 	}
 
-	public void setFromSeq(int pFromSeq) {
-		this.fromSeq = pFromSeq - 1;
+	private void addFromSeq(int pFromSeq) {
+		this.fromSeq = pFromSeq;
 	}
 
 	public int getToSeq() {
 		return toSeq;
 	}
 
-	public void setToSeq(int pToSeq) {
-		this.toSeq = pToSeq - 1;
+	private void addToSeq(int pToSeq) {
+		this.toSeq = pToSeq;
 	}
 
 	public void fillAttributes(Map<String, String> pAttributes) {
 		// anado desde y a donde
-		this.fromSeq = Integer.parseInt(pAttributes.get("seqid_from"))-1;
-		this.toSeq = Integer.parseInt(pAttributes.get("seqid_to"))-1;
+		addFromSeq(Integer.parseInt(pAttributes.get("seqid_from"))-1);
+		addToSeq (Integer.parseInt(pAttributes.get("seqid_to"))-1);
 	}
 
 	/*public void printJump() {

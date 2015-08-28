@@ -32,18 +32,18 @@ public class Sequence {
 	}
 	public void fillAttributes(Map<String, String> pAttributes) {
 		// anado el id
-		this.idSeq = Integer.parseInt(pAttributes.get("id"));			
+		addIdSeq(Integer.parseInt(pAttributes.get("id")));			
 	}
 
 	
+	private void addIdSeq(int pNumber) {
+		this.idSeq=pNumber;
+		
+	}
 	public int getIdSeq() {
 		return idSeq;
 	}
-	/*
-	public void setIdSeq(int id) {
-		this.idSeq = id;
-	}
-*/
+
 	public LinkedList<Object> getListTransitionOrStep() {
 		return listTransitionOrStep;
 	}

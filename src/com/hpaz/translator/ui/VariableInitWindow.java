@@ -346,7 +346,7 @@ public class VariableInitWindow extends JFrame {
 
 	private void sendVariablesConfigToAlgorithm() {
 		if (checkIfMapIsFilled()) {
-			Project.getProject().setProjectVariablesFromUserInterface(variablesTypesMap);
+			Project.getProject().addProjectVariablesFromUserInterface(variablesTypesMap);
 			exportOutputToFiles();
 		} else {
 			JOptionPane.showMessageDialog(contentPane, "Tiene que rellenar todas las variables", "Error",

@@ -1,0 +1,551 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sequence-diagram version="1.1.8" icons="true">  
+  <object id="1" language="java" name="com.hpaz.translator.preprocess.Preprocess" project="translator" 
+    file="/translator/src/com/hpaz/translator/preprocess/Preprocess.java" binary="false" label="preprocess" type="class" 
+    autoSize="true">    
+    <position height="-1" width="-1" x="89" y="0"/>    
+    <execution id="2">      
+      <position height="1643" width="0" x="0" y="78"/>    
+    </execution>    
+    <execution id="4">      
+      <position height="1580" width="0" x="0" y="120"/>    
+    </execution>    
+    <execution id="12">      
+      <position height="217" width="0" x="0" y="1462"/>    
+    </execution>    
+    <execution id="17">      
+      <position height="1756" width="0" x="0" y="1741"/>    
+    </execution>    
+    <execution id="19">      
+      <position height="1693" width="0" x="0" y="1783"/>    
+    </execution>  
+  </object>  
+  <object id="34" language="java" name="com.hpaz.translator.grafcetelements.Grafcet" project="translator" 
+    file="/translator/src/com/hpaz/translator/grafcetelements/Grafcet.java" binary="false" label="grafcet" type="class" 
+    autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="21">      
+      <position height="97" width="0" x="0" y="1814"/>    
+    </execution>    
+    <execution id="29">      
+      <position height="21" width="0" x="0" y="3359"/>    
+    </execution>    
+    <execution id="31">      
+      <position height="21" width="0" x="0" y="3401"/>    
+    </execution>  
+  </object>  
+  <object id="39" language="java" name="com.hpaz.translator.grafcetelements.Sequence" project="translator" 
+    file="/translator/src/com/hpaz/translator/grafcetelements/Sequence.java" binary="false" label="sequence" 
+    type="class" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="25">      
+      <position height="21" width="0" x="0" y="3275"/>    
+    </execution>    
+    <execution id="27">      
+      <position height="21" width="0" x="0" y="3317"/>    
+    </execution>    
+    <execution id="36">      
+      <position height="21" width="160" x="475" y="1835"/>    
+    </execution>    
+    <execution id="38">      
+      <position height="21" width="160" x="475" y="1869"/>    
+    </execution>  
+  </object>  
+  <object id="40" language="java" name="com.hpaz.translator.grafcetelements.Step" project="translator" 
+    file="/translator/src/com/hpaz/translator/grafcetelements/Step.java" binary="false" label="step" type="class" 
+    autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="14">      
+      <position height="72" width="0" x="0" y="1493"/>    
+    </execution>    
+    <execution id="42">      
+      <position height="21" width="0" x="0" y="1523"/>    
+    </execution>    
+    <execution id="23">      
+      <position height="1335" width="0" x="0" y="1919"/>    
+    </execution>    
+    <execution id="54">      
+      <position height="21" width="0" x="0" y="2899"/>    
+    </execution>    
+    <execution id="56">      
+      <position height="21" width="0" x="0" y="2951"/>    
+    </execution>    
+    <execution id="62">      
+      <position height="21" width="0" x="0" y="3129"/>    
+    </execution>    
+    <execution id="64">      
+      <position height="21" width="0" x="0" y="3181"/>    
+    </execution>  
+  </object>  
+  <object id="67" language="java" name="com.hpaz.translator.grafcetelements.Action" project="translator" 
+    file="/translator/src/com/hpaz/translator/grafcetelements/Action.java" binary="false" label="auxAction" type="class" 
+    autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="60">      
+      <position height="21" width="0" x="0" y="3024"/>    
+    </execution>  
+  </object>  
+  <object id="68" language="java" name="com.hpaz.translator.grafcetelements.Action" project="translator" 
+    file="/translator/src/com/hpaz/translator/grafcetelements/Action.java" binary="false" label="pAction" type="class" 
+    autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="58">      
+      <position height="21" width="0" x="0" y="2982"/>    
+    </execution>    
+    <execution id="66">      
+      <position height="21" width="0" x="0" y="3212"/>    
+    </execution>  
+  </object>  
+  <object id="69" language="java" name="com.hpaz.translator.grafcetelements.Action" project="translator" 
+    file="/translator/src/com/hpaz/translator/grafcetelements/Action.java" binary="false" label="action" type="class" 
+    autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="6">      
+      <position height="68" width="0" x="0" y="143"/>    
+    </execution>    
+    <execution id="8">      
+      <position height="66" width="0" x="0" y="229"/>    
+    </execution>    
+    <execution id="71">      
+      <position height="21" width="0" x="0" y="169"/>    
+    </execution>    
+    <execution id="73">      
+      <position height="21" width="0" x="0" y="253"/>    
+    </execution>    
+    <execution id="44">      
+      <position height="21" width="160" x="967" y="1940"/>    
+    </execution>    
+    <execution id="46">      
+      <position height="21" width="160" x="967" y="1972"/>    
+    </execution>    
+    <execution id="48">      
+      <position height="21" width="160" x="967" y="2008"/>    
+    </execution>    
+    <execution id="50">      
+      <position height="576" width="160" x="967" y="2045"/>    
+    </execution>    
+    <execution id="52">      
+      <position height="21" width="160" x="967" y="2642"/>    
+    </execution>    
+    <execution id="79">      
+      <position height="21" width="0" x="0" y="2171"/>    
+    </execution>    
+    <execution id="85">      
+      <position height="21" width="0" x="0" y="2307"/>    
+    </execution>    
+    <execution id="91">      
+      <position height="21" width="0" x="0" y="2443"/>    
+    </execution>    
+    <execution id="97">      
+      <position height="21" width="0" x="0" y="2579"/>    
+    </execution>  
+  </object>  
+  <object id="98" language="java" name="java.util.regex.Pattern" project="translator" 
+    file="C:/Program Files/Java/jre1.8.0_51/lib/rt.jar" binary="true" label="&lt;static&gt;" type="class" 
+    autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="75">      
+      <position height="21" width="0" x="0" y="2066"/>    
+    </execution>    
+    <execution id="87">      
+      <position height="21" width="0" x="0" y="2338"/>    
+    </execution>  
+  </object>  
+  <object id="99" language="java" name="java.util.regex.Pattern" project="translator" 
+    file="C:/Program Files/Java/jre1.8.0_51/lib/rt.jar" binary="true" label="pat" type="class" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="77">      
+      <position height="21" width="0" x="0" y="2108"/>    
+    </execution>  
+  </object>  
+  <object id="100" language="java" name="java.util.regex.Matcher" project="translator" 
+    file="C:/Program Files/Java/jre1.8.0_51/lib/rt.jar" binary="true" label="mat" type="class" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="81">      
+      <position height="21" width="0" x="0" y="2202"/>    
+    </execution>  
+  </object>  
+  <object id="101" language="java" name="java.util.LinkedList" project="translator" 
+    file="C:/Program Files/Java/jre1.8.0_51/lib/rt.jar" binary="true" label="stopEmergency" type="class" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="83">      
+      <position height="21" width="0" x="0" y="2244"/>    
+    </execution>  
+  </object>  
+  <object id="102" language="java" name="java.util.regex.Pattern" project="translator" 
+    file="C:/Program Files/Java/jre1.8.0_51/lib/rt.jar" binary="true" label="pat1" type="class" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="89">      
+      <position height="21" width="0" x="0" y="2380"/>    
+    </execution>  
+  </object>  
+  <object id="103" language="java" name="java.util.regex.Matcher" project="translator" 
+    file="C:/Program Files/Java/jre1.8.0_51/lib/rt.jar" binary="true" label="mat1" type="class" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="93">      
+      <position height="21" width="0" x="0" y="2474"/>    
+    </execution>  
+  </object>  
+  <object id="104" language="java" name="java.util.LinkedList" project="translator" 
+    file="C:/Program Files/Java/jre1.8.0_51/lib/rt.jar" binary="true" label="startEmergency" type="class" 
+    autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="95">      
+      <position height="21" width="0" x="0" y="2516"/>    
+    </execution>  
+  </object>  
+  <object id="105" language="java" name="com.hpaz.translator.grafcetelements.Transition" project="translator" 
+    file="/translator/src/com/hpaz/translator/grafcetelements/Transition.java" binary="false" label="transition" 
+    type="class" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="10">      
+      <position height="1131" width="0" x="0" y="303"/>    
+    </execution>    
+    <execution id="107">      
+      <position height="21" width="0" x="0" y="329"/>    
+    </execution>    
+    <execution id="109">      
+      <position height="21" width="0" x="0" y="377"/>    
+    </execution>    
+    <execution id="111">      
+      <position height="596" width="0" x="0" y="425"/>    
+    </execution>    
+    <execution id="113">      
+      <position height="21" width="0" x="0" y="1057"/>    
+    </execution>    
+    <execution id="121">      
+      <position height="21" width="0" x="0" y="1332"/>    
+    </execution>    
+    <execution id="123">      
+      <position height="21" width="0" x="0" y="1392"/>    
+    </execution>    
+    <execution id="16">      
+      <position height="71" width="0" x="0" y="1587"/>    
+    </execution>    
+    <execution id="139">      
+      <position height="21" width="0" x="0" y="1616"/>    
+    </execution>  
+  </object>  
+  <object id="140" language="java" name="com.hpaz.translator.grafcetelements.Project" project="translator" 
+    file="/translator/src/com/hpaz/translator/grafcetelements/Project.java" binary="false" label="project" type="class" 
+    autoSize="true">    
+    <position height="-1" width="-1" x="639" y="0"/>    
+    <execution id="125">      
+      <position height="21" width="160" x="639" y="474"/>    
+    </execution>    
+    <execution id="127">      
+      <position height="21" width="160" x="639" y="543"/>    
+    </execution>    
+    <execution id="137">      
+      <position height="145" width="160" x="639" y="855"/>    
+    </execution>    
+    <execution id="142">      
+      <position height="21" width="0" x="0" y="882"/>    
+    </execution>    
+    <execution id="146">      
+      <position height="21" width="0" x="0" y="958"/>    
+    </execution>    
+    <execution id="115">      
+      <position height="21" width="160" x="475" y="1131"/>    
+    </execution>    
+    <execution id="117">      
+      <position height="21" width="160" x="475" y="1209"/>    
+    </execution>    
+    <execution id="119">      
+      <position height="21" width="160" x="475" y="1279"/>    
+    </execution>    
+    <execution id="33">      
+      <position height="21" width="160" x="967" y="3434"/>    
+    </execution>  
+  </object>  
+  <object id="147" language="java" name="com.hpaz.translator.grafcetelements.Timer" project="translator" 
+    file="/translator/src/com/hpaz/translator/grafcetelements/Timer.java" binary="false" label="timer" type="class" 
+    autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="131">      
+      <position height="21" width="0" x="0" y="623"/>    
+    </execution>    
+    <execution id="133">      
+      <position height="21" width="0" x="0" y="654"/>    
+    </execution>    
+    <execution id="135">      
+      <position height="136" width="0" x="0" y="694"/>    
+    </execution>    
+    <execution id="129">      
+      <position height="21" width="160" x="475" y="587"/>    
+    </execution>    
+    <execution id="149">      
+      <position height="21" width="0" x="0" y="736"/>    
+    </execution>    
+    <execution id="151">      
+      <position height="21" width="0" x="0" y="788"/>    
+    </execution>    
+    <execution id="144">      
+      <position height="21" width="160" x="639" y="914"/>    
+    </execution>  
+  </object>  
+  <message id="3" operation="characters(char[],int,int):void">    
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="4"/>  
+  </message>  
+  <message id="5" operation="addText(java.lang.String):void">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="6"/>  
+  </message>  
+  <message id="7" operation="addCondition(java.lang.String):void">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="8"/>  
+  </message>  
+  <message id="9" operation="addCondition(java.lang.String):void">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="10"/>  
+  </message>  
+  <message id="11" operation="addComent(java.lang.String):void">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="12"/>  
+  </message>  
+  <message id="13" operation="addComment(java.lang.String):void">    
+    <end type="SOURCE" refId="12"/>    
+    <end type="TARGET" refId="14"/>  
+  </message>  
+  <message id="15" operation="addComment(java.lang.String):void">    
+    <end type="SOURCE" refId="12"/>    
+    <end type="TARGET" refId="16"/>  
+  </message>  
+  <message id="18" operation="endElement(java.lang.String,java.lang.String,java.lang.String):void">    
+    <end type="SOURCE" refId="17"/>    
+    <end type="TARGET" refId="19"/>  
+  </message>  
+  <message id="20" operation="addSequence(com.hpaz.translator.grafcetelements.Sequence):void">    
+    <end type="SOURCE" refId="19"/>    
+    <end type="TARGET" refId="21"/>  
+  </message>  
+  <message id="22" operation="addAction(com.hpaz.translator.grafcetelements.Action):void">    
+    <end type="SOURCE" refId="19"/>    
+    <end type="TARGET" refId="23"/>  
+  </message>  
+  <message id="24" operation="addTransitionOrStep(java.lang.Object):void">    
+    <end type="SOURCE" refId="19"/>    
+    <end type="TARGET" refId="25"/>  
+  </message>  
+  <message id="26" operation="addTransitionOrStep(java.lang.Object):void">    
+    <end type="SOURCE" refId="19"/>    
+    <end type="TARGET" refId="27"/>  
+  </message>  
+  <message id="28" operation="addRoad(com.hpaz.translator.grafcetelements.Road):void">    
+    <end type="SOURCE" refId="19"/>    
+    <end type="TARGET" refId="29"/>  
+  </message>  
+  <message id="30" operation="addJump(com.hpaz.translator.grafcetelements.Jump):void">    
+    <end type="SOURCE" refId="19"/>    
+    <end type="TARGET" refId="31"/>  
+  </message>  
+  <message id="32" operation="addGrafcet(com.hpaz.translator.grafcetelements.Grafcet):void">    
+    <end type="SOURCE" refId="19"/>    
+    <end type="TARGET" refId="33"/>  
+  </message>  
+  <message id="35" operation="getSignals():java.util.LinkedList&lt;String&gt;">    
+    <end type="SOURCE" refId="21"/>    
+    <end type="TARGET" refId="36"/>  
+  </message>  
+  <message id="37" operation="getIdSeq():int">    
+    <end type="SOURCE" refId="21"/>    
+    <end type="TARGET" refId="38"/>  
+  </message>  
+  <message id="41" operation="getComment():java.lang.String">    
+    <end type="SOURCE" refId="14"/>    
+    <end type="TARGET" refId="42"/>  
+  </message>  
+  <message id="43" operation="getText():java.lang.String">    
+    <end type="SOURCE" refId="23"/>    
+    <end type="TARGET" refId="44"/>  
+  </message>  
+  <message id="45" operation="getType():java.lang.String">    
+    <end type="SOURCE" refId="23"/>    
+    <end type="TARGET" refId="46"/>  
+  </message>  
+  <message id="47" operation="addEmergency(boolean):void">    
+    <end type="SOURCE" refId="23"/>    
+    <end type="TARGET" refId="48"/>  
+  </message>  
+  <message id="49" operation="getEmergency():void">    
+    <end type="SOURCE" refId="23"/>    
+    <end type="TARGET" refId="50"/>  
+  </message>  
+  <message id="51" operation="getStartEmergency():java.util.LinkedList&lt;String&gt;">    
+    <end type="SOURCE" refId="23"/>    
+    <end type="TARGET" refId="52"/>  
+  </message>  
+  <message id="53" operation="addStartEmergency(boolean):void">    
+    <end type="SOURCE" refId="23"/>    
+    <end type="TARGET" refId="54"/>  
+  </message>  
+  <message id="55" operation="addGrafcetsStartEmergency(java.util.LinkedList&lt;java.lang.String&gt;):void">    
+    <end type="SOURCE" refId="23"/>    
+    <end type="TARGET" refId="56"/>  
+  </message>  
+  <message id="57" operation="getStartEmergency():java.util.LinkedList&lt;String&gt;">    
+    <end type="SOURCE" refId="23"/>    
+    <end type="TARGET" refId="58"/>  
+  </message>  
+  <message id="59" operation="getStopEmergency():java.util.LinkedList&lt;String&gt;">    
+    <end type="SOURCE" refId="23"/>    
+    <end type="TARGET" refId="60"/>  
+  </message>  
+  <message id="61" operation="addStopEmergency(boolean):void">    
+    <end type="SOURCE" refId="23"/>    
+    <end type="TARGET" refId="62"/>  
+  </message>  
+  <message id="63" operation="addGrafcetsStopEmergency(java.util.LinkedList&lt;java.lang.String&gt;):void">    
+    <end type="SOURCE" refId="23"/>    
+    <end type="TARGET" refId="64"/>  
+  </message>  
+  <message id="65" operation="getStopEmergency():java.util.LinkedList&lt;String&gt;">    
+    <end type="SOURCE" refId="23"/>    
+    <end type="TARGET" refId="66"/>  
+  </message>  
+  <message id="70" operation="getText():java.lang.String">    
+    <end type="SOURCE" refId="6"/>    
+    <end type="TARGET" refId="71"/>  
+  </message>  
+  <message id="72" operation="getCondition():java.lang.String">    
+    <end type="SOURCE" refId="8"/>    
+    <end type="TARGET" refId="73"/>  
+  </message>  
+  <message id="74" operation="compile(java.lang.String):java.util.regex.Pattern">    
+    <end type="SOURCE" refId="50"/>    
+    <end type="TARGET" refId="75"/>  
+  </message>  
+  <message id="76" operation="matcher(java.lang.CharSequence):java.util.regex.Matcher">    
+    <end type="SOURCE" refId="50"/>    
+    <end type="TARGET" refId="77"/>  
+  </message>  
+  <message id="78" operation="getText():java.lang.String">    
+    <end type="SOURCE" refId="50"/>    
+    <end type="TARGET" refId="79"/>  
+  </message>  
+  <message id="80" operation="matches():boolean">    
+    <end type="SOURCE" refId="50"/>    
+    <end type="TARGET" refId="81"/>  
+  </message>  
+  <message id="82" operation="addAll(java.util.Collection&lt;? extends E&gt;):boolean">    
+    <end type="SOURCE" refId="50"/>    
+    <end type="TARGET" refId="83"/>  
+  </message>  
+  <message id="84" operation="generateListEmergency():java.util.LinkedList&lt;String&gt;">    
+    <end type="SOURCE" refId="50"/>    
+    <end type="TARGET" refId="85"/>  
+  </message>  
+  <message id="86" operation="compile(java.lang.String):java.util.regex.Pattern">    
+    <end type="SOURCE" refId="50"/>    
+    <end type="TARGET" refId="87"/>  
+  </message>  
+  <message id="88" operation="matcher(java.lang.CharSequence):java.util.regex.Matcher">    
+    <end type="SOURCE" refId="50"/>    
+    <end type="TARGET" refId="89"/>  
+  </message>  
+  <message id="90" operation="getText():java.lang.String">    
+    <end type="SOURCE" refId="50"/>    
+    <end type="TARGET" refId="91"/>  
+  </message>  
+  <message id="92" operation="matches():boolean">    
+    <end type="SOURCE" refId="50"/>    
+    <end type="TARGET" refId="93"/>  
+  </message>  
+  <message id="94" operation="addAll(java.util.Collection&lt;? extends E&gt;):boolean">    
+    <end type="SOURCE" refId="50"/>    
+    <end type="TARGET" refId="95"/>  
+  </message>  
+  <message id="96" operation="generateListEmergency():java.util.LinkedList&lt;String&gt;">    
+    <end type="SOURCE" refId="50"/>    
+    <end type="TARGET" refId="97"/>  
+  </message>  
+  <message id="106" operation="addListConditionSep(java.util.LinkedList&lt;java.lang.String&gt;):void">    
+    <end type="SOURCE" refId="10"/>    
+    <end type="TARGET" refId="107"/>  
+  </message>  
+  <message id="108" operation="removeSigns(java.lang.String):java.util.LinkedList&lt;String&gt;">    
+    <end type="SOURCE" refId="10"/>    
+    <end type="TARGET" refId="109"/>  
+  </message>  
+  <message id="110" operation="addTempToListProject(java.lang.String):void">    
+    <end type="SOURCE" refId="10"/>    
+    <end type="TARGET" refId="111"/>  
+  </message>  
+  <message id="112" operation="addListConditionSep(java.lang.String):void">    
+    <end type="SOURCE" refId="10"/>    
+    <end type="TARGET" refId="113"/>  
+  </message>  
+  <message id="114" operation="getList_FE_and_RE():java.util.LinkedList&lt;String&gt;">    
+    <end type="SOURCE" refId="10"/>    
+    <end type="TARGET" refId="115"/>  
+  </message>  
+  <message id="116" operation="add_FE_and_RE(java.lang.String):void">    
+    <end type="SOURCE" refId="10"/>    
+    <end type="TARGET" refId="117"/>  
+  </message>  
+  <message id="118" operation="getProgram():java.lang.String">    
+    <end type="SOURCE" refId="10"/>    
+    <end type="TARGET" refId="119"/>  
+  </message>  
+  <message id="120" operation="getCondition():java.lang.String">    
+    <end type="SOURCE" refId="10"/>    
+    <end type="TARGET" refId="121"/>  
+  </message>  
+  <message id="122" operation="changeSign(java.lang.String):java.lang.String">    
+    <end type="SOURCE" refId="10"/>    
+    <end type="TARGET" refId="123"/>  
+  </message>  
+  <message id="124" operation="equalsTimer(java.lang.String):int">    
+    <end type="SOURCE" refId="111"/>    
+    <end type="TARGET" refId="125"/>  
+  </message>  
+  <message id="126" operation="getListTimers():java.util.LinkedList&lt;Timer&gt;">    
+    <end type="SOURCE" refId="111"/>    
+    <end type="TARGET" refId="127"/>  
+  </message>  
+  <message id="128" operation="addStepNameTimer(java.lang.String):void">    
+    <end type="SOURCE" refId="111"/>    
+    <end type="TARGET" refId="129"/>  
+  </message>  
+  <message id="130" operation="Timer()">    
+    <end type="SOURCE" refId="111"/>    
+    <end type="TARGET" refId="131"/>  
+  </message>  
+  <message id="132" operation="addNameTimer(java.lang.String):void">    
+    <end type="SOURCE" refId="111"/>    
+    <end type="TARGET" refId="133"/>  
+  </message>  
+  <message id="134" operation="fillTimer(java.lang.String[]):com.hpaz.translator.grafcetelements.Timer">    
+    <end type="SOURCE" refId="111"/>    
+    <end type="TARGET" refId="135"/>  
+  </message>  
+  <message id="136" operation="addTimer(com.hpaz.translator.grafcetelements.Timer):void">    
+    <end type="SOURCE" refId="111"/>    
+    <end type="TARGET" refId="137"/>  
+  </message>  
+  <message id="138" operation="getComment():java.lang.String">    
+    <end type="SOURCE" refId="16"/>    
+    <end type="TARGET" refId="139"/>  
+  </message>  
+  <message id="141" operation="addListTimersUI(java.lang.String):void">    
+    <end type="SOURCE" refId="137"/>    
+    <end type="TARGET" refId="142"/>  
+  </message>  
+  <message id="143" operation="getNameTimer():java.lang.String">    
+    <end type="SOURCE" refId="137"/>    
+    <end type="TARGET" refId="144"/>  
+  </message>  
+  <message id="145" operation="addListTimers(com.hpaz.translator.grafcetelements.Timer):void">    
+    <end type="SOURCE" refId="137"/>    
+    <end type="TARGET" refId="146"/>  
+  </message>  
+  <message id="148" operation="addStepNameTimer(java.lang.String):void">    
+    <end type="SOURCE" refId="135"/>    
+    <end type="TARGET" refId="149"/>  
+  </message>  
+  <message id="150" operation="addTypeTime(java.lang.String):void">    
+    <end type="SOURCE" refId="135"/>    
+    <end type="TARGET" refId="151"/>  
+  </message>
+</sequence-diagram>

@@ -56,6 +56,14 @@ public class Project {
 	private Map<String, String> actionStepMap;
 
 
+	public Map<String, String> getActionStepMap() {
+		return actionStepMap;
+	}
+
+	public void addActionStepMap(String pKey, String pValue) {
+		this.actionStepMap.put(pKey, pValue);
+	}
+
 	/** Lista de grafcets que se fuerzan en la emergencia */
 	private LinkedList<String> listEmergencyStop;
 	private LinkedList<String> listEmergencyStart;
@@ -135,9 +143,14 @@ public class Project {
 		if (pGrafcet.isEmergency()) {
 			pGrafcet.getEmergency();
 		}
-		this.listGrafcet.add(pGrafcet);
+		addListGrafcet(pGrafcet);
 		//genero asignaciones de accion := paso
 		generateActionStepMap(pGrafcet);
+	}
+
+	private void addListGrafcet(Grafcet pGrafcet) {
+		this.listGrafcet.add(pGrafcet);
+		
 	}
 
 	public LinkedList<Timer> getListTimers() {
@@ -145,8 +158,18 @@ public class Project {
 	}
 
 	public void addTimer(Timer pTimer) {
-		this.listTimersUI.add(pTimer.getNameTimer());
+		addListTimersUI(pTimer.getNameTimer());
+		addListTimers(pTimer);
+		
+	}
+
+	private void addListTimers(Timer pTimer) {
 		this.listTimers.add(pTimer);
+	}
+
+	private void addListTimersUI(String pNameTimer) {
+		this.listTimersUI.add(pNameTimer);
+		
 	}
 
 	public LinkedList<Counter> getListCounters() {
@@ -154,8 +177,16 @@ public class Project {
 	}
 
 	public void addCounter(Counter pCounters) {
-		this.listCountersUI.add(pCounters.getNameCounter());
+		addListCountersUI(pCounters.getNameCounter());
+		addListCounters(pCounters);
+	}
+
+	private void addListCounters(Counter pCounters) {
 		this.listCounters.add(pCounters);
+	}
+
+	private void addListCountersUI(String pNameCounter) {
+		this.listCountersUI.add(pNameCounter);
 	}
 
 	public LinkedList<String> getListTimersUI() {
@@ -263,23 +294,22 @@ public class Project {
 			}
 			vG.add("\n\t(*---Contadores---*)\n\n");
 			// Por cada Contador
-			for (int j = 0; j < this.listCounters.size(); j++) {
-				String type = this.listUI.get(this.listCounters.get(j).getNameCounter());
+			for (int j = 0; j < getListCounters().size(); j++) {
+				String type = this.listUI.get(getListCounters().get(j).getNameCounter());
 				this.listCounters.get(j).addTypeCounter(type);
-				vG.add(this.listCounters.get(j).getGlobalsVarCounter());
+				vG.add(getListCounters().get(j).getGlobalsVarCounter());
 			}
-
 		}
 		return vG;
 	}
 
-	public void setProjectVariablesFromUserInterface(Map<String, String> variablesMap) {
-		this.listUI = variablesMap;
+	public void addProjectVariablesFromUserInterface(Map<String, String> variablesMap) {
+		
+		addListUI(variablesMap);
 		/*
 		 * for (String key : variablesMap.keySet()){ System.out.println(
 		 * "key -> " + key + ", value -> " + variablesMap.get(key)); }
 		 */
-
 	}
 
 	/*
@@ -291,16 +321,22 @@ public class Project {
 	 * }
 	 */
 
+	private void addListUI(Map<String, String> variablesMap) {
+		this.listUI = variablesMap;
+		
+	}
+
 	public void generateActionStepMap(Grafcet pGrafcet) {
 
 		Map<String, String> auxMap = pGrafcet.getActionStepMap();
 		for (String action : auxMap.keySet()) {
-			if (actionStepMap.get(action) == null)
-				actionStepMap.put(action, auxMap.get(action));
+			if (getActionStepMap().get(action) == null)
+				addActionStepMap(action, auxMap.get(action));
 			else
-				actionStepMap.put(action, actionStepMap.get(action) + " OR " + auxMap.get(action));
+				addActionStepMap(action, actionStepMap.get(action) + " OR " + auxMap.get(action));
 		}
 	}
+
 
 	/** Este metodo devuelve */
 	public void print() {
@@ -354,11 +390,11 @@ public class Project {
 			listCP .add("\n\t" + WordUtils.capitalize(assig) + ":=" + auxString + ";");
 		}
 
-		for (String action : actionStepMap.keySet()) {
+		for (String action : getActionStepMap().keySet()) {
 			//Dejo solo la primera letra en mayusculas
 			String aux = WordUtils.capitalize(action.trim());
 
-			String auxString = WordUtils.capitalize(actionStepMap.get(action));
+			String auxString = WordUtils.capitalize(getActionStepMap().get(action));
 
 			auxString.replaceAll(" Not ", " NOT ");
 			auxString.replaceAll(" And ", " AND ");
@@ -389,7 +425,7 @@ public class Project {
 				//Busco el indice del temporizador 
 				int index = equalsTimer(aux);
 				//Obtengo el Temporizador 
-				Timer timer = listTimers.get(index);
+				Timer timer = getListTimers().get(index);
 
 				String auxStepNameTimer = WordUtils.capitalize(timer.getStepNameTimer());
 
