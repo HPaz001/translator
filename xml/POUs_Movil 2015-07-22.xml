@@ -93,7 +93,43 @@
 					<ST>
 						<worksheet name="GMovil">
 							<html xmlns="http://www.w3.org/1999/xhtml">
-								<p xmlns="http://www.w3.org/1999/xhtml" xml:space="preserve">(*---------------------------------------------------------------------------------------------------------------------------------------<br /> GMovil:  <br />-----------------------------------------------------------------------------------------------------------------------------------------*)<br /><br />(* Set -Reset ________________________________________________________________X20*)<br />IF((X24 AND TempQ) OR Init ) THEN<br /> X20:=1;<br />END_IF;<br /><br />IF (X21 OR Reset) THEN<br /> X20:=0;<br />END_IF;<br /><br />(*Set -Reset ________________________________________________________________X21*)<br />IF(X20 AND ProdNorm)THEN<br /> X21:=1;<br />END_IF;<br /><br />IF ((X22 OR X13) OR Init OR Reset)THEN<br /> X21:=0;<br />END_IF;<br /><br />(*Set -Reset ________________________________________________________________X22*)<br />IF(X21 AND F1)THEN<br /> X22:=1;<br />END_IF;<br /><br />IF(X23 OR Init OR Reset)THEN<br />  X22:=0;<br />END_IF;<br /><br />(*Set -Reset ________________________________________________________________X23*)<br />IF(X22 AND TempQ)THEN<br /> X23:=1;<br />END_IF;<br /><br />IF(X24 OR Init OR  Reset) THEN<br /> X23:=0;<br />END_IF;<br /><br />(*Set -Reset ________________________________________________________________X24*)<br />IF(X23 AND F0)THEN<br /> X24:=1;<br />END_IF;<br /><br />IF(X20 OR Init OR  Reset) THEN<br /> X24:=0;<br />END_IF;<br /></p>
+								<p xmlns="http://www.w3.org/1999/xhtml" xml:space="preserve">
+								(*----------------------<br /> GMovil:  <br />---------------------------------*)<br />
+								<br />(* Set -Reset ________________________________________________________________X20*)
+								<br />IF((X24 AND TempQ) OR Init ) THEN
+								<br /> X20:=1;
+								<br />END_IF;
+								<br /><br />IF (X21 OR Reset) THEN
+								<br /> X20:=0;
+								<br />END_IF;
+								<br /><br />(*Set -Reset ________________________________________________________________X21*)
+								<br />IF(X20 AND ProdNorm)THEN
+								<br /> X21:=1;
+								<br />END_IF;
+								<br /><br />IF ((X22 OR X13) OR Init OR Reset)THEN
+								<br /> X21:=0;
+								<br />END_IF;
+								<br /><br />(*Set -Reset ________________________________________________________________X22*)
+								<br />IF(X21 AND F1)THEN
+								<br /> X22:=1;
+								<br />END_IF;
+								<br /><br />IF(X23 OR Init OR Reset)THEN
+								<br />  X22:=0;
+								<br />END_IF;
+								<br /><br />(*Set -Reset ________________________________________________________________X23*)
+								<br />IF(X22 AND TempQ)THEN
+								<br /> X23:=1;
+								<br />END_IF;
+								<br /><br />IF(X24 OR Init OR  Reset) THEN
+								<br /> X23:=0;
+								<br />END_IF;
+								<br /><br />(*Set -Reset ________________________________________________________________X24*)
+								<br />IF(X23 AND F0)THEN
+								<br /> X24:=1;
+								<br />END_IF;
+								<br /><br />IF(X20 OR Init OR  Reset) THEN
+								<br /> X24:=0;
+								<br />END_IF;<br /></p>
 							</html>
 						</worksheet>
 					</ST>

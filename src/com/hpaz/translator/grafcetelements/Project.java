@@ -1,5 +1,6 @@
 package com.hpaz.translator.grafcetelements;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -236,7 +237,7 @@ public class Project {
 		for (Grafcet g : listGrafcet) {
 			vG.addAll(g.getGrafcetVarGlobalStages());
 		}
-		vG.add("\n\t(*---Señales---*)\n\n");
+		vG.add("\n\t(*---Seï¿½ales---*)\n\n");
 
 		vG.add("\tINIT\t:BOOL;\n\tRESET\t:BOOL;\n");
 
@@ -251,7 +252,7 @@ public class Project {
 		LinkedList<String> signalK = new LinkedList<String>();
 		LinkedList<String> signalS = new LinkedList<String>();
 
-		// por cada una de las señales del proyecto
+		// por cada una de las seï¿½ales del proyecto
 		for (String string : this.signalsProject) {
 			// Si esta en el hashMap de la UI
 			if (this.listUI.containsKey(string)) {
@@ -261,7 +262,7 @@ public class Project {
 				Pattern pat = Pattern.compile(".*:$");
 				Matcher mat = pat.matcher(type);
 
-				// Si el tipo indica que es una señal
+				// Si el tipo indica que es una seï¿½al
 				if (!mat.matches()) {
 					String[] typeDiv = type.split(":");
 					String typeData = typeDiv[0];
@@ -293,7 +294,7 @@ public class Project {
 				this.listUI.remove(string);
 			}
 		}
-		// uno las listas de las distintas señales
+		// uno las listas de las distintas seï¿½ales
 		vG.add("\n\t\t(*---Entradas---*)\n\n");
 		vG.addAll(signalI);
 		vG.add("\n\t\t(*---Salidas---*)\n\n");
@@ -389,14 +390,178 @@ public class Project {
 	}
 	private LinkedList<String> getProgramPLCOpen() {
 		// TODO HACER AQUI LA PARTE DE PLCOPEN
-		return null;
+		LinkedList<String> programPLCOpen = new LinkedList<String>();
+		programPLCOpen.addAll(getGlobalVarsPLCOpen());
+		programPLCOpen.addAll(getPousPLCOpen());
+		return programPLCOpen;
+	}
+
+	private LinkedList<String> getPousPLCOpen() {
+		// TODO HACER AQUI POUS DE PLCOPEN
+		LinkedList<String> pousPLCOpen = new LinkedList<String>();
+		String aux = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+				+"<project xmlns:xhtml=\"http://www.w3.org/1999/xhtml\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\""
+				+"	xmlns=\"http://www.kw-software.com/xml/PLCopen/TC6_XML_V10_KW.xsd\">"
+				+"	<fileHeader companyName=\"Phoenix Contact\" companyURL=\"www.kw-software.com\""
+				+"		productName=\"PC WORX\" productVersion=\"5.20\" productRelease=\"Build 155\""
+				+"		creationDateTime=\"2015-07-23T13:03:20\" contentDescription=\"\" />"
+				+"	<contentHeader name=\"Movil\" version=\"1437649400\""
+				+"		modificationDateTime=\"2015-07-23T13:03:20\">"
+				+"		<coordinateInfo>"
+				+"			<pageSize x=\"999\" y=\"999\" />"
+				+"			<fbd>"
+				+"				<scaling x=\"2\" y=\"2\" />"
+				+"			</fbd>"
+				+"			<ld>"
+				+"				<scaling x=\"2\" y=\"2\" />"
+				+"			</ld>"
+				+"			<sfc>"
+				+"				<scaling x=\"2\" y=\"2\" />"
+				+"			</sfc>"
+				+"		</coordinateInfo>"
+				+"	</contentHeader>"
+				+"	<types>"
+				+"		<dataTypes />"
+				+"		<pous>"
+				+"			<pou name=\"GMovil\" pouType=\"functionBlock\" lastChange=\"2015-07-11T12:45:48\">"
+				+"				<interface>"
+				+"					<inputVars retain=\"false\">"
+				+"						<variable name=\"Init\" group=\"Default\">"
+				+"							<type>"
+				+"								<BOOL />"
+				+"							</type>"
+				+"						</variable>"
+				+"						<variable name=\"Reset\" group=\"Default\">"
+				+"							<type>"
+				+"								<BOOL />"
+				+"							</type>"
+				+"						</variable>"
+				+"					</inputVars>"
+				+"					<externalVars retain=\"false\">"
+				+"						<variable name=\"ProdNorm\" group=\"Default\">"
+				+"							<type>"
+				+"								<BOOL />"
+				+"							</type>"
+				+"						</variable>"
+				+"						<variable name=\"X20\" group=\"Default\">"
+				+"							<type>"
+				+"								<BOOL />"
+				+"							</type>"
+				+"						</variable>"
+				+"						<variable name=\"TempQ\" group=\"Default\">"
+				+"							<type>"
+				+"								<BOOL />"
+				+"							</type>"
+				+"						</variable>"
+				+"						<variable name=\"F0\" group=\"Default\">"
+				+"							<type>"
+				+"								<BOOL />"
+				+"							</type>"
+				+"						</variable>"
+				+"						<variable name=\"F1\" group=\"Default\">"
+				+"							<type>"
+				+"								<BOOL />"
+				+"							</type>"
+				+"						</variable>"
+				+"					</externalVars>"
+				+"				</interface>"
+				+"				<body>"
+				+"					<ST>"
+				+"						<worksheet name=\"GMovil\">"
+				+"							<html xmlns=\"http://www.w3.org/1999/xhtml\">"
+				+"								<p xmlns=\"http://www.w3.org/1999/xhtml\" xml:space=\"preserve\">"
+				+"								(*----------------------<br /> GMovil:  <br />---------------------------------*)<br />"
+				+"								<br />(* Set -Reset ________________________________________________________________X20*)"
+				+"								<br />IF((X24 AND TempQ) OR Init ) THEN"
+				+"								<br /> X20:=1;"
+				+"								<br />END_IF;"
+				+"								<br /><br />IF (X21 OR Reset) THEN"
+				+"								<br /> X20:=0;"
+				+"								<br />END_IF;</p>"
+				+"							</html>"
+				+"						</worksheet>"
+				+"					</ST>"
+				+"				</body>"
+				+"				<documentation>"
+				+"					<html xmlns=\"http://www.w3.org/1999/xhtml\">"
+				+"						<div xmlns=\"http://www.w3.org/1999/xhtml\" xml:space=\"preserve\""
+				+"							id=\"MWTDESCRIPTION\" wsName=\"GMovilT\" />"
+				+"					</html>"
+				+"				</documentation>"
+				+"			</pou>"
+				+"		</pous>"
+				+"	</types>"
+				+"	<instances>"
+				+"		<configurations />"
+				+"	</instances>"
+				+"</project>";
+		
+		
+		
+		return pousPLCOpen;
+	}
+
+	private LinkedList<String> getGlobalVarsPLCOpen() {
+		// TODO HACER AQUI GLOBAL VARS DE PLCOPEN
+		LinkedList<String> varsPLCOpen = new LinkedList<String>();
+		
+		String aux = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+				+ "<project xmlns:xhtml=\"http://www.w3.org/1999/xhtml\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\""
+				+ "xmlns=\"http://www.kw-software.com/xml/PLCopen/TC6_XML_V10_KW.xsd\">"
+				+ "<fileHeader companyName=\"Phoenix Contact\" companyURL=\"www.kw-software.com\""
+				+ "productName=\"PC WORX\" productVersion=\"5.20\" productRelease=\"Build 155\""
+				+ "creationDateTime=\"2015-07-23T13:03:20\" contentDescription=\"\" />"
+				+ "<contentHeader name=\"Movil\" version=\"1437649400\""
+				+ "modificationDateTime=\"2015-07-23T13:03:20\">"
+				+ "<coordinateInfo>"
+				+ "<pageSize x=\"999\" y=\"999\" />"
+				+ "<fbd>"
+				+ "<scaling x=\"2\" y=\"2\" />"
+				+ "</fbd>"
+				+ "<ld>"
+				+ "<scaling x=\"2\" y=\"2\" />"
+				+ "</ld>"
+				+ "<sfc>"
+				+ "<scaling x=\"2\" y=\"2\" />"
+				+ "</sfc>"
+				+ "</coordinateInfo>"
+				+ "</contentHeader>"
+				+ "<types>"
+				+ "<dataTypes />"
+				+ "<pous />"
+				+ "</types>"
+				+ "<instances>"
+				+ "<configurations>"
+				+ "<configuration name=\"STD_CNF\">"
+				+ "<resource name=\"STD_RES\">"
+				+ "<globalVars name=\"INIT\" retain=\"false\">"
+				+ "<variable name=\"INIT\" address=\"%IX0.7\">"
+				+ "<type><BOOL /></type>"
+				+ "</variable>"
+				+ "<variable name=\"RESET\" address=\"%IX0.6\">"
+				+ "<type><BOOL /></type>"
+				+ "</variable>"
+				+ "<variable name=\"Marcha\" address=\"%IX0.0\">"
+				+ "<type><BOOL /></type>"
+				+ "</variable>"
+				+ "</globalVars>"
+				+ "</resource>"
+				+ "</configuration>"
+				+ "</configurations>"
+				+ "</instances>"
+				+ "</project>";
+		
+		
+		
+		
+		return varsPLCOpen;
 	}
 
 	/**Devuelve una lista con la parte combinacional*/
 	private LinkedList<String> getProgramTSXMicroCP() {
 		// TODO FALLOS primera letra en mayusculas y el resto en minusculas
 		LinkedList<String> listCP = new LinkedList<String>();
-		listCP.add("(*Programación de la parte combinacional del sistema*)\n");
+		listCP.add("(*Programaciï¿½n de la parte combinacional del sistema*)\n");
 		/*
 		 * SolModoAuto:=REMarcha.Q; FinProces:=X20;
 		 */
@@ -462,7 +627,7 @@ public class Project {
 				auxString.replaceAll(" Or ", " OR ");
 				auxString.replaceAll(" Re ", " RE ");					
 
-				listCP.add("\n\n(*Activación y desactivación del temporizador*)\n"
+				listCP.add("\n\n(*Activaciï¿½n y desactivaciï¿½n del temporizador*)\n"
 						+ "\nIF("+auxStepNameTimer+")THEN (*RE = flanco de subida*)"
 						+ "\n\tSTART "+timer.getNameTimer()+";"
 						+ "\nELSIF("+auxStepNameTimer.replaceAll(" RE |RE ", " FE ")+")THEN (*FE = flanco de bajada*)"
@@ -490,7 +655,7 @@ public class Project {
 	private LinkedList<String> getProgramTSXMicroSP() {
 		// TODO FALLOS primera letra en mayusculas y el resto en minusculas
 		LinkedList<String> listSP = new LinkedList<String>();
-		listSP.add("\n(*----La señal de InicioGrafcets se crea para  poner los estados iniciales a 1 ------*)\n");
+		listSP.add("\n(*----La seï¿½al de InicioGrafcets se crea para  poner los estados iniciales a 1 ------*)\n");
 		//Obtengo el grafcet de emergencia para usar las listas y etapas
 
 		String auxStepStartEmergency ="";

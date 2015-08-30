@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <project xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns="http://www.kw-software.com/xml/PLCopen/TC6_XML_V10_KW.xsd">
+	
 	<fileHeader companyName="Phoenix Contact" companyURL="www.kw-software.com"
 		productName="PC WORX" productVersion="5.20" productRelease="Build 155"
 		creationDateTime="2015-07-23T13:03:20" contentDescription="" />
+		
 	<contentHeader name="Movil" version="1437649400"
 		modificationDateTime="2015-07-23T13:03:20">
 		<coordinateInfo>
@@ -19,10 +22,13 @@
 			</sfc>
 		</coordinateInfo>
 	</contentHeader>
+	
+	
 	<types>
 		<dataTypes />
 		<pous />
 	</types>
+	
 	<instances>
 		<configurations>
 			<configuration name="STD_CNF">
@@ -1008,4 +1014,5 @@
 			</configuration>
 		</configurations>
 	</instances>
+	
 </project>
