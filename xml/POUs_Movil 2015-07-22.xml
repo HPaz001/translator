@@ -594,7 +594,41 @@
 					<ST>
 						<worksheet name="ST_Main">
 							<html xmlns="http://www.w3.org/1999/xhtml">
-								<p xmlns="http://www.w3.org/1999/xhtml" xml:space="preserve">XInit:=INIT;<br />XReset:=RESET;<br /><br />FPMarcha(CLK:=Marcha);<br />FPParo(CLK:=Paro);<br /><br />SolModoAuto:=FPMarcha.Q;<br />SolParoFC:=FPParo.Q;<br />FinProces:=X20;<br /><br />InitSecPrincipal:=X35;<br />ResetSecPrincipal:=X33;<br />SecPrincipal(Init:=(XInit OR InitSecPrincipal), Reset:= (XReset OR ResetSecPrincipal));<br /><br />InitCondIni:=X35;<br />ResetCondIni:=X33;<br />CondIni(Init:=(XInit OR InitCondIni), Reset:=(XReset OR ResetCondIni) );<br /><br />InitMovil:=X35;<br />ResetMovil:=X33;<br />Movil(Init:=(XInit OR InitMovil), Reset:=(XReset OR ResetMovil));<br /><br />SolEmergencia:=Emergencia;<br />ParoEmergencia:= NOT Emergencia AND Rearme;<br />EmergenciaP(Init:=(XInit OR InitEmergencia) , Reset:=ResetEmergencia );<br /><br /><br />Inicio:=X0;<br />SolCondIni:=X1;<br />ProdNorm:=X2;<br />ParoFC:=X3;<br />FinCondIni:=X13;<br /><br />(*girar a la derecha*)<br />Cderecha:=X21;<br /><br />(*girar a la izquierda*)<br />Cizquierda:=X12 OR X23 OR (X31 AND NOT F0);<br /><br />TempIN:=X22 OR  X24;<br />TempPT:=T#2s;<br />Temp(IN:=TempIN, PT:=TempPT);<br />TempQ:=Temp.Q;<br />TempET:=Temp.ET;<br /><br /></p>
+								<p xmlns="http://www.w3.org/1999/xhtml" xml:space="preserve">
+								XInit:=INIT;
+								<br />XReset:=RESET;
+								<br /><br />FPMarcha(CLK:=Marcha);
+								<br />FPParo(CLK:=Paro);
+								<br /><br />SolModoAuto:=FPMarcha.Q;
+								<br />SolParoFC:=FPParo.Q;
+								<br />FinProces:=X20;<br />
+								<br />InitSecPrincipal:=X35;
+								<br />ResetSecPrincipal:=X33;
+								<br />SecPrincipal(Init:=(XInit OR InitSecPrincipal), Reset:= (XReset OR ResetSecPrincipal));
+								<br /><br />InitCondIni:=X35;
+								<br />ResetCondIni:=X33;
+								<br />CondIni(Init:=(XInit OR InitCondIni), Reset:=(XReset OR ResetCondIni) );
+								<br /><br />InitMovil:=X35;
+								<br />ResetMovil:=X33;
+								<br />Movil(Init:=(XInit OR InitMovil), Reset:=(XReset OR ResetMovil));
+								<br /><br />SolEmergencia:=Emergencia;
+								<br />ParoEmergencia:= NOT Emergencia AND Rearme;
+								<br />EmergenciaP(Init:=(XInit OR InitEmergencia) , Reset:=ResetEmergencia );
+								<br /><br /><br />Inicio:=X0;
+								<br />SolCondIni:=X1;
+								<br />ProdNorm:=X2;
+								<br />ParoFC:=X3;
+								<br />FinCondIni:=X13;
+								<br /><br />(*girar a la derecha*)
+								<br />Cderecha:=X21;
+								<br /><br />(*girar a la izquierda*)
+								<br />Cizquierda:=X12 OR X23 OR (X31 AND NOT F0);
+								<br /><br />TempIN:=X22 OR  X24;
+								<br />TempPT:=T#2s;
+								<br />Temp(IN:=TempIN, PT:=TempPT);
+								<br />TempQ:=Temp.Q;
+								<br />TempET:=Temp.ET;
+								<br /><br /></p>
 							</html>
 						</worksheet>
 					</ST>

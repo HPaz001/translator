@@ -18,14 +18,14 @@ public class Grafcet {
 
 	/* Variables que se usararn solo si el grafcet es de emergencia */
 	private boolean emergency;
-	/** Para saber las etapas de la emergencia */
+	/** Para saber las etapas de la emergencia 
 	private String stepStopEmergency;
-	private String stepStartEmergency;
-	/** Lista de grafcets que se fuerzan en la emergencia */
+	private String stepStartEmergency;*/
+	/** Lista de grafcets que se fuerzan en la emergencia 
 	private LinkedList<String> listEmergencyStop;
-	private LinkedList<String> listEmergencyStart;
+	private LinkedList<String> listEmergencyStart;*/
 	
-	/* Lista de señales del grafcet */
+	/* Lista de seï¿½ales del grafcet */
 	private LinkedList<String> signalsGrafcet;
 
 	private LinkedList<Jump> jumpList;
@@ -140,6 +140,17 @@ public class Grafcet {
 		}
 		return vG;
 	}
+	
+	public LinkedList<String> getGrafcetExternalVars() {
+		LinkedList<String> externalVars = new LinkedList<String>();
+		// por cada secuencia de la lista
+		for (Sequence sequence : sequenceList) {
+			externalVars.addAll(sequence.getStagesExternalVars());
+		}
+		return externalVars;
+	}
+	
+	
 
 	public LinkedList<String> grafcetVarGlobalSignals() {
 		LinkedList<String> vG = new LinkedList<String>();
@@ -206,7 +217,7 @@ public class Grafcet {
 			for (String action : auxMap.keySet()) {
 				// si la key no existe en actionStepMap
 				if (actionStepMap.get(action) == null) {
-					// añado
+					// aï¿½ado
 					actionStepMap.put(action, auxMap.get(action));
 				} else {
 					// si existe solo modifico el value
@@ -225,8 +236,8 @@ public class Grafcet {
 	 */
 	public void addSequence(Sequence pSequence) {
 		/*
-		 * obntengo su lista de señales de la secuencia para añadirla a la lista
-		 * de señales del grafcet
+		 * obntengo su lista de seï¿½ales de la secuencia para aï¿½adirla a la lista
+		 * de seï¿½ales del grafcet
 		 */
 		this.signalsGrafcet.addAll(pSequence.getSignals());
 		/* la posicion de la lista sera el numero de secuencia -1 */
@@ -360,7 +371,7 @@ public class Grafcet {
 	}
 
 	/**
-	 * Metodo que añade los set y reset a cada una de las distintas etapas que
+	 * Metodo que aï¿½ade los set y reset a cada una de las distintas etapas que
 	 * componen un grafcet
 	 */
 	public void addSetAndResetToStep() {
@@ -444,7 +455,81 @@ public class Grafcet {
 			}
 		}
 	}
+	public LinkedList<String> generateFunctionBlockPLCOpen() {
+		// TODO FUNCTION PLCOPEN
+		LinkedList<String> functionBlock = new LinkedList<String>();
+		String actualStep = "", auxSet = "", auxReset = "";
+		functionBlock.add("<pou name=\""+getName()+"\" pouType=\"functionBlock\" lastChange=\"\">"
+				+"<interface>"
+				+"<inputVars retain=\"false\">"
+				+"<variable name=\"Init\" group=\"Default\">"
+				+"<type><BOOL /></type>"
+				+"</variable>"
+				+"<variable name=\"Reset\" group=\"Default\">"
+				+"<type><BOOL /></type>"
+				+"</variable>"
+				+"</inputVars>");
+		
+		//quito los elementos duplicados de la lista de seÃ±ales del grafcet
+		LinkedList<String> listSignals = Project.getProject().removeDuplicates(getListSignalsGrafcet());
+		for (String signalGraf : listSignals) {
+			//las seÃ±ales de ese grafcet
+			functionBlock.add("<externalVars retain=\"false\">"
+					+"<variable name=\""+signalGraf+"\" group=\"Default\">"
+					+"<type><BOOL /></type>"
+					+"</variable>");
 
+		}
+		functionBlock.add("</externalVars></interface>");
+			
+		functionBlock.add("<body><ST><worksheet name=\""+getName()+"\">"
+				+"<html xmlns=\"http://www.w3.org/1999/xhtml\">"
+				+"<p xmlns=\"http://www.w3.org/1999/xhtml\" xml:space=\"preserve\">"
+				+"(*----------------------<br /> "+getName()+":  <br />---------------------------------*)<br />");
+		// por cada seccuencia
+		for (Sequence seq : sequenceList) {
+			// recorro la lista de etapas y transiciones la secuencia
+			for (Object obj : seq.getListTransitionOrStep()) {
+				/* Si es una etapa */
+				if (obj instanceof Step) {
+					actualStep = ((Step) obj).getName();
+					// Relleno la lista con los Set-Reset
+					
+					functionBlock.add("<br />(* Set -Reset ___________________________"
+							+ "_____________________________________ " + actualStep + " *)");
+					//Obtengo los Set-Reset
+					String set = ((Step) obj).getMySet();
+					String reset = ((Step) obj).getMyReset();
+					
+					// si es una etapa inicial
+					if (((Step) obj).getType().equals("initial")) {
+						auxSet = "<br />IF ( " + set + " OR Init ) THEN<br />" + actualStep + ":=1;";
+						auxReset = "<br />END_IF;<br /><br />IF ( " + reset + " OR Reset ) THEN<br />" + actualStep + ":=0;<br />END_IF;</p>";
+					} else {
+						auxSet = "<br />IF ( " + set + " ) THEN<br />" + actualStep + ":=1;";
+						auxReset = "<br />END_IF;<br />IF ( " + reset + " OR Init OR Reset ) THEN<br />" + actualStep
+								+ ":=0;<br />END_IF;</p>";
+					}
+					functionBlock.add(auxSet);
+					functionBlock.add(auxReset);
+				}
+			}
+		}
+	
+		functionBlock.add("</html>"
+							+"</worksheet>"
+							+"</ST>"
+							+"</body>"
+							+"<documentation>"
+							+"<html xmlns=\"http://www.w3.org/1999/xhtml\">"
+							+"<div xmlns=\"http://www.w3.org/1999/xhtml\" xml:space=\"preserve\""
+							+"id=\"MWTDESCRIPTION\" wsName=\""+getName()+"T\" />"
+							+"</html>"
+							+"</documentation>"
+							+"</pou>");		
+		
+		return functionBlock;
+	}
 	public LinkedList<String> generateFunctionBlock() {
 		LinkedList<String> functionBlock = new LinkedList<String>();
 		String actualStep = "", auxSet = "", auxReset = "";
@@ -643,7 +728,7 @@ public class Grafcet {
 		return getListEmergencyStart().equals(getListEmergencyStop());
 	}*/
 
-	/** Esta lista se va rellenando al ir añadiendo una secuencia al grafcet */
+	/** Esta lista se va rellenando al ir aï¿½adiendo una secuencia al grafcet */
 	public LinkedList<String> getListSignalsGrafcet() {
 		return this.signalsGrafcet;
 	}
@@ -655,4 +740,6 @@ public class Grafcet {
 		}
 		return g;
 	}
+
+
 }

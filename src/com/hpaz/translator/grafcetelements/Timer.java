@@ -116,4 +116,25 @@ public class Timer {
 		return programMain;
 		
 	}
+	public String getExternalVarsPLCOpen(){
+		
+		String externalVar = "<br /><variable name=\"" + this.nameTimer + "Q\" group=\"Default\"><type><BOOL /></type></variable>"
+				+ "<br /><variable name=\"" + this.nameTimer + "IN\" group=\"Default\"><type><BOOL /></type></variable>"
+				+ "<br /><variable name=\"" + this.nameTimer + "PT\" group=\"Default\"><type><TIME /></type></variable>"
+				+ "<br /><variable name=\"" + this.nameTimer + "ET\" group=\"Default\"><type><TIME /></type></variable>";
+		
+		return externalVar;
+		
+	}
+	/***/
+	public String getBodyPLCOpen(){
+		String   body =  "<br />" + this.nameTimer + "IN:="+this.stepNameTimer+";"
+				+ "<br />" + this.nameTimer + "PT:= T#" +this.time +this.typeTime+";"
+				+ "<br />" + this.nameTimer + "(IN:="+this.nameTimer+"IN , PT:="+this.nameTimer
+									+"PT , Q=>"+this.nameTimer+"Q , ET=> "+this.nameTimer+"ET);";
+		
+			
+		return body;
+		
+	}
 }

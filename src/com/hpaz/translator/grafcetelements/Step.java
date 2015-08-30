@@ -99,11 +99,11 @@ public class Step {
 			String string = pMySet.substring(0,pMySet.indexOf("=="))+"Q";
 			set = string + pMySet.substring(pMySet.indexOf("=="),pMySet.length());
 		}
-		//Si no se ha añadido un set se añade	
+		//Si no se ha aï¿½adido un set se aï¿½ade	
 		if (this.mySet==null){
 			this.mySet = set;
 		
-			//Si ya hay set añadidos compruebo que no exista  
+			//Si ya hay set aï¿½adidos compruebo que no exista  
 		}else if(!mySet.contains(set)){
 			//Si se une con una divergencia en AND
 			if(isAnd()){
@@ -122,10 +122,10 @@ public class Step {
 					//Quito espacios en blanco delante y detras
 					String s = list[i].trim();
 					
-					//Si el elemento no esta en el set lo añado
+					//Si el elemento no esta en el set lo aï¿½ado
 					if(!mySet.contains(s)){
 						
-						//Si hay set anteriores añado el AND
+						//Si hay set anteriores aï¿½ado el AND
 						if(newSet!=null){
 							newSet= newSet + " AND " + s;
 						}else{
@@ -214,6 +214,11 @@ public class Step {
 	
 	public String printStepGlobalVar() {
 		String s = "\t" + this.name + "\t: BOOL;\n";
+		return s;
+	}
+	public String printExternalVars() {
+		String s = "<variable name=\"" + this.name + "\" group=\"Default\">"
+				+ "<type><BOOL /></type></variable>";
 		return s;
 	}
 

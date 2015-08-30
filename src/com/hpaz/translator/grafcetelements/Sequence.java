@@ -59,16 +59,16 @@ public class Sequence {
 	public int getStepStartEmergency() {
 		return stepStartEmergency;
 	}
-	//añade una lista de señales
+	//aï¿½ade una lista de seï¿½ales
 	private void  addSignals( LinkedList<String> pSignals){
 		this.signals.addAll(pSignals);
 	}
-	//añade una unica señal
+	//aï¿½ade una unica seï¿½al
 	private void  addSignal( String pSignal){
 		this.signals.add(pSignal);
 	}
-	/**Este metodo añade una transicion o un step a la lista listTransitionOrStep
-	 * Pero antes de esto genera y guarda las señales correspondientes */
+	/**Este metodo aï¿½ade una transicion o un step a la lista listTransitionOrStep
+	 * Pero antes de esto genera y guarda las seï¿½ales correspondientes */
 	public void addTransitionOrStep(Object pTransitionOrStep) {
 		
 		if (pTransitionOrStep instanceof Transition) {
@@ -90,7 +90,7 @@ public class Sequence {
 					Pattern patTemp = Pattern.compile("^Temp.*=.*");
 					Matcher matTemp = patTemp.matcher(actionName);
 					
-					//TODO ?¿?¿? compruebo que el tiempo del contador es el correcto ?¿
+					//TODO ?ï¿½?ï¿½? compruebo que el tiempo del contador es el correcto ?ï¿½
 					//int time = Integer.parseInt(aux.replaceAll("=|[a-z A-Z]", ""));
 					//aux = aux.substring(0, aux.indexOf("="));
 					
@@ -151,10 +151,10 @@ public class Sequence {
 	}
 	public LinkedList<String> getVarGlobalStages() {
 
-		LinkedList<String> auxSignals = new LinkedList<String>();
+		//LinkedList<String> auxSignals = new LinkedList<String>();
 		LinkedList<String> auxStages = new LinkedList<String>();
 
-		auxSignals.add("\n\t(*---Señales---*)\n\n");
+		//auxSignals.add("\n\t(*---Seï¿½ales---*)\n\n");
 		/* puede ser una transition o un step */
 		for (Object st : listTransitionOrStep) {
 			if (st instanceof Step) {
@@ -162,12 +162,32 @@ public class Sequence {
 			}
 		}
 
-		// esto lo hago para que queden primero las señales y despues las etapas
+		// esto lo hago para que queden primero las seï¿½ales y despues las etapas
 		// auxSignals.addAll(auxStages);
 
 		return auxStages;
 
 	}
+	public LinkedList<String> getStagesExternalVars() {
+
+		//LinkedList<String> auxSignals = new LinkedList<String>();
+		LinkedList<String> auxStages = new LinkedList<String>();
+
+		//auxSignals.add("\n\t(*---Seï¿½ales---*)\n\n");
+		/* puede ser una transition o un step */
+		for (Object st : listTransitionOrStep) {
+			if (st instanceof Step) {
+				auxStages.add(((Step) st).printExternalVars());
+			}
+		}
+
+		// esto lo hago para que queden primero las seï¿½ales y despues las etapas
+		// auxSignals.addAll(auxStages);
+
+		return auxStages;
+
+	}
+
 
 	/**
 	 * Devuelve un listado con los set y reset correspondientes a cada objeto de
@@ -200,7 +220,7 @@ public class Sequence {
 
 	public Map<String, String> getActionStepMap() {
 		/*
-		 * SE DEBEN AÑADIR EL RE PARO Y RE MARCHA Y ALGUNA MAS PREGUNTAR EN ESTE
+		 * SE DEBEN Aï¿½ADIR EL RE PARO Y RE MARCHA Y ALGUNA MAS PREGUNTAR EN ESTE
 		 * CASO DEPENDEMOS DE LO Q NOS DIGA EL USUARIO EN LAS SEÃ‘ALES
 		 */
 		Map<String, String> actionStepMap = new HashMap<String, String>();

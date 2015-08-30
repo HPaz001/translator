@@ -381,127 +381,175 @@ public class Project {
 				Output.getOutput().exportFile(getProgramTSXMicroCP(), getName()+"CombiPart",outputDir);
 				
 			} else if (program.equalsIgnoreCase(GrafcetTagsConstants.PROGRAM_OPT3)) {//PLCOpen PCWorx
-				Output.getOutput().exportFile(getProgramPLCOpen(), getName()+"PLCOpen",outputDir);
+				Output.getOutput().exportFile(getPousPLCOpen(), "POUS_"+getName()+"PLCOpen",outputDir);
+				//Output.getOutput().exportFile(getGlobalVarsPLCOpen(), ""+getName()+"PLCOpen",outputDir);
 			}
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	private LinkedList<String> getProgramPLCOpen() {
-		// TODO HACER AQUI LA PARTE DE PLCOPEN
-		LinkedList<String> programPLCOpen = new LinkedList<String>();
-		programPLCOpen.addAll(getGlobalVarsPLCOpen());
-		programPLCOpen.addAll(getPousPLCOpen());
-		return programPLCOpen;
-	}
 
 	private LinkedList<String> getPousPLCOpen() {
 		// TODO HACER AQUI POUS DE PLCOPEN
 		LinkedList<String> pousPLCOpen = new LinkedList<String>();
-		String aux = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
-				+"<project xmlns:xhtml=\"http://www.w3.org/1999/xhtml\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\""
-				+"	xmlns=\"http://www.kw-software.com/xml/PLCopen/TC6_XML_V10_KW.xsd\">"
-				+"	<fileHeader companyName=\"Phoenix Contact\" companyURL=\"www.kw-software.com\""
-				+"		productName=\"PC WORX\" productVersion=\"5.20\" productRelease=\"Build 155\""
-				+"		creationDateTime=\"2015-07-23T13:03:20\" contentDescription=\"\" />"
-				+"	<contentHeader name=\"Movil\" version=\"1437649400\""
-				+"		modificationDateTime=\"2015-07-23T13:03:20\">"
+		LinkedList<String> namesGrafcet = new LinkedList<String>();
+		LinkedList<String> namesInit = new LinkedList<String>();
+		LinkedList<String> externalVarsProgram = new LinkedList<String>();
+		LinkedList<String> partBodyProgram = new LinkedList<String>();
+		pousPLCOpen.add("<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+				+"<project xmlns:xhtml=\"http://www.w3.org/1999/xhtml\" xmlns:xsi=\"\""
+				+"	xmlns=\"\">"
+				+"	<fileHeader companyName=\"\" companyURL=\"\""
+				+"		productName=\"translator\" productVersion=\"0.1\" productRelease=\"\""
+				+"		creationDateTime=\"\" contentDescription=\"\" />"
+				+"	<contentHeader name=\"Movil\" version=\"\""
+				+"		modificationDateTime=\"\">"
 				+"		<coordinateInfo>"
-				+"			<pageSize x=\"999\" y=\"999\" />"
+				+"			<pageSize x=\"\" y=\"\" />"
 				+"			<fbd>"
-				+"				<scaling x=\"2\" y=\"2\" />"
+				+"				<scaling x=\"\" y=\"\" />"
 				+"			</fbd>"
 				+"			<ld>"
-				+"				<scaling x=\"2\" y=\"2\" />"
+				+"				<scaling x=\"\" y=\"\" />"
 				+"			</ld>"
 				+"			<sfc>"
-				+"				<scaling x=\"2\" y=\"2\" />"
+				+"				<scaling x=\"\" y=\"\" />"
 				+"			</sfc>"
 				+"		</coordinateInfo>"
 				+"	</contentHeader>"
-				+"	<types>"
-				+"		<dataTypes />"
-				+"		<pous>"
-				+"			<pou name=\"GMovil\" pouType=\"functionBlock\" lastChange=\"2015-07-11T12:45:48\">"
-				+"				<interface>"
-				+"					<inputVars retain=\"false\">"
-				+"						<variable name=\"Init\" group=\"Default\">"
-				+"							<type>"
-				+"								<BOOL />"
-				+"							</type>"
-				+"						</variable>"
-				+"						<variable name=\"Reset\" group=\"Default\">"
-				+"							<type>"
-				+"								<BOOL />"
-				+"							</type>"
-				+"						</variable>"
-				+"					</inputVars>"
-				+"					<externalVars retain=\"false\">"
-				+"						<variable name=\"ProdNorm\" group=\"Default\">"
-				+"							<type>"
-				+"								<BOOL />"
-				+"							</type>"
-				+"						</variable>"
-				+"						<variable name=\"X20\" group=\"Default\">"
-				+"							<type>"
-				+"								<BOOL />"
-				+"							</type>"
-				+"						</variable>"
-				+"						<variable name=\"TempQ\" group=\"Default\">"
-				+"							<type>"
-				+"								<BOOL />"
-				+"							</type>"
-				+"						</variable>"
-				+"						<variable name=\"F0\" group=\"Default\">"
-				+"							<type>"
-				+"								<BOOL />"
-				+"							</type>"
-				+"						</variable>"
-				+"						<variable name=\"F1\" group=\"Default\">"
-				+"							<type>"
-				+"								<BOOL />"
-				+"							</type>"
-				+"						</variable>"
-				+"					</externalVars>"
-				+"				</interface>"
-				+"				<body>"
-				+"					<ST>"
-				+"						<worksheet name=\"GMovil\">"
-				+"							<html xmlns=\"http://www.w3.org/1999/xhtml\">"
-				+"								<p xmlns=\"http://www.w3.org/1999/xhtml\" xml:space=\"preserve\">"
-				+"								(*----------------------<br /> GMovil:  <br />---------------------------------*)<br />"
-				+"								<br />(* Set -Reset ________________________________________________________________X20*)"
-				+"								<br />IF((X24 AND TempQ) OR Init ) THEN"
-				+"								<br /> X20:=1;"
-				+"								<br />END_IF;"
-				+"								<br /><br />IF (X21 OR Reset) THEN"
-				+"								<br /> X20:=0;"
-				+"								<br />END_IF;</p>"
-				+"							</html>"
-				+"						</worksheet>"
-				+"					</ST>"
-				+"				</body>"
-				+"				<documentation>"
-				+"					<html xmlns=\"http://www.w3.org/1999/xhtml\">"
-				+"						<div xmlns=\"http://www.w3.org/1999/xhtml\" xml:space=\"preserve\""
-				+"							id=\"MWTDESCRIPTION\" wsName=\"GMovilT\" />"
-				+"					</html>"
-				+"				</documentation>"
-				+"			</pou>"
-				+"		</pous>"
-				+"	</types>"
-				+"	<instances>"
-				+"		<configurations />"
-				+"	</instances>"
-				+"</project>";
+				+"	<types><dataTypes />"
+				+"<pous>");
+		
+		for (Grafcet g : listGrafcet) {
+			pousPLCOpen.addAll(g.generateFunctionBlockPLCOpen());
+			
+			String gName = g.getName();
+			String name = gName.substring(1, gName.length());
+			//localVars
+			namesGrafcet.add("<variable name=\""+name+"\" group=\"Default\">"
+			+ "<type><derived name=\""+gName+"\" /></type>"
+			+ "</variable>");
+			namesInit.add("<variable name=\"Init"+name+"\" group=\"Default\">"
+					+ "<type><BOOL /></type>"
+					+ "</variable>"
+					+ "<variable name=\"Reset"+name+"\" group=\"Default\">"
+					+ "<type><BOOL /></type>"
+					+ "</variable>");
+			externalVarsProgram.addAll(g.getGrafcetExternalVars());
+		}
+		
+		
+		//meter aqui el main de plc open q es un function block tambien	
+		pousPLCOpen.add("<pou name=\"ST_Main\" pouType=\"program\" lastChange=\"\">"
+				+ "<interface>"
+				+ "<localVars retain=\"false\">");
+		pousPLCOpen.add("<variable name=\"XInit\" group=\"Default\">"
+						+ "<type><BOOL /></type>"
+						+ "</variable>"
+						+ "<variable name=\"XReset\" group=\"Default\">"
+						+ "<type><BOOL /></type>"
+						+ "</variable>");
+		
+		
+		for (String string : this.list_FE_and_RE) {
+			pousPLCOpen.add("<variable name=\""+string+"\" group=\"Default\">"
+					+ "<type><derived name=\"" + string.charAt(0) + "_TRIG\" /></type>"
+					+ "</variable>");
+		}
+		
+		pousPLCOpen.addAll(namesGrafcet);
+		pousPLCOpen.addAll(namesInit);
+		
+		//solo inicializa contadores y temporizadores
+		
+		/* Por cada temporizador y contador */
+		for (Timer timer : getListTimers()) {
+			pousPLCOpen.add("<variable name=\"" + timer.getNameTimer() + "\" group=\"Default\">"
+					+ "<type><derived name=\"" + timer.getTypeTimer() + "\" /></type>"
+					+ "</variable>");
+			//rellenar externalVars
+			externalVarsProgram.add(timer.getExternalVarsPLCOpen());
+			partBodyProgram.add(timer.getBodyPLCOpen());
+		}
+		for (Counter count : getListCounters()) {
+			pousPLCOpen.add("<variable name=\"" + count.getNameCounter()  + "\" group=\"Default\">"
+					+ "<type><derived name=\"" + count.getTypeCounter() + "\" /></type>"
+					+ "</variable>");
+			//rellenar externalVars
+			externalVarsProgram.add(count.getExternalVarsPLCOpen());
+			partBodyProgram.add(count.getBodyPLCOpen());
+		}
+		
+		pousPLCOpen.add("</localVars>");
+		//cierro el localVar y abro el externalVars 
+		pousPLCOpen.add("<externalVars retain=\"false\">");
+		
+		pousPLCOpen.add("<variable name=\"INIT\" group=\"Default\">"
+				+ "<type><BOOL /></type></variable>"
+				+ "<variable name=\"RESET\" group=\"Default\">"
+				+ "<type><BOOL /></type></variable>");
+		
+		/*
+		<variable name="Marcha" group="Default">
+			<type>
+				<BOOL />
+			</type>
+		</variable>*/
+		
+		//por cada señal del proyecto sin repetidos
+		for (String signal : getSignalsProject()) {
+			pousPLCOpen.add("<variable name=\"" + signal + "\" group=\"Default\">"
+					+ "<type><BOOL /></type></variable>");
+		}
+	
+		
+		//aqui van las de los tempo y contadores
+		pousPLCOpen.addAll(externalVarsProgram);
+		pousPLCOpen.add("</externalVars");
+		
+		/*</interface>
+		<body>
+			<ST>
+				<worksheet name="ST_Main">
+					<html xmlns="http://www.w3.org/1999/xhtml">
+						<p xmlns="http://www.w3.org/1999/xhtml" xml:space="preserve">
+						XInit:=INIT;
+						<br />XReset:=RESET;
+						..
+						<br />Cizquierda:=X12 OR X23 OR (X31 AND NOT F0);
+								<br /><br />TempIN:=X22 OR  X24;
+								<br />TempPT:=T#2s;
+								<br />Temp(IN:=TempIN, PT:=TempPT);
+								<br />TempQ:=Temp.Q;
+								<br />TempET:=Temp.ET;
+								<br /><br /></p>
+							</html>
+						</worksheet>
+					</ST>
+				</body>
+				<documentation>
+					<html xmlns="http://www.w3.org/1999/xhtml">
+						<div xmlns="http://www.w3.org/1999/xhtml" xml:space="preserve"
+							id="MWTDESCRIPTION" wsName="ST_MainT" />
+					</html>
+				</documentation>
+			</pou>*/
+		
+		
+		pousPLCOpen.add("</pous>"
+						+ "</types>"
+						+ "<instances><configurations /></instances>"
+						+"</project>");
 		
 		
 		
 		return pousPLCOpen;
 	}
 
-	private LinkedList<String> getGlobalVarsPLCOpen() {
+
+
+	/*private LinkedList<String> getGlobalVarsPLCOpen() {
 		// TODO HACER AQUI GLOBAL VARS DE PLCOPEN
 		LinkedList<String> varsPLCOpen = new LinkedList<String>();
 		
@@ -555,7 +603,7 @@ public class Project {
 		
 		
 		return varsPLCOpen;
-	}
+	}*/
 
 	/**Devuelve una lista con la parte combinacional*/
 	private LinkedList<String> getProgramTSXMicroCP() {
@@ -926,7 +974,7 @@ public class Project {
 	/**
 	 * Devuelve la lista que le pasan por parametro pero sin elementos repetidos
 	 */
-	private LinkedList<String> removeDuplicates(LinkedList<String> listDuplicate) {
+	public LinkedList<String> removeDuplicates(LinkedList<String> listDuplicate) {
 
 		LinkedList<String> listwithoutduplicates = new LinkedList<String>();
 
