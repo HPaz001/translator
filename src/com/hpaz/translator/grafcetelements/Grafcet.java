@@ -483,7 +483,7 @@ public class Grafcet {
 		functionBlock.add("<body><ST><worksheet name=\""+getName()+"\">"
 				+"<html xmlns=\"http://www.w3.org/1999/xhtml\">"
 				+"<p xmlns=\"http://www.w3.org/1999/xhtml\" xml:space=\"preserve\">"
-				+"(*----------------------<br /> "+getName()+":  <br />---------------------------------*)<br />");
+				+"(*<br /> ----------------------<br /> "+getName()+":  <br />---------------------------------*)<br />");
 		// por cada seccuencia
 		for (Sequence seq : sequenceList) {
 			// recorro la lista de etapas y transiciones la secuencia
@@ -501,12 +501,19 @@ public class Grafcet {
 					
 					// si es una etapa inicial
 					if (((Step) obj).getType().equals("initial")) {
-						auxSet = "<br />IF ( " + set + " OR Init ) THEN<br />" + actualStep + ":=1;";
-						auxReset = "<br />END_IF;<br /><br />IF ( " + reset + " OR Reset ) THEN<br />" + actualStep + ":=0;<br />END_IF;";
+						auxSet = "<br />IF ( " + set + " OR Init ) THEN<br />" 
+										+ actualStep + ":=1;"
+								+ "<br />END_IF;";
+						auxReset = "<br /><br />IF ( " + reset + " OR Reset ) THEN<br />" 
+										+ actualStep + ":=0;"
+								+ "<br />END_IF;";
 					} else {
-						auxSet = "<br />IF ( " + set + " ) THEN<br />" + actualStep + ":=1;";
-						auxReset = "<br />END_IF;<br />IF ( " + reset + " OR Init OR Reset ) THEN<br />" + actualStep
-								+ ":=0;<br />END_IF;";
+						auxSet = "<br />IF ( " + set + " ) THEN<br />" 
+										+ actualStep + ":=1;"
+								+ "<br />END_IF;";
+						auxReset = "<br />IF ( " + reset + " OR Init OR Reset ) THEN<br />" 
+										+ actualStep+ ":=0;"
+									+ "<br />END_IF;";
 					}
 					functionBlock.add(auxSet);
 					functionBlock.add(auxReset);

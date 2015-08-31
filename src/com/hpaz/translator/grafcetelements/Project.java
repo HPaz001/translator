@@ -506,7 +506,7 @@ public class Project {
 					+ "<type><derived name=\"" + count.getTypeCounter() + "\" /></type>"
 					+ "</variable>");
 			//rellenar externalVars
-			externalVarsProgram.add(count.getExternalVarsPLCOpen());
+			//externalVarsProgram.add(count.getExternalVarsPLCOpen());
 		}
 		
 		pousPLCOpen.add("</localVars>");
