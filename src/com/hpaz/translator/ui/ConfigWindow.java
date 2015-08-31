@@ -52,7 +52,7 @@ public class ConfigWindow extends JFrame {
 	 */
 	public ConfigWindow() {
 		setResizable(false);
-		setTitle("Configuración del programa");
+		setTitle("Configuraciï¿½n del programa");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 626, 500);
 		contentPane = new JPanel();
@@ -193,7 +193,8 @@ public class ConfigWindow extends JFrame {
 								// Procesamos el xml
 								reader.parse(new InputSource(new FileInputStream(xmlPath)));
 								//comprobamos que tipo de opcion ha marcado el usuario para saber si abrir las siguiente interfaz o no
-								if (selectedCompatibility.equalsIgnoreCase(GrafcetTagsConstants.PROGRAM_OPT1)) { // Twincat
+								if (selectedCompatibility.equalsIgnoreCase(GrafcetTagsConstants.PROGRAM_OPT1) || selectedCompatibility.equalsIgnoreCase(GrafcetTagsConstants.PROGRAM_OPT3)) { // Twincat y plcopen
+									dispose();
 									new VariableInitWindow().setVisible(true);
 								} else {
 									Project.getProject().print();
@@ -273,12 +274,12 @@ public class ConfigWindow extends JFrame {
 			Source xmlFile = new StreamSource(new File("FICHERO_XML"));//"C:/Users/Desktop/file.xml"
 			// Esquema con el que comparar
 			Source schemaFile = new StreamSource(new File("PLANTILLA_XSD"));//"C:/Users/Desktop/schema.xsd"
-			// Preparación del esquema
+			// Preparaciï¿½n del esquema
 			SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
 			Schema schema = schemaFactory.newSchema(schemaFile);
-			// Creación del validador
+			// Creaciï¿½n del validador
 			Validator validator = schema.newValidator();
-			// Definición del manejador de excepciones del validador
+			// Definiciï¿½n del manejador de excepciones del validador
 			
 			validator.setErrorHandler(
 				new ErrorHandler() {
@@ -293,10 +294,10 @@ public class ConfigWindow extends JFrame {
 					}
 				}
 			);
-			// Validación del XML
+			// Validaciï¿½n del XML
 			validator.validate(xmlFile);
-			// Resultado de la validación. Si hay errores se detalla el error y
-			// la posición exacta en el XML
+			// Resultado de la validaciï¿½n. Si hay errores se detalla el error y
+			// la posiciï¿½n exacta en el XML
 			if (exceptions.size() != 0) {
 				isCorrectly=false;
 				System.out.println("FILE " + xmlFile.getSystemId() + " IS INVALID");

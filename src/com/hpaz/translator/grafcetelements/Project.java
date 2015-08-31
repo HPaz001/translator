@@ -366,22 +366,22 @@ public class Project {
 			if (program.equalsIgnoreCase(GrafcetTagsConstants.PROGRAM_OPT1)) { // Twincat
 				// Var Global
 				Output.getOutput().exportFile(getGlobalVars(generateGlobalVars()), getName() + "_VAR_GLOBAL",
-						outputDir);
+						outputDir,".txt");
 				// Program Main
-				Output.getOutput().exportFile(generateProgramMain(), getName() + "_PROGRAM_MAIN", outputDir);
+				Output.getOutput().exportFile(generateProgramMain(), getName() + "_PROGRAM_MAIN", outputDir,".txt");
 				// Function Block --> uno por cada grafcet
 				for (Grafcet g : listGrafcet) {
 					Output.getOutput().exportFile(g.generateFunctionBlock(), "FUNCTION_BLOCK_" + g.getName(),
-							outputDir);
+							outputDir,".txt");
 				}
 				
 			} else if (program.equalsIgnoreCase(GrafcetTagsConstants.PROGRAM_OPT2)) {// PL7PRO
 				
-				Output.getOutput().exportFile(getProgramTSXMicroSP(), getName()+"SequePart",outputDir);
-				Output.getOutput().exportFile(getProgramTSXMicroCP(), getName()+"CombiPart",outputDir);
+				Output.getOutput().exportFile(getProgramTSXMicroSP(), getName()+"SequePart",outputDir,".txt");
+				Output.getOutput().exportFile(getProgramTSXMicroCP(), getName()+"CombiPart",outputDir,".txt");
 				
 			} else if (program.equalsIgnoreCase(GrafcetTagsConstants.PROGRAM_OPT3)) {//PLCOpen PCWorx
-				Output.getOutput().exportFile(getPousPLCOpen(), "POUS_"+getName()+"PLCOpen",outputDir);
+				Output.getOutput().exportFile(getPousPLCOpen(), "POUS_"+getName()+"PLCOpen",outputDir,".xml");
 				//Output.getOutput().exportFile(getGlobalVarsPLCOpen(), ""+getName()+"PLCOpen",outputDir);
 			}
 
@@ -396,10 +396,10 @@ public class Project {
 		LinkedList<String> namesGrafcet = new LinkedList<String>();
 		LinkedList<String> namesInit = new LinkedList<String>();
 		LinkedList<String> externalVarsProgram = new LinkedList<String>();
-		LinkedList<String> partBodyProgram = new LinkedList<String>();
+		LinkedList<String> listEmergency = new LinkedList<String>();
 		pousPLCOpen.add("<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
-				+"<project xmlns:xhtml=\"http://www.w3.org/1999/xhtml\" xmlns:xsi=\"\""
-				+"	xmlns=\"\">"
+				+"<project xmlns:xhtml=\"http://www.w3.org/1999/xhtml\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\""
+				+"	xmlns=\"http://www.kw-software.com/xml/PLCopen/TC6_XML_V10_KW.xsd\">"
 				+"	<fileHeader companyName=\"\" companyURL=\"\""
 				+"		productName=\"translator\" productVersion=\"0.1\" productRelease=\"\""
 				+"		creationDateTime=\"\" contentDescription=\"\" />"
@@ -421,10 +421,11 @@ public class Project {
 				+"	<types><dataTypes />"
 				+"<pous>");
 		
-		for (Grafcet g : listGrafcet) {
-			pousPLCOpen.addAll(g.generateFunctionBlockPLCOpen());
+		for (Grafcet grafcet : listGrafcet) {
 			
-			String gName = g.getName();
+			pousPLCOpen.addAll(grafcet.generateFunctionBlockPLCOpen());
+			
+			String gName = grafcet.getName();
 			String name = gName.substring(1, gName.length());
 			//localVars
 			namesGrafcet.add("<variable name=\""+name+"\" group=\"Default\">"
@@ -436,7 +437,29 @@ public class Project {
 					+ "<variable name=\"Reset"+name+"\" group=\"Default\">"
 					+ "<type><BOOL /></type>"
 					+ "</variable>");
-			externalVarsProgram.addAll(g.getGrafcetExternalVars());
+			
+			externalVarsProgram.addAll(grafcet.getGrafcetExternalVars());
+			
+			
+			//si el grafcet es el de emergencia relleno la lista de forzados
+			if (grafcet.isEmergency()) {
+				boolean bol = false;
+				if (compareStartAndStopLists()) {
+					bol = true;
+				}
+				// Anado los forzados de cad agrafcet
+				listEmergency.addAll(getlistEmergencyBody(getListEmergencyStart(),
+						getListEmergencyStop(), bol));
+
+				/*
+				 * //Emergencia(Init:=(XInit OR IntitEmergencia) ,
+				 * Reset:=ResetEmergencia );
+				 */
+				//String gEmergency = gName.substring(1, gName.length());
+				listEmergency.add("<br />" + name + "(Init:=(XInit OR Init" + name + "), Reset:=(Reset"
+						+ name + "));");
+			}
+			
 		}
 		
 		
@@ -470,15 +493,13 @@ public class Project {
 					+ "</variable>");
 			//rellenar externalVars
 			externalVarsProgram.add(timer.getExternalVarsPLCOpen());
-			partBodyProgram.add(timer.getBodyPLCOpen());
 		}
 		for (Counter count : getListCounters()) {
 			pousPLCOpen.add("<variable name=\"" + count.getNameCounter()  + "\" group=\"Default\">"
 					+ "<type><derived name=\"" + count.getTypeCounter() + "\" /></type>"
 					+ "</variable>");
 			//rellenar externalVars
-			externalVarsProgram.add(count.getExternalVarsPLCOpen());
-			partBodyProgram.add(count.getBodyPLCOpen());
+			//externalVarsProgram.add(count.getExternalVarsPLCOpen());
 		}
 		
 		pousPLCOpen.add("</localVars>");
@@ -535,6 +556,25 @@ public class Project {
 					</html>
 				</documentation>
 			</pou>*/
+		
+		pousPLCOpen.add("</interface><body><ST><worksheet name=\"ST_Main\">"
+		+ "<html xmlns=\"http://www.w3.org/1999/xhtml\">"
+		+ "<p xmlns=\"http://www.w3.org/1999/xhtml\" xml:space=\"preserve\">");
+		
+		//program main de PLCOpen
+		
+		//alado las señales
+		pousPLCOpen.addAll(partBodyPLCOpen());
+		//añado la emergencia
+		pousPLCOpen.addAll(listEmergency);
+		
+		
+						
+		pousPLCOpen.add("</p></html></worksheet></ST></body><documentation>"
+		+ "<html xmlns=\"http://www.w3.org/1999/xhtml\">"
+		+ "<div xmlns=\"http://www.w3.org/1999/xhtml\" xml:space=\"preserve\""
+		+ "id=\"MWTDESCRIPTION\" wsName=\"ST_MainT\" /></html></documentation>"
+		+ "</pou>");
 		
 		
 		pousPLCOpen.add("</pous>"
@@ -775,19 +815,18 @@ public class Project {
 					if (compareStartAndStopLists()) {
 						bol = true;
 					}
-				
-				// Anado los forzados de cad agrafcet
-				listEmergency.addAll(generateListEmergency(getListEmergencyStart(),
-						getListEmergencyStop(), bol, stepStop, stepStart));
-
-				/*
-				 * //Emergencia(Init:=(XInit OR IntitEmergencia) ,
-				 * Reset:=ResetEmergencia );
-				 */
-				String gEmergency = gName.substring(1, gName.length());
-				listEmergency.add("\n\t" + gEmergency + "(Init:=(XInit OR Init" + gEmergency + "), Reset:=(Reset"
-						+ gEmergency + "));\n");
-			}
+					// Anado los forzados de cad agrafcet
+					listEmergency.addAll(generateListEmergency(getListEmergencyStart(),
+							getListEmergencyStop(), bol, stepStop, stepStart));
+	
+					/*
+					 * //Emergencia(Init:=(XInit OR IntitEmergencia) ,
+					 * Reset:=ResetEmergencia );
+					 */
+					String gEmergency = gName.substring(1, gName.length());
+					listEmergency.add("\n\t" + gEmergency + "(Init:=(XInit OR Init" + gEmergency + "), Reset:=(Reset"
+							+ gEmergency + "));\n");
+				}
 
 		}
 
@@ -1068,5 +1107,137 @@ public class Project {
 		this.assignments.put(pSignal, pAssignment);
 
 	}
+	
+	public LinkedList<String> partBodyPLCOpen(){
+		
+		LinkedList<String> listProgramBody = new LinkedList<String>();
+	
+		
+		/*
+		 * XInit:=INIT;
+			<br />XReset:=RESET;
+						..
+			<br />Cizquierda:=X12 OR X23 OR (X31 AND NOT F0);
+			<br /><br />TempIN:=X22 OR  X24;
+			<br />TempPT:=T#2s;
+			<br />Temp(IN:=TempIN, PT:=TempPT);
+			<br />TempQ:=Temp.Q;
+			<br />TempET:=Temp.ET;
+			<br /><br />
+		 * */
+		
+		listProgramBody.add("<br />XInit:=INIT;<br />XReset:=RESET;");
 
+		for (String string : this.list_FE_and_RE) {
+			listProgramBody.add("<br />" + string + "(CLK:=" + string.substring(2, string.length()) + " , Q=> );");
+		}
+		/*
+		 * SolModoAuto:=REMarcha.Q; FinProces:=X20;
+		 */
+		// Asignaciones que estan en la transition
+		for (String assig : assignments.keySet()) {
+			String auxString = assignments.get(assig);
+
+			// Si la palabra contiene un RE o FE
+			Pattern patRE_FE = Pattern.compile(".* RE .*| .* FE .*");
+			Matcher matRE_FE = patRE_FE.matcher(auxString);
+
+			if (matRE_FE.matches()) {
+				auxString = auxString.replace(" ", "");
+				auxString = auxString + ".Q";
+			}
+
+			listProgramBody.add("<br />" + assig.trim() + ":=" + auxString + ";");
+		}
+
+
+		for (String action : actionStepMap.keySet()) {
+			String aux = action.trim();
+			// temporizador
+			Pattern patTemp = Pattern.compile("^Temp.*=[0-9]{1,}[a-z A-Z]{1,}");
+			Matcher matTemp = patTemp.matcher(aux);
+
+			// contador
+			Pattern patCont = Pattern.compile("^Cont.*=[0-9]{1,}$|^Cont.*=Cont.*\\+[0-9]|^Cont.*=Cont.*\\-[0-9]");
+			Matcher matCont = patCont.matcher(aux);
+
+			// forzado de emergencia
+			Pattern patEmer = Pattern.compile("^F/G.*");
+			Matcher matEmer = patEmer.matcher(aux);
+
+			//si no es temp, cont, o forzado de emergencia
+			if (!matEmer.matches() && !matCont.matches() && !matTemp.matches()) {
+				listProgramBody.add("<br />" + aux + ":=" + actionStepMap.get(action) + ";");
+			}else if (matTemp.matches()) {
+				aux = aux.replaceAll("=[0-9]{1,}[a-z A-Z]{1,}", "").trim();
+				int index = equalsTimer(aux);
+				Timer timer = listTimers.get(index);
+				listProgramBody.add(timer.getBodyPLCOpen());
+			} else if (matCont.matches()) {
+				// TODO PLCOpensi es contador aun no se q hacer
+
+				// Si no es el forzado de emergencia , contador o temp
+			} 
+		}
+		return listProgramBody;
+	}
+	
+	
+	/** Genera las paradas e inicios de los forzados de emergencia */
+	private LinkedList<String> getlistEmergencyBody(LinkedList<String> pListStop, LinkedList<String> pListStart, boolean pEquals) {
+		LinkedList<String> aux = new LinkedList<String>();
+		String emerg = "";
+		String stepStop = getStepStopEmergency();
+		String stepStart = getStepStartEmergency();
+		// quiere decir que las listas de stop y start son iguales
+		if (pEquals) {
+			for (String e : pListStop) {
+				emerg = e.trim();
+				aux.add("<br />Init" + emerg.trim() + ":=" + stepStart + ";");
+				aux.add("<br />Reset" + emerg + ":=" + stepStop + ";");
+				aux.add("<br />" + emerg + "(Init:=(XInit OR Init" + emerg + "), Reset:=(XReset OR Reset" + emerg
+						+ "));");
+			}
+		} else {
+			/* Si no son iguales comparo a ver cual es la mas grande */
+			if (pListStop.size() > pListStart.size()) {
+				for (String e : pListStop) {
+					// Por cada elemento d la lista miro si este se encuentra en
+					// la otra lista
+					if (pListStart.contains(e)) {
+						emerg = e.trim();
+						aux.add("<br />Init" + emerg + ":=" + stepStart + ";");
+						aux.add("<br />Reset" + emerg + ":=" + stepStop + ";");
+						aux.add("<br />" + emerg + "(Init:=(XInit OR Init" + emerg + "), Reset:=(XReset OR Reset" + emerg
+								+ "));");
+					} else {
+						emerg = e.trim();
+						// aux.add("\n\tInit"+emerg+":="+pStepStart+";\n");
+						aux.add("<br />Reset" + emerg + ":=" + stepStop + ";");
+						aux.add("<br />" + emerg + "(Init:=(XInit), Reset:=(XReset OR Reset" + emerg + "));");
+					}
+				}
+			} else {
+				for (String e : pListStart) {
+					// Por cada elemento d la lista miro si este se encuentra en
+					// la otra lista
+					if (pListStop.contains(e)) {
+						emerg = e.trim();
+						aux.add("<br />Init" + emerg + ":=" + stepStart + ";");
+						aux.add("<br />Reset" + emerg + ":=" + stepStop + ";");
+						aux.add("<br />" + emerg + "(Init:=(XInit OR Init" + emerg + "), Reset:=(XReset OR Reset" + emerg
+								+ "));");
+					} else {
+						emerg = e.trim();
+						aux.add("<br />Init" + emerg + ":=" + stepStart + ";");
+						// aux.add("\tReset"+emerg+":="+pStepStop+";\n");
+						aux.add("<br />" + emerg + "(Init:=(XInit OR Init" + emerg + "), Reset:=(XReset));");
+					}
+				}
+			}
+		}
+
+		return aux;
+	}
+	
 }

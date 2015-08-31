@@ -469,16 +469,14 @@ public class Grafcet {
 				+"<type><BOOL /></type>"
 				+"</variable>"
 				+"</inputVars>");
-		
+		functionBlock.add("<externalVars retain=\"false\">");
 		//quito los elementos duplicados de la lista de señales del grafcet
 		LinkedList<String> listSignals = Project.getProject().removeDuplicates(getListSignalsGrafcet());
 		for (String signalGraf : listSignals) {
 			//las señales de ese grafcet
-			functionBlock.add("<externalVars retain=\"false\">"
-					+"<variable name=\""+signalGraf+"\" group=\"Default\">"
+			functionBlock.add("<variable name=\""+signalGraf+"\" group=\"Default\">"
 					+"<type><BOOL /></type>"
 					+"</variable>");
-
 		}
 		functionBlock.add("</externalVars></interface>");
 			
@@ -504,11 +502,11 @@ public class Grafcet {
 					// si es una etapa inicial
 					if (((Step) obj).getType().equals("initial")) {
 						auxSet = "<br />IF ( " + set + " OR Init ) THEN<br />" + actualStep + ":=1;";
-						auxReset = "<br />END_IF;<br /><br />IF ( " + reset + " OR Reset ) THEN<br />" + actualStep + ":=0;<br />END_IF;</p>";
+						auxReset = "<br />END_IF;<br /><br />IF ( " + reset + " OR Reset ) THEN<br />" + actualStep + ":=0;<br />END_IF;";
 					} else {
 						auxSet = "<br />IF ( " + set + " ) THEN<br />" + actualStep + ":=1;";
 						auxReset = "<br />END_IF;<br />IF ( " + reset + " OR Init OR Reset ) THEN<br />" + actualStep
-								+ ":=0;<br />END_IF;</p>";
+								+ ":=0;<br />END_IF;";
 					}
 					functionBlock.add(auxSet);
 					functionBlock.add(auxReset);
@@ -516,7 +514,7 @@ public class Grafcet {
 			}
 		}
 	
-		functionBlock.add("</html>"
+		functionBlock.add("</p></html>"
 							+"</worksheet>"
 							+"</ST>"
 							+"</body>"

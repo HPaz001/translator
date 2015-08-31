@@ -128,10 +128,15 @@ public class Timer {
 	}
 	/***/
 	public String getBodyPLCOpen(){
+		/*<br />TempPT:=T#2s;
+		<br />Temp(IN:=TempIN, PT:=TempPT);
+		<br />TempQ:=Temp.Q;
+		<br />TempET:=Temp.ET;*/
 		String   body =  "<br />" + this.nameTimer + "IN:="+this.stepNameTimer+";"
 				+ "<br />" + this.nameTimer + "PT:= T#" +this.time +this.typeTime+";"
-				+ "<br />" + this.nameTimer + "(IN:="+this.nameTimer+"IN , PT:="+this.nameTimer
-									+"PT , Q=>"+this.nameTimer+"Q , ET=> "+this.nameTimer+"ET);";
+				+ "<br />" + this.nameTimer + "(IN:="+this.nameTimer+"IN , PT:="+this.nameTimer+"PT);"
+				+ "<br />"+this.nameTimer+"Q:="+this.nameTimer+".Q;"
+				+ "<br />"+this.nameTimer+"ET:="+this.nameTimer+".ET;";
 		
 			
 		return body;
