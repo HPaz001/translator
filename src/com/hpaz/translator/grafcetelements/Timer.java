@@ -105,12 +105,11 @@ public class Timer {
 	}
 	/**Devuelve un array de string donde el primero corresponde a las variables 
 	 * del program main y el segundo al programa en si*/
-	public String[] getProgramMainTimer(){
-		String []  programMain = {"\t" + this.nameTimer + "\t: "+this.typeTimer+";\n",
-								 "\t" + this.nameTimer + "IN:="+this.stepNameTimer+";\n" +
-								"\t" + this.nameTimer + "PT:= T#" +this.time +this.typeTime+";\n" +
+	public String getProgramMainTimer(){
+		
+		String  programMain = 	"\n\t" + this.nameTimer + "PT:= T#" +this.time +this.typeTime+";\n" +
 								"\t" + this.nameTimer + "(IN:="+this.nameTimer+"IN , PT:="+this.nameTimer+
-										"PT , Q=>"+this.nameTimer+"Q , ET=> "+this.nameTimer+"ET);\n"};
+										"PT , Q=>"+this.nameTimer+"Q , ET=> "+this.nameTimer+"ET);\n";
 		
 			
 		return programMain;

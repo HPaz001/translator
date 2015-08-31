@@ -471,7 +471,7 @@ public class Grafcet {
 				+"</inputVars>");
 		functionBlock.add("<externalVars retain=\"false\">");
 		//quito los elementos duplicados de la lista de señales del grafcet
-		LinkedList<String> listSignals = Project.getProject().removeDuplicates(getListSignalsGrafcet());
+		LinkedList<String> listSignals = removeDuplicates(getListSignalsGrafcet());
 		for (String signalGraf : listSignals) {
 			//las señales de ese grafcet
 			functionBlock.add("<variable name=\""+signalGraf+"\" group=\"Default\">"
@@ -532,14 +532,14 @@ public class Grafcet {
 		LinkedList<String> functionBlock = new LinkedList<String>();
 		String actualStep = "", auxSet = "", auxReset = "";
 
-		functionBlock.add("\nFUNCTION_BLOCK " + getName() + "\n\tVAR_INPUT"
+		functionBlock.add("\nFUNCTION_BLOCK " + this.name + "\n\tVAR_INPUT"
 				+ "\n\t\tInit\t:BOOL;\n\t\tReset\t:BOOL;\n\tEND_VAR" + "\n\tVAR_OUTPUT\n\tEND_VAR\n\tVAR\n\tEND_VAR");
 
-		functionBlock.add("\n(*---------------------------------------\n" + getName().substring(1, getName().length())
-				+ "\n" + getComment() + "\n-----------------------------------------------*)");
+		functionBlock.add("\n(*---------------------------------------\n" + this.name.substring(1, this.name.length())
+				+ "\n" + this.comment + "\n-----------------------------------------------*)");
 
 		// por cada seccuencia
-		for (Sequence seq : sequenceList) {
+		for (Sequence seq : getSequenceList()) {
 			// recorro la lista de la secuencia
 			// Object obj : seq.getList()
 			for (Object obj : seq.getListTransitionOrStep()) {
@@ -601,12 +601,11 @@ public class Grafcet {
 		LinkedList<String> listSP = new LinkedList<String>();
 		
 		String actualStep = "", auxSet = "", auxReset = "";
-				
-		listSP.add("\n(*---------------------------------------\n" + getName().substring(1, getName().length())
-				+ "\n" + getComment() + "\n-----------------------------------------------*)");
+		listSP.add("\n(*---------------------------------------\n" + this.name.substring(1, this.name.length())
+				+ "\n" + this.comment + "\n-----------------------------------------------*)");
 		
 		// por cada seccuencia
-		for (Sequence seq : sequenceList) {
+		for (Sequence seq : getSequenceList()) {
 			// recorro la lista de la secuencia
 			// Object obj : seq.getList()
 			for (Object obj : seq.getListTransitionOrStep()) {
@@ -656,21 +655,22 @@ public class Grafcet {
 						}*/
 					
 							
-					
+					String type = ((Step) obj).getType(); 
+					boolean gEmergency = isEmergency();
 					// si es una etapa inicial y no es el grafcet de emergencia
-					if (((Step) obj).getType().equals("initial") && !isEmergency()) {
+					if (type.equals("initial") && !gEmergency) {
 						auxSet = "\n\tIF (" + set + " OR Iniciografcets"+pAuxStepStartEmergency+") THEN\n\t\t" + actualStep + ":=1;";
 						auxReset = "\n\tEND_IF;\n\tIF (" + reset + pAuxStepStopEmergency+") THEN\n\t\t" + actualStep + ":=0;";
-					} else if (!((Step) obj).getType().equals("initial") && !isEmergency()){
+					}else if (!type.equals("initial") && gEmergency){
+						auxSet = "\n\tIF (" + set + ") THEN\n\t\t" + actualStep + ":=1;";
+						auxReset = "\n\tEND_IF;\n\tIF (" + reset + ") THEN\n\t\t" + actualStep
+								+ ":=0;";
+					} else if (!type.equals("initial") && !gEmergency){
 						auxSet = "\n\tIF ( " + set + " ) THEN\n\t\t" + actualStep + ":=1;";
 						auxReset = "\n\tEND_IF;\n\tIF (" + reset + " OR Iniciografcets)"+ pAuxStepStopEmergency+") THEN\n\t\t" + actualStep
 								+ ":=0;";
-					}else if (((Step) obj).getType().equals("initial") && isEmergency()){
+					}else if (type.equals("initial") && gEmergency){
 						auxSet = "\n\tIF (" + set + " OR Iniciografcets) THEN\n\t\t" + actualStep + ":=1;";
-						auxReset = "\n\tEND_IF;\n\tIF (" + reset + ") THEN\n\t\t" + actualStep
-								+ ":=0;";
-					}else if (!((Step) obj).getType().equals("initial") && isEmergency()){
-						auxSet = "\n\tIF (" + set + ") THEN\n\t\t" + actualStep + ":=1;";
 						auxReset = "\n\tEND_IF;\n\tIF (" + reset + ") THEN\n\t\t" + actualStep
 								+ ":=0;";
 					}
@@ -737,6 +737,22 @@ public class Grafcet {
 			g =  this;
 		}
 		return g;
+	}
+	
+	/**
+	 * Devuelve la lista que le pasan por parametro pero sin elementos repetidos
+	 */
+	private LinkedList<String> removeDuplicates(LinkedList<String> listDuplicate) {
+
+		LinkedList<String> listwithoutduplicates = new LinkedList<String>();
+
+		for (String string : listDuplicate) {
+			if (!listwithoutduplicates.contains(string)) {
+				listwithoutduplicates.add(string);
+			}
+		}
+
+		return listwithoutduplicates;
 	}
 
 

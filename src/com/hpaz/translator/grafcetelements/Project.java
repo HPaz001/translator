@@ -54,6 +54,8 @@ public class Project {
 
 	private Map<String, String> listUI;
 
+
+
 	//Se usa para guardar las asignaciones de las acciones
 	private Map<String, String> actionStepMap;
 
@@ -149,6 +151,11 @@ public class Project {
 	public String getStepStartEmergency() {
 		return stepStartEmergency;
 	}
+	
+	public Map<String, String> getListUI() {
+		return listUI;
+	}
+
 	/**
 	 * Anado el grafcet, pero antes genero las listas de previousAnNext y
 	 * losSetAnReset
@@ -234,14 +241,14 @@ public class Project {
 	public LinkedList<String> generateGlobalVars() {
 		LinkedList<String> vG = new LinkedList<String>();
 
-		for (Grafcet g : listGrafcet) {
+		for (Grafcet g : getListG()) {
 			vG.addAll(g.getGrafcetVarGlobalStages());
 		}
 		vG.add("\n\t(*---Se�ales---*)\n\n");
 
 		vG.add("\tINIT\t:BOOL;\n\tRESET\t:BOOL;\n");
 
-		for (String string : this.list_FE_and_RE) {
+		for (String string : getList_FE_and_RE()) {
 			vG.add("\t" + string + "\t:" + string.charAt(0) + "_TRIG;\n");
 		}
 
@@ -253,9 +260,9 @@ public class Project {
 		LinkedList<String> signalS = new LinkedList<String>();
 
 		// por cada una de las se�ales del proyecto
-		for (String string : this.signalsProject) {
+		for (String string : getSignalsProject()) {
 			// Si esta en el hashMap de la UI
-			if (this.listUI.containsKey(string)) {
+			if (getListUI().containsKey(string)) {
 				// la uso
 				String type = this.listUI.get(string);
 
@@ -309,7 +316,7 @@ public class Project {
 		// Si aun quedan elementos en el HashMAp
 		if (!this.listUI.isEmpty()) {
 			// Por cada temporizador
-			for (int i = 0; i < this.listTimers.size(); i++) {
+			for (int i = 0; i < getListTimers().size(); i++) {
 				String type = this.listUI.get(this.listTimers.get(i).getNameTimer());
 				this.listTimers.get(i).addTypeTimer(type);
 				vG.add(this.listTimers.get(i).getGlobalsVarTimer());
@@ -317,9 +324,9 @@ public class Project {
 			vG.add("\n\t(*---Contadores---*)\n\n");
 			// Por cada Contador
 			for (int j = 0; j < getListCounters().size(); j++) {
-				String type = this.listUI.get(getListCounters().get(j).getNameCounter());
+				String type = this.listUI.get(this.listCounters.get(j).getNameCounter());
 				this.listCounters.get(j).addTypeCounter(type);
-				vG.add(getListCounters().get(j).getGlobalsVarCounter());
+				vG.add(this.listCounters.get(j).getGlobalsVarCounter());
 			}
 		}
 		return vG;
@@ -421,7 +428,7 @@ public class Project {
 				+"	<types><dataTypes />"
 				+"<pous>");
 		
-		for (Grafcet grafcet : listGrafcet) {
+		for (Grafcet grafcet : getListG()) {
 			
 			pousPLCOpen.addAll(grafcet.generateFunctionBlockPLCOpen());
 			
@@ -475,7 +482,7 @@ public class Project {
 						+ "</variable>");
 		
 		
-		for (String string : this.list_FE_and_RE) {
+		for (String string : getList_FE_and_RE()) {
 			pousPLCOpen.add("<variable name=\""+string+"\" group=\"Default\">"
 					+ "<type><derived name=\"" + string.charAt(0) + "_TRIG\" /></type>"
 					+ "</variable>");
@@ -499,7 +506,7 @@ public class Project {
 					+ "<type><derived name=\"" + count.getTypeCounter() + "\" /></type>"
 					+ "</variable>");
 			//rellenar externalVars
-			//externalVarsProgram.add(count.getExternalVarsPLCOpen());
+			externalVarsProgram.add(count.getExternalVarsPLCOpen());
 		}
 		
 		pousPLCOpen.add("</localVars>");
@@ -675,7 +682,7 @@ public class Project {
 			//Dejo solo la primera letra en mayusculas
 			String aux = WordUtils.capitalize(action.trim());
 
-			String auxString = WordUtils.capitalize(getActionStepMap().get(action));
+			String auxString = WordUtils.capitalize(this.actionStepMap.get(action));
 
 			auxString.replaceAll(" Not ", " NOT ");
 			auxString.replaceAll(" And ", " AND ");
@@ -694,7 +701,9 @@ public class Project {
 			// forzado de emergencia
 			Pattern patEmer = Pattern.compile("^F/G.*");
 			Matcher matEmer = patEmer.matcher(aux);
-
+			
+			//Para el getName de con o timer
+			String name="";
 
 			//si no es temp, cont, o forzado de emergencia
 			if (!matEmer.matches() && !matCont.matches() && !matTemp.matches()) {
@@ -707,7 +716,7 @@ public class Project {
 				int index = equalsTimer(aux);
 				//Obtengo el Temporizador 
 				Timer timer = getListTimers().get(index);
-
+				name = timer.getNameTimer();
 				String auxStepNameTimer = WordUtils.capitalize(timer.getStepNameTimer());
 
 				auxString.replaceAll(" Not ", " NOT ");
@@ -717,20 +726,25 @@ public class Project {
 
 				listCP.add("\n\n(*Activaci�n y desactivaci�n del temporizador*)\n"
 						+ "\nIF("+auxStepNameTimer+")THEN (*RE = flanco de subida*)"
-						+ "\n\tSTART "+timer.getNameTimer()+";"
+						+ "\n\tSTART "+name+";"
 						+ "\nELSIF("+auxStepNameTimer.replaceAll(" RE |RE ", " FE ")+")THEN (*FE = flanco de bajada*)"
-						+ "\n\tDOWN "+timer.getNameTimer()+";"
+						+ "\n\tDOWN "+name+";"
 						+ "\nEND_IF;\n");
 
 			} else if (matCont.matches()) {
 				// TODO PROGRAM MAIN si es contador aun no se q hacer
+				//Busco el indice del contador 
+				int index = equalsCount(aux);
+				//Obtengo el contador
+				Counter count = getListCounters().get(index);
+				name = count.getNameCounter();
+				String auxStepNameCount = WordUtils.capitalize(count.getStepCountes());
 				listCP.add("\n\n(*Contador*)\n"
-						+ "\nIF("+""+")THEN"
-						+ "\n\t "+""+";"
-						+ "\nELSIF("+""+")THEN"
-						+ "\n\t "+""+";"
+						+ "\nIF("+auxStepNameCount+")THEN"
+						+ "\n\t "+count+";"
+						+ "\nELSIF("+auxStepNameCount+")THEN"
+						+ "\n\t "+count+";"
 						+ "\nEND_IF;\n");
-				// Si no es el forzado de emergencia , contador o temp
 			} 
 
 		}
@@ -795,7 +809,7 @@ public class Project {
 			// si el grafcet es el de emergencia relleno la lista de forzados
 			/*TODO COMENTADO PARA PROBAR SI VALE CON LAS LISTA DE EMERGENCIA SOLO 
 			 * EN EL PROJECT EN ESTE CASO SE TIENE Q DAR POR HECHO Q HABRA SOLO UN 
-			 * GRAFCET DE ENERGENCIA EN TODO EL PROYECTO
+			 * GRAFCET DE ENERGENCIA EN  EL PROYECTO
 			 * if (grafcet.isEmergency()) {
 				String stepStop = grafcet.getStepStopEmergency();
 				String stepStart = grafcet.getStepStartEmergency();
@@ -978,17 +992,23 @@ public class Project {
 			}else if (matTemp.matches()) {
 				aux = aux.replaceAll("=[0-9]{1,}[a-z A-Z]{1,}", "").trim();
 				int index = equalsTimer(aux);
-				Timer timer = listTimers.get(index);
-				listaProgramMain.add("\n\t" + timer.getNameTimer() + "IN:=" + actionStepMap.get(action) + ";");
-				listaProgramMain
-				.add("\n\t" + timer.getNameTimer() + "PT:=T#" + timer.getTime() + timer.getTypeTime() + ";");
-				listaProgramMain.add("\n\t" + timer.getNameTimer() + "(IN:=" + timer.getNameTimer() + "IN , PT:="
-						+ timer.getNameTimer() + "PT , Q=>" + timer.getNameTimer() + "Q , ET=> " + timer.getNameTimer()
-						+ "ET);");
+				Timer timer = getListTimers().get(index);
+				String nameTimer = timer.getNameTimer();
+				listaProgramMain.add("\n\t" + nameTimer + "IN:=" + actionStepMap.get(action) + ";");
+				listaProgramMain.add(timer.getProgramMainTimer());
+				/*listaProgramMain
+				.add("\n\t" + nameTimer + "PT:=T#" + timer.getTime() + timer.getTypeTime() + ";");
+				listaProgramMain.add("\n\t" + nameTimer+ "(IN:=" + nameTimer + "IN , PT:="
+						+ nameTimer + "PT , Q=>" + nameTimer + "Q , ET=> " + nameTimer
+						+ "ET);");*/
 			} else if (matCont.matches()) {
 				// TODO PROGRAM MAIN si es contador aun no se q hacer
-
-				// Si no es el forzado de emergencia , contador o temp
+				int index = equalsCount(aux);
+				Counter count = getListCounters().get(index);
+				//String nameCount = count.getNameCounter();
+				//listaProgramMain.add("\n\t" + nameCount + "IN:=" + actionStepMap.get(action) + ";");
+				listaProgramMain.add(count.getProgramMainCounter());
+				
 			} 
 
 		}
@@ -1013,7 +1033,7 @@ public class Project {
 	/**
 	 * Devuelve la lista que le pasan por parametro pero sin elementos repetidos
 	 */
-	public LinkedList<String> removeDuplicates(LinkedList<String> listDuplicate) {
+	private LinkedList<String> removeDuplicates(LinkedList<String> listDuplicate) {
 
 		LinkedList<String> listwithoutduplicates = new LinkedList<String>();
 
@@ -1175,8 +1195,10 @@ public class Project {
 				listProgramBody.add(timer.getBodyPLCOpen());
 			} else if (matCont.matches()) {
 				// TODO PLCOpensi es contador aun no se q hacer
-
-				// Si no es el forzado de emergencia , contador o temp
+				int index = equalsCount(aux);
+				Counter count = listCounters.get(index);
+				listProgramBody.add(count.getBodyPLCOpen());
+				
 			} 
 		}
 		return listProgramBody;

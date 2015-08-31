@@ -81,30 +81,30 @@ public class Counter {
 	 * Devuelve un array con dos elemetos en uno la iniciacion del tipo de count
 	 * (var del program main) y en otro parte del program main
 	 */
-	public String[] getProgramMainCounter() {
-		String[] programMain = new String[2];
+	public String getProgramMainCounter() {
+		String programMain = "";
 
 		if (this.typeCounter.equals("CTD")) {
 
 			// TODO contador inicializaciones preguntar q falta
-			programMain[0] = "\t" + this.nameCounter + "\t: " + this.typeCounter + ";\n";
-			programMain[1] = this.nameCounter + "CD:= " + this.nameCounter + "CD," + " LOAD:= " + this.nameCounter
+			//programMain[0] = "\t" + this.nameCounter + "\t: " + this.typeCounter + ";\n";
+			programMain = this.nameCounter + "CD:= " + this.nameCounter + "CD," + " LOAD:= " + this.nameCounter
 					+ "LOAD," + " PV:= " + this.nameCounter + "PV," + " Q=> " + this.nameCounter + "Q," + " CV=> "
 					+ this.nameCounter + "CV);";
 
 		} else if (this.typeCounter.equals("CTU")) {
 
 			// TODO contador inicializaciones preguntar q falta
-			programMain[0] = "\t" + this.nameCounter + "\t: " + this.typeCounter + ";\n";
-			programMain[1] = this.nameCounter + "(CU:= " + this.nameCounter + "CU ," + " RESET:= " + this.nameCounter
+			//programMain[0] = "\t" + this.nameCounter + "\t: " + this.typeCounter + ";\n";
+			programMain = this.nameCounter + "(CU:= " + this.nameCounter + "CU ," + " RESET:= " + this.nameCounter
 					+ "RESET," + " PV:= " + this.nameCounter + "PV," + " Q=> " + this.nameCounter + "Q," + " CV=> "
 					+ this.nameCounter + "CV);";
 
 		} else if (this.typeCounter.equals("CTUD")) {
 
 			// TODO contador inicializaciones preguntar q falta
-			programMain[0] = "\t" + this.nameCounter + "\t: " + this.typeCounter + ";\n";
-			programMain[1] = this.nameCounter + "(CU:= " + this.nameCounter + "CU ," + "CD:= " + this.nameCounter
+			//programMain[0] = "\t" + this.nameCounter + "\t: " + this.typeCounter + ";\n";
+			programMain = this.nameCounter + "(CU:= " + this.nameCounter + "CU ," + "CD:= " + this.nameCounter
 					+ "CD," + " RESET:= " + this.nameCounter + "RESET," + " LOAD:= " + this.nameCounter + "LOAD,"
 					+ " PV:= " + this.nameCounter + "PV," + " QU=> " + this.nameCounter + "QU," + " QD=> "
 					+ this.nameCounter + "QD," + " CV=> " + this.nameCounter + "CV);";
