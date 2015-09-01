@@ -703,7 +703,33 @@
 					<ST>
 						<worksheet name="GSecPrincipal">
 							<html xmlns="http://www.w3.org/1999/xhtml">
-								<p xmlns="http://www.w3.org/1999/xhtml" xml:space="preserve">(*---------------------------------------------------------------------------------------------------------------------------------------<br /> SecPrincipal:  organiza tanto el arranque del sistema en modo automático como<br />    la parada programada del mismo, generando las señales de mando <br />    que informan a producción normal sobre el estado del sistema en <br />    cada momento.  <br />-----------------------------------------------------------------------------------------------------------------------------------------*)<br /><br />(* Set -Reset ________________________________________________________________ X0 *)<br />IF((X3 AND FinProces) OR Init ) THEN<br /> X0:=1;<br />END_IF;<br /><br />IF (X1 OR Reset) THEN<br /> X0:=0;<br />END_IF;<br /><br />(*Set -Reset ________________________________________________________________X1*)<br />IF(X0 AND SolModoAuto)THEN<br /> X1:=1;<br />END_IF;<br /><br />IF (X2 OR Init OR Reset)THEN<br /> X1:=0;<br />END_IF;<br /><br />(*Set -Reset ________________________________________________________________X2*)<br />IF(X1 AND FinCondIni)THEN<br /> X2:=1;<br />END_IF;<br /><br />IF(X3 OR Init OR Reset)THEN<br />  X2:=0;<br />END_IF;<br /><br />(*Set -Reset ________________________________________________________________X3*)<br />IF(X2 AND SolParoFC)THEN<br /> X3:=1;<br />END_IF;<br /><br />IF(X0 OR Init OR  Reset) THEN<br /> X3:=0;<br />END_IF;<br /></p>
+								<p xmlns="http://www.w3.org/1999/xhtml" xml:space="preserve">(*---------------------------------------------------------------------------------------------------------------------------------------<br /> 
+								SecPrincipal:  organiza tanto el arranque del sistema en modo automático como<br />    la parada programada del mismo, generando las señales de mando <br />    que informan a producción normal sobre el estado del sistema en <br />    cada momento. 
+								 <br />-----------------------------------------------------------------------------------------------------------------------------------------*)
+								 <br /><br />(* Set -Reset ________________________________________________________________ X0 *)
+								 <br />IF((X3 AND FinProces) OR Init ) THEN
+								 <br /> X0:=1;
+								 <br />END_IF;
+								 <br /><br />IF (X1 OR Reset) THEN
+								 <br /> X0:=0;
+								 <br />END_IF;
+								 <br /><br />(*Set -Reset ________________________________________________________________X1*)
+								 <br />IF(X0 AND SolModoAuto)THEN
+								 <br /> X1:=1;
+								 <br />END_IF;
+								 <br /><br />IF (X2 OR Init OR Reset)THEN<br /> X1:=0;<br />END_IF;
+								 <br /><br />(*Set -Reset ________________________________________________________________X2*)
+								 <br />IF(X1 AND FinCondIni)THEN<br /> X2:=1;<br />END_IF;
+								 <br /><br />IF(X3 OR Init OR Reset)THEN<br />  X2:=0;<br />END_IF;
+								 <br /><br />(*Set -Reset ________________________________________________________________X3*)
+								 <br />IF(X2 AND SolParoFC)THEN
+								 <br /> X3:=1;
+								 <br />END_IF;
+								 <br /><br />IF(X0 OR Init OR  Reset) THEN
+								 <br /> X3:=0;
+								 <br />END_IF;
+								 <br />
+								 </p>
 							</html>
 						</worksheet>
 					</ST>

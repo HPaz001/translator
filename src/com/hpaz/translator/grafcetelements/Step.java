@@ -211,10 +211,16 @@ public class Step {
 	public void addGrafcetsStartEmergency(LinkedList<String> pGrafcetsStartEmergency) {
 		this.grafcetsStartEmergency = pGrafcetsStartEmergency;
 	}
-	
-	public String printStepGlobalVar() {
-		String s = "\t" + this.name + "\t: BOOL;\n";
-		return s;
+	//en type le indico si tiene q devolver la de PLCOpen o la de TwinCat
+	public String printStepGlobalVar( String pTypeProgram) {
+		String var ="";
+		if (pTypeProgram.equals(GrafcetTagsConstants.PROGRAM_OPT1)){//TwinCat
+			var ="\t" + this.name + "\t: BOOL;\n";
+		}else if (pTypeProgram.equals(GrafcetTagsConstants.PROGRAM_OPT3)) {//PLCOpen
+			var = "<variable name=\""+this.name+"\"><type><BOOL /></type></variable>";
+		}
+		
+		return var;
 	}
 	public String printExternalVars() {
 		String s = "<variable name=\"" + this.name + "\" group=\"Default\">"

@@ -1,5 +1,7 @@
 package com.hpaz.translator.grafcetelements;
 
+import com.hpaz.translator.grafcetelements.constants.GrafcetTagsConstants;
+
 public class Timer {
 	private String nameTimer;
 	private String stepNameTimer;
@@ -94,13 +96,21 @@ public class Timer {
 	public boolean equals(String tim) {
 		return this.nameTimer.equals(tim);
 	}
-	public String getGlobalsVarTimer(){
-		String globalsVar = "\t" + this.nameTimer + "Q\t: BOOL;\n"+
-							"\t" + this.nameTimer + "IN\t: BOOL;\n" +
-							"\t" + this.nameTimer + "PT\t: TIME;\n" +
-							"\t" + this.nameTimer + "ET\t: TIME;\n";
+	public String getGlobalsVarTimer(String pTypeProgram){
+		String var ="";
+		if (pTypeProgram.equals(GrafcetTagsConstants.PROGRAM_OPT1)){//TwinCat
+			var ="\t" + this.nameTimer + "Q\t: BOOL;\n"+
+					"\t" + this.nameTimer + "IN\t: BOOL;\n" +
+					"\t" + this.nameTimer + "PT\t: TIME;\n" +
+					"\t" + this.nameTimer + "ET\t: TIME;\n";
+		}else if (pTypeProgram.equals(GrafcetTagsConstants.PROGRAM_OPT3)) {//PLCOpen
+			var = "<variable name=\""+this.nameTimer+"Q\"><type><BOOL /></type></variable>"
+					+ "<variable name=\""+this.nameTimer+"IN\"><type><BOOL /></type></variable>"
+					+ "<variable name=\""+this.nameTimer+"PT\"><type><TIME /></type></variable>"
+					+ "<variable name=\""+this.nameTimer+"ET\"><type><TIME /></type></variable>";
+		}
 		
-		return globalsVar;
+		return var;
 		
 	}
 	/**Devuelve un array de string donde el primero corresponde a las variables 

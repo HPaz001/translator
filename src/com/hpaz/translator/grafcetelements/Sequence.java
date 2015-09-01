@@ -149,7 +149,7 @@ public class Sequence {
 		this.stepStartEmergency=pNumber;
 		
 	}
-	public LinkedList<String> getVarGlobalStages() {
+	public LinkedList<String> getVarGlobalStages(String pTypeProgram) {
 
 		//LinkedList<String> auxSignals = new LinkedList<String>();
 		LinkedList<String> auxStages = new LinkedList<String>();
@@ -158,7 +158,7 @@ public class Sequence {
 		/* puede ser una transition o un step */
 		for (Object st : listTransitionOrStep) {
 			if (st instanceof Step) {
-				auxStages.add(((Step) st).printStepGlobalVar());
+				auxStages.add(((Step) st).printStepGlobalVar(pTypeProgram));
 			}
 		}
 

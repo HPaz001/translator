@@ -1,5 +1,7 @@
 package com.hpaz.translator.grafcetelements;
 
+import com.hpaz.translator.grafcetelements.constants.GrafcetTagsConstants;
+
 /*TODO Contador etapas init .. Creo que se deben guardar las etapas cuando se inicializan y en q etapas*/
 
 public class Counter {
@@ -52,28 +54,63 @@ public class Counter {
 		System.out.println("getTypeCounter: " + typeCounter);
 	}
 */
-	public String getGlobalsVarCounter() {
+	public String getGlobalsVarCounter(String pTypeProgram) {
+		
+		String var ="";
+		
+		if (pTypeProgram.equals(GrafcetTagsConstants.PROGRAM_OPT1)){//TwinCat
+			if (this.typeCounter.equals("CTD")) {
+				var = "\t" + this.nameCounter + "CD\t: BOOL;\n" + "\t" 
+						+ this.nameCounter + "LOAD\t: BOOL;\n" + "\t"
+						+ this.nameCounter + "PV\t: INT;\n" + "\t" 
+						+ this.nameCounter + "Q\t: BOOL;\n" + "\t"
+						+ this.nameCounter + "CV\t: INT;\n";
 
-		String globalsVar = "";
+			} else if (this.typeCounter.equals("CTU")) {
+				var = "\t" + this.nameCounter + "CU\t: BOOL;\n" + "\t" 
+						+ this.nameCounter + "RESET\t: BOOL;\n" + "\t"
+						+ this.nameCounter + "PV\t: INT;\n" + "\t" 
+						+ this.nameCounter + "Q\t: BOOL;\n" + "\t"
+						+ this.nameCounter + "CV\t: INT;\n";
 
-		if (this.typeCounter.equals("CTD")) {
-			globalsVar = "\t" + this.nameCounter + "CD\t: BOOL;\n" + "\t" + this.nameCounter + "LOAD\t: BOOL;\n" + "\t"
-					+ this.nameCounter + "PV\t: INT;\n" + "\t" + this.nameCounter + "Q\t: BOOL;\n" + "\t"
-					+ this.nameCounter + "CV\t: INT;\n";
+			} else if (this.typeCounter.equals("CTUD")) {
+				var = "\t" + this.nameCounter + "CU\t: BOOL;\n" + "\t" 
+						+ this.nameCounter + "CD\t: BOOL;\n" + "\t"
+						+ this.nameCounter + "RESET\t: BOOL;\n" + "\t" 
+						+ this.nameCounter + "LOAD\t: BOOL;\n" + "\t"
+						+ this.nameCounter + "PV\t: INT;\n" + "\t" 
+						+ this.nameCounter + "QU\t: BOOL;\n" + "\t"
+						+ this.nameCounter + "QD\t: BOOL;\n" + "\t" 
+						+ this.nameCounter + "CV\t: INT;\n";
+			}
+		}else if (pTypeProgram.equals(GrafcetTagsConstants.PROGRAM_OPT3)) {//PLCOpen
+			if (this.typeCounter.equals("CTD")) {
+				var = "<variable name=\"" + this.nameCounter + "CD\"><type><BOOL /></type></variable>" 
+						+"<variable name=\"" + this.nameCounter + "LOAD\"><type><BOOL /></type></variable>"
+						+ "<variable name=\"" +this.nameCounter + "PV\"><type><BOOL /></type></variable>"
+						+ "<variable name=\"" +this.nameCounter + "Q\"><type><BOOL /></type></variable>"
+						+ "<variable name=\"" +this.nameCounter + "CV\"><type><BOOL /></type></variable>";
 
-		} else if (this.typeCounter.equals("CTU")) {
-			globalsVar = "\t" + this.nameCounter + "CU\t: BOOL;\n" + "\t" + this.nameCounter + "RESET\t: BOOL;\n" + "\t"
-					+ this.nameCounter + "PV\t: INT;\n" + "\t" + this.nameCounter + "Q\t: BOOL;\n" + "\t"
-					+ this.nameCounter + "CV\t: INT;\n";
+			} else if (this.typeCounter.equals("CTU")) {
+				var = "<variable name=\"" + this.nameCounter + "CU\"><type><BOOL /></type></variable>"
+						+"<variable name=\"" + this.nameCounter + "RESET\"><type><BOOL /></type></variable>"
+						+"<variable name=\"" + this.nameCounter + "PV\"><type><BOOL /></type></variable>" 
+						+"<variable name=\"" + this.nameCounter + "Q\"><type><BOOL /></type></variable>"
+						+"<variable name=\"" + this.nameCounter + "CV\"><type><BOOL /></type></variable>";
 
-		} else if (this.typeCounter.equals("CTUD")) {
-			globalsVar = "\t" + this.nameCounter + "CU\t: BOOL;\n" + "\t" + this.nameCounter + "CD\t: BOOL;\n" + "\t"
-					+ this.nameCounter + "RESET\t: BOOL;\n" + "\t" + this.nameCounter + "LOAD\t: BOOL;\n" + "\t"
-					+ this.nameCounter + "PV\t: INT;\n" + "\t" + this.nameCounter + "QU\t: BOOL;\n" + "\t"
-					+ this.nameCounter + "QD\t: BOOL;\n" + "\t" + this.nameCounter + "CV\t: INT;\n";
+			} else if (this.typeCounter.equals("CTUD")) {
+				var = "<variable name=\"" + this.nameCounter + "CU\"><type><BOOL /></type></variable>" 
+						+"<variable name=\"" + this.nameCounter + "CD\"><type><BOOL /></type></variable>"
+						+"<variable name=\"" + this.nameCounter + "RESET\"><type><BOOL /></type></variable>"
+						+"<variable name=\"" + this.nameCounter + "LOAD\"><type><BOOL /></type></variable>"
+						+"<variable name=\"" + this.nameCounter + "PV\"><type><BOOL /></type></variable>"
+						+"<variable name=\"" + this.nameCounter + "QU\"><type><BOOL /></type></variable>"
+						+"<variable name=\"" + this.nameCounter + "QD\"><type><BOOL /></type></variable>"
+						+"<variable name=\"" + this.nameCounter + "CV\"><type><BOOL /></type></variable>";
+			}
 		}
-
-		return globalsVar;
+		
+		return var;
 
 	}
 

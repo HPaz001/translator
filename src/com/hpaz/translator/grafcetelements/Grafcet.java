@@ -9,6 +9,8 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.text.WordUtils;
 
+import com.hpaz.translator.grafcetelements.constants.GrafcetTagsConstants;
+
 public class Grafcet {
 
 	private String type;
@@ -131,14 +133,18 @@ public class Grafcet {
 	}*/
 	
 
-	public LinkedList<String> getGrafcetVarGlobalStages() {
-		LinkedList<String> vG = new LinkedList<String>();
-		vG.add("\n\t(*---" + this.name + "---*)\n\n");
+	public LinkedList<String> getGrafcetVarGlobalStages(String pTypeProgram) {
+		LinkedList<String> listReturnVarGlovalStages = new LinkedList<String>();
+		
+		if (pTypeProgram.equals(GrafcetTagsConstants.PROGRAM_OPT1)){//TwinCat
+			listReturnVarGlovalStages.add("\n\t(*---" + this.name + "---*)\n\n");
+		}
+		
 		// por cada secuencia de la lista
 		for (Sequence s : sequenceList) {
-			vG.addAll(s.getVarGlobalStages());
-		}
-		return vG;
+			listReturnVarGlovalStages.addAll(s.getVarGlobalStages(pTypeProgram));
+		}		
+		return listReturnVarGlovalStages;
 	}
 	
 	public LinkedList<String> getGrafcetExternalVars() {
@@ -154,7 +160,6 @@ public class Grafcet {
 
 	public LinkedList<String> grafcetVarGlobalSignals() {
 		LinkedList<String> vG = new LinkedList<String>();
-
 		for (String signal : this.signalsGrafcet) {
 			vG.add("\t" + signal + "\t: BOOL;\n");
 		}
