@@ -223,9 +223,10 @@ public class Step {
 		return var;
 	}
 	public String printExternalVars() {
-		String s = "<variable name=\"" + this.name + "\" group=\"Default\">"
-				+ "<type><BOOL /></type></variable>";
-		return s;
+		String externalVar ="<variable name=\"" + this.name + "\" group=\"Default\">"
+				+ "<type><BOOL /></type>"
+				+ "</variable>";
+		return externalVar;
 	}
 
 	/*public void printStep() {

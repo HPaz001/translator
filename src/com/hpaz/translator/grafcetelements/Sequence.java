@@ -162,29 +162,21 @@ public class Sequence {
 			}
 		}
 
-		// esto lo hago para que queden primero las se�ales y despues las etapas
-		// auxSignals.addAll(auxStages);
-
 		return auxStages;
 
 	}
-	public LinkedList<String> getStagesExternalVars() {
-
+	public LinkedList<String> getStepExternalVars() {
 		//LinkedList<String> auxSignals = new LinkedList<String>();
-		LinkedList<String> auxStages = new LinkedList<String>();
+		LinkedList<String> externalVars = new LinkedList<String>();
 
-		//auxSignals.add("\n\t(*---Se�ales---*)\n\n");
 		/* puede ser una transition o un step */
 		for (Object st : listTransitionOrStep) {
 			if (st instanceof Step) {
-				auxStages.add(((Step) st).printExternalVars());
+				externalVars.add(((Step) st).printExternalVars());
 			}
 		}
 
-		// esto lo hago para que queden primero las se�ales y despues las etapas
-		// auxSignals.addAll(auxStages);
-
-		return auxStages;
+		return externalVars;
 
 	}
 

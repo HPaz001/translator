@@ -149,10 +149,17 @@ public class Grafcet {
 	
 	public LinkedList<String> getGrafcetExternalVars() {
 		LinkedList<String> externalVars = new LinkedList<String>();
-		// por cada secuencia de la lista
-		for (Sequence sequence : sequenceList) {
-			externalVars.addAll(sequence.getStagesExternalVars());
+		// por cada secuencia de la lista para obtener la etapa
+		for (Sequence sequence : getSequenceList()) {
+			externalVars.addAll(sequence.getStepExternalVars());
 		}
+			//por cada señal del grafcet
+			//quito los repetidos 
+		LinkedList<String> listSignals = removeDuplicates(getListSignalsGrafcet());
+		for (String signal : listSignals) {
+			externalVars.add("<variable name=\""+signal+"\" group=\"Default\"><type><BOOL /></type></variable>");
+		}
+			
 		return externalVars;
 	}
 	
