@@ -1,7 +1,6 @@
 package com.hpaz.translator.grafcetelements;
 
 import java.util.LinkedList;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 

@@ -1,6 +1,5 @@
 package com.hpaz.translator.grafcetelements;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -29,7 +28,6 @@ public class Grafcet {
 	
 	/* Lista de se�ales del grafcet */
 	private LinkedList<String> signalsGrafcet;
-
 	private LinkedList<Jump> jumpList;
 	private LinkedList<Sequence> sequenceList;
 	private LinkedList<Road> roadList;
@@ -63,7 +61,7 @@ public class Grafcet {
 		}		
 	}
 	
-	public void addEmergency(boolean emergency) {
+	private void addEmergency(boolean emergency) {
 		this.emergency = emergency;
 	}
 
@@ -91,9 +89,9 @@ public class Grafcet {
 		return name;
 	}
 
-	public String getComment() {
+/*	private String getComment() {
 		return comment;
-	}
+	}*/
 
 	public String getOwner() {
 		return owner;
@@ -175,13 +173,13 @@ public class Grafcet {
 	}
 
 	// genera un listado con los set y reset listos para exportar
-	public LinkedList<String> printSetReset() {
+/*	private LinkedList<String> printSetReset() {
 		LinkedList<String> sR = new LinkedList<String>();
 		for (Sequence s : sequenceList) {
 			sR.addAll(s.getSetReset());
 		}
 		return sR;
-	}
+	}*/
 
 /*	public void printGrafcet() {
 		System.out.println("----- GRAFCET ------");
@@ -505,7 +503,7 @@ public class Grafcet {
 					actualStep = ((Step) obj).getName();
 					// Relleno la lista con los Set-Reset
 					
-					functionBlock.add("<br />(* Set -Reset ___________________________"
+					functionBlock.add("<br /> (* Set - Reset ___________________________"
 							+ "_____________________________________ " + actualStep + " *)");
 					//Obtengo los Set-Reset
 					String set = ((Step) obj).getMySet();
@@ -513,17 +511,17 @@ public class Grafcet {
 					
 					// si es una etapa inicial
 					if (((Step) obj).getType().equals("initial")) {
-						auxSet = "<br />IF ( " + set + " OR Init ) THEN<br />" 
+						auxSet = "<br /><br />IF ( " + set + " OR Init ) THEN<br />" 
 										+ actualStep + ":=1;"
 								+ "<br />END_IF;";
-						auxReset = "<br /><br />IF ( " + reset + " OR Reset ) THEN<br />" 
+						auxReset = "<br /><br /><br />IF ( " + reset + " OR Reset ) THEN<br />" 
 										+ actualStep + ":=0;"
 								+ "<br />END_IF;";
 					} else {
-						auxSet = "<br />IF ( " + set + " ) THEN<br />" 
+						auxSet = "<br /><br />IF ( " + set + " ) THEN<br />" 
 										+ actualStep + ":=1;"
 								+ "<br />END_IF;";
-						auxReset = "<br />IF ( " + reset + " OR Init OR Reset ) THEN<br />" 
+						auxReset = "<br /><br />IF ( " + reset + " OR Init OR Reset ) THEN<br />" 
 										+ actualStep+ ":=0;"
 									+ "<br />END_IF;";
 					}
@@ -772,6 +770,54 @@ public class Grafcet {
 		}
 
 		return listwithoutduplicates;
+	}
+
+	public LinkedList<String> getGrafcetExternalVarsMain() {
+		LinkedList<String> externalVars = new LinkedList<String>();
+		for (Sequence sequence : getSequenceList()) {
+			externalVars.addAll(sequence.getStepExternalVarsMain(isEmergency()));
+		}
+		return externalVars;
+	}
+
+	public LinkedList<String> generateBody(){
+		LinkedList<String> functionBlock = new LinkedList<String>();
+		String auxSet,auxReset;
+		// por cada seccuencia
+			for (Sequence seq : getSequenceList()) {
+				// recorro la lista de etapas y transiciones la secuencia
+				for (Object obj : seq.getListTransitionOrStep()) {
+					/* Si es una etapa */
+					if (obj instanceof Step) {
+						String actualStep = ((Step) obj).getName();
+						// Relleno la lista con los Set-Reset
+						
+						//Obtengo los Set-Reset
+						String set = ((Step) obj).getMySet();
+						String reset = ((Step) obj).getMyReset();
+						
+						// si es una etapa inicial
+						if (((Step) obj).getType().equals("initial")) {
+							auxSet = "<br /><br />IF ( " + set + " OR Init ) THEN"
+									+"<br />" + actualStep + ":=1;"
+									+"<br />END_IF;";
+							auxReset = "<br /><br />IF ( " + reset + " OR Reset ) THEN"
+									 +"<br />"+ actualStep + ":=0;"
+									 + "<br />END_IF;";
+						} else {
+							auxSet = "<br /><br />IF ( "+ set +" ) THEN"
+									+"<br />"+ actualStep + ":=1;"
+									+"<br />END_IF;";
+							auxReset = "<br />IF ( " + reset + " OR Init OR Reset ) THEN"
+									 + "<br />" + actualStep+ ":=0;"
+									 + "<br />END_IF;";
+						}
+						functionBlock.add(auxSet);
+						functionBlock.add(auxReset);
+					}
+				}
+			}
+			return functionBlock;
 	}
 
 

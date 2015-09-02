@@ -36,10 +36,10 @@ public class Action {
 		this.type = type;
 	}
 	
-	public void addStopEmergency(LinkedList<String> stopEmergency) {
+	private void addStopEmergency(LinkedList<String> stopEmergency) {
 		this.stopEmergency = stopEmergency;
 	}
-	public void addStartEmergency(LinkedList<String> startEmergency) {
+	private void addStartEmergency(LinkedList<String> startEmergency) {
 		this.startEmergency = startEmergency;
 	}
 	public String getType() {
@@ -66,7 +66,7 @@ public class Action {
 			this.condition = getCondition() + " " + pCondition;
 		}
 	}
-	public String getComment() {
+	private String getComment() {
 		return comment;
 	}
 	public void addComment(String comment) {
@@ -82,10 +82,12 @@ public class Action {
 	public LinkedList<String> getStopEmergency() {
 		return this.stopEmergency;
 	}
-	public LinkedList<String> getStartEmergency() {
+	
+public LinkedList<String> getStartEmergency() {
 		return this.startEmergency;
 	}
-	public boolean isEmergency() {
+	
+public boolean isEmergency() {
 		return emergency;
 	}
 	
@@ -105,13 +107,13 @@ public class Action {
 		Pattern pat = Pattern.compile("^F/G.*.> \\{\\}$");
 		Matcher mat = pat.matcher(getText().trim());
 		if(mat.matches()){
-			this.stopEmergency.addAll(generateListEmergency());
+			addStopEmergency(generateListEmergency());
 		}else{
 			/*Emergencia forzado a start*/
 			Pattern pat1 = Pattern.compile("^F/G.*.> \\{X.[0-9]\\}$");
 			Matcher mat1 = pat1.matcher(getText().trim());
 			if(mat1.matches()){
-				this.startEmergency.addAll(generateListEmergency());
+				addStartEmergency(generateListEmergency());
 			}
 		}
 		
