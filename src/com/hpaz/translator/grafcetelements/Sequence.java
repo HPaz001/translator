@@ -1,5 +1,6 @@
 package com.hpaz.translator.grafcetelements;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -166,7 +167,7 @@ public class Sequence {
 
 	}
 	public LinkedList<String> getStepExternalVars() {
-		//LinkedList<String> auxSignals = new LinkedList<String>();
+		
 		LinkedList<String> externalVars = new LinkedList<String>();
 
 		/* puede ser una transition o un step */
@@ -180,6 +181,23 @@ public class Sequence {
 
 	}
 
+	public LinkedList<String> getStepExternalVarsMain(boolean pEmergency) {
+		LinkedList<String> externalVars = new LinkedList<String>();
+
+		/* puede ser una transition o un step */
+		for (Object st : listTransitionOrStep) {
+			//si es un step
+			if (st instanceof Step) {
+				//Si es una etapa inicial y no es emergencia o tiene una o mas acciones asociadas
+				if((((Step) st).getType().equals("initial") && !pEmergency)||(!((Step) st).getMyActions().isEmpty())){
+					externalVars.add(((Step) st).printExternalVars());	
+				}
+
+			}
+		}
+
+		return externalVars;
+	}
 
 	/**
 	 * Devuelve un listado con los set y reset correspondientes a cada objeto de
@@ -315,6 +333,7 @@ public class Sequence {
 		}
 		return null;
 	}
+
 
 	
 }

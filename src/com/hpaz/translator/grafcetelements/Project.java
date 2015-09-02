@@ -459,11 +459,13 @@ public class Project {
 	 * }
 	 */
 
+	
 	private void addListUI(Map<String, String> variablesMap) {
 		this.listUI = variablesMap;
 
 	}
 
+	/**Genera un mapa añadiendo cada accion y las etapas en las q se usa dic */
 	public void generateActionStepMap(Map<String, String> auxMap) {
 
 		// Map<String, String> auxMap = pGrafcet.getActionStepMap();
@@ -475,7 +477,7 @@ public class Project {
 		}
 	}
 
-	/** Este metodo devuelve */
+	/** Este metodo llama al de exportar ficheros dependiendo del software de compatibilidad*/
 	public void print() {
 		try {
 			if (program.equalsIgnoreCase(GrafcetTagsConstants.PROGRAM_OPT1)) { // Twincat
@@ -936,6 +938,63 @@ public class Project {
 
 		return aux;
 	}
+	
+	
+	private LinkedList<String> generateListEmergencyMainPLCOpen(LinkedList<String> pListStop, LinkedList<String> pListStart,
+			boolean pEquals, String pStepStop, String pStepStart) {
+		LinkedList<String> aux = new LinkedList<String>();
+		String emerg = "";
+		// quiere decir que las listas de stop y start son iguales
+		if (pEquals) {
+			for (String e : pListStop) {
+				emerg = e.trim();
+				aux.add("<br />Init" + emerg.trim() + ":=" + pStepStart + ";");
+				aux.add("<br />Reset" + emerg + ":=" + pStepStop + ";");
+				aux.add("<br />" + emerg + "(Init:=(XInit OR Init" + emerg + "), Reset:=(XReset OR Reset" + emerg
+						+ "));");
+			}
+		} else {
+			/* Si no son iguales comparo a ver cual es la mas grande */
+			if (pListStop.size() > pListStart.size()) {
+				for (String e : pListStop) {
+					// Por cada elemento d la lista miro si este se encuentra en
+					// la otra lista
+					if (pListStart.contains(e)) {
+						emerg = e.trim();
+						aux.add("<br />Init" + emerg + ":=" + pStepStart + ";");
+						aux.add("<br />Reset" + emerg + ":=" + pStepStop + ";");
+						aux.add("<br />" + emerg + "(Init:=(XInit OR Init" + emerg + "), Reset:=(XReset OR Reset" + emerg
+								+ "));");
+					} else {
+						emerg = e.trim();
+						// aux.add("\n\tInit"+emerg+":="+pStepStart+";\n");
+						aux.add("<br />Reset" + emerg + ":=" + pStepStop + ";");
+						aux.add("<br />" + emerg + "(Init:=(XInit), Reset:=(XReset OR Reset" + emerg + "));");
+					}
+				}
+			} else {
+				for (String e : pListStart) {
+					// Por cada elemento d la lista miro si este se encuentra en
+					// la otra lista
+					if (pListStop.contains(e)) {
+						emerg = e.trim();
+						aux.add("<br />Init" + emerg + ":=" + pStepStart + ";");
+						aux.add("<br />Reset" + emerg + ":=" + pStepStop + ";");
+						aux.add("<br />" + emerg + "(Init:=(XInit OR Init" + emerg + "), Reset:=(XReset OR Reset" + emerg
+								+ "));");
+					} else {
+						emerg = e.trim();
+						aux.add("<br />Init" + emerg + ":=" + pStepStart + ";");
+						// aux.add("\tReset"+emerg+":="+pStepStop+";\n");
+						aux.add("<br />" + emerg + "(Init:=(XInit OR Init" + emerg + "), Reset:=(XReset));");
+					}
+				}
+			}
+		}
+
+		return aux;
+	}
+
 
 	/**
 	 * Este metodo se encargara de obtener la parte combinacional
@@ -970,6 +1029,7 @@ public class Project {
 		listaProgramMain.add("\n\tEND_VAR\n");
 
 		listaProgramMain.add("\n\t(*---------------------------------------------*)\n");
+		
 		listaProgramMain.add("\n\tXInit:=INIT;\n\tXReset:=RESET;\n\n");
 
 		for (String string : this.list_FE_and_RE) {
