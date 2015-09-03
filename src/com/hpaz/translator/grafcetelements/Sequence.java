@@ -30,16 +30,17 @@ public class Sequence {
 		this.stepStopEmergency = -1;
 		this.stepStartEmergency = -1;
 	}
+	
 	public void fillAttributes(Map<String, String> pAttributes) {
 		// anado el id
 		addIdSeq(Integer.parseInt(pAttributes.get("id")));			
 	}
-
 	
 	private void addIdSeq(int pNumber) {
 		this.idSeq=pNumber;
 		
 	}
+	
 	public int getIdSeq() {
 		return idSeq;
 	}
@@ -59,14 +60,17 @@ public class Sequence {
 	public int getStepStartEmergency() {
 		return stepStartEmergency;
 	}
-	//aï¿½ade una lista de seï¿½ales
+	
+	//añade una lista de señales
 	private void  addSignals( LinkedList<String> pSignals){
 		this.signals.addAll(pSignals);
 	}
+	
 	//aï¿½ade una unica seï¿½al
 	private void  addSignal( String pSignal){
 		this.signals.add(pSignal);
 	}
+	
 	/**Este metodo aï¿½ade una transicion o un step a la lista listTransitionOrStep
 	 * Pero antes de esto genera y guarda las seï¿½ales correspondientes */
 	public void addTransitionOrStep(Object pTransitionOrStep) {
@@ -145,10 +149,12 @@ public class Sequence {
 		this.stepStopEmergency=pNumber;
 		
 	}
+	
 	private void addStepStartEmergency(int pNumber) {
 		this.stepStartEmergency=pNumber;
 		
 	}
+	
 	public LinkedList<String> getVarGlobalStages(String pTypeProgram) {
 
 		//LinkedList<String> auxSignals = new LinkedList<String>();
@@ -165,6 +171,7 @@ public class Sequence {
 		return auxStages;
 
 	}
+	
 	public LinkedList<String> getStepExternalVars() {
 		
 		LinkedList<String> externalVars = new LinkedList<String>();
@@ -198,38 +205,9 @@ public class Sequence {
 		return externalVars;
 	}
 
-	/**
-	 * Devuelve un listado con los set y reset correspondientes a cada objeto de
-	 * la secuencia
-	 */
-	public LinkedList<String> getSetReset() {
-		return null;
-	}
-
-/*	public void printSequence() {
-		System.out.println("----- SEQUENCE ------");
-		System.out.println("ID secuencia : " + this.idSeq);
-		System.out.println("----- PREVIOUS SequencesList");
-		for (Integer i : previousSequencesList) {
-			System.out.println(i);
-		}
-		System.out.println("----- NEXT SequencesList");
-		for (Integer i : nextSequencesList) {
-			System.out.println(i);
-		}
-		for (Object o : listTransitionOrStep) {
-			if (o instanceof Transition) {
-				((Transition) o).printTransition();
-			} else if (o instanceof Step) {
-				((Step) o).printStep();
-			}
-		}
-		
-	}*/
-
 	public Map<String, String> getActionStepMap() {
 		/*
-		 * SE DEBEN Aï¿½ADIR EL RE PARO Y RE MARCHA Y ALGUNA MAS PREGUNTAR EN ESTE
+		 * SE DEBEN AÑADIR EL RE PARO Y RE MARCHA Y ALGUNA MAS PREGUNTAR EN ESTE
 		 * CASO DEPENDEMOS DE LO Q NOS DIGA EL USUARIO EN LAS SEÃ‘ALES
 		 */
 		Map<String, String> actionStepMap = new HashMap<String, String>();
@@ -257,26 +235,6 @@ public class Sequence {
 		// devuelvo el map unido
 		return actionStepMap;
 	}
-
-/*	public void getEmergency() {
-		 Por cada step de la secuencia 
-		for (int i = 0; i < getListTransitionOrStep().size(); i++) {
-			Object step = getListTransitionOrStep().get(i);
-			if (step instanceof Step) {
-				
-				 * llamo a get emergency del step para que rellene los datos
-				 * correspondientes en caso de que sea un step de emergencia
-				 
-				// ((Step) step).getEmergency();
-				// si es una etapa de emergencia guardo en el tipo la etapa
-				if (((Step) step).isStartEmergency()) {
-					addStepStartEmergency(i);
-				} else if (((Step) step).isStopEmergency()) {
-					addStepStopEmergency(i);
-				}
-			}
-		}
-	}*/
 
 	public LinkedList<Integer> getPreviousSequencesList() {
 		return previousSequencesList;

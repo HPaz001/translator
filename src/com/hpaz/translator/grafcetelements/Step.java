@@ -10,7 +10,6 @@ import com.hpaz.translator.grafcetelements.constants.GrafcetTagsConstants;
 
 
 public class Step {
-	
 
 	private String type;
 	private String name;
@@ -18,7 +17,6 @@ public class Step {
 	private String mySet;
 	private String myReset;
 	private boolean and;
-	
 	/**Para saber la etepa de la emergencia,
 	 * Devuelve stop o start*/
 	private boolean stopEmergency;
@@ -75,11 +73,10 @@ public class Step {
 		}
 	}
 	
-	
-
 	public String getMySet() {
 		return mySet;
 	}
+	
 	public void addMySet(String pMySet) {
 		String set = pMySet;
 		//Para detectar temporizador
@@ -185,14 +182,15 @@ public class Step {
 		return stopEmergency;
 	}
 
-	public void addStopEmergency(boolean stopEmergency) {
+	private void addStopEmergency(boolean stopEmergency) {
 		this.stopEmergency = stopEmergency;
 	}
+	
 	public boolean isStartEmergency() {
 		return startEmergency;
 	}
 
-	public void addStartEmergency(boolean startEmergency) {
+	private void addStartEmergency(boolean startEmergency) {
 		this.startEmergency = startEmergency;
 	}
 
@@ -200,7 +198,7 @@ public class Step {
 		return grafcetsStopEmergency;
 	}
 
-	public void addGrafcetsStopEmergency(LinkedList<String> pGrafcetsStopEmergency) {
+	private void addGrafcetsStopEmergency(LinkedList<String> pGrafcetsStopEmergency) {
 		this.grafcetsStopEmergency = pGrafcetsStopEmergency;
 	}
 
@@ -208,9 +206,10 @@ public class Step {
 		return grafcetsStartEmergency;
 	}
 
-	public void addGrafcetsStartEmergency(LinkedList<String> pGrafcetsStartEmergency) {
+	private void addGrafcetsStartEmergency(LinkedList<String> pGrafcetsStartEmergency) {
 		this.grafcetsStartEmergency = pGrafcetsStartEmergency;
 	}
+	
 	//en type le indico si tiene q devolver la de PLCOpen o la de TwinCat
 	public String printStepGlobalVar( String pTypeProgram) {
 		String var ="";
@@ -222,26 +221,13 @@ public class Step {
 		
 		return var;
 	}
+	
 	public String printExternalVars() {
 		String externalVar ="<variable name=\"" + this.name + "\" group=\"Default\">"
 				+ "<type><BOOL /></type>"
 				+ "</variable>";
 		return externalVar;
 	}
-
-	/*public void printStep() {
-		System.out.println("----- STEP ------");
-		System.out.println("Nombre: " + this.name);
-		System.out.println("Tipo: " + this.type);
-		for (Action action : myActions) {
-			action.printAction();
-		}
-		System.out.println("Comentario: " + this.comment);
-		System.out.println("	MI SET");
-		System.out.println("	"+this.mySet);
-		System.out.println("	MI RESET");
-		System.out.println("	"+this.myReset);
-	}*/
 
 	public Map<String, String> getActionStepMap() {
 		Map<String, String> actionStepMap = new HashMap<String, String>();
@@ -258,9 +244,10 @@ public class Step {
 		return actionStepMap;
 	}
 
-	public boolean isAnd() {
+	private boolean isAnd() {
 		return and;
 	}
+	
 	/**Se llama si la convergencia es and*/
 	public void addAnd(boolean pAnd) {
 		this.and = pAnd;

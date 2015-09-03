@@ -7,12 +7,10 @@ import java.util.regex.Pattern;
 import com.hpaz.translator.grafcetelements.constants.GrafcetTagsConstants;
 
 public class Transition {
+	
 	private String condition; // texto de condicion
 	private LinkedList<String> conditionSep;
 	private String comment;
-	//private boolean assignmentSignal;
-	//private Map<String,String> assignments;
-
 
 	public Transition() {
 		this.condition = "";
@@ -25,10 +23,6 @@ public class Transition {
 	public String getCondition() {
 		return condition;
 	}
-
-/*	public void addAssignmentSignal(boolean assignmentSignal) {
-		this.assignmentSignal = assignmentSignal;
-	}*/
 
 	public void addCondition(String pCondition) {
 		
@@ -106,7 +100,6 @@ public class Transition {
 		this.conditionSep.add(l);
 	}
 
-
 	public LinkedList<String> printTransVG() {
 		String s = "";
 		LinkedList<String> aux = new LinkedList<String>();
@@ -122,16 +115,6 @@ public class Transition {
 		return aux;
 	}
 
-/*	public void printTransition() {
-		System.out.println("----- TRANSITION ------");
-		System.out.println("Condicion completa: " + this.condition);
-		System.out.println("Condicion por partes: ");
-		for (String s : conditionSep) {
-			System.out.println(s);
-		}
-		System.out.println("Comentario: " + this.comment);
-	}
-*/
 	/**
 	 * Analiza el comentario de la transicion, lo descompone para buscar
 	 * posibles señales y asignaciones ARANTZA HA PEDIDO QUE SE PUEDAN COLOCAR
@@ -205,21 +188,7 @@ public class Transition {
 
 		}
 	}
-	/**Este metodo creara un Map de asignaciones en caso de que la transicion tenga
-	private void assignment(String pSignal, String pAssignment) {
-		// TODO REVISAR 
-		if(this.assignments==null){
-			this.assignments = new HashMap<String, String>();
-			this.assignmentSignal=true;
-		}
-		this.assignments.put(pSignal, pAssignment);
-		
-	}
-
-	public boolean isAssignmentSignal() {
-		return assignmentSignal;
-	}*/
-
+	
 	/** Quita el signo a el texto pasado y devuelve una lista */
 	private LinkedList<String> removeSigns(String t) {
 
@@ -242,6 +211,7 @@ public class Transition {
 		
 		return aux;
 	}
+	
 	/**Modifico los signos + * por OR AND*/
 	private String changeSign (String pString){
 		String s = pString;

@@ -59,11 +59,11 @@ public class Preprocess extends DefaultHandler {
 		
 	}
 	
-	/**Detecta el principio del documento*/
-	public void startDocument() throws SAXException {}
+	/**Detecta el principio del documento
+	public void startDocument() throws SAXException {}*/
 	
-	/**Detecta el fin del documento*/
-	public void endDocument() throws SAXException {}
+	/**Detecta el fin del documento
+	public void endDocument() throws SAXException {}*/
 
 	/** Esto lo hace por cada etiqueta que hay */
 	public void startElement(String uri, String localName, String name, Attributes attributes) throws SAXException {

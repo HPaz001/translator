@@ -48,31 +48,15 @@ public class Road {
 	}
 
 
-	/*
-	 * public int getSeqOne() { return seqOne; } public void setSeqOne(int
-	 * seqOne) { this.seqOne = seqOne; } public int getSeqTwo() { return seqTwo;
-	 * } public void setSeqTwo(int seqTwo) { this.seqTwo = seqTwo; }
-	 */
+	/**Devuelve una lista con el numero de cada secuencia */
 	public LinkedList<Integer> getSequences() {
 		return sequences;
 	}
-
+	/**Guarda el numero de cada secuencia -1 para que corresponda con su posicion en la lista*/
 	public void addSequences(Integer pSequence) {
 		this.sequences.add(pSequence - 1);
 	}
 
-/*	public void printRoad() {
-		System.out.println("----- ROAD ------");
-		System.out.println("Secuencia inicial: " + this.seqIni);
-		for (Integer seq : getSequences()) {
-			// uso el indexOf porque se que no se repiten los elementos
-			System.out.println("Seccuencia " + (sequences.indexOf(seq) + 1) + " : " + seq);
-		}
-		// System.out.println("Seccuencia 1 : "+this.seqOne);
-		// System.out.println("Seccuencia 2 : "+this.seqTwo);
-		System.out.println("Tipo camino: " + this.type);
 
-	}
-*/
 	
 }

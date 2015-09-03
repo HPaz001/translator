@@ -9,8 +9,6 @@ public class Timer {
 	private String typeTimer;
 	private String typeTime;
 	
-	
-	
 	public Timer(){
 		this.nameTimer = null;
 		this.stepNameTimer = null;
@@ -18,29 +16,20 @@ public class Timer {
 		this.typeTimer = null;
 		this.time = 0;
 	}
+	
 	public Timer fillTimer(String[] list){
 		//this.nameTimer = list[0];
-		this.addStepNameTimer(list[1]);
+		addStepNameTimer(list[1]);
 		String aux = list[2];
 		//Extraigo el texto sin numero
 		aux = aux.replaceAll("[0-9]", "");
-		this.addTypeTime(aux.trim());
+		addTypeTime(aux.trim());
 		//Extraigo el numero sin texto
 		aux = list[2].replaceAll("[a-z]|[A-Z]", "");
-		this.time = Integer.parseInt(aux.trim());
+		addTime(Integer.parseInt(aux.trim()));
 		
 		return this;
 	}
-
-	/*public enum typeTimer
-	{
-		TON,TOF,TP
-	}
-	public enum typeTime
-	{
-		//TODO mirar en el PL7 los tipos de tiempos q hay
-		MS,S,M,H
-	}*/
 
 	public String getNameTimer() {
 		return nameTimer;
@@ -66,7 +55,7 @@ public class Timer {
 		return time;
 	}
 
-	public void addTime(int pTime) {
+	private void addTime(int pTime) {
 		this.time = pTime;
 	}
 
@@ -82,20 +71,14 @@ public class Timer {
 		return typeTime;
 	}
 
-	public void addTypeTime(String tipeTime) {
+	private void addTypeTime(String tipeTime) {
 		this.typeTime = tipeTime;
 	}
-/*	public void printConsole() {
-		System.out.println("nameTimer: "+getNameTimer());
-		System.out.println("stepNameTimer: "+getStepNameTimer());
-		System.out.println("time: "+getTime());
-		System.out.println("typeTime: "+getTypeTime());
-		System.out.println("typeTimer: "+this.typeTimer);
-		
-	}*/
+
 	public boolean equals(String tim) {
 		return this.nameTimer.equals(tim);
 	}
+	
 	public String getGlobalsVarTimer(String pTypeProgram){
 		String var ="";
 		if (pTypeProgram.equals(GrafcetTagsConstants.PROGRAM_OPT1)){//TwinCat
@@ -113,6 +96,7 @@ public class Timer {
 		return var;
 		
 	}
+	
 	/**Devuelve un array de string donde el primero corresponde a las variables 
 	 * del program main y el segundo al programa en si*/
 	public String getProgramMainTimer(){
@@ -125,6 +109,7 @@ public class Timer {
 		return programMain;
 		
 	}
+	
 	public String getExternalVarsPLCOpen(){
 		
 		String externalVar = "<br /><variable name=\"" + this.nameTimer + "Q\" group=\"Default\"><type><BOOL /></type></variable>"
@@ -135,6 +120,7 @@ public class Timer {
 		return externalVar;
 		
 	}
+	
 	/***/
 	public String getBodyPLCOpen(){
 		/*<br />TempPT:=T#2s;
