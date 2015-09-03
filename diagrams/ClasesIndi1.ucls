@@ -3,25 +3,25 @@
   associations="true" dependencies="false" nesting-relationships="true">  
   <class id="1" language="java" name="com.hpaz.translator.grafcetelements.Road" project="translator" 
     file="/translator/src/com/hpaz/translator/grafcetelements/Road.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="407" y="150"/>    
+    <position height="-1" width="-1" x="152" y="152"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="2" language="java" name="com.hpaz.translator.grafcetelements.Timer" project="translator" 
-    file="/translator/src/com/hpaz/translator/grafcetelements/Timer.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="643" y="224"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </class>  
-  <class id="3" language="java" name="com.hpaz.translator.grafcetelements.Transition" project="translator" 
+  <class id="2" language="java" name="com.hpaz.translator.grafcetelements.Transition" project="translator" 
     file="/translator/src/com/hpaz/translator/grafcetelements/Transition.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="132" y="230"/>    
+    <position height="-1" width="-1" x="168" y="468"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="3" language="java" name="com.hpaz.translator.grafcetelements.Sequence" project="translator" 
+    file="/translator/src/com/hpaz/translator/grafcetelements/Sequence.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="440" y="332"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      

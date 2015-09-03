@@ -31,17 +31,6 @@ public class Action {
 		// añado el tipo
 		addType(pAttributes.get("type"));
 	}
-	
-	private void addType(String type) {
-		this.type = type;
-	}
-	
-	private void addStopEmergency(LinkedList<String> stopEmergency) {
-		this.stopEmergency = stopEmergency;
-	}
-	private void addStartEmergency(LinkedList<String> startEmergency) {
-		this.startEmergency = startEmergency;
-	}
 	public String getType() {
 		return type;
 	}
@@ -66,39 +55,28 @@ public class Action {
 			this.condition = getCondition() + " " + pCondition;
 		}
 	}
-	private String getComment() {
-		return comment;
-	}
+	
 	public void addComment(String comment) {
 		if (getComment() == null){
 			this.comment = comment;
 		}else {
 			this.comment = getComment()+ " " +comment;
 		}
-		
-		
+	
 	}
 	
 	public LinkedList<String> getStopEmergency() {
 		return this.stopEmergency;
 	}
 	
-public LinkedList<String> getStartEmergency() {
+	public LinkedList<String> getStartEmergency() {
 		return this.startEmergency;
 	}
 	
-public boolean isEmergency() {
+	public boolean isEmergency() {
 		return emergency;
 	}
-	
-	/*public void printAction(){
-		System.out.println("----- ACTION ------");
-		System.out.println("Accion  : " + getText());
-		System.out.println("	Tipo: " + getType());
-		System.out.println("	Condicion: " + getCondition());
-		System.out.println("	Comentario: " + getComment());
-	}*/
-	
+		
 	/**Llama a la funcion de generado de listas de emergencia*/
 	public void getEmergency() {
 		
@@ -119,6 +97,24 @@ public boolean isEmergency() {
 		
 	}
 	
+	public void addEmergency(boolean b) {
+		this.emergency = b;
+		
+	}
+	private void addType(String type) {
+		this.type = type;
+	}
+	
+	private void addStopEmergency(LinkedList<String> stopEmergency) {
+		this.stopEmergency = stopEmergency;
+	}
+	private void addStartEmergency(LinkedList<String> startEmergency) {
+		this.startEmergency = startEmergency;
+	}
+	private String getComment() {
+		return comment;
+	}
+	
 	private LinkedList<String> generateListEmergency() {
 		LinkedList<String> returnList=new LinkedList<String>();
 		//Quito los espacios en blanco
@@ -136,10 +132,6 @@ public boolean isEmergency() {
 		}
 		//devuelvo la lista
 		return returnList;
-	}
-	public void addEmergency(boolean b) {
-		this.emergency = b;
-		
 	}
 
 

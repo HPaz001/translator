@@ -54,11 +54,7 @@ public class Timer {
 	public int getTime() {
 		return time;
 	}
-
-	private void addTime(int pTime) {
-		this.time = pTime;
-	}
-
+	
 	public String getTypeTimer() {
 		return typeTimer;
 	}
@@ -70,11 +66,7 @@ public class Timer {
 	public String getTypeTime() {
 		return typeTime;
 	}
-
-	private void addTypeTime(String tipeTime) {
-		this.typeTime = tipeTime;
-	}
-
+	
 	public boolean equals(String tim) {
 		return this.nameTimer.equals(tim);
 	}
@@ -135,6 +127,14 @@ public class Timer {
 		
 			
 		return body;
-		
 	}
+	
+	private void addTime(int pTime) {
+		this.time = pTime;
+	}
+
+	private void addTypeTime(String tipeTime) {
+		this.typeTime = tipeTime;
+	}
+
 }

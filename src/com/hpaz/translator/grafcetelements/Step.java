@@ -49,18 +49,11 @@ public class Step {
 		return type;
 	}
 
-	private void addType(String type) {
-		this.type = type;
-	}
-
+	
 	public String getName() {
 		return name;
 	}
-
-	private void addName(String name) {
-		this.name = name;
-	}
-
+	
 	public String getComment() {
 		return comment;
 	}
@@ -182,34 +175,18 @@ public class Step {
 		return stopEmergency;
 	}
 
-	private void addStopEmergency(boolean stopEmergency) {
-		this.stopEmergency = stopEmergency;
-	}
-	
 	public boolean isStartEmergency() {
 		return startEmergency;
-	}
-
-	private void addStartEmergency(boolean startEmergency) {
-		this.startEmergency = startEmergency;
 	}
 
 	public LinkedList<String> getGrafcetsStopEmergency() {
 		return grafcetsStopEmergency;
 	}
-
-	private void addGrafcetsStopEmergency(LinkedList<String> pGrafcetsStopEmergency) {
-		this.grafcetsStopEmergency = pGrafcetsStopEmergency;
-	}
-
+	
 	public LinkedList<String> getGrafcetsStartEmergency() {
 		return grafcetsStartEmergency;
 	}
-
-	private void addGrafcetsStartEmergency(LinkedList<String> pGrafcetsStartEmergency) {
-		this.grafcetsStartEmergency = pGrafcetsStartEmergency;
-	}
-	
+		
 	//en type le indico si tiene q devolver la de PLCOpen o la de TwinCat
 	public String printStepGlobalVar( String pTypeProgram) {
 		String var ="";
@@ -243,13 +220,38 @@ public class Step {
 		}
 		return actionStepMap;
 	}
-
-	private boolean isAnd() {
-		return and;
-	}
 	
 	/**Se llama si la convergencia es and*/
 	public void addAnd(boolean pAnd) {
 		this.and = pAnd;
 	}
+	
+	private void addType(String type) {
+		this.type = type;
+	}
+
+	private void addName(String name) {
+		this.name = name;
+	}
+	
+	private void addStopEmergency(boolean stopEmergency) {
+		this.stopEmergency = stopEmergency;
+	}
+	
+	private void addStartEmergency(boolean startEmergency) {
+		this.startEmergency = startEmergency;
+	}
+	
+	private void addGrafcetsStopEmergency(LinkedList<String> pGrafcetsStopEmergency) {
+		this.grafcetsStopEmergency = pGrafcetsStopEmergency;
+	}
+
+	private void addGrafcetsStartEmergency(LinkedList<String> pGrafcetsStartEmergency) {
+		this.grafcetsStartEmergency = pGrafcetsStartEmergency;
+	}
+	
+	private boolean isAnd() {
+		return and;
+	}
+	
 }

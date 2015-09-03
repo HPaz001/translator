@@ -92,14 +92,6 @@ public class Transition {
 		return conditionSep;
 	}
 
-	private void addListConditionSep(LinkedList<String> l) {
-		this.conditionSep.addAll(l);
-	}
-
-	private void addListConditionSep(String l) {
-		this.conditionSep.add(l);
-	}
-
 	public LinkedList<String> printTransVG() {
 		String s = "";
 		LinkedList<String> aux = new LinkedList<String>();
@@ -189,6 +181,14 @@ public class Transition {
 		}
 	}
 	
+	
+	private void addListConditionSep(LinkedList<String> l) {
+		this.conditionSep.addAll(l);
+	}
+
+	private void addListConditionSep(String l) {
+		this.conditionSep.add(l);
+	}
 	/** Quita el signo a el texto pasado y devuelve una lista */
 	private LinkedList<String> removeSigns(String t) {
 

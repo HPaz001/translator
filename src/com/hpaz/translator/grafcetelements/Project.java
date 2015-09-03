@@ -65,16 +65,13 @@ public class Project {
 	public String getProgram() {
 		return program;
 	}
+	
 	public static Project getProject() {
 		return project;
 	}
 
 	public void addOutputPath(String pOutputDir) {
 		this.outputDir = pOutputDir;
-	}
-
-	private String getName() {
-		return this.name;
 	}
 
 	public void addName(String name) {
@@ -92,6 +89,184 @@ public class Project {
 			this.program = program;
 	}
 
+	/**
+	 * Anado el grafcet, pero antes genero las listas de previousAnNext y
+	 * losSetAnReset
+	 */
+	public void addGrafcet(Grafcet pGrafcet) {
+		/*
+		 * pGrafcet.fillPreviousAndNextSequencesLists();
+		 * pGrafcet.addSetAndResetToStep(); // si es el de emergencia genero las
+		 * listas correspondientes if (pGrafcet.isEmergency()) {
+		 * pGrafcet.getEmergency(); } //genero asignaciones de accion := paso
+		 * generateActionStepMap(pGrafcet);
+		 */
+
+		this.listGrafcet.add(pGrafcet);
+
+	}
+
+	public LinkedList<Timer> getListTimers() {
+		return listTimers;
+	}
+
+	public void addTimer(Timer pTimer) {
+		addListTimersUI(pTimer.getNameTimer());
+		addListTimers(pTimer);
+
+	}
+
+	public LinkedList<Counter> getListCounters() {
+		return listCounters;
+	}
+
+	public void addCounter(Counter pCounters) {
+		addListCountersUI(pCounters.getNameCounter());
+		addListCounters(pCounters);
+	}
+
+	public LinkedList<String> getListTimersUI() {
+		return listTimersUI;
+	}
+
+	public LinkedList<String> getListCountersUI() {
+		return listCountersUI;
+	}
+
+	public void addStepStopEmergency(String stepStopEmergency) {
+		this.stepStopEmergency = stepStopEmergency;
+	}
+
+	public void addStepStartEmergency(String stepStartEmergency) {
+		this.stepStartEmergency = stepStartEmergency;
+	}
+
+	public void addListEmergencyStop(LinkedList<String> pListEmergencyStop) {
+		this.listEmergencyStop.addAll(pListEmergencyStop);
+	}
+
+	public void addListEmergencyStart(LinkedList<String> pListEmergencyStart) {
+		this.listEmergencyStart.addAll(pListEmergencyStart);
+	}
+
+	public void addProjectVariablesFromUserInterface(Map<String, String> variablesMap) {
+		addListUI(variablesMap);
+
+	}
+	
+	/** Genera un mapa añadiendo cada accion y las etapas en las q se usa dic */
+	public void generateActionStepMap(Map<String, String> auxMap) {
+
+		// Map<String, String> auxMap = pGrafcet.getActionStepMap();
+		for (String action : auxMap.keySet()) {
+			if (getActionStepMap().get(action) == null)
+				addActionStepMap(action, auxMap.get(action));
+			else
+				addActionStepMap(action, actionStepMap.get(action) + " OR " + auxMap.get(action));
+		}
+	}
+
+	/**
+	 * Este metodo llama al de exportar ficheros dependiendo del software de
+	 * compatibilidad
+	 */
+	public void print() {
+		try {
+			if (program.equalsIgnoreCase(GrafcetTagsConstants.PROGRAM_OPT1)) { // Twincat
+				// Var Global
+				Output.getOutput().exportFile(getGlobalVars(generateGlobalVars()), getName() + "_VAR_GLOBAL", outputDir,
+						".txt");
+				// Program Main
+				Output.getOutput().exportFile(generateProgramMain(), getName() + "_PROGRAM_MAIN", outputDir, ".txt");
+				// Function Block --> uno por cada grafcet
+				for (Grafcet g : listGrafcet) {
+					Output.getOutput().exportFile(g.generateFunctionBlock(), "FUNCTION_BLOCK_" + g.getName(), outputDir,
+							".txt");
+				}
+
+			} else if (program.equalsIgnoreCase(GrafcetTagsConstants.PROGRAM_OPT2)) {// PL7PRO
+
+				Output.getOutput().exportFile(getProgramTSXMicroSP(), getName() + "SequePart", outputDir, ".txt");
+				Output.getOutput().exportFile(getProgramTSXMicroCP(), getName() + "CombiPart", outputDir, ".txt");
+
+			} else if (program.equalsIgnoreCase(GrafcetTagsConstants.PROGRAM_OPT3)) {// PLCOpen
+																						// //
+																						// PCWorx
+				Output.getOutput().exportFile(generatePousPLCOpen(), "POUS_" +
+				getName() + "PLCOpen", outputDir, ".xml");
+				Output.getOutput().exportFile(generateVarGlobalPLCOpen(), "VarGlobal" + getName() + "PLCOpen",
+						outputDir, ".xml");
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	
+	public LinkedList<String> getSignalsProject() {
+		generateSignalsProject();
+		return this.signalsProject;
+	}
+
+	/**
+	 * Busca en la lista de temporizadores si existe devuelve su indice de lo
+	 * contrario devuelve -1
+	 */
+	public int equalsTimer(String pNameTimer) {
+		int indexTimer = -1;
+		int indexAux = 0;
+		while (indexTimer == (-1) && indexAux < listTimers.size()) {
+			if (listTimers.get(indexAux).equals(pNameTimer)) {
+				indexTimer = indexAux;
+
+			}
+			indexAux++;
+		}
+		return indexTimer;
+	}
+
+	/**
+	 * Busca en la lista de contadores si existe devuelve su indice de lo
+	 * contrario devuelve -1
+	 */
+	public int equalsCount(String pNameCounter) {
+		int indexCounter = -1;
+		int indexAux = 0;
+		while (indexCounter == (-1) && indexAux < listTimers.size()) {
+			if (listCounters.get(indexAux).equals(pNameCounter)) {
+				indexCounter = indexAux;
+			}
+			indexAux++;
+		}
+		return indexCounter;
+	}
+
+	public LinkedList<String> getList_FE_and_RE() {
+		return list_FE_and_RE;
+	}
+
+	public void add_FE_and_RE(String p_FE_and_RE) {
+		this.list_FE_and_RE.add(p_FE_and_RE);
+	}
+
+	/**
+	 * Este metodo creara un Map de asignaciones en caso de que la transicion
+	 * tenga
+	 */
+	public void addAssignments(String pSignal, String pAssignment) {
+		// TODO REVISAR
+		if (this.assignments == null) {
+			this.assignments = new HashMap<String, String>();
+		}
+		this.assignments.put(pSignal, pAssignment);
+
+	}
+	
+	private String getName() {
+		return this.name;
+	}
+	
 	private LinkedList<Grafcet> getListG() {
 		return listGrafcet;
 	}
@@ -123,34 +298,7 @@ public class Project {
 	private void addActionStepMap(String pKey, String pValue) {
 		this.actionStepMap.put(pKey, pValue);
 	}
-
-	/**
-	 * Anado el grafcet, pero antes genero las listas de previousAnNext y
-	 * losSetAnReset
-	 */
-	public void addGrafcet(Grafcet pGrafcet) {
-		/*
-		 * pGrafcet.fillPreviousAndNextSequencesLists();
-		 * pGrafcet.addSetAndResetToStep(); // si es el de emergencia genero las
-		 * listas correspondientes if (pGrafcet.isEmergency()) {
-		 * pGrafcet.getEmergency(); } //genero asignaciones de accion := paso
-		 * generateActionStepMap(pGrafcet);
-		 */
-
-		this.listGrafcet.add(pGrafcet);
-
-	}
-
-	public LinkedList<Timer> getListTimers() {
-		return listTimers;
-	}
-
-	public void addTimer(Timer pTimer) {
-		addListTimersUI(pTimer.getNameTimer());
-		addListTimers(pTimer);
-
-	}
-
+	
 	private void addListTimers(Timer pTimer) {
 		this.listTimers.add(pTimer);
 	}
@@ -159,16 +307,7 @@ public class Project {
 		this.listTimersUI.add(pNameTimer);
 
 	}
-
-	public LinkedList<Counter> getListCounters() {
-		return listCounters;
-	}
-
-	public void addCounter(Counter pCounters) {
-		addListCountersUI(pCounters.getNameCounter());
-		addListCounters(pCounters);
-	}
-
+	
 	private void addListCounters(Counter pCounters) {
 		this.listCounters.add(pCounters);
 	}
@@ -176,31 +315,11 @@ public class Project {
 	private void addListCountersUI(String pNameCounter) {
 		this.listCountersUI.add(pNameCounter);
 	}
-
-	public LinkedList<String> getListTimersUI() {
-		return listTimersUI;
+	
+	private Map<String, String> getAssignments() {
+		return assignments;
 	}
-
-	public LinkedList<String> getListCountersUI() {
-		return listCountersUI;
-	}
-
-	public void addStepStopEmergency(String stepStopEmergency) {
-		this.stepStopEmergency = stepStopEmergency;
-	}
-
-	public void addStepStartEmergency(String stepStartEmergency) {
-		this.stepStartEmergency = stepStartEmergency;
-	}
-
-	public void addListEmergencyStop(LinkedList<String> pListEmergencyStop) {
-		this.listEmergencyStop.addAll(pListEmergencyStop);
-	}
-
-	public void addListEmergencyStart(LinkedList<String> pListEmergencyStart) {
-		this.listEmergencyStart.addAll(pListEmergencyStart);
-	}
-
+	
 	private LinkedList<String> generateGlobalVars() {
 		LinkedList<String> listReturnVarGlobals = new LinkedList<String>();
 
@@ -408,76 +527,9 @@ public class Project {
 		return listReturnVarGlobals;
 	}
 
-	public void addProjectVariablesFromUserInterface(Map<String, String> variablesMap) {
-
-		addListUI(variablesMap);
-		/*
-		 * for (String key : variablesMap.keySet()){ System.out.println(
-		 * "key -> " + key + ", value -> " + variablesMap.get(key)); }
-		 */
-	}
-
-	/*
-	 * public void printProject() { System.out.println("----- PROJECT ------");
-	 * System.out.println("Nombre: " + getName()); System.out.println(
-	 * "Lenguaje: " + getLanguage()); System.out.println("Compatibilidad: " +
-	 * getProgram()); for (Grafcet g : listGrafcet) { g.printGrafcet(); }
-	 * 
-	 * }
-	 */
-
 	private void addListUI(Map<String, String> variablesMap) {
 		this.listUI = variablesMap;
 
-	}
-
-	/** Genera un mapa añadiendo cada accion y las etapas en las q se usa dic */
-	public void generateActionStepMap(Map<String, String> auxMap) {
-
-		// Map<String, String> auxMap = pGrafcet.getActionStepMap();
-		for (String action : auxMap.keySet()) {
-			if (getActionStepMap().get(action) == null)
-				addActionStepMap(action, auxMap.get(action));
-			else
-				addActionStepMap(action, actionStepMap.get(action) + " OR " + auxMap.get(action));
-		}
-	}
-
-	/**
-	 * Este metodo llama al de exportar ficheros dependiendo del software de
-	 * compatibilidad
-	 */
-	public void print() {
-		try {
-			if (program.equalsIgnoreCase(GrafcetTagsConstants.PROGRAM_OPT1)) { // Twincat
-				// Var Global
-				Output.getOutput().exportFile(getGlobalVars(generateGlobalVars()), getName() + "_VAR_GLOBAL", outputDir,
-						".txt");
-				// Program Main
-				Output.getOutput().exportFile(generateProgramMain(), getName() + "_PROGRAM_MAIN", outputDir, ".txt");
-				// Function Block --> uno por cada grafcet
-				for (Grafcet g : listGrafcet) {
-					Output.getOutput().exportFile(g.generateFunctionBlock(), "FUNCTION_BLOCK_" + g.getName(), outputDir,
-							".txt");
-				}
-
-			} else if (program.equalsIgnoreCase(GrafcetTagsConstants.PROGRAM_OPT2)) {// PL7PRO
-
-				Output.getOutput().exportFile(getProgramTSXMicroSP(), getName() + "SequePart", outputDir, ".txt");
-				Output.getOutput().exportFile(getProgramTSXMicroCP(), getName() + "CombiPart", outputDir, ".txt");
-
-			} else if (program.equalsIgnoreCase(GrafcetTagsConstants.PROGRAM_OPT3)) {// PLCOpen
-																						// //
-																						// PCWorx
-				Output.getOutput().exportFile(generatePousPLCOpen(), "POUS_" +
-				getName() + "PLCOpen", outputDir, ".xml");
-				Output.getOutput().exportFile(generateVarGlobalPLCOpen(), "VarGlobal" + getName() + "PLCOpen",
-						outputDir, ".xml");
-			}
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
 
 	/** Devuelve una lista con la parte combinacional */
@@ -948,197 +1000,7 @@ public class Project {
 		this.signalsProject = signals;
 
 	}
-
-	public LinkedList<String> getSignalsProject() {
-		generateSignalsProject();
-		return this.signalsProject;
-	}
-
-	/**
-	 * Busca en la lista de temporizadores si existe devuelve su indice de lo
-	 * contrario devuelve -1
-	 */
-	public int equalsTimer(String pNameTimer) {
-		int indexTimer = -1;
-		int indexAux = 0;
-		while (indexTimer == (-1) && indexAux < listTimers.size()) {
-			if (listTimers.get(indexAux).equals(pNameTimer)) {
-				indexTimer = indexAux;
-
-			}
-			indexAux++;
-		}
-		return indexTimer;
-	}
-
-	/**
-	 * Busca en la lista de contadores si existe devuelve su indice de lo
-	 * contrario devuelve -1
-	 */
-	public int equalsCount(String pNameCounter) {
-		int indexCounter = -1;
-		int indexAux = 0;
-		while (indexCounter == (-1) && indexAux < listTimers.size()) {
-			if (listCounters.get(indexAux).equals(pNameCounter)) {
-				indexCounter = indexAux;
-			}
-			indexAux++;
-		}
-		return indexCounter;
-	}
-
-	public LinkedList<String> getList_FE_and_RE() {
-		return list_FE_and_RE;
-	}
-
-	public void add_FE_and_RE(String p_FE_and_RE) {
-		this.list_FE_and_RE.add(p_FE_and_RE);
-	}
-
-	private Map<String, String> getAssignments() {
-		return assignments;
-	}
-
-	/**
-	 * Este metodo creara un Map de asignaciones en caso de que la transicion
-	 * tenga
-	 */
-	public void addAssignments(String pSignal, String pAssignment) {
-		// TODO REVISAR
-		if (this.assignments == null) {
-			this.assignments = new HashMap<String, String>();
-		}
-		this.assignments.put(pSignal, pAssignment);
-
-	}
-
-	/*private LinkedList<String> partBodyPLCOpen() {
-
-		LinkedList<String> listProgramBody = new LinkedList<String>();
-
-		
-		 * XInit:=INIT; <br />XReset:=RESET; .. <br />Cizquierda:=X12 OR X23 OR
-		 * (X31 AND NOT F0); <br /><br />TempIN:=X22 OR X24; <br />TempPT:=T#2s;
-		 * <br />Temp(IN:=TempIN, PT:=TempPT); <br />TempQ:=Temp.Q; <br
-		 * />TempET:=Temp.ET; <br /><br />
-		 
-
-		listProgramBody.add("<br />XInit:=INIT;<br />XReset:=RESET;");
-
-		for (String string : this.list_FE_and_RE) {
-			listProgramBody.add("<br />" + string + "(CLK:=" + string.substring(2, string.length()) + " , Q=> );");
-		}
-		
-		 * SolModoAuto:=REMarcha.Q; FinProces:=X20;
-		 
-		// Asignaciones que estan en la transition
-		for (String assig : getAssignments().keySet()) {
-			String auxString = assignments.get(assig);
-
-			// Si la palabra contiene un RE o FE
-			Pattern patRE_FE = Pattern.compile(".* RE .*| .* FE .*");
-			Matcher matRE_FE = patRE_FE.matcher(auxString);
-
-			if (matRE_FE.matches()) {
-				auxString = auxString.replace(" ", "");
-				auxString = auxString + ".Q";
-			}
-
-			listProgramBody.add("<br />" + assig.trim() + ":=" + auxString + ";");
-		}
-
-		for (String action : actionStepMap.keySet()) {
-			String aux = action.trim();
-			// temporizador
-			Pattern patTemp = Pattern.compile("^Temp.*=[0-9]{1,}[a-z A-Z]{1,}");
-			Matcher matTemp = patTemp.matcher(aux);
-
-			// contador
-			Pattern patCont = Pattern.compile("^Cont.*=[0-9]{1,}$|^Cont.*=Cont.*\\+[0-9]|^Cont.*=Cont.*\\-[0-9]");
-			Matcher matCont = patCont.matcher(aux);
-
-			// forzado de emergencia
-			Pattern patEmer = Pattern.compile("^F/G.*");
-			Matcher matEmer = patEmer.matcher(aux);
-
-			// si no es temp, cont, o forzado de emergencia
-			if (!matEmer.matches() && !matCont.matches() && !matTemp.matches()) {
-				listProgramBody.add("<br />" + aux + ":=" + actionStepMap.get(action) + ";");
-			} else if (matTemp.matches()) {
-				aux = aux.replaceAll("=[0-9]{1,}[a-z A-Z]{1,}", "").trim();
-				int index = equalsTimer(aux);
-				Timer timer = listTimers.get(index);
-				listProgramBody.add(timer.getBodyPLCOpen());
-			} else if (matCont.matches()) {
-				// TODO PLCOpensi es contador aun no se q hacer
-				int index = equalsCount(aux);
-				Counter count = listCounters.get(index);
-				listProgramBody.add(count.getBodyPLCOpen());
-
-			}
-		}
-		return listProgramBody;
-	}*/
-
-	/** Genera las paradas e inicios de los forzados de emergencia *//*
-	private LinkedList<String> getlistEmergencyBody(LinkedList<String> pListStop, LinkedList<String> pListStart,
-			boolean pEquals) {
-		LinkedList<String> aux = new LinkedList<String>();
-		String emerg = "";
-		String stepStop = getStepStopEmergency();
-		String stepStart = getStepStartEmergency();
-		// quiere decir que las listas de stop y start son iguales
-		if (pEquals) {
-			for (String e : pListStop) {
-				emerg = e.trim();
-				aux.add("<br />Init" + emerg.trim() + ":=" + stepStart + ";");
-				aux.add("<br />Reset" + emerg + ":=" + stepStop + ";");
-				aux.add("<br />" + emerg + "(Init:=(XInit OR Init" + emerg + "), Reset:=(XReset OR Reset" + emerg
-						+ "));");
-			}
-		} else {
-			 Si no son iguales comparo a ver cual es la mas grande 
-			if (pListStop.size() > pListStart.size()) {
-				for (String e : pListStop) {
-					// Por cada elemento d la lista miro si este se encuentra en
-					// la otra lista
-					if (pListStart.contains(e)) {
-						emerg = e.trim();
-						aux.add("<br />Init" + emerg + ":=" + stepStart + ";");
-						aux.add("<br />Reset" + emerg + ":=" + stepStop + ";");
-						aux.add("<br />" + emerg + "(Init:=(XInit OR Init" + emerg + "), Reset:=(XReset OR Reset"
-								+ emerg + "));");
-					} else {
-						emerg = e.trim();
-						// aux.add("\n\tInit"+emerg+":="+pStepStart+";\n");
-						aux.add("<br />Reset" + emerg + ":=" + stepStop + ";");
-						aux.add("<br />" + emerg + "(Init:=(XInit), Reset:=(XReset OR Reset" + emerg + "));");
-					}
-				}
-			} else {
-				for (String e : pListStart) {
-					// Por cada elemento d la lista miro si este se encuentra en
-					// la otra lista
-					if (pListStop.contains(e)) {
-						emerg = e.trim();
-						aux.add("<br />Init" + emerg + ":=" + stepStart + ";");
-						aux.add("<br />Reset" + emerg + ":=" + stepStop + ";");
-						aux.add("<br />" + emerg + "(Init:=(XInit OR Init" + emerg + "), Reset:=(XReset OR Reset"
-								+ emerg + "));");
-					} else {
-						emerg = e.trim();
-						aux.add("<br />Init" + emerg + ":=" + stepStart + ";");
-						// aux.add("\tReset"+emerg+":="+pStepStop+";\n");
-						aux.add("<br />" + emerg + "(Init:=(XInit OR Init" + emerg + "), Reset:=(XReset));");
-					}
-				}
-			}
-		}
-
-		return aux;
-	}
-*/
-	/***Genera el body del pou Main***/
+	
 	private LinkedList<String> generateBodyMain(LinkedList<String> pEmergency) {
 		LinkedList<String> bodyMain = new LinkedList<String>();
 		bodyMain.add("<br />XInit:=INIT;<br />XReset:=RESET;\n\n");
@@ -1406,5 +1268,135 @@ public class Project {
 		
 		return listReturnPousPLCOpen;
 	}
+	
+	
 
+	/*private LinkedList<String> partBodyPLCOpen() {
+
+		LinkedList<String> listProgramBody = new LinkedList<String>();
+
+		
+		 * XInit:=INIT; <br />XReset:=RESET; .. <br />Cizquierda:=X12 OR X23 OR
+		 * (X31 AND NOT F0); <br /><br />TempIN:=X22 OR X24; <br />TempPT:=T#2s;
+		 * <br />Temp(IN:=TempIN, PT:=TempPT); <br />TempQ:=Temp.Q; <br
+		 * />TempET:=Temp.ET; <br /><br />
+		 
+
+		listProgramBody.add("<br />XInit:=INIT;<br />XReset:=RESET;");
+
+		for (String string : this.list_FE_and_RE) {
+			listProgramBody.add("<br />" + string + "(CLK:=" + string.substring(2, string.length()) + " , Q=> );");
+		}
+		
+		 * SolModoAuto:=REMarcha.Q; FinProces:=X20;
+		 
+		// Asignaciones que estan en la transition
+		for (String assig : getAssignments().keySet()) {
+			String auxString = assignments.get(assig);
+
+			// Si la palabra contiene un RE o FE
+			Pattern patRE_FE = Pattern.compile(".* RE .*| .* FE .*");
+			Matcher matRE_FE = patRE_FE.matcher(auxString);
+
+			if (matRE_FE.matches()) {
+				auxString = auxString.replace(" ", "");
+				auxString = auxString + ".Q";
+			}
+
+			listProgramBody.add("<br />" + assig.trim() + ":=" + auxString + ";");
+		}
+
+		for (String action : actionStepMap.keySet()) {
+			String aux = action.trim();
+			// temporizador
+			Pattern patTemp = Pattern.compile("^Temp.*=[0-9]{1,}[a-z A-Z]{1,}");
+			Matcher matTemp = patTemp.matcher(aux);
+
+			// contador
+			Pattern patCont = Pattern.compile("^Cont.*=[0-9]{1,}$|^Cont.*=Cont.*\\+[0-9]|^Cont.*=Cont.*\\-[0-9]");
+			Matcher matCont = patCont.matcher(aux);
+
+			// forzado de emergencia
+			Pattern patEmer = Pattern.compile("^F/G.*");
+			Matcher matEmer = patEmer.matcher(aux);
+
+			// si no es temp, cont, o forzado de emergencia
+			if (!matEmer.matches() && !matCont.matches() && !matTemp.matches()) {
+				listProgramBody.add("<br />" + aux + ":=" + actionStepMap.get(action) + ";");
+			} else if (matTemp.matches()) {
+				aux = aux.replaceAll("=[0-9]{1,}[a-z A-Z]{1,}", "").trim();
+				int index = equalsTimer(aux);
+				Timer timer = listTimers.get(index);
+				listProgramBody.add(timer.getBodyPLCOpen());
+			} else if (matCont.matches()) {
+				// TODO PLCOpensi es contador aun no se q hacer
+				int index = equalsCount(aux);
+				Counter count = listCounters.get(index);
+				listProgramBody.add(count.getBodyPLCOpen());
+
+			}
+		}
+		return listProgramBody;
+	}*/
+
+	/** Genera las paradas e inicios de los forzados de emergencia *//*
+	private LinkedList<String> getlistEmergencyBody(LinkedList<String> pListStop, LinkedList<String> pListStart,
+			boolean pEquals) {
+		LinkedList<String> aux = new LinkedList<String>();
+		String emerg = "";
+		String stepStop = getStepStopEmergency();
+		String stepStart = getStepStartEmergency();
+		// quiere decir que las listas de stop y start son iguales
+		if (pEquals) {
+			for (String e : pListStop) {
+				emerg = e.trim();
+				aux.add("<br />Init" + emerg.trim() + ":=" + stepStart + ";");
+				aux.add("<br />Reset" + emerg + ":=" + stepStop + ";");
+				aux.add("<br />" + emerg + "(Init:=(XInit OR Init" + emerg + "), Reset:=(XReset OR Reset" + emerg
+						+ "));");
+			}
+		} else {
+			 Si no son iguales comparo a ver cual es la mas grande 
+			if (pListStop.size() > pListStart.size()) {
+				for (String e : pListStop) {
+					// Por cada elemento d la lista miro si este se encuentra en
+					// la otra lista
+					if (pListStart.contains(e)) {
+						emerg = e.trim();
+						aux.add("<br />Init" + emerg + ":=" + stepStart + ";");
+						aux.add("<br />Reset" + emerg + ":=" + stepStop + ";");
+						aux.add("<br />" + emerg + "(Init:=(XInit OR Init" + emerg + "), Reset:=(XReset OR Reset"
+								+ emerg + "));");
+					} else {
+						emerg = e.trim();
+						// aux.add("\n\tInit"+emerg+":="+pStepStart+";\n");
+						aux.add("<br />Reset" + emerg + ":=" + stepStop + ";");
+						aux.add("<br />" + emerg + "(Init:=(XInit), Reset:=(XReset OR Reset" + emerg + "));");
+					}
+				}
+			} else {
+				for (String e : pListStart) {
+					// Por cada elemento d la lista miro si este se encuentra en
+					// la otra lista
+					if (pListStop.contains(e)) {
+						emerg = e.trim();
+						aux.add("<br />Init" + emerg + ":=" + stepStart + ";");
+						aux.add("<br />Reset" + emerg + ":=" + stepStop + ";");
+						aux.add("<br />" + emerg + "(Init:=(XInit OR Init" + emerg + "), Reset:=(XReset OR Reset"
+								+ emerg + "));");
+					} else {
+						emerg = e.trim();
+						aux.add("<br />Init" + emerg + ":=" + stepStart + ";");
+						// aux.add("\tReset"+emerg+":="+pStepStop+";\n");
+						aux.add("<br />" + emerg + "(Init:=(XInit OR Init" + emerg + "), Reset:=(XReset));");
+					}
+				}
+			}
+		}
+
+		return aux;
+	}
+*/
+	/***Genera el body del pou Main***/
+	
 }

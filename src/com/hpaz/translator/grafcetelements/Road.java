@@ -29,24 +29,14 @@ public class Road {
 		addSeqIni (Integer.parseInt(pAttributes.get("seqid"))-1);
 		addType(pAttributes.get("type"));	
 	}
-
-	private void addType(String pString) {
-		this.type=pString;
-		
-	}
-	private void addSeqIni(int pNumber) {
-		this.seqIni =pNumber;
-		
-	}
+	
 	public String getType() {
 		return type;
 	}
 
-
 	public int getSeqIni() {
 		return seqIni;
 	}
-
 
 	/**Devuelve una lista con el numero de cada secuencia */
 	public LinkedList<Integer> getSequences() {
@@ -57,6 +47,11 @@ public class Road {
 		this.sequences.add(pSequence - 1);
 	}
 
-
-	
+	private void addType(String pString) {
+		this.type=pString;
+		
+	}
+	private void addSeqIni(int pNumber) {
+		this.seqIni =pNumber;
+	}
 }

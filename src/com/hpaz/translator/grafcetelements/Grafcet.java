@@ -19,15 +19,11 @@ public class Grafcet {
 
 	/* Variables que se usararn solo si el grafcet es de emergencia */
 	private boolean emergency;
-	/**
-	 * Para saber las etapas de la emergencia private String stepStopEmergency;
+	/*Para saber las etapas de la emergencia private String stepStopEmergency;
 	 * private String stepStartEmergency;
-	 */
-	/**
 	 * Lista de grafcets que se fuerzan en la emergencia private LinkedList
 	 * <String> listEmergencyStop; private LinkedList
-	 * <String> listEmergencyStart;
-	 */
+	 * <String> listEmergencyStart; */
 
 	/* Lista de se�ales del grafcet */
 	private LinkedList<String> signalsGrafcet;
@@ -63,26 +59,6 @@ public class Grafcet {
 		if (mat.matches()) {
 			addEmergency(true);
 		}
-	}
-
-	private void addEmergency(boolean emergency) {
-		this.emergency = emergency;
-	}
-
-	private void addType(String type) {
-		this.type = type;
-	}
-
-	private void addName(String name) {
-		this.name = name;
-	}
-
-	private void addComment(String comment) {
-		this.comment = comment;
-	}
-
-	private void addOwner(String owner) {
-		this.owner = owner;
 	}
 
 	public String getType() {
@@ -738,22 +714,6 @@ public class Grafcet {
 		return g;
 	}
 
-	/**
-	 * Devuelve la lista que le pasan por parametro pero sin elementos repetidos
-	 */
-	private LinkedList<String> removeDuplicates(LinkedList<String> listDuplicate) {
-
-		LinkedList<String> listwithoutduplicates = new LinkedList<String>();
-
-		for (String string : listDuplicate) {
-			if (!listwithoutduplicates.contains(string)) {
-				listwithoutduplicates.add(string);
-			}
-		}
-
-		return listwithoutduplicates;
-	}
-
 	/***
 	 * Me devuelve por cada grafcet Las etapas iniciales excepto la de
 	 * emergencia y las etapas que tiene una o mas acciones asociadas.
@@ -802,6 +762,42 @@ public class Grafcet {
 			}
 		}
 		return functionBlock;
+	}
+
+	private void addEmergency(boolean emergency) {
+		this.emergency = emergency;
+	}
+
+	private void addType(String type) {
+		this.type = type;
+	}
+
+	private void addName(String name) {
+		this.name = name;
+	}
+
+	private void addComment(String comment) {
+		this.comment = comment;
+	}
+
+	private void addOwner(String owner) {
+		this.owner = owner;
+	}
+
+	/**
+	 * Devuelve la lista que le pasan por parametro pero sin elementos repetidos
+	 */
+	private LinkedList<String> removeDuplicates(LinkedList<String> listDuplicate) {
+
+		LinkedList<String> listwithoutduplicates = new LinkedList<String>();
+
+		for (String string : listDuplicate) {
+			if (!listwithoutduplicates.contains(string)) {
+				listwithoutduplicates.add(string);
+			}
+		}
+
+		return listwithoutduplicates;
 	}
 
 }

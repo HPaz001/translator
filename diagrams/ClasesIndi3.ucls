@@ -1,37 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <class-diagram version="1.1.8" icons="true" always-add-relationships="false" generalizations="true" realizations="true" 
   associations="true" dependencies="false" nesting-relationships="true">  
-  <class id="1" language="java" name="com.hpaz.translator.grafcetelements.constants.GrafcetTagsConstants" 
-    project="translator" file="/translator/src/com/hpaz/translator/grafcetelements/constants/GrafcetTagsConstants.java" 
-    binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="112" y="894"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </class>  
-  <class id="2" language="java" name="com.hpaz.translator.grafcetelements.Project" project="translator" 
+  <class id="1" language="java" name="com.hpaz.translator.grafcetelements.Project" project="translator" 
     file="/translator/src/com/hpaz/translator/grafcetelements/Project.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="564" y="561"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </class>  
-  <class id="3" language="java" name="com.hpaz.translator.output.Output" project="translator" 
-    file="/translator/src/com/hpaz/translator/output/Output.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="135" y="554"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </class>  
-  <class id="4" language="java" name="com.hpaz.translator.preprocess.Preprocess" project="translator" 
-    file="/translator/src/com/hpaz/translator/preprocess/Preprocess.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="146" y="218"/>    
+    <position height="-1" width="-1" x="316" y="563"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      

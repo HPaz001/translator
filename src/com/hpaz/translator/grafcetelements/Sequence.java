@@ -36,11 +36,6 @@ public class Sequence {
 		addIdSeq(Integer.parseInt(pAttributes.get("id")));			
 	}
 	
-	private void addIdSeq(int pNumber) {
-		this.idSeq=pNumber;
-		
-	}
-	
 	public int getIdSeq() {
 		return idSeq;
 	}
@@ -59,16 +54,6 @@ public class Sequence {
 
 	public int getStepStartEmergency() {
 		return stepStartEmergency;
-	}
-	
-	//añade una lista de señales
-	private void  addSignals( LinkedList<String> pSignals){
-		this.signals.addAll(pSignals);
-	}
-	
-	//aï¿½ade una unica seï¿½al
-	private void  addSignal( String pSignal){
-		this.signals.add(pSignal);
 	}
 	
 	/**Este metodo aï¿½ade una transicion o un step a la lista listTransitionOrStep
@@ -145,16 +130,6 @@ public class Sequence {
 		this.listTransitionOrStep.add(pTransitionOrStep);
 	}
 
-	private void addStepStopEmergency(int pNumber) {
-		this.stepStopEmergency=pNumber;
-		
-	}
-	
-	private void addStepStartEmergency(int pNumber) {
-		this.stepStartEmergency=pNumber;
-		
-	}
-	
 	public LinkedList<String> getVarGlobalStages(String pTypeProgram) {
 
 		//LinkedList<String> auxSignals = new LinkedList<String>();
@@ -291,6 +266,29 @@ public class Sequence {
 		return null;
 	}
 
-
+	private void addIdSeq(int pNumber) {
+		this.idSeq=pNumber;	
+	}
+	
+	//añade una lista de señales
+	private void  addSignals( LinkedList<String> pSignals){
+		this.signals.addAll(pSignals);
+	}
+	
+	//aï¿½ade una unica seï¿½al
+	private void  addSignal( String pSignal){
+		this.signals.add(pSignal);
+	}
+	
+	private void addStepStopEmergency(int pNumber) {
+		this.stepStopEmergency=pNumber;
+		
+	}
+	
+	private void addStepStartEmergency(int pNumber) {
+		this.stepStartEmergency=pNumber;
+		
+	}
+	
 	
 }

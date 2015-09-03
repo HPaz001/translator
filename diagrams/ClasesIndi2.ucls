@@ -3,7 +3,7 @@
   associations="true" dependencies="false" nesting-relationships="true">  
   <class id="1" language="java" name="com.hpaz.translator.grafcetelements.Counter" project="translator" 
     file="/translator/src/com/hpaz/translator/grafcetelements/Counter.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="677" y="730"/>    
+    <position height="-1" width="-1" x="593" y="139"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -12,16 +12,16 @@
   </class>  
   <class id="2" language="java" name="com.hpaz.translator.grafcetelements.Grafcet" project="translator" 
     file="/translator/src/com/hpaz/translator/grafcetelements/Grafcet.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="255" y="486"/>    
+    <position height="-1" width="-1" x="248" y="389"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="3" language="java" name="com.hpaz.translator.grafcetelements.Sequence" project="translator" 
-    file="/translator/src/com/hpaz/translator/grafcetelements/Sequence.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="644" y="279"/>    
+  <class id="3" language="java" name="com.hpaz.translator.grafcetelements.Timer" project="translator" 
+    file="/translator/src/com/hpaz/translator/grafcetelements/Timer.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="598" y="551"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      

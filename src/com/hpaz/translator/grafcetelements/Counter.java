@@ -47,13 +47,7 @@ public class Counter {
 		}
 
 	}
-/*
-	public void printConsole() {
-		System.out.println("getNameCounter: " + nameCounter);
-		System.out.println("getStepCountes: " + stepCountes);
-		System.out.println("getTypeCounter: " + typeCounter);
-	}
-*/
+
 	public String getGlobalsVarCounter(String pTypeProgram) {
 		
 		String var ="";
