@@ -182,18 +182,24 @@ public class ConfigWindow extends JFrame {
 					} else {
 						// si todos los datos introducidos son correctos
 						try {
-							//comprobamos que el formato del XML sea correcto
-							if (isXMLCorrectly()) {
-								
-								// Creamos la factoria de parseadores por defecto
+							// comprobamos que el formato del XML sea correcto
+							if (isXMLCorrectly(xmlPath)) {
+								// Creamos la factoria de parseadores por
+								// defecto
 								XMLReader reader = XMLReaderFactory.createXMLReader();
-								//llamamos a la clase que procesara el XML
-								Preprocess preproces = new Preprocess(xmlPath, outputPath, language, selectedCompatibility);
+								// llamamos a la clase que procesara el XML
+								Preprocess preproces = new Preprocess(xmlPath, outputPath, language,
+										selectedCompatibility);
 								reader.setContentHandler(preproces);
 								// Procesamos el xml
 								reader.parse(new InputSource(new FileInputStream(xmlPath)));
-								//comprobamos que tipo de opcion ha marcado el usuario para saber si abrir las siguiente interfaz o no
-								if (selectedCompatibility.equalsIgnoreCase(GrafcetTagsConstants.PROGRAM_OPT1) || selectedCompatibility.equalsIgnoreCase(GrafcetTagsConstants.PROGRAM_OPT3)) { // Twincat y plcopen
+								// comprobamos que tipo de opcion ha marcado el
+								// usuario para saber si abrir las siguiente
+								// interfaz o no
+								if (selectedCompatibility.equalsIgnoreCase(GrafcetTagsConstants.PROGRAM_OPT1)
+										|| selectedCompatibility.equalsIgnoreCase(GrafcetTagsConstants.PROGRAM_OPT3)) { // Twincat
+																														// y
+																												// plcopen
 									dispose();
 									new VariableInitWindow().setVisible(true);
 								} else {
@@ -209,27 +215,26 @@ public class ConfigWindow extends JFrame {
 										"El XML no tiene un formato adecuado, por favor selecione uno valido.", "Error",
 										JOptionPane.ERROR_MESSAGE);
 							}
-							
-							//dispose();
 
-							
-							/*if (preproces.isPreprocessFinishCorrectly()) {
-								if (selectedCompatibility.equalsIgnoreCase(GrafcetTagsConstants.PROGRAM_OPT1)) { // Twincat
-									new VariableInitWindow().setVisible(true);
-								} else {
-									Project.getProject().print();
-									JOptionPane.showMessageDialog(contentPane,
-											"Se han generado los ficheros de su proyecto en la carpeta seleccionada.",
-											"Finalizado", JOptionPane.DEFAULT_OPTION);
-									dispose();
-									new MainProgramWindow().setVisible(true);
+							// dispose();
 
-								}
-							} else {
-								JOptionPane.showMessageDialog(contentPane,
-										"El XML no tiene un formato adecuado, por favor selecione uno valido.", "Error",
-										JOptionPane.ERROR_MESSAGE);
-							}*/
+							/*
+							 * if (preproces.isPreprocessFinishCorrectly()) { if
+							 * (selectedCompatibility.equalsIgnoreCase(
+							 * GrafcetTagsConstants.PROGRAM_OPT1)) { // Twincat
+							 * new VariableInitWindow().setVisible(true); } else
+							 * { Project.getProject().print();
+							 * JOptionPane.showMessageDialog(contentPane,
+							 * "Se han generado los ficheros de su proyecto en la carpeta seleccionada."
+							 * , "Finalizado", JOptionPane.DEFAULT_OPTION);
+							 * dispose(); new
+							 * MainProgramWindow().setVisible(true);
+							 * 
+							 * } } else {
+							 * JOptionPane.showMessageDialog(contentPane,
+							 * "El XML no tiene un formato adecuado, por favor selecione uno valido."
+							 * , "Error", JOptionPane.ERROR_MESSAGE); }
+							 */
 
 						} catch (Exception ex) {
 							ex.printStackTrace();
@@ -267,53 +272,53 @@ public class ConfigWindow extends JFrame {
 
 	}
 
-	private boolean isXMLCorrectly(){
-		/*boolean isCorrectly = true;
+	private boolean isXMLCorrectly(String pXmlPath) {
+		boolean isCorrectly = true;
 		List exceptions = new LinkedList();
 		try { // XML a validar
-			Source xmlFile = new StreamSource(new File("FICHERO_XML"));//"C:/Users/Desktop/file.xml"
+			Source xmlFile = new StreamSource(pXmlPath);// "C:/Users/Desktop/file.xml"
 			// Esquema con el que comparar
-			Source schemaFile = new StreamSource(new File("PLANTILLA_XSD"));//"C:/Users/Desktop/schema.xsd"
+			Source schemaFile = new StreamSource(new File("C:/Users/JonAnder/Dropbox/AATFG_Helen/TFG_Documentacion/InfoSFCEdit/plantillaParaSFCEdit.xsd"));// "C:/Users/Desktop/schema.xsd"
 			// Preparaci�n del esquema
 			SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
 			Schema schema = schemaFactory.newSchema(schemaFile);
 			// Creaci�n del validador
 			Validator validator = schema.newValidator();
-			// Definici�n del manejador de excepciones del validador
-			
-			validator.setErrorHandler(
-				new ErrorHandler() {
-					public void warning(SAXParseException exception) throws SAXException {
-						exceptions.add(exception);
-					}
-					public void fatalError(SAXParseException exception) throws SAXException {
-						exceptions.add(exception);
-					}
-					public void error(SAXParseException exception) throws SAXException {
-						exceptions.add(exception);
-					}
+			// Definici�n del manejador de excepciones del validado
+			validator.setErrorHandler(new ErrorHandler() {
+				public void warning(SAXParseException exception) throws SAXException {
+					exceptions.add(exception);
 				}
-			);
+
+				public void fatalError(SAXParseException exception) throws SAXException {
+					exceptions.add(exception);
+				}
+
+				public void error(SAXParseException exception) throws SAXException {
+					exceptions.add(exception);
+				}
+			});
 			// Validaci�n del XML
 			validator.validate(xmlFile);
-			// Resultado de la validaci�n. Si hay errores se detalla el error y
+			// Resultado de la validaci�n. Si hay errores se detalla el error
+			// y
 			// la posici�n exacta en el XML
 			if (exceptions.size() != 0) {
-				isCorrectly=false;
+				isCorrectly = false;
 				System.out.println("FILE " + xmlFile.getSystemId() + " IS INVALID");
 				System.out.println("NUMBER OF ERRORS: " + exceptions.size());
 				for (int i = 0; i < exceptions.size(); i++) {
-					System.out.println("Error # " +(i + 1) + ":");
+					System.out.println("Error # " + (i + 1) + ":");
+					System.out.println("\n\t" + exceptions.get(i));
 				}
 			}
 		} catch (SAXException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
-		}*/
-		//TODO hacer XSD esta funcion devuelve solo true por el momento
-		return /*isCorrectly*/true;
+		}
+		// TODO hacer XSD esta funcion devuelve solo true por el momento
+		return isCorrectly;
 	}
-	
 
 }

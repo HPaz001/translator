@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+  <xs:element name="project">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="grafcet" maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="grafcet">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="sequence" maxOccurs="unbounded"/>
+        <xs:element ref="hlink" minOccurs="0" maxOccurs="unbounded"/>
+        <xs:element ref="jump"/>
+      </xs:sequence>
+      <xs:attribute name="comment" type="xs:string" use="required"/>
+      <xs:attribute name="name" type="xs:string" use="required"/>
+      <xs:attribute name="owner" type="xs:string" use="required"/>
+      <xs:attribute name="type" type="xs:string" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="sequence">
+    <xs:complexType>
+      <xs:choice maxOccurs="unbounded">
+        <xs:element ref="step"/>
+        <xs:element ref="transition"/>
+      </xs:choice>
+      <xs:attribute name="id" type="xs:string" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="step">
+    <xs:complexType>
+      <xs:sequence minOccurs="0">
+        <xs:element ref="action" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+      <xs:attribute name="name" type="xs:string" use="required"/>
+      <xs:attribute name="type" type="xs:string" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="action">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="condition" minOccurs="0"/>
+        <xs:element name="text" type="xs:string"/>
+      </xs:sequence>
+      <xs:attribute name="type" type="xs:string" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="transition">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="condition"/>
+        <xs:element ref="comment" minOccurs="0"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="condition">
+    <xs:complexType mixed="true">
+      <xs:sequence minOccurs="0">
+        <xs:element name="cpl" type="xs:string"/>
+        <xs:element name="re" type="xs:string"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="comment">
+    <xs:complexType mixed="true">
+      <xs:sequence>
+        <xs:element name="cpl" type="xs:string"/>
+        <xs:element name="re" type="xs:string"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="jump">
+    <xs:complexType>
+      <xs:attribute name="seqid_from" type="xs:string" use="required"/>
+      <xs:attribute name="seqid_to" type="xs:string" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="hlink">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="node" maxOccurs="unbounded"/>
+      </xs:sequence>
+      <xs:attribute name="seqid" type="xs:string" use="required"/>
+      <xs:attribute name="type" type="xs:string" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="node">
+    <xs:complexType>
+      <xs:attribute name="seqid" type="xs:string" use="required"/>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
