@@ -127,6 +127,7 @@ public class Preprocess extends DefaultHandler {
 		if (text != null && !text.isEmpty()) {
 			// si la etiqueta es text entonces es el texto de una accion
 			if (actualTag.equals(GrafcetTagsConstants.TEXT_TAG)) {
+				//TODO este texto tambien puede venir negado o con flancos de subida y bajada
 				action.addText(text);
 				
 				/*Si la etiqueta es condition, puede ser de una transition o de

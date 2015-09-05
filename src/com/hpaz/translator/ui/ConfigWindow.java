@@ -52,7 +52,7 @@ public class ConfigWindow extends JFrame {
 	 */
 	public ConfigWindow() {
 		setResizable(false);
-		setTitle("Configuraci�n del programa");
+		setTitle("Configuraci\u00f3n del programa");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 626, 500);
 		contentPane = new JPanel();
@@ -210,12 +210,12 @@ public class ConfigWindow extends JFrame {
 									dispose();
 									new MainProgramWindow().setVisible(true);
 								}
-							} else {
+							} /*else {
 								JOptionPane.showMessageDialog(contentPane,
 										"El XML no tiene un formato adecuado, por favor selecione uno valido.", "Error",
 										JOptionPane.ERROR_MESSAGE);
 							}
-
+*/
 							// dispose();
 
 							/*
@@ -276,15 +276,16 @@ public class ConfigWindow extends JFrame {
 		boolean isCorrectly = true;
 		List exceptions = new LinkedList();
 		try { // XML a validar
-			Source xmlFile = new StreamSource(pXmlPath);// "C:/Users/Desktop/file.xml"
+			Source xmlFile = new StreamSource(pXmlPath);
 			// Esquema con el que comparar
-			Source schemaFile = new StreamSource(new File("C:/Users/JonAnder/Dropbox/AATFG_Helen/TFG_Documentacion/InfoSFCEdit/plantillaParaSFCEdit.xsd"));// "C:/Users/Desktop/schema.xsd"
-			// Preparaci�n del esquema
+			Source schemaFile = new StreamSource(new File("C:/Users/JonAnder/Dropbox/AATFG_Helen/TFG_Documentacion/InfoSFCEdit/plantillaParaSFCEdit.xsd"));
+			// Preparacion del esquema
 			SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
 			Schema schema = schemaFactory.newSchema(schemaFile);
-			// Creaci�n del validador
+			// Creacion del validador
 			Validator validator = schema.newValidator();
-			// Definici�n del manejador de excepciones del validado
+			
+			// Definicion del manejador de excepciones del validado			
 			validator.setErrorHandler(new ErrorHandler() {
 				public void warning(SAXParseException exception) throws SAXException {
 					exceptions.add(exception);
@@ -297,27 +298,42 @@ public class ConfigWindow extends JFrame {
 				public void error(SAXParseException exception) throws SAXException {
 					exceptions.add(exception);
 				}
+				
 			});
-			// Validaci�n del XML
+
+			// Validacion del XML
 			validator.validate(xmlFile);
-			// Resultado de la validaci�n. Si hay errores se detalla el error
-			// y
-			// la posici�n exacta en el XML
+			// Resultado de la validacion. Si hay errores se detalla el error y
+			// la linea exacta en el XML
 			if (exceptions.size() != 0) {
 				isCorrectly = false;
-				System.out.println("FILE " + xmlFile.getSystemId() + " IS INVALID");
-				System.out.println("NUMBER OF ERRORS: " + exceptions.size());
+				String messaheError = "";
+				messaheError = "El Fichero " + xmlFile.getSystemId() + " es invalido"
+				+"\nTiene " + exceptions.size()+" errores.";
 				for (int i = 0; i < exceptions.size(); i++) {
-					System.out.println("Error # " + (i + 1) + ":");
-					System.out.println("\n\t" + exceptions.get(i));
+					messaheError = messaheError +"\nError # " + (i + 1) + ":\n\t" + exceptions.get(i);
 				}
+				JOptionPane.showMessageDialog(contentPane,
+						messaheError, "Error",
+						JOptionPane.ERROR_MESSAGE);
 			}
+			
+		}catch (IOException e) {
+			isCorrectly = false;
+			//e.printStackTrace();
+			JOptionPane.showMessageDialog(contentPane,
+					"El Fichero " + textFieldInput.getText() + " es invalido.\n"
+					+e.getMessage(), "Error",
+					JOptionPane.ERROR_MESSAGE);
 		} catch (SAXException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
+			isCorrectly = false;
+			//e.printStackTrace();
+			JOptionPane.showMessageDialog(contentPane,
+					"El Fichero " + textFieldInput.getText() + " es invalido.\n"
+					+e.getMessage(), "Error",
+					JOptionPane.ERROR_MESSAGE);
 		}
-		// TODO hacer XSD esta funcion devuelve solo true por el momento
+		
 		return isCorrectly;
 	}
 
