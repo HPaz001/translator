@@ -37,6 +37,7 @@ public class MainProgramWindow extends JFrame {
 	 * Create the frame.
 	 */
 	public MainProgramWindow() {
+		this.setIconImage(new ImageIcon(getClass().getResource("files/iconoTrans50x50.png")).getImage());
 		setResizable(false);
 		setTitle("Traductor");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -78,7 +79,7 @@ public class MainProgramWindow extends JFrame {
 		contentPane.add(button);
 		
 		JLabel label = new JLabel("");
-		label.setIcon(new ImageIcon("C:\\Users\\JonAnder\\Dropbox\\AATFG_Helen\\TFG_Documentacion\\Documentacion\\Imagenes\\iconoTrans106x106.png"));
+		label.setIcon(new ImageIcon(this.getClass().getResource("files/iconoTrans106x106.png")));
 		label.setBounds(63, 20, 106, 106);
 		contentPane.add(label);
 	}

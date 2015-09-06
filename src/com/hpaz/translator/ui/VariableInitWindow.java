@@ -18,6 +18,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -63,6 +64,7 @@ public class VariableInitWindow extends JFrame {
 	 * Create the frame.
 	 */
 	public VariableInitWindow() {
+		this.setIconImage(new ImageIcon(getClass().getResource("files/iconoTrans50x50.png")).getImage());
 		setResizable(false);
 		setTitle("Inicialización de variables");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -380,7 +382,7 @@ public class VariableInitWindow extends JFrame {
 			JOptionPane.showMessageDialog(contentPane, "Se han generado los ficheros de su proyecto en la carpeta seleccionada.", "Finalizado",
 					JOptionPane.DEFAULT_OPTION);
 			dispose();
-			new MainProgramWindow().setVisible(true);
+			//new MainProgramWindow().setVisible(true);
 
 			// Project.getProject().print(compatibility);
 			// Output.getSalida().exportarFicheroVG(Project.getProject().printVarGlobal(),

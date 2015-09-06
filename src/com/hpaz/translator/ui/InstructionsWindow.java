@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -22,6 +23,7 @@ public class InstructionsWindow extends JDialog {
 	 * Create the frame.
 	 */
 	public InstructionsWindow() {
+		this.setIconImage(new ImageIcon(getClass().getResource("files/iconoTrans50x50.png")).getImage());
 		setResizable(false);
 		setTitle("Instrucciones de uso");
 		setModal(true);

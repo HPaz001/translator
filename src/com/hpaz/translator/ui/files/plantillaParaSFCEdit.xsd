@@ -3,16 +3,16 @@
   <xs:element name="project">
     <xs:complexType>
       <xs:sequence>
-        <xs:element ref="grafcet" maxOccurs="unbounded"/>
+        <xs:element ref="grafcet" minOccurs="1" maxOccurs="unbounded"/>
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="grafcet">
     <xs:complexType>
       <xs:sequence>
-        <xs:element ref="sequence" maxOccurs="unbounded"/>
+        <xs:element ref="sequence" minOccurs="1" maxOccurs="unbounded"/>
         <xs:element ref="hlink" minOccurs="0" maxOccurs="unbounded"/>
-        <xs:element ref="jump"/>
+        <xs:element ref="jump" minOccurs="1" maxOccurs="unbounded"/>
       </xs:sequence>
       <xs:attribute name="comment" type="xs:string" use="required"/>
       <xs:attribute name="name" type="xs:string" use="required"/>
@@ -22,7 +22,7 @@
   </xs:element>
   <xs:element name="sequence">
     <xs:complexType>
-      <xs:choice maxOccurs="unbounded">
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
         <xs:element ref="step"/>
         <xs:element ref="transition"/>
       </xs:choice>
@@ -31,8 +31,9 @@
   </xs:element>
   <xs:element name="step">
     <xs:complexType>
-      <xs:sequence minOccurs="0">
+      <xs:sequence maxOccurs="unbounded">
         <xs:element ref="action" minOccurs="0" maxOccurs="unbounded"/>
+        <xs:element ref="comment" minOccurs="0"/>
       </xs:sequence>
       <xs:attribute name="name" type="xs:string" use="required"/>
       <xs:attribute name="type" type="xs:string" use="required"/>
@@ -42,7 +43,8 @@
     <xs:complexType>
       <xs:sequence>
         <xs:element ref="condition" minOccurs="0"/>
-        <xs:element name="text" type="xs:string"/>
+        <xs:element ref="text" minOccurs="1" maxOccurs="1"/>
+        <xs:element ref="comment" minOccurs="0"/>
       </xs:sequence>
       <xs:attribute name="type" type="xs:string" use="required"/>
     </xs:complexType>
@@ -50,25 +52,27 @@
   <xs:element name="transition">
     <xs:complexType>
       <xs:sequence>
-        <xs:element ref="condition"/>
+        <xs:element ref="condition" minOccurs="1" maxOccurs="1"/>
         <xs:element ref="comment" minOccurs="0"/>
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="condition">
     <xs:complexType mixed="true">
-      <xs:sequence minOccurs="0">
-        <xs:element name="cpl" type="xs:string"/>
-        <xs:element name="re" type="xs:string"/>
-      </xs:sequence>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="cpl" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+        <xs:element name="re" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+        <xs:element name="fe" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:choice>
     </xs:complexType>
   </xs:element>
-  <xs:element name="comment">
+<xs:element name="comment">
     <xs:complexType mixed="true">
-      <xs:sequence>
-        <xs:element name="cpl" type="xs:string"/>
-        <xs:element name="re" type="xs:string"/>
-      </xs:sequence>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="cpl" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+        <xs:element name="re" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+        <xs:element name="fe" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:choice>
     </xs:complexType>
   </xs:element>
   <xs:element name="jump">
@@ -89,6 +93,15 @@
   <xs:element name="node">
     <xs:complexType>
       <xs:attribute name="seqid" type="xs:string" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="text">
+    <xs:complexType mixed="true">
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="cpl" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+        <xs:element name="re" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+        <xs:element name="fe" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:choice>
     </xs:complexType>
   </xs:element>
 </xs:schema>

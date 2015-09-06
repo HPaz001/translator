@@ -28,7 +28,7 @@ public class Action {
 		this.emergency=false;
 	}
 	public void fillAttributes(Map<String, String> pAttributes) {
-		// aÃ±ado el tipo
+		// añado el tipo
 		addType(pAttributes.get("type"));
 	}
 	public String getType() {

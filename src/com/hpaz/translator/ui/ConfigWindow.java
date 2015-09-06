@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -51,6 +52,7 @@ public class ConfigWindow extends JFrame {
 	 * Create the frame.
 	 */
 	public ConfigWindow() {
+		this.setIconImage(new ImageIcon(getClass().getResource("files/iconoTrans50x50.png")).getImage());
 		setResizable(false);
 		setTitle("Configuraci\u00f3n del programa");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -208,7 +210,8 @@ public class ConfigWindow extends JFrame {
 											"Se han generado los ficheros de su proyecto en la carpeta seleccionada.",
 											"Finalizado", JOptionPane.DEFAULT_OPTION);
 									dispose();
-									new MainProgramWindow().setVisible(true);
+									
+									//new MainProgramWindow().setVisible(true);
 								}
 							} /*else {
 								JOptionPane.showMessageDialog(contentPane,
@@ -278,7 +281,7 @@ public class ConfigWindow extends JFrame {
 		try { // XML a validar
 			Source xmlFile = new StreamSource(pXmlPath);
 			// Esquema con el que comparar
-			Source schemaFile = new StreamSource(new File("C:/Users/JonAnder/Dropbox/AATFG_Helen/TFG_Documentacion/InfoSFCEdit/plantillaParaSFCEdit.xsd"));
+			Source schemaFile = new StreamSource(new File(this.getClass().getResource("files/plantillaParaSFCEdit.xsd").getPath()));
 			// Preparacion del esquema
 			SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
 			Schema schema = schemaFactory.newSchema(schemaFile);
