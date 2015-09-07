@@ -281,7 +281,7 @@ public class ConfigWindow extends JFrame {
 		try { // XML a validar
 			Source xmlFile = new StreamSource(pXmlPath);
 			// Esquema con el que comparar
-			Source schemaFile = new StreamSource(new File(this.getClass().getResource("files/plantillaParaSFCEdit.xsd").getPath()));
+			Source schemaFile = new StreamSource(this.getClass().getResource("files/plantillaParaSFCEdit.xsd").openStream());
 			// Preparacion del esquema
 			SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
 			Schema schema = schemaFactory.newSchema(schemaFile);
