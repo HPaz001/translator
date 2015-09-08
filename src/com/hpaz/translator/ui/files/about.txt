@@ -1,0 +1,23 @@
+<BODY>
+<BIG>Acerca de</BIG><BR>
+<BIG>Contadores:</BIG>
+
+	<P><U>Nombre:</U> ContNombre
+	<I>Ejemplo:</I>  Si quieres llamar a tu contador <B>"producto"</B> 
+	el nombre que debes usar seria <B>"ContProducto ó Contproducto"</B></P>
+	
+	<P><U>Incrementar:</U> Nombre++ ó Nombre = Nombre + numero
+	<I>Ejemplo:</I>  ContProducto++ ó ContProducto=ContProducto+1</P>
+	
+	<P><U>Decrementar:</U> Nombre-- o Nombre = Nombre - numero
+	<I>Ejemplo: </I> ContProducto-- ó ContProducto=ContProducto-1</P>
+<BIG>Temporizadores:</BIG>
+
+	<P><U>Nombre:</U> TempNombre</P>
+	
+ 	<P><U>Asignar:</U> Nombre = Numero Tiempo
+ 	<I>Ejemplo: </I> TempCalor = 2 Seg	</P>
+ 	
+ 	
+ <P><U>No usar puntos en los nombres variables</U> </P>
+</BODY>

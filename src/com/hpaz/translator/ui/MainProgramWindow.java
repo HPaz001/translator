@@ -5,6 +5,9 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.font.TextAttribute;
+import java.util.Map;
+
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -12,6 +15,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
+import java.awt.Color;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class MainProgramWindow extends JFrame {
 
@@ -82,5 +88,24 @@ public class MainProgramWindow extends JFrame {
 		label.setIcon(new ImageIcon(this.getClass().getResource("files/iconoTrans106x106.png")));
 		label.setBounds(63, 20, 106, 106);
 		contentPane.add(label);
+		
+		
+		JLabel lblAcercaDeTraductor = new JLabel("<HTML><U>Acerca de Traductor</U></HTML>");
+		
+		lblAcercaDeTraductor.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblAcercaDeTraductor.setForeground(Color.BLUE);
+		lblAcercaDeTraductor.setBounds(309, 314, 125, 17);
+		Font font = lblAcercaDeTraductor.getFont();
+		lblAcercaDeTraductor.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				AboutWindow aboutWindow = new AboutWindow();
+				aboutWindow.setVisible(true);
+				aboutWindow.setModalExclusionType(ModalExclusionType.APPLICATION_EXCLUDE);
+			}
+		});
+		contentPane.add(lblAcercaDeTraductor);
+		
+		
 	}
 }
