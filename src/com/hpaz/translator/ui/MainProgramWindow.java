@@ -81,7 +81,7 @@ public class MainProgramWindow extends JFrame {
 			}
 		});
 		button.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		button.setBounds(83, 243, 277, 60);
+		button.setBounds(83, 228, 277, 60);
 		contentPane.add(button);
 		
 		JLabel label = new JLabel("");
@@ -90,11 +90,11 @@ public class MainProgramWindow extends JFrame {
 		contentPane.add(label);
 		
 		
-		JLabel lblAcercaDeTraductor = new JLabel("<HTML><U>Acerca de Traductor</U></HTML>");
+		JLabel lblAcercaDeTraductor = new JLabel("<HTML><U>Acerca del Traductor</U></HTML>");
 		
 		lblAcercaDeTraductor.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		lblAcercaDeTraductor.setForeground(Color.BLUE);
-		lblAcercaDeTraductor.setBounds(309, 314, 125, 17);
+		lblAcercaDeTraductor.setBounds(150, 314, 133, 17);
 		Font font = lblAcercaDeTraductor.getFont();
 		lblAcercaDeTraductor.addMouseListener(new MouseAdapter() {
 			@Override

@@ -4,7 +4,7 @@
   <class id="1" language="java" name="com.hpaz.translator.grafcetelements.constants.GrafcetTagsConstants" 
     project="translator" file="/translator/src/com/hpaz/translator/grafcetelements/constants/GrafcetTagsConstants.java" 
     binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="400" y="468"/>    
+    <position height="-1" width="-1" x="622" y="152"/>    
     <display autosize="true" stereotype="false" package="false" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="false" package="false" protected="false" private="false" static="true"/>      
@@ -13,7 +13,7 @@
   </class>  
   <class id="2" language="java" name="com.hpaz.translator.grafcetelements.Counter" project="translator" 
     file="/translator/src/com/hpaz/translator/grafcetelements/Counter.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="449" y="357"/>    
+    <position height="-1" width="-1" x="417" y="734"/>    
     <display autosize="true" stereotype="false" package="false" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="false" package="false" protected="false" private="false" static="true"/>      
@@ -22,7 +22,7 @@
   </class>  
   <class id="3" language="java" name="com.hpaz.translator.grafcetelements.Jump" project="translator" 
     file="/translator/src/com/hpaz/translator/grafcetelements/Jump.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="565" y="185"/>    
+    <position height="-1" width="-1" x="745" y="270"/>    
     <display autosize="true" stereotype="false" package="false" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="false" package="false" protected="false" private="false" static="true"/>      
@@ -31,7 +31,7 @@
   </class>  
   <class id="4" language="java" name="com.hpaz.translator.grafcetelements.Action" project="translator" 
     file="/translator/src/com/hpaz/translator/grafcetelements/Action.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="596" y="71"/>    
+    <position height="-1" width="-1" x="490" y="296"/>    
     <display autosize="true" stereotype="false" package="false" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="false" package="false" protected="false" private="false" static="true"/>      
@@ -40,7 +40,7 @@
   </class>  
   <class id="5" language="java" name="com.hpaz.translator.grafcetelements.Grafcet" project="translator" 
     file="/translator/src/com/hpaz/translator/grafcetelements/Grafcet.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="389" y="187"/>    
+    <position height="-1" width="-1" x="729" y="560"/>    
     <display autosize="true" stereotype="false" package="false" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="false" package="false" protected="false" private="false" static="true"/>      
@@ -49,7 +49,7 @@
   </class>  
   <class id="6" language="java" name="com.hpaz.translator.grafcetelements.Project" project="translator" 
     file="/translator/src/com/hpaz/translator/grafcetelements/Project.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="391" y="255"/>    
+    <position height="-1" width="-1" x="510" y="661"/>    
     <display autosize="true" stereotype="false" package="false" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="false" package="false" protected="false" private="false" static="true"/>      
@@ -58,7 +58,7 @@
   </class>  
   <class id="7" language="java" name="com.hpaz.translator.grafcetelements.Timer" project="translator" 
     file="/translator/src/com/hpaz/translator/grafcetelements/Timer.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="339" y="358"/>    
+    <position height="-1" width="-1" x="493" y="743"/>    
     <display autosize="true" stereotype="false" package="false" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="false" package="false" protected="false" private="false" static="true"/>      
@@ -67,7 +67,7 @@
   </class>  
   <class id="8" language="java" name="com.hpaz.translator.grafcetelements.Step" project="translator" 
     file="/translator/src/com/hpaz/translator/grafcetelements/Step.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="596" y="-6"/>    
+    <position height="-1" width="-1" x="496" y="489"/>    
     <display autosize="true" stereotype="false" package="false" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="false" package="false" protected="false" private="false" static="true"/>      
@@ -76,7 +76,7 @@
   </class>  
   <class id="9" language="java" name="com.hpaz.translator.grafcetelements.Sequence" project="translator" 
     file="/translator/src/com/hpaz/translator/grafcetelements/Sequence.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="185" y="187"/>    
+    <position height="-1" width="-1" x="554" y="558"/>    
     <display autosize="true" stereotype="false" package="false" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="false" package="false" protected="false" private="false" static="true"/>      
@@ -85,7 +85,7 @@
   </class>  
   <class id="10" language="java" name="com.hpaz.translator.grafcetelements.Transition" project="translator" 
     file="/translator/src/com/hpaz/translator/grafcetelements/Transition.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="152" y="83"/>    
+    <position height="-1" width="-1" x="616" y="484"/>    
     <display autosize="true" stereotype="false" package="false" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="false" package="false" protected="false" private="false" static="true"/>      
@@ -94,7 +94,7 @@
   </class>  
   <class id="11" language="java" name="com.hpaz.translator.grafcetelements.Road" project="translator" 
     file="/translator/src/com/hpaz/translator/grafcetelements/Road.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="286" y="102"/>    
+    <position height="-1" width="-1" x="679" y="321"/>    
     <display autosize="true" stereotype="false" package="false" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="false" package="false" protected="false" private="false" static="true"/>      
@@ -103,7 +103,7 @@
   </class>  
   <class id="12" language="java" name="com.hpaz.translator.output.Output" project="translator" 
     file="/translator/src/com/hpaz/translator/output/Output.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="549" y="468"/>    
+    <position height="-1" width="-1" x="565" y="733"/>    
     <display autosize="true" stereotype="false" package="false" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="false" package="false" protected="false" private="false" static="true"/>      
@@ -112,7 +112,7 @@
   </class>  
   <class id="13" language="java" name="com.hpaz.translator.preprocess.Preprocess" project="translator" 
     file="/translator/src/com/hpaz/translator/preprocess/Preprocess.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="337" y="-158"/>    
+    <position height="-1" width="-1" x="555" y="212"/>    
     <display autosize="true" stereotype="false" package="false" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="false" package="false" protected="false" private="false" static="true"/>      
@@ -121,7 +121,7 @@
   </class>  
   <class id="14" language="java" name="com.hpaz.translator.ui.constants.ConfigConstants" project="translator" 
     file="/translator/src/com/hpaz/translator/ui/constants/ConfigConstants.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="219" y="468"/>    
+    <position height="-1" width="-1" x="273" y="520"/>    
     <display autosize="true" stereotype="false" package="false" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="false" package="false" protected="false" private="false" static="true"/>      
@@ -130,7 +130,7 @@
   </class>  
   <class id="15" language="java" name="com.hpaz.translator.ui.ConfigWindow" project="translator" 
     file="/translator/src/com/hpaz/translator/ui/ConfigWindow.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="148" y="541"/>    
+    <position height="-1" width="-1" x="412" y="21"/>    
     <display autosize="true" stereotype="false" package="false" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="false" package="false" protected="false" private="false" static="true"/>      
@@ -139,7 +139,7 @@
   </class>  
   <class id="16" language="java" name="com.hpaz.translator.ui.InstructionsWindow" project="translator" 
     file="/translator/src/com/hpaz/translator/ui/InstructionsWindow.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="285" y="540"/>    
+    <position height="-1" width="-1" x="260" y="301"/>    
     <display autosize="true" stereotype="false" package="false" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="false" package="false" protected="false" private="false" static="true"/>      
@@ -148,7 +148,7 @@
   </class>  
   <class id="17" language="java" name="com.hpaz.translator.ui.VariableInitWindow" project="translator" 
     file="/translator/src/com/hpaz/translator/ui/VariableInitWindow.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="430" y="540"/>    
+    <position height="-1" width="-1" x="335" y="416"/>    
     <display autosize="true" stereotype="false" package="false" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="false" package="false" protected="false" private="false" static="true"/>      
@@ -157,203 +157,281 @@
   </class>  
   <class id="18" language="java" name="com.hpaz.translator.ui.MainProgramWindow" project="translator" 
     file="/translator/src/com/hpaz/translator/ui/MainProgramWindow.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="579" y="539"/>    
+    <position height="-1" width="-1" x="263" y="236"/>    
     <display autosize="true" stereotype="false" package="false" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="false" package="false" protected="false" private="false" static="true"/>      
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <association id="19">    
+  <class id="19" language="java" name="com.hpaz.translator.ui.AboutWindow" project="translator" 
+    file="/translator/src/com/hpaz/translator/ui/AboutWindow.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="23" width="123" x="202" y="341"/>    
+    <display autosize="false" stereotype="false" package="false" initial-value="false" signature="false" 
+      sort-features="false" accessors="true" visibility="false">      
+      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <dependency id="20">    
+    <bendpoint x="795" y="230"/>    
+    <bendpoint x="795" y="584"/>    
+    <end type="SOURCE" refId="13"/>    
+    <end type="TARGET" refId="6"/>  
+  </dependency>  
+  <association id="21">    
     <end type="SOURCE" refId="13" navigable="false">      
-      <attribute id="20" name="action">        
-        <position height="18" width="37" x="598" y="22"/>      
+      <attribute id="22" name="sequence">        
+        <position height="18" width="56" x="1119" y="656"/>      
       </attribute>      
-      <multiplicity id="21" minimum="0" maximum="1">        
-        <position height="16" width="23" x="598" y="37"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="4" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="22">    
-    <end type="SOURCE" refId="6" navigable="false">      
-      <attribute id="23" name="listCounters">        
-        <position height="18" width="65" x="419" y="323"/>      
-      </attribute>      
-      <multiplicity id="24" minimum="0" maximum="2147483647">        
-        <position height="16" width="21" x="486" y="325"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="2" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="25">    
-    <end type="SOURCE" refId="13" navigable="false">      
-      <attribute id="26" name="sequence">        
-        <position height="18" width="56" x="144" y="139"/>      
-      </attribute>      
-      <multiplicity id="27" minimum="0" maximum="1">        
-        <position height="16" width="23" x="166" y="156"/>      
+      <multiplicity id="23" minimum="0" maximum="1">        
+        <position height="16" width="23" x="531" y="523"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="9" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="28">    
+  <association id="24">    
     <end type="SOURCE" refId="13" navigable="false">      
-      <attribute id="29" name="step">        
-        <position height="18" width="29" x="529" y="-51"/>      
+      <attribute id="25" name="transition">        
+        <position height="18" width="52" x="1091" y="144"/>      
       </attribute>      
-      <multiplicity id="30" minimum="0" maximum="1">        
-        <position height="16" width="23" x="567" y="-36"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="8" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="31">    
-    <end type="SOURCE" refId="13" navigable="false">      
-      <attribute id="32" name="transition">        
-        <position height="18" width="52" x="123" y="36"/>      
-      </attribute>      
-      <multiplicity id="33" minimum="0" maximum="1">        
-        <position height="16" width="23" x="140" y="53"/>      
+      <multiplicity id="26" minimum="0" maximum="1">        
+        <position height="16" width="23" x="619" y="457"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="10" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="34">    
+  <dependency id="27">    
+    <end type="SOURCE" refId="15"/>    
+    <end type="TARGET" refId="13"/>  
+  </dependency>  
+  <dependency id="28">    
+    <end type="SOURCE" refId="6"/>    
+    <end type="TARGET" refId="12"/>  
+  </dependency>  
+  <association id="29">    
     <end type="SOURCE" refId="13" navigable="false">      
-      <attribute id="35" name="jump">        
-        <position height="18" width="30" x="533" y="125"/>      
+      <attribute id="30" name="road">        
+        <position height="18" width="30" x="1108" y="282"/>      
       </attribute>      
-      <multiplicity id="36" minimum="0" maximum="1">        
-        <position height="0" width="0" x="0" y="0"/>      
+      <multiplicity id="31" minimum="0" maximum="1">        
+        <position height="16" width="23" x="665" y="293"/>      
       </multiplicity>    
     </end>    
-    <end type="TARGET" refId="3" navigable="true"/>    
+    <end type="TARGET" refId="11" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="37">    
+  <association id="32">    
     <end type="SOURCE" refId="6" navigable="false">      
-      <attribute id="38" name="listGrafcet">        
-        <position height="0" width="0" x="0" y="0"/>      
+      <attribute id="33" name="listGrafcet">        
+        <position height="18" width="58" x="1122" y="389"/>      
       </attribute>      
-      <multiplicity id="39" minimum="0" maximum="2147483647">        
-        <position height="0" width="0" x="0" y="0"/>      
+      <multiplicity id="34" minimum="0" maximum="2147483647">        
+        <position height="16" width="21" x="703" y="574"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="5" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="40">    
-    <end type="SOURCE" refId="8" navigable="false">      
-      <attribute id="41" name="myActions">        
-        <position height="18" width="59" x="486" y="22"/>      
-      </attribute>      
-      <multiplicity id="42" minimum="0" maximum="2147483647">        
-        <position height="16" width="21" x="548" y="41"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="4" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="43">    
+  <dependency id="35">    
+    <end type="SOURCE" refId="17"/>    
+    <end type="TARGET" refId="14"/>  
+  </dependency>  
+  <dependency id="36">    
+    <bendpoint x="143" y="236"/>    
+    <bendpoint x="144" y="352"/>    
+    <end type="SOURCE" refId="18"/>    
+    <end type="TARGET" refId="19"/>  
+  </dependency>  
+  <dependency id="37">    
+    <end type="SOURCE" refId="17"/>    
+    <end type="TARGET" refId="6"/>  
+  </dependency>  
+  <dependency id="38">    
+    <end type="SOURCE" refId="15"/>    
+    <end type="TARGET" refId="1"/>  
+  </dependency>  
+  <dependency id="39">    
+    <bendpoint x="511" y="535"/>    
+    <bendpoint x="504" y="525"/>    
+    <end type="SOURCE" refId="9"/>    
+    <end type="TARGET" refId="8"/>  
+  </dependency>  
+  <dependency id="40">    
+    <end type="SOURCE" refId="18"/>    
+    <end type="TARGET" refId="16"/>  
+  </dependency>  
+  <association id="41">    
     <end type="SOURCE" refId="13" navigable="false">      
-      <attribute id="44" name="grafcet">        
-        <position height="18" width="43" x="385" y="129"/>      
+      <attribute id="42" name="grafcet">        
+        <position height="18" width="43" x="1109" y="112"/>      
       </attribute>      
-      <multiplicity id="45" minimum="0" maximum="1">        
-        <position height="0" width="0" x="0" y="0"/>      
+      <multiplicity id="43" minimum="0" maximum="1">        
+        <position height="0" width="0" x="340" y="373"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="5" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="46">    
+  <association id="44">    
     <end type="SOURCE" refId="6" navigable="false">      
-      <attribute id="47" name="project">        
-        <position height="0" width="0" x="0" y="0"/>      
+      <attribute id="45" name="project">        
+        <position height="18" width="41" x="1172" y="122"/>      
       </attribute>      
-      <multiplicity id="48" minimum="0" maximum="1">        
-        <position height="0" width="0" x="0" y="0"/>      
+      <multiplicity id="46" minimum="0" maximum="1">        
+        <position height="16" width="23" x="555" y="669"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="6" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="49">    
-    <end type="SOURCE" refId="12" navigable="false">      
-      <attribute id="50" name="myOutput">        
-        <position height="0" width="0" x="83" y="-81"/>      
-      </attribute>      
-      <multiplicity id="51" minimum="0" maximum="1">        
-        <position height="0" width="0" x="83" y="-81"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="12" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="52">    
-    <end type="SOURCE" refId="5" navigable="false">      
-      <attribute id="53" name="jumpList">        
-        <position height="18" width="47" x="457" y="188"/>      
-      </attribute>      
-      <multiplicity id="54" minimum="0" maximum="2147483647">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="3" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="55">    
+  <association id="47">    
     <end type="SOURCE" refId="13" navigable="false">      
-      <attribute id="56" name="road">        
-        <position height="18" width="30" x="296" y="49"/>      
+      <attribute id="48" name="step">        
+        <position height="18" width="29" x="1106" y="200"/>      
       </attribute>      
-      <multiplicity id="57" minimum="0" maximum="1">        
-        <position height="0" width="0" x="0" y="0"/>      
+      <multiplicity id="49" minimum="0" maximum="1">        
+        <position height="16" width="23" x="502" y="461"/>      
       </multiplicity>    
     </end>    
-    <end type="TARGET" refId="11" navigable="true"/>    
+    <end type="TARGET" refId="8" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="58">    
+  <dependency id="50">    
+    <end type="SOURCE" refId="15"/>    
+    <end type="TARGET" refId="17"/>  
+  </dependency>  
+  <association id="51">    
     <end type="SOURCE" refId="5" navigable="false">      
-      <attribute id="59" name="sequenceList">        
-        <position height="18" width="73" x="259" y="188"/>      
+      <attribute id="52" name="sequenceList">        
+        <position height="18" width="73" x="1137" y="462"/>      
       </attribute>      
-      <multiplicity id="60" minimum="0" maximum="2147483647">        
-        <position height="16" width="21" x="237" y="188"/>      
+      <multiplicity id="53" minimum="0" maximum="2147483647">        
+        <position height="16" width="21" x="595" y="563"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="9" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="61">    
-    <end type="SOURCE" refId="5" navigable="false">      
-      <attribute id="62" name="roadList">        
-        <position height="18" width="47" x="276" y="135"/>      
+  <association id="54">    
+    <end type="SOURCE" refId="13" navigable="false">      
+      <attribute id="55" name="action">        
+        <position height="18" width="37" x="1090" y="214"/>      
       </attribute>      
-      <multiplicity id="63" minimum="0" maximum="2147483647">        
-        <position height="16" width="21" x="297" y="121"/>      
+      <multiplicity id="56" minimum="0" maximum="1">        
+        <position height="16" width="23" x="479" y="266"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="4" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="57">    
+    <end type="SOURCE" refId="5" navigable="false">      
+      <attribute id="58" name="roadList">        
+        <position height="18" width="47" x="1105" y="361"/>      
+      </attribute>      
+      <multiplicity id="59" minimum="0" maximum="2147483647">        
+        <position height="16" width="21" x="686" y="331"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="11" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="64">    
+  <association id="60">    
     <end type="SOURCE" refId="6" navigable="false">      
-      <attribute id="65" name="listTimers">        
-        <position height="18" width="53" x="312" y="318"/>      
+      <attribute id="61" name="listCounters">        
+        <position height="18" width="65" x="1213" y="541"/>      
+      </attribute>      
+      <multiplicity id="62" minimum="0" maximum="2147483647">        
+        <position height="16" width="21" x="397" y="705"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="2" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <dependency id="63">    
+    <end type="SOURCE" refId="13"/>    
+    <end type="TARGET" refId="1"/>  
+  </dependency>  
+  <association id="64">    
+    <end type="SOURCE" refId="8" navigable="false">      
+      <attribute id="65" name="myActions">        
+        <position height="18" width="59" x="1095" y="248"/>      
       </attribute>      
       <multiplicity id="66" minimum="0" maximum="2147483647">        
-        <position height="16" width="21" x="364" y="319"/>      
+        <position height="16" width="21" x="461" y="309"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="4" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="67">    
+    <end type="SOURCE" refId="12" navigable="false">      
+      <attribute id="68" name="myOutput">        
+        <position height="18" width="54" x="1199" y="438"/>      
+      </attribute>      
+      <multiplicity id="69" minimum="0" maximum="1">        
+        <position height="0" width="0" x="99" y="184"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="12" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="70">    
+    <end type="SOURCE" refId="13" navigable="false">      
+      <attribute id="71" name="jump">        
+        <position height="18" width="30" x="1101" y="310"/>      
+      </attribute>      
+      <multiplicity id="72" minimum="0" maximum="1">        
+        <position height="16" width="23" x="712" y="240"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="3" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <dependency id="73">    
+    <end type="SOURCE" refId="15"/>    
+    <end type="TARGET" refId="18"/>  
+  </dependency>  
+  <dependency id="74">    
+    <end type="SOURCE" refId="18"/>    
+    <end type="TARGET" refId="15"/>  
+  </dependency>  
+  <association id="75">    
+    <end type="SOURCE" refId="6" navigable="false">      
+      <attribute id="76" name="listTimers">        
+        <position height="18" width="53" x="1230" y="485"/>      
+      </attribute>      
+      <multiplicity id="77" minimum="0" maximum="2147483647">        
+        <position height="16" width="21" x="472" y="715"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="7" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <dependency id="78">    
+    <bendpoint x="414" y="345"/>    
+    <end type="SOURCE" refId="15"/>    
+    <end type="TARGET" refId="6"/>  
+  </dependency>  
+  <dependency id="79">    
+    <bendpoint x="597" y="539"/>    
+    <bendpoint x="610" y="526"/>    
+    <end type="SOURCE" refId="9"/>    
+    <end type="TARGET" refId="10"/>  
+  </dependency>  
+  <association id="80">    
+    <end type="SOURCE" refId="5" navigable="false">      
+      <attribute id="81" name="jumpList">        
+        <position height="18" width="47" x="1100" y="329"/>      
+      </attribute>      
+      <multiplicity id="82" minimum="0" maximum="2147483647">        
+        <position height="16" width="21" x="750" y="283"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="3" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
