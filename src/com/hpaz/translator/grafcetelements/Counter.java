@@ -125,7 +125,6 @@ public class Counter {
 
 		} else if (this.typeCounter.equals("CTU")) {
 
-			// TODO contador inicializaciones preguntar q falta
 			//programMain[0] = "\t" + this.nameCounter + "\t: " + this.typeCounter + ";\n";
 			programMain = this.nameCounter + "(CU:= " + this.nameCounter + "CU ," + " RESET:= " + this.nameCounter
 					+ "RESET," + " PV:= " + this.nameCounter + "PV," + " Q=> " + this.nameCounter + "Q," + " CV=> "
@@ -133,7 +132,6 @@ public class Counter {
 
 		} else if (this.typeCounter.equals("CTUD")) {
 
-			// TODO contador inicializaciones preguntar q falta
 			//programMain[0] = "\t" + this.nameCounter + "\t: " + this.typeCounter + ";\n";
 			programMain = this.nameCounter + "(CU:= " + this.nameCounter + "CU ," + "CD:= " + this.nameCounter
 					+ "CD," + " RESET:= " + this.nameCounter + "RESET," + " LOAD:= " + this.nameCounter + "LOAD,"
@@ -185,7 +183,6 @@ public class Counter {
 		String   body = "";
 		
 		// TODO contador inicializaciones preguntar q falta y q cada tipo es distinto
-		
 		if (this.typeCounter.equals("CTD")) {
 			
 			body = "<br />"+this.nameCounter + "CD:= " + this.nameCounter + "CD," + " LOAD:= " + this.nameCounter

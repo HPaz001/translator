@@ -1,11 +1,15 @@
 <BODY>
 <CENTER>
-	<P ALIGN=center><B>Universidad del Pa&iacute;s Vasco</B><BR>
-	<I>Escuela Universitaria de Ingenier&iacute;a T&eacute;cnica Industrial de Bilbao</I><BR>
-	<BIG>Trabajo Fin de Grado</BIG></P>
+	<P ALIGN=center><B>Universidad del Pa&iacute;s Vasco</B>
+	<I>Escuela Universitaria de Ingenier&iacute;a T&eacute;cnica Industrial de Bilbao</I>
+	<h2>Trabajo Fin de Grado
+	Grado en Ingenier&iacute;a Inform&aacute;tica de Gesti&oacute;n 
+	y Sistemas de Informaci&oacute;n</h2></P>
 	
-	<P ALIGN=center><B>Alumna:</B> Helen Joana Paz Cort&oacute;n<BR>
-	<B>Directora: </B>Arantza Burgos</P>
+	<P ALIGN=center><B>Alumna:</B> Helen Joana Paz Cort&oacute;n
+	<B>Directora: </B>Arantzazu Burgos.
+	Departamento de Ingenier&iacute;a de Sistemas y Autom&aacute;tica
+	</P>
  	
  	<P ALIGN=center><U>LICENCIA DE LA APLICACION</U></P>
 

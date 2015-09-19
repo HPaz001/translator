@@ -1,23 +1,50 @@
 <BODY>
 <BIG>INSTRUCCIONES</BIG><BR>
-<BIG>Contadores:</BIG>
+<FONT FACE="courier" SIZE=3 COLOR="#0A2A0A">
+<p>El traductor recibe como parámetro de entrada únicamente ficheros 
+	en formato XML exportado de la herramienta de diseño SFCEdit.</p> 
+<p>Para que el traductor realice adecuadamente la transformación de 
+	la información es necesario tener en cuenta la sintaxis con la que
+	se debe realizar el diseño.</p>
+<U>Comentarios:</U>
+Si se desea realizar asignaciones en los comentarios es importante que 
+cada asignación se encuentre con “:=” ó “=” y si se quiere comentar se 
+separa con una coma “,” de la asignación.
 
-	<P><U>Nombre:</U> ContNombre
-	<I>Ejemplo:</I>  Si quieres llamar a tu contador <B>"producto"</B> 
-	el nombre que debes usar seria <B>"ContProducto ó Contproducto"</B></P>
-	
-	<P><U>Incrementar:</U> Nombre++ ó Nombre = Nombre + numero
-	<I>Ejemplo:</I>  ContProducto++ ó ContProducto=ContProducto+1</P>
-	
-	<P><U>Decrementar:</U> Nombre-- o Nombre = Nombre - numero
-	<I>Ejemplo: </I> ContProducto-- ó ContProducto=ContProducto-1</P>
-<BIG>Temporizadores:</BIG>
+<I>Ejemplo:</I>(*Esto es un comentario sin asignación*)
+				(*A:=B+C, un comentario y A es asignación*)
 
-	<P><U>Nombre:</U> TempNombre</P>
+<b>NOTA:</b>Las asignaciones solo se tomaran en cuenta en los comentarios,
+ya que el símbolo igual "=" se usa en las transiciones o pasos para 
+contadores o temporizadores.
+
+<U>Expresiones lógicas:</U>
+	 <B>"AND"</B> se pueden utilizar tres tipos de caracteres: "*", "·" y "."
+	 <B>"OR"</B> se usara el carácter: "+" <B>(Exceptuando en el caso de los
+	 contadores el en que se interpretara como suma)</B>
+
+<b>No usar el punto "." en los textos del diseño, ya que pare el traductor 
+	este signo es una expresión lógica.</b>
+
+<U>Contadores</U>
+	Nombre: <b>Cont</b>Nombre
+
+	<I>Ejemplo:</I>  Si desea llamar su contador "producto" el nombre seria: 
+	<B>"ContProducto ó Contproducto"</B>
 	
- 	<P><U>Asignar:</U> Nombre = Numero Tiempo
- 	<I>Ejemplo: </I> TempCalor = 2 Seg	</P>
+	<b>Incrementar:</b> Nombre++ ó Nombre = Nombre + numero
+	<I>Ejemplo:</I> ContProducto++ ó ContProducto=ContProducto+1
+	
+	<b>Decrementar:</b> Nombre-- o Nombre = Nombre - numero
+	<I>Ejemplo: </I> ContProducto-- ó ContProducto=ContProducto-1
+
+<u>Temporizadores:</u>
+	Nombre:<b>Temp</b>Nombre
+
+ 	<b>Iniciar Temporizador:</b> Nombre = Numero Tiempo
+ 	<I>Ejemplo: </I> TempCalor = 2 Seg
  	
- 	
- <P><U>No usar puntos en los nombres variables</U> </P>
+ 	<b>Finalizar Temporizador:</b>TempNombre/Etapa de activación/Número tiempo
+ 	<I>Ejemplo: </I>TempCalor/X4/2 Seg  
+</FONT>
 </BODY>

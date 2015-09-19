@@ -37,7 +37,7 @@ public class Transition {
 			String auxString = auxConditionSep;
 			
 			//Si tiene signos lo mando a la funcion de separar
-			if (auxString.contains("+") || auxString.contains("*")) {
+			if (auxString.contains("+") || auxString.contains("*")|| auxString.contains("·")|| auxString.contains(".")) {
 				addListConditionSep(removeSigns(auxString));
 				
 				//Si no tiene signos
@@ -196,7 +196,7 @@ public class Transition {
 		// Quito espacios
 		String text = t.trim();
 		// Remplazo los signos por coma
-		text = text.replaceAll("\\+|\\*|\\·", ",");
+		text = text.replaceAll("\\+|\\*|\\·|\\.", ",");
 		// convierto en un array de string
 		String[] list = text.split(",");
 		// paso el array a la lista
@@ -215,8 +215,11 @@ public class Transition {
 	/**Modifico los signos + * por OR AND*/
 	private String changeSign (String pString){
 		String s = pString;
-		s = s.replace(" * ", " AND ");
-		s = s.replace(" + ", " OR ");
+		//TODO REGEX 
+		s = s.replaceAll("\\*|\\·|\\.", " AND ");
+		//s = s.replace(".", " AND ");
+		//s = s.replace("·", " AND ");
+		s = s.replace("+", " OR ");
 		return s;
 	}
 	

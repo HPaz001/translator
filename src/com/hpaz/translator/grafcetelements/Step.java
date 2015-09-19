@@ -89,7 +89,7 @@ public class Step {
 			String string = pMySet.substring(0,pMySet.indexOf("=="))+"Q";
 			set = string + pMySet.substring(pMySet.indexOf("=="),pMySet.length());
 		}
-		//Si no se ha aï¿½adido un set se aï¿½ade	
+		//Si no se ha añadido un set se aï¿½ade	
 		if (this.mySet==null){
 			this.mySet = set;
 		

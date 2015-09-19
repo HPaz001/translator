@@ -346,12 +346,11 @@ public class Grafcet {
 	public void addSetAndResetToStep() {
 		// por cada secuencia de la lista
 		for (Sequence seq : getSequenceList()) {
+			int sizeListTransitionOrStep = seq.getListTransitionOrStep().size();
 			// por cada lista de transiciones o paso de la secuencia
-			for (int i = 0; i < seq.getListTransitionOrStep().size(); i++) {
-
+			for (int i = 0; i < sizeListTransitionOrStep; i++) {
 				// si es un paso
 				if (seq.getListTransitionOrStep().get(i) instanceof Step) {
-
 					Step actualStep = (Step) seq.getListTransitionOrStep().get(i);
 
 					// Buscamos el Set
@@ -382,7 +381,6 @@ public class Grafcet {
 					// si tenemos en la secuencia los anteriores lo generamos,
 					// sino lo buscamos
 					if (previousTransition != null && previousStep != null) {
-
 						String auxCondition = previousTransition.getCondition();
 						String auxNameStep = previousStep.getName();
 						if (!auxCondition.equals("")) {
@@ -404,7 +402,7 @@ public class Grafcet {
 						actualStep.addMySet(setString);
 					}
 
-					// Rellenamos el Reset
+					// Buscamos el Reset
 					LinkedList<String> nextSteps = new LinkedList<String>();
 					Step nextStep = null;
 					/*
@@ -412,17 +410,19 @@ public class Grafcet {
 					 * getListTransitionOrStep() de la secuencia
 					 */
 					for (int nextIndex = i + 1; nextIndex < seq.getListTransitionOrStep().size(); nextIndex++) {
-						if (seq.getListTransitionOrStep().get(nextIndex) instanceof Step && nextStep == null) {
-							nextStep = (Step) seq.getListTransitionOrStep().get(nextIndex);
+						Object stepOrTransition =seq.getListTransitionOrStep().get(nextIndex);
+						if (stepOrTransition instanceof Step && nextStep == null) {
+							nextStep = (Step) stepOrTransition;
+						}
+						// si tenemos en la secuencia el siguiente step lo
+						// guardamos, sino los buscamos.
+						if (nextStep != null) {
+							nextSteps.add(nextStep.getName());
+						} else {// Buscamos en las siguiente secuencias
+							nextSteps = getNextStepFromSequence(seq.getNextSequencesList());
 						}
 					}
-					// si tenemos en la secuencia el siguiente step lo
-					// guardamos, sino los buscamos.
-					if (nextStep != null) {
-						nextSteps.add(nextStep.getName());
-					} else {// Buscamos en las siguiente secuencias
-						nextSteps = getNextStepFromSequence(seq.getNextSequencesList());
-					}
+					
 					// fijamos el reset al step
 					for (String resetString : nextSteps) {
 						actualStep.addMyReset(resetString);

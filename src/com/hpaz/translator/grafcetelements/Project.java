@@ -175,13 +175,13 @@ public class Project {
 			if (program.equalsIgnoreCase(GrafcetTagsConstants.PROGRAM_OPT1)) { // Twincat
 				// Var Global
 				Output.getOutput().exportFile(getGlobalVars(generateGlobalVars()), getName() + "_VAR_GLOBAL", outputDir,
-						".txt");
+						".EXP");
 				// Program Main
-				Output.getOutput().exportFile(generateProgramMain(), getName() + "_PROGRAM_MAIN", outputDir, ".txt");
+				Output.getOutput().exportFile(generateProgramMain(), getName() + "_PROGRAM_MAIN", outputDir, ".EXP");
 				// Function Block --> uno por cada grafcet
 				for (Grafcet g : listGrafcet) {
 					Output.getOutput().exportFile(g.generateFunctionBlock(), "FUNCTION_BLOCK_" + g.getName(), outputDir,
-							".txt");
+							".EXP");
 				}
 
 			} else if (program.equalsIgnoreCase(GrafcetTagsConstants.PROGRAM_OPT2)) {// PL7PRO
@@ -331,7 +331,9 @@ public class Project {
 		listReturnVarGlobals.add("\tINIT\t:BOOL;\n\tRESET\t:BOOL;\n");
 
 		for (String string : getList_FE_and_RE()) {
-			listReturnVarGlobals.add("\t" + string + "\t:" + string.charAt(0) + "_TRIG;\n");
+			char firstCharacter = string.charAt(0);
+			String nameVar = string;
+			listReturnVarGlobals.add("\t" + nameVar + "\t:" + firstCharacter + "_TRIG;\n");
 		}
 
 		// creo una lista para cada tipo de senal
@@ -879,7 +881,8 @@ public class Project {
 		listaProgramMain.add("\n\tXInit:=INIT;\n\tXReset:=RESET;\n\n");
 
 		for (String string : this.list_FE_and_RE) {
-			listaProgramMain.add("\n\t" + string + "(CLK:=" + string.substring(2, string.length()) + " , Q=> );");
+			String stringAux=string;
+			listaProgramMain.add("\n\t" + stringAux + "(CLK:=" + string.substring(2, string.length()) + " , Q=> "+stringAux+"Q );");
 		}
 		/*
 		 * SolModoAuto:=REMarcha.Q; FinProces:=X20;
@@ -889,12 +892,11 @@ public class Project {
 			String auxString = assignments.get(assig);
 
 			// Si la palabra contiene un RE o FE
-			Pattern patRE_FE = Pattern.compile(".* RE .*| .* FE .*");
+			Pattern patRE_FE = Pattern.compile(".*RE .*| .*FE .*");
 			Matcher matRE_FE = patRE_FE.matcher(auxString);
-
 			if (matRE_FE.matches()) {
 				auxString = auxString.replace(" ", "");
-				auxString = auxString + ".Q";
+				auxString = auxString + "Q";
 			}
 
 			listaProgramMain.add("\n\t" + assig.trim() + ":=" + auxString + ";");
@@ -904,7 +906,8 @@ public class Project {
 		listaProgramMain.addAll(pEmergency);
 
 		listaProgramMain.add("\n\n");
-
+		
+		//por cada elemento de la lista de acciones
 		for (String action : actionStepMap.keySet()) {
 			String aux = action.trim();
 			// temporizador
@@ -937,7 +940,7 @@ public class Project {
 				 * "Q , ET=> " + nameTimer + "ET);");
 				 */
 			} else if (matCont.matches()) {
-				// TODO PROGRAM MAIN si es contador aun no se q hacer
+				// TODO PROGRAM MAIN si es contador el el.PV para comparar
 				// int index = equalsCount(aux);
 				// Counter count = getListCounters().get(index);
 				// String nameCount = count.getNameCounter();

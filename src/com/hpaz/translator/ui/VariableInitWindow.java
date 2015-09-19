@@ -307,6 +307,7 @@ public class VariableInitWindow extends JFrame {
 				choiceSignalVariableType.addItem(ConfigConstants.SIGNAL_VARIABLE_TYPE_WORD);
 				choiceSignalVariableType.addItem(ConfigConstants.SIGNAL_VARIABLE_TYPE_DOUBLEWORD);
 				choiceSignalVariableType.setBounds(350, 5, 140, 14);
+				
 				panelSignal.add(choiceSignalVariableType);
 				
 				choiceSignalDataType.addItemListener(new ItemListener() {
@@ -332,17 +333,23 @@ public class VariableInitWindow extends JFrame {
 				choiceSignalVariableType.addItemListener(new ItemListener() {
 					@Override
 					public void itemStateChanged(ItemEvent e) {
-						if (variablesTypesMap.containsKey(string)) {
-							String actualValue = variablesTypesMap.get(string);
-							actualValue = actualValue.substring(0, actualValue.indexOf(":") + 1);
-							variablesTypesMap.put(string, actualValue + choiceSignalVariableType.getSelectedItem());
-						} else {
-							variablesTypesMap.put(string, ":" + choiceSignalVariableType.getSelectedItem());
-						}
+						signalVariableMapChange(string, choiceSignalVariableType.getSelectedItem());
 					}
 				});
+				
+				choiceSignalVariableType.select(1);
+				signalVariableMapChange(string, choiceSignalVariableType.getSelectedItem());
 			}
-
+		}
+	}
+	
+	private void signalVariableMapChange(String key , String selectedItem){
+		if (variablesTypesMap.containsKey(key)) {
+			String actualValue = variablesTypesMap.get(key);
+			actualValue = actualValue.substring(0, actualValue.indexOf(":") + 1);
+			variablesTypesMap.put(key, actualValue + selectedItem);
+		} else {
+			variablesTypesMap.put(key, ":" + selectedItem);
 		}
 	}
 
