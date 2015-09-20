@@ -2,17 +2,30 @@
 <CENTER>
 	<P ALIGN=center><B>Universidad del Pa&iacute;s Vasco</B>
 	<I>Escuela Universitaria de Ingenier&iacute;a T&eacute;cnica Industrial de Bilbao</I>
-	<h2>Trabajo Fin de Grado
+	<h3>Trabajo Fin de Grado
 	Grado en Ingenier&iacute;a Inform&aacute;tica de Gesti&oacute;n 
-	y Sistemas de Informaci&oacute;n</h2></P>
+	y Sistemas de Informaci&oacute;n</h3></P>
+	<P ALIGN=center><B>Autor:</B> Helen J. Paz Cort&oacute;n
 	
-	<P ALIGN=center><B>Alumna:</B> Helen Joana Paz Cort&oacute;n
 	<B>Directora: </B>Arantzazu Burgos.
 	Departamento de Ingenier&iacute;a de Sistemas y Autom&aacute;tica
 	</P>
- 	
- 	<P ALIGN=center><U>LICENCIA DE LA APLICACION</U></P>
+	
+	Soporte t&eacute;cnico o sugerencias:
+<i>soportetraductorplc@gmail.com</i>
+	</CENTER>
+<FONT FACE="courier" SIZE=3 COLOR="#0A2A0A">
+ <P ALIGN=center>«Copyright© 2015 Helen J. Paz Cort&oacute;n»</P>
 
-</CENTER>
+Este programa es software libre, puede redistribuirlo y/o 
+modificarlo bajo los t&eacute;rminos de la Licencia P&uacute;blica 
+General GNU como est&aacute; publicado por la Fundaci&oacute;n del 
+Software Libre; bien por la versión 3 de la Licencia, 
+o (a su elecci&oacute;n) cualquier versi&oacute;n posterior.
+
+Vea la Licencia P&uacute;blica General GNU para m&aacute;s detalles.
+GNU GENERAL PUBLIC LICENSE
+Version 3, 29 June 2007
+</FONT>
 
 </BODY>
