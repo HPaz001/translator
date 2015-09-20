@@ -349,11 +349,11 @@ public class Project {
 			if (getListUI().containsKey(string)) {
 				// la uso
 				String type = this.listUI.get(string);
-
+				//si no tiene nada despues de las dos puntos : es un contador o temporizador
 				Pattern pat = Pattern.compile(".*:$");
 				Matcher mat = pat.matcher(type);
-
-				// Si el tipo indica que es una seï¿½al
+				String auxString = string.trim();
+				// Si el tipo indica que es una señal
 				if (!mat.matches()) {
 					String[] typeDiv = type.split(":");
 					String typeData = typeDiv[0];
@@ -363,19 +363,19 @@ public class Project {
 					// una de ellas se excribe distinto
 					if (typeData.equals("Entrada")) {
 						// typeData = "I";
-						signalI.add("\t" + string + " AT %I* : " + typeVar + ";\n");
+						signalI.add("\t" + auxString + " AT %I* : " + typeVar + ";\n");
 					} else if (typeData.equals("Salida")) {
 						// typeData = "Q";
-						signalQ.add("\t" + string + " AT %Q* : " + typeVar + ";\n");
+						signalQ.add("\t" + auxString + " AT %Q* : " + typeVar + ";\n");
 					} else if (typeData.equals("Memoria")) {
 						// typeData = "M";
-						signalM.add("\t" + string + " AT %M* : " + typeVar + ";\n");
+						signalM.add("\t" + auxString + " AT %M* : " + typeVar + ";\n");
 					} else if (typeData.equals("Constante")) {
 						// typeData = "K";
-						signalK.add("\t" + string + " AT %K* : " + typeVar + ";\n");
+						signalK.add("\t" + auxString + " AT %K* : " + typeVar + ";\n");
 					} else if (typeData.equals("Sistema")) {
 						// typeData = "S";
-						signalS.add("\t" + string + " AT %S* : " + typeVar + ";\n");
+						signalS.add("\t" + auxString + " AT %S* : " + typeVar + ";\n");
 					}
 
 					// vG.add("\t" + string + " AT %"+ typeData +"* :
@@ -701,17 +701,16 @@ public class Project {
 			 */
 			// si el grafcet es el de emergencia relleno la lista de forzados
 			if (grafcet.isEmergency()) {
-				String stepStop = getStepStopEmergency();
-				String stepStart = getStepStartEmergency();
-				boolean bol = false;
+				//String stepStop = getStepStopEmergency();
+				//String stepStart = getStepStartEmergency();
+				/*boolean bol = false;
 				if (compareStartAndStopLists()) {
 					bol = true;
-				}
+				}*/
 				// Anado los forzados de cad agrafcet
-				listEmergency.addAll(generateListEmergency(getListEmergencyStart(), getListEmergencyStop(), bol,
-						stepStop, stepStart));
+				listEmergency.addAll(generateListEmergency(/*getListEmergencyStart(), getListEmergencyStop(), bol,stepStop, stepStart)*/));
 
-				/*
+				/*ESTO ES SOLO PARA EL DE EMERGENCIA
 				 * //Emergencia(Init:=(XInit OR IntitEmergencia) ,
 				 * Reset:=ResetEmergencia );
 				 */
@@ -734,51 +733,57 @@ public class Project {
 	}
 
 	/** Genera las paradas e inicios de los forzados de emergencia */
-	private LinkedList<String> generateListEmergency(LinkedList<String> pListStop, LinkedList<String> pListStart,
-			boolean pEquals, String pStepStop, String pStepStart) {
+	private LinkedList<String> generateListEmergency() {
 		LinkedList<String> aux = new LinkedList<String>();
 		String emerg = "";
-		// quiere decir que las listas de stop y start son iguales
-		if (pEquals) {
-			for (String e : pListStop) {
+		
+		LinkedList<String> listStop = getListEmergencyStop();
+		LinkedList<String> listStart = getListEmergencyStart();
+		
+		String stepStop = getStepStopEmergency();
+		String stepStart = getStepStartEmergency();
+		
+		// Si las listas de stop y start son iguales
+		if (compareStartAndStopLists()) {
+			for (String e : listStop) {
 				emerg = e.trim();
-				aux.add("\n\tInit" + emerg.trim() + ":=" + pStepStart + ";");
-				aux.add("\n\tReset" + emerg + ":=" + pStepStop + ";\n");
+				aux.add("\n\tInit" + emerg.trim() + ":=" + stepStart + ";");
+				aux.add("\n\tReset" + emerg + ":=" + stepStop + ";\n");
 				aux.add("\n\t" + emerg + "(Init:=(XInit OR Init" + emerg + "), Reset:=(XReset OR Reset" + emerg
 						+ "));\n");
 			}
 		} else {
 			/* Si no son iguales comparo a ver cual es la mas grande */
-			if (pListStop.size() > pListStart.size()) {
-				for (String e : pListStop) {
+			if (listStop.size() > listStart.size()) {
+				for (String e : listStop) {
 					// Por cada elemento d la lista miro si este se encuentra en
 					// la otra lista
-					if (pListStart.contains(e)) {
+					if (listStart.contains(e)) {
 						emerg = e.trim();
-						aux.add("\n\tInit" + emerg + ":=" + pStepStart + ";");
-						aux.add("\n\tReset" + emerg + ":=" + pStepStop + ";");
+						aux.add("\n\tInit" + emerg + ":=" + stepStart + ";");
+						aux.add("\n\tReset" + emerg + ":=" + stepStop + ";");
 						aux.add("\n\t" + emerg + "(Init:=(XInit OR Init" + emerg + "), Reset:=(XReset OR Reset" + emerg
 								+ "));\n");
 					} else {
 						emerg = e.trim();
 						// aux.add("\n\tInit"+emerg+":="+pStepStart+";\n");
-						aux.add("\n\tReset" + emerg + ":=" + pStepStop + ";");
+						aux.add("\n\tReset" + emerg + ":=" + stepStop + ";");
 						aux.add("\n\t" + emerg + "(Init:=(XInit), Reset:=(XReset OR Reset" + emerg + "));\n");
 					}
 				}
 			} else {
-				for (String e : pListStart) {
+				for (String e : listStart) {
 					// Por cada elemento d la lista miro si este se encuentra en
 					// la otra lista
-					if (pListStop.contains(e)) {
+					if (listStop.contains(e)) {
 						emerg = e.trim();
-						aux.add("\n\tInit" + emerg + ":=" + pStepStart + ";");
-						aux.add("\n\tReset" + emerg + ":=" + pStepStop + ";");
+						aux.add("\n\tInit" + emerg + ":=" + stepStart + ";");
+						aux.add("\n\tReset" + emerg + ":=" + stepStop + ";");
 						aux.add("\n\t" + emerg + "(Init:=(XInit OR Init" + emerg + "), Reset:=(XReset OR Reset" + emerg
 								+ "));\n");
 					} else {
 						emerg = e.trim();
-						aux.add("\n\tInit" + emerg + ":=" + pStepStart + ";");
+						aux.add("\n\tInit" + emerg + ":=" + stepStart + ";");
 						// aux.add("\tReset"+emerg+":="+pStepStop+";\n");
 						aux.add("\n\t" + emerg + "(Init:=(XInit OR Init" + emerg + "), Reset:=(XReset));\n");
 					}
@@ -952,7 +957,7 @@ public class Project {
 
 		}
 
-		listaProgramMain.add("\nEND_PROGRAM\n");
+		//listaProgramMain.add("\nEND_PROGRAM\n");
 
 		return listaProgramMain;
 	}
@@ -977,7 +982,7 @@ public class Project {
 		LinkedList<String> listwithoutduplicates = new LinkedList<String>();
 
 		for (String string : listDuplicate) {
-			if (!listwithoutduplicates.contains(string)) {
+			if (!listwithoutduplicates.contains(string) && !string.equals("")) {
 				listwithoutduplicates.add(string);
 			}
 		}
@@ -995,7 +1000,6 @@ public class Project {
 		LinkedList<String> signals = new LinkedList<String>();
 
 		for (Grafcet g : getListG()) {
-
 			signals.addAll(g.getListSignalsGrafcet());
 		}
 		signals = removeDuplicates(signals);

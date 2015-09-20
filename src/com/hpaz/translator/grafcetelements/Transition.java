@@ -65,11 +65,11 @@ public class Transition {
 					Project.getProject().add_FE_and_RE(aux_FE_RE);
 				}
 				if(Project.getProject().getProgram().equalsIgnoreCase(GrafcetTagsConstants.PROGRAM_OPT1)){
-					auxConditionCompl= aux_FE_RE+".Q";
+					auxConditionCompl= aux_FE_RE+"Q";
 				}
 			}
 			//Añado la condicion sin quitarle nada
-			this.condition = getCondition() + " " + changeSign(auxConditionCompl);
+			this.condition = getCondition() + " " + changeSign(auxConditionCompl).trim();
 			
 		}
 	}
@@ -98,7 +98,7 @@ public class Transition {
 		/* Para aÃ±adir expresiones regulares */
 		for (String cS : conditionSep) {
 			if (!(cS.equals("=1")) && !(cS.equals("true"))) {
-				s = "\t" + cS + "\t: BOOL;\n";
+				s = "\t" + cS.trim() + "\t: BOOL;\n";
 				aux.add(s);
 			}
 
@@ -133,13 +133,13 @@ public class Transition {
 				//Si tiene una asignacion parte1:=parte2
 				if (mat.matches()) {
 					//guardo la parte1
-					String string1 = list[i].substring(0, list[0].indexOf(":=")).trim();
+					String string1 = list[i].substring(0, list[0].indexOf(":="));
 					//guardo la parte2
-					String string2 = list[i].substring(list[0].indexOf(":=")+2, list[0].length()).trim();
+					String string2 = list[i].substring(list[0].indexOf(":=")+2, list[0].length());
 					
 					//le cambio los signos por AND u OR
-					string1=changeSign(string1);
-					string2=changeSign(string2);
+					string1=changeSign(string1.trim());
+					string2=changeSign(string2).trim();
 					
 					//Guardo en la lista de asignaciones del proyecto
 					Project.getProject().addAssignments(string1,string2);
@@ -170,7 +170,11 @@ public class Transition {
 							}
 							//Quito los NOT, RE o FE para añadir a la lista de señales del proyecto
 							String signal = listSep[j].replaceAll(" NOT | RE | FE ", "");
-							addListConditionSep(signal.trim());
+							signal = signal.replaceAll(" ", "");
+							if(!signal.equals("")){
+								addListConditionSep(signal);
+							}
+							
 						}
 						
 					}

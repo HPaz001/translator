@@ -82,16 +82,18 @@ public class Action {
 		
 		/*Uso expresiones regulares*/
 		/*Emergencia forzado a stop*/
-		Pattern pat = Pattern.compile("^F/G.*.> \\{\\}$");
-		Matcher mat = pat.matcher(getText().trim());
+		String actionText = getText();
+		actionText=actionText.replace(" ", "");
+		Pattern pat = Pattern.compile("^F/G.*.>\\{\\}$");
+		Matcher mat = pat.matcher(actionText);
 		if(mat.matches()){
-			addStopEmergency(generateListEmergency());
+			addStopEmergency(generateListEmergency(actionText));
 		}else{
 			/*Emergencia forzado a start*/
-			Pattern pat1 = Pattern.compile("^F/G.*.> \\{X.[0-9]\\}$");
-			Matcher mat1 = pat1.matcher(getText().trim());
+			Pattern pat1 = Pattern.compile("^F/G.*.>\\{X.[0-9]\\}$");
+			Matcher mat1 = pat1.matcher(actionText);
 			if(mat1.matches()){
-				addStartEmergency(generateListEmergency());
+				addStartEmergency(generateListEmergency(actionText));
 			}
 		}
 		
@@ -115,10 +117,10 @@ public class Action {
 		return comment;
 	}
 	
-	private LinkedList<String> generateListEmergency() {
+	private LinkedList<String> generateListEmergency(String pActionEmergency) {
 		LinkedList<String> returnList=new LinkedList<String>();
 		//Quito los espacios en blanco
-		String  auxText = getText().trim();
+		String  auxText = pActionEmergency;
 		//Me quedo solo con los nombres de los grafcets separados por ,
 		auxText = auxText.replaceAll("F/G|>|\\{\\}|\\{X.[0-9]\\}|\\{X0\\}| ", "");
 		//boolean aux=true;

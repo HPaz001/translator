@@ -79,7 +79,7 @@ public class Sequence {
 					Pattern patTemp = Pattern.compile("^Temp.*=.*");
 					Matcher matTemp = patTemp.matcher(actionName);
 					
-					//TODO ?ï¿½?ï¿½? compruebo que el tiempo del contador es el correcto ?ï¿½
+					//TODO  compruebo que el tiempo del contador es el correcto ?ï¿½
 					//int time = Integer.parseInt(aux.replaceAll("=|[a-z A-Z]", ""));
 					//aux = aux.substring(0, aux.indexOf("="));
 					
@@ -117,12 +117,20 @@ public class Sequence {
 						}
 						
 					}
-					// si hay acction y es emergencia
+					// si hay acction y es emergencia 
 				}else if (act != null && action.isEmergency()){
-					if (((Step) pTransitionOrStep).isStartEmergency()) {
-						addStepStartEmergency(listTransitionOrStep.size());
-					} else if (((Step) pTransitionOrStep).isStopEmergency()) {
-						addStepStopEmergency(listTransitionOrStep.size());
+					//si es una action se q estoy en un step
+					Step auxStep = (Step) pTransitionOrStep;
+					//int stepNumber = Integer.parseInt(auxStep.getName().substring(1));
+					//guardo el indice de la etapa de la emergencia
+					//utilizo el .size ya que este elemento sera añadido en la ultima posicion de la lista
+					int stepIndex = listTransitionOrStep.size();
+					if (auxStep.isStartEmergency()) {
+						addStepStartEmergency(stepIndex);
+						//addStepStartEmergency(stepNumber);
+					} else if (auxStep.isStopEmergency()) {
+						addStepStopEmergency(stepIndex);
+						//addStepStopEmergency(stepNumber);
 					}
 				}
 			}

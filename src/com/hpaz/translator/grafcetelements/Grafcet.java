@@ -409,7 +409,7 @@ public class Grafcet {
 					 * Buscamos en los siguientes elementos de la
 					 * getListTransitionOrStep() de la secuencia
 					 */
-					for (int nextIndex = i + 1; nextIndex < seq.getListTransitionOrStep().size(); nextIndex++) {
+					for (int nextIndex = i + 1; nextIndex < sizeListTransitionOrStep; nextIndex++) {
 						Object stepOrTransition =seq.getListTransitionOrStep().get(nextIndex);
 						if (stepOrTransition instanceof Step && nextStep == null) {
 							nextStep = (Step) stepOrTransition;
@@ -422,7 +422,6 @@ public class Grafcet {
 							nextSteps = getNextStepFromSequence(seq.getNextSequencesList());
 						}
 					}
-					
 					// fijamos el reset al step
 					for (String resetString : nextSteps) {
 						actualStep.addMyReset(resetString);
@@ -560,7 +559,7 @@ public class Grafcet {
 				}
 			}
 		}
-		functionBlock.add("\nEND_FUNCTION_BLOCK");
+		//functionBlock.add("\nEND_FUNCTION_BLOCK");
 		return functionBlock;
 
 	}
@@ -656,35 +655,27 @@ public class Grafcet {
 	public void getEmergency() {
 
 		for (Sequence s : getSequenceList()) {
-
+			
 			int auxNumberStepStarEmergency = s.getStepStartEmergency();
-			String nameStep = "";
-			LinkedList<String> listAux = null;
-
+			int auxNumberStepStopEmergency = s.getStepStopEmergency();
+			
 			if (auxNumberStepStarEmergency != -1) {
 				Step stepStart = (Step) s.getListTransitionOrStep().get(auxNumberStepStarEmergency);
-				nameStep = stepStart.getName();
-				listAux = stepStart.getGrafcetsStartEmergency();
-				/*
-				 * addStepStartEmergency(nameStep);
-				 * addListEmergencyStart(listAux);
-				 */
+				String nameStep = stepStart.getName();
+				LinkedList<String>  listAux = stepStart.getGrafcetsStartEmergency();
+				/*addStepStartEmergency(nameStep);
+				 * addListEmergencyStart(listAux);*/
 				Project.getProject().addStepStartEmergency(nameStep);
 				Project.getProject().addListEmergencyStart(listAux);
-			} else {
-				int auxNumberStepStopEmergency = s.getStepStopEmergency();
-				if (auxNumberStepStopEmergency != -1) {
+			} 
+			if (auxNumberStepStopEmergency != -1) {
 					Step stepStop = (Step) s.getListTransitionOrStep().get(auxNumberStepStopEmergency);
-					nameStep = stepStop.getName();
-					listAux = stepStop.getGrafcetsStopEmergency();
-					/*
-					 * addStepStopEmergency(stepStop.getName());
-					 * addListEmergencyStop(stepStop.getGrafcetsStopEmergency())
-					 * ;
-					 */
+					String nameStep = stepStop.getName();
+					LinkedList<String>  listAux = stepStop.getGrafcetsStopEmergency();
+					/*addStepStopEmergency(stepStop.getName());
+					 * addListEmergencyStop(stepStop.getGrafcetsStopEmergency()); */
 					Project.getProject().addStepStopEmergency(nameStep);
 					Project.getProject().addListEmergencyStop(listAux);
-				}
 			}
 
 		}
