@@ -538,31 +538,35 @@ public class Project {
 	private LinkedList<String> getProgramTSXMicroCP() {
 		// TODO FALLOS primera letra en mayusculas y el resto en minusculas
 		LinkedList<String> listCP = new LinkedList<String>();
-		listCP.add("(*Programaci�n de la parte combinacional del sistema*)\n");
-		/*
-		 * SolModoAuto:=REMarcha.Q; FinProces:=X20;
-		 */
-		// Asignaciones que estan en la transition
-		for (String assig : getAssignments().keySet()) {
+		listCP.add("(*Programacion de la parte combinacional del sistema*)\n");
+		
+		//si hay comentarios con asignaciones en la transicion
+		if(assignments != null){
 			/*
-			 * El PL7Pro solo permite variables que tenga la primera letra en
-			 * mayusculas y el resto en minusculas
+			 * SolModoAuto:=REMarcha.Q; FinProces:=X20;
 			 */
-			String auxString = assignments.get(assig);
-
-			// elimino las mayusculas del texto, solo las dejo en la primera
-			// letra
-			// input.substring(0, 1).toUpperCase() +
-			// input.substring(1).toLowerCase();
-			auxString = WordUtils.capitalize(auxString);
-
-			auxString.replaceAll(" Not ", " NOT ");
-			auxString.replaceAll(" And ", " AND ");
-			auxString.replaceAll(" Or ", " OR ");
-			auxString.replaceAll(" Re ", " RE ");
-			auxString.replaceAll(" Fe ", " FE ");
-
-			listCP.add("\n\t" + WordUtils.capitalize(assig) + ":=" + auxString + ";");
+			// Asignaciones que estan en la transition
+			for (String assig : getAssignments().keySet()) {
+				/*
+				 * El PL7Pro solo permite variables que tenga la primera letra en
+				 * mayusculas y el resto en minusculas
+				 */
+				String auxString = assignments.get(assig);
+	
+				// elimino las mayusculas del texto, solo las dejo en la primera
+				// letra
+				// input.substring(0, 1).toUpperCase() +
+				// input.substring(1).toLowerCase();
+				auxString = WordUtils.capitalize(auxString);
+	
+				auxString.replaceAll(" Not ", " NOT ");
+				auxString.replaceAll(" And ", " AND ");
+				auxString.replaceAll(" Or ", " OR ");
+				auxString.replaceAll(" Re ", " RE ");
+				auxString.replaceAll(" Fe ", " FE ");
+	
+				listCP.add("\n\t" + WordUtils.capitalize(assig) + ":=" + auxString + ";");
+			}
 		}
 
 		for (String action : getActionStepMap().keySet()) {
@@ -889,23 +893,26 @@ public class Project {
 			String stringAux=string;
 			listaProgramMain.add("\n\t" + stringAux + "(CLK:=" + string.substring(2, string.length()) + " , Q=> "+stringAux+"Q );");
 		}
-		/*
-		 * SolModoAuto:=REMarcha.Q; FinProces:=X20;
-		 */
-		// Asignaciones que estan en la transition
-		for (String assig : getAssignments().keySet()) {
-			String auxString = assignments.get(assig);
+		//si hay comentarios con asignaciones en la transicion
+		if(assignments != null){
+			/*
+			 * SolModoAuto:=REMarcha.Q; FinProces:=X20;
+			 */
+			// Asignaciones que estan en la transition
+			for (String assig : getAssignments().keySet()) {
+				String auxString = assignments.get(assig);
+				// Si la palabra contiene un RE o FE
+				Pattern patRE_FE = Pattern.compile(".*RE .*| .*FE .*");
+				Matcher matRE_FE = patRE_FE.matcher(auxString);
+				if (matRE_FE.matches()) {
+					auxString = auxString.replace(" ", "");
+					auxString = auxString + "Q";
+				}
 
-			// Si la palabra contiene un RE o FE
-			Pattern patRE_FE = Pattern.compile(".*RE .*| .*FE .*");
-			Matcher matRE_FE = patRE_FE.matcher(auxString);
-			if (matRE_FE.matches()) {
-				auxString = auxString.replace(" ", "");
-				auxString = auxString + "Q";
+				listaProgramMain.add("\n\t" + assig.trim() + ":=" + auxString + ";");
 			}
-
-			listaProgramMain.add("\n\t" + assig.trim() + ":=" + auxString + ";");
 		}
+		
 
 		/* Anado la lista de emergencia y forzados */
 		listaProgramMain.addAll(pEmergency);
@@ -1015,23 +1022,26 @@ public class Project {
 		for (String string : this.list_FE_and_RE) {
 			bodyMain.add("<br />" + string + "(CLK:=" + string.substring(2, string.length()) + " , Q=> );");
 		}
-		/*
-		 * SolModoAuto:=REMarcha.Q; FinProces:=X20;
-		 */
-		// Asignaciones que estan en la transition
-		for (String assig : getAssignments().keySet()) {
-			String auxString = assignments.get(assig);
-
-			// Si la palabra contiene un RE o FE
-			Pattern patRE_FE = Pattern.compile(".* RE .*| .* FE .*");
-			Matcher matRE_FE = patRE_FE.matcher(auxString);
-
-			if (matRE_FE.matches()) {
-				auxString = auxString.replace(" ", "");
-				auxString = auxString + ".Q";
+		//si hay comentarios con asignaciones en la transicion
+		if(assignments != null){
+			/*
+			 * SolModoAuto:=REMarcha.Q; FinProces:=X20;
+			 */
+			// Asignaciones que estan en la transition
+			for (String assig : getAssignments().keySet()) {
+				String auxString = assignments.get(assig);
+	
+				// Si la palabra contiene un RE o FE
+				Pattern patRE_FE = Pattern.compile(".* RE .*| .* FE .*");
+				Matcher matRE_FE = patRE_FE.matcher(auxString);
+	
+				if (matRE_FE.matches()) {
+					auxString = auxString.replace(" ", "");
+					auxString = auxString + ".Q";
+				}
+	
+				bodyMain.add("<br />" + assig.trim() + ":=" + auxString + ";");
 			}
-
-			bodyMain.add("<br />" + assig.trim() + ":=" + auxString + ";");
 		}
 
 		/* Anado la lista de emergencia y forzados */

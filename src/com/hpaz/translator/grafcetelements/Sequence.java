@@ -61,8 +61,11 @@ public class Sequence {
 	public void addTransitionOrStep(Object pTransitionOrStep) {
 		
 		if (pTransitionOrStep instanceof Transition) {
-			
-			((Transition) pTransitionOrStep).analyzeReviews();
+			Transition transition = (Transition) pTransitionOrStep;
+			//si la transicion tiene un comentario lo analizo 
+			if(transition.getComment() != null){
+				((Transition) pTransitionOrStep).analyzeReviews();
+			}
 			addSignals(((Transition) pTransitionOrStep).getConditionSep());
 			
 		} else if (pTransitionOrStep instanceof Step) {
