@@ -409,19 +409,22 @@ public class Grafcet {
 					 * Buscamos en los siguientes elementos de la
 					 * getListTransitionOrStep() de la secuencia
 					 */
+					
 					for (int nextIndex = i + 1; nextIndex < sizeListTransitionOrStep; nextIndex++) {
 						Object stepOrTransition =seq.getListTransitionOrStep().get(nextIndex);
 						if (stepOrTransition instanceof Step && nextStep == null) {
 							nextStep = (Step) stepOrTransition;
 						}
-						// si tenemos en la secuencia el siguiente step lo
-						// guardamos, sino los buscamos.
-						if (nextStep != null) {
-							nextSteps.add(nextStep.getName());
-						} else {// Buscamos en las siguiente secuencias
-							nextSteps = getNextStepFromSequence(seq.getNextSequencesList());
-						}
 					}
+					
+					// si tenemos en la secuencia el siguiente step lo
+					// guardamos, sino los buscamos.
+					if (nextStep != null) {
+						nextSteps.add(nextStep.getName());
+					} else {// Buscamos en las siguiente secuencias
+						nextSteps = getNextStepFromSequence(seq.getNextSequencesList());
+					}
+					
 					// fijamos el reset al step
 					for (String resetString : nextSteps) {
 						actualStep.addMyReset(resetString);
@@ -523,7 +526,8 @@ public class Grafcet {
 
 					String set = ((Step) obj).getMySet();
 					String reset = ((Step) obj).getMyReset();
-
+					
+				
 					// TODO AQUI ESTABA SET RESET
 
 					/*

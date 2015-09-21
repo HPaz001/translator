@@ -989,8 +989,9 @@ public class Project {
 		LinkedList<String> listwithoutduplicates = new LinkedList<String>();
 
 		for (String string : listDuplicate) {
-			if (!listwithoutduplicates.contains(string) && !string.equals("")) {
-				listwithoutduplicates.add(string);
+			String varString = string.trim();
+			if (!listwithoutduplicates.contains(varString) && !varString.equals("")) {
+				listwithoutduplicates.add(varString);
 			}
 		}
 
