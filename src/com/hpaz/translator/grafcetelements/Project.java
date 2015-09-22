@@ -334,6 +334,7 @@ public class Project {
 			char firstCharacter = string.charAt(0);
 			String nameVar = string;
 			listReturnVarGlobals.add("\t" + nameVar + "\t:" + firstCharacter + "_TRIG;\n");
+			listReturnVarGlobals.add("\t" + nameVar + "Q\t:BOOL;\n");
 		}
 
 		// creo una lista para cada tipo de senal
@@ -396,9 +397,10 @@ public class Project {
 		listReturnVarGlobals.addAll(signalS);
 		listReturnVarGlobals.add("\n\t\t(*---Constantes---*)\n\n");
 		listReturnVarGlobals.addAll(signalK);
-		listReturnVarGlobals.add("\n\t(*---Temporizadores---*)\n\n");
+		
 		// Si aun quedan elementos en el HashMAp
 		if (!this.listUI.isEmpty()) {
+			listReturnVarGlobals.add("\n\t(*---Temporizadores---*)\n\n");
 			// Por cada temporizador
 			for (int i = 0; i < getListTimers().size(); i++) {
 				// Miro si el tempo esta en la lista de la IU y si es asi guardo
