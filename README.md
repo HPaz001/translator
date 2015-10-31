@@ -1,7 +1,7 @@
 # translator
-TFG Ingenieria informatica de gestiÃ³n y sistemas de informaciÃ³n.
+TFG Ingenieria informatica de gestión y sistemas de información.
 
-Del DiseÃ±o a la ProgramaciÃ³n de Sistemas de Control para la AutomatizaciÃ³n de Procesos Industriales Basados en PLC`s
+Del Diseño a la Programación de Sistemas de Control para la Automatizació de Procesos Industriales Basados en PLC`s
 
 
-La herramienta desarrollada es un traductor, que recibe un fichero XML, lo procesa y devuelve el cÃ³digo en lenguaje literal estructurado(ST). Se ha preparado para que pueda realizara la traducciÃ³n en compatibilidad con dos software de programaciÃ³n de PLC y el formato de PLCOpen.
+La herramienta desarrollada es un traductor, que recibe un fichero XML, lo procesa y devuelve el código en lenguaje literal estructurado(ST). Se ha preparado para que pueda realizara la traducción en compatibilidad con dos software de programación de PLC y el formato de PLCOpen.

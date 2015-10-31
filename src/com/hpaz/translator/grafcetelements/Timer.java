@@ -3,10 +3,15 @@ package com.hpaz.translator.grafcetelements;
 import com.hpaz.translator.grafcetelements.constants.GrafcetTagsConstants;
 
 public class Timer {
+	/**Nombre del temporizador*/
 	private String nameTimer;
+	/**Etapas en las que se activa el temporizador*/
 	private String stepNameTimer;
+	/**Tiempo que transcurre temporizando (nro)*/
 	private int time;
+	/**Tipo de temporizador*/
 	private String typeTimer;
+	/**Tipo de Tiempo del temporizador: segundos, minutos, horas...*/
 	private String typeTime;
 	
 	public Timer(){
@@ -134,7 +139,11 @@ public class Timer {
 	}
 
 	private void addTypeTime(String tipeTime) {
-		this.typeTime = tipeTime;
+		//para los segundos
+		if("seg".equalsIgnoreCase(tipeTime)||"sg".equalsIgnoreCase(tipeTime)||"s".equalsIgnoreCase(tipeTime)){
+			this.typeTime = "s";
+		}
+		//TODO falta mirar como expresa twincat el resto de tiempos
 	}
 
 }

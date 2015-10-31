@@ -56,10 +56,10 @@ public class Sequence {
 		return stepStartEmergency;
 	}
 	
-	/**Este metodo aï¿½ade una transicion o un step a la lista listTransitionOrStep
+	/**Este metodo a#ade una transicion o un step a la lista listTransitionOrStep
 	 * Pero antes de esto genera y guarda las seï¿½ales correspondientes */
 	public void addTransitionOrStep(Object pTransitionOrStep) {
-		
+		//si es una transicion
 		if (pTransitionOrStep instanceof Transition) {
 			Transition transition = (Transition) pTransitionOrStep;
 			//si la transicion tiene un comentario lo analizo 
@@ -67,9 +67,9 @@ public class Sequence {
 				((Transition) pTransitionOrStep).analyzeReviews();
 			}
 			addSignals(((Transition) pTransitionOrStep).getConditionSep());
-			
+			//si es un step
 		} else if (pTransitionOrStep instanceof Step) {
-			
+			//por cada accion que hay en el step
 			for (Action action : ((Step) pTransitionOrStep).getMyActions()) {
 				
 				String act = action.getText();
@@ -77,46 +77,52 @@ public class Sequence {
 				//si hay una accion y NO es una emergencia
 				if (act != null && !action.isEmergency()) {
 					String actionName = action.getText().trim();
-					
-					//TODO NO SE PORQ NO LO DETECTA LA REGEX ESTA BIEN
-					Pattern patTemp = Pattern.compile("^Temp.*=.*");
+					//para comprobar si es un temporizador
+					Pattern patTemp = Pattern.compile("^TM\\-.*.=[0-9].*");
 					Matcher matTemp = patTemp.matcher(actionName);
 					
-					//TODO  compruebo que el tiempo del contador es el correcto ?ï¿½
-					//int time = Integer.parseInt(aux.replaceAll("=|[a-z A-Z]", ""));
-					//aux = aux.substring(0, aux.indexOf("="));
+					//TODO temporizador comprobar ¿?¿
 					
 					//Si no es un temporizador
 					if(!matTemp.matches()){
 						
 						//Expresion regular para detectar una asignacion de contador
-						Pattern patCount = Pattern.compile("^Cont.*=[0-9]$");
-						Matcher matCount = patCount.matcher(actionName.trim());
+						Pattern patCountAsig = Pattern.compile("^CT\\-.*.=[0-9]$");
+						Matcher matCountAsig = patCountAsig.matcher(actionName.trim());
 						
 						//Si es un contador
-						if(matCount.matches()){	
-							//TODO tengo q pedir ejemplo de contador en la programacion para saber si esto esta bien 
-							
+						if(matCountAsig.matches()){							
+							//Quito el CT-
+							actionName=actionName.replaceAll("^CT\\-", "");
 							//Me quedo solo con el nombre del contador
-							actionName = actionName.substring(0, actionName.indexOf("=")).trim();
+							actionName = actionName.substring(0, actionName.indexOf("="));
+							//lo convierto en numero para verificar que efectivamente solo coje los numeros
+							//TODO esto deveria de ser un numero comprobar
+							String initialValue = actionName.substring(actionName.indexOf("=")+1,actionName.length()); 
 							String stepName= ((Step) pTransitionOrStep).getName();
 							//Compruebo si el contador existe en la lista
 							int index = Project.getProject().equalsCount(actionName);
-							
 							//Si index == -1 es q no encontro un contador con ese nombre
 							if(index == (-1)){
 								//Creo el contador y lo relleno
 								Counter cont = new Counter();
+								//le agrego el nombre y el valor inicial
 								cont.addNameCounter(actionName);
-								cont.addStepCountes(stepName);
+								cont.addInitialValue(initialValue);
+								cont.addStepInitialValue(stepName);
 								Project.getProject().addCounter(cont);
 								
 							}else{//Si index != -1 es q habia un contador con ese nombre, asi q guardo la etapa.
-								Project.getProject().getListCounters().get(index).addStepCountes(stepName);
+								Project.getProject().getListCounters().get(index).addInitialValue(stepName);
 							}
 						//Sino es un temporizador, ni un contador, ni emergencia
 						}else{
-							addSignal(actionName);
+							//si es un mensaje
+							String message = action.getMessage();
+							if(message!=null){
+								actionName = message;
+							}
+							addSignal(actionName);	
 						}
 						
 					}

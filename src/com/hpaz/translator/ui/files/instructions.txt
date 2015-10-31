@@ -27,24 +27,28 @@ contadores o temporizadores.
 	este signo es una expresión lógica.</b>
 
 <U>Contadores</U>
-	Nombre: <b>Cont</b>Nombre
+	Nombre: <b>CT-</b>Nombre
 
 	<I>Ejemplo:</I>  Si desea llamar su contador "producto" el nombre seria: 
-	<B>"ContProducto ó Contproducto"</B>
+	<B>"ContProducto ó CT-producto"</B>
 	
-	<b>Incrementar:</b> Nombre++ ó Nombre = Nombre + numero
-	<I>Ejemplo:</I> ContProducto++ ó ContProducto=ContProducto+1
+	<b>Incrementar:</b> CT-Nombre++ ó CT-Nombre = CT-Nombre + 1
+	<I>Ejemplo:</I> CT-Producto++ ó CT-Producto = CT-Producto + 1
 	
-	<b>Decrementar:</b> Nombre-- o Nombre = Nombre - numero
-	<I>Ejemplo: </I> ContProducto-- ó ContProducto=ContProducto-1
+	<b>Decrementar:</b> CT-Nombre-- ó CT-Nombre = Nombre - 1
+	<I>Ejemplo: </I> CT-Producto-- ó CT-Producto = CT-Producto-1
 
 <u>Temporizadores:</u>
-	Nombre:<b>Temp</b>Nombre
+	Nombre:<b>TM-</b>Nombre
 
- 	<b>Iniciar Temporizador:</b> Nombre = Numero Tiempo
- 	<I>Ejemplo: </I> TempCalor = 2 Seg
+ 	<b>Iniciar Temporizador:</b> TM-Nombre = Numero Tiempo
+ 	<I>Ejemplo: </I> TM-Base = 2 Seg ó TM-Base = 2 Sg ó TM-Base = 2 s
  	
- 	<b>Finalizar Temporizador:</b>TempNombre/Etapa de activación/Número tiempo
- 	<I>Ejemplo: </I>TempCalor/X4/2 Seg  
+ 	<b>Finalizar Temporizador:</b>TM-Nombre/Etapa de activación/Número tiempo
+ 	<I>Ejemplo: </I>TM-Base/X4/2 Seg  
+
+ 	<u>Mensajes:</u>
+	Nombre de la señal:<b>MSG-</b>Nombre
+ 	<I>Ejemplo: </I> MSG-Nombre: "Mensaje"
 </FONT>
 </BODY>

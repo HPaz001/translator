@@ -207,8 +207,8 @@ public class Grafcet {
 	 */
 	public void addSequence(Sequence pSequence) {
 		/*
-		 * obntengo su lista de se�ales de la secuencia para a�adirla a la
-		 * lista de se�ales del grafcet
+		 * obntengo laa lista de se#ales de la secuencia para a#adirla a la
+		 * lista de se#ales del grafcet
 		 */
 		this.signalsGrafcet.addAll(pSequence.getSignals());
 		/* la posicion de la lista sera el numero de secuencia -1 */
@@ -340,7 +340,7 @@ public class Grafcet {
 	}
 
 	/**
-	 * Metodo que a�ade los set y reset a cada una de las distintas etapas que
+	 * Metodo que a#ade los set y reset a cada una de las distintas etapas que
 	 * componen un grafcet
 	 */
 	public void addSetAndResetToStep() {
