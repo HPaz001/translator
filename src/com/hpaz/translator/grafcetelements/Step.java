@@ -69,7 +69,6 @@ public class Step {
 	}
 
 	public void addMySet(String pMySet) {
-
 		String set = pMySet.trim();
 		// Para detectar temporizador
 		Pattern patTemp = Pattern.compile("^TM\\-.*/X[0-9]{1,}/[0-9]{1,}[a-z A-Z]{1,}.*");

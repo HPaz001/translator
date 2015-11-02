@@ -317,7 +317,13 @@ public class Grafcet {
 				previousStepAndTransitionList.addAll(
 						getPreviousStepAndTransitionFromSequence(sequence.getPreviousSequencesList(), transName));
 			} else if (step != null && transName != null) {
-				previousStepAndTransitionList.add("(" + step.getName() + " AND " + transName + ")");
+				//si transName es distinto de null pero vacio no pondre el AND
+				if("".equals(transName)){
+					previousStepAndTransitionList.add(step.getName());
+				}else{
+					previousStepAndTransitionList.add("(" + step.getName() + " AND " + transName + ")");
+				}
+				
 			}
 		}
 

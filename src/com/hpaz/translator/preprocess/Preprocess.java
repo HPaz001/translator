@@ -38,7 +38,7 @@ public class Preprocess extends DefaultHandler {
 	private boolean feInside;
 	/**para comprobar si el contenido esta dentro de la etiqueta o despues de cerrarla*/
 	private boolean reInside;
-
+	private boolean isComment;
 	// variables auxiliares
 	/** isStep= True si lo que se esta procesando es una step */
 	private boolean isStep;
@@ -56,6 +56,7 @@ public class Preprocess extends DefaultHandler {
 		this.previousTag = "";
 		this.feInside=false;
 		this.reInside=false;
+		this.isComment=false;
 		// this.CorrectlyXML=true;
 		String separator = FileSystems.getDefault().getSeparator();
 		String fileName = inputXML.substring(inputXML.lastIndexOf(separator) + 1, inputXML.length() - 4);
@@ -120,6 +121,12 @@ public class Preprocess extends DefaultHandler {
 			// guardo las dos secuencias de las q viene o va en el road
 			road.addSequences(Integer.parseInt(attributes.getValue(0)));
 
+		}else if (actualTag.equals(GrafcetTagsConstants.COMMENT_TAG)) {// comment
+			isComment=true;
+		}else if (actualTag.equals(GrafcetTagsConstants.COMMENT_TAG)) {// re
+			reInside=false;
+		}else if (actualTag.equals(GrafcetTagsConstants.COMMENT_TAG)) {// fe
+			feInside=false;
 		}
 	}
 
@@ -160,7 +167,7 @@ public class Preprocess extends DefaultHandler {
 				 */
 			} else if (actualTag.equals(GrafcetTagsConstants.CPL_TAG)) {// cpl
 				// si es de un comentario
-				if (previousTag.equals(GrafcetTagsConstants.COMMENT_TAG)) {
+				if (isComment) {
 					addComent(" NOT " + text);
 				} else if (isStep) {
 					action.addCondition("( NOT (" + text + "))");
@@ -168,14 +175,23 @@ public class Preprocess extends DefaultHandler {
 					transition.addCondition("( NOT (" + text + "))");
 				}
 			} else if (actualTag.equals(GrafcetTagsConstants.COMMENT_TAG)) {// comment
-				addComent(text);
+				if(!reInside){
+					// si esta dentro de un comentario a#ado a cometario
+					addComent(" RE " + text);
+				}else if(!feInside){
+					// si esta dentro de un comentario a#ado FE al cometario
+					addComent(" FE " + text);
+				}else{
+					addComent(text);
+				}
+				
 				/*
 				 * si la etiqueta es re (flanco de subida) Puede estar en :
 				 * Action, transitio, comment
 				 */
 			} else if (actualTag.equals(GrafcetTagsConstants.RE_TAG)) {
 				reInside = true;
-				if (previousTag.equals(GrafcetTagsConstants.COMMENT_TAG)) {
+				if (isComment && !text.isEmpty()&& !" ".equals(text)) {
 					// si esta dentro de un comentario a#ado a cometario
 					addComent(" RE " + text);
 				} else if (isStep) {
@@ -196,7 +212,7 @@ public class Preprocess extends DefaultHandler {
 				 */
 			} else if (actualTag.equals(GrafcetTagsConstants.FE_TAG)) {
 				feInside = true;
-				if (previousTag.equals(GrafcetTagsConstants.COMMENT_TAG)) {
+				if (isComment && !text.isEmpty()&& !" ".equals(text)) {
 					// si esta dentro de un comentario añado a cometario
 					addComent(" FE " + text);
 				} else if (isStep) {
@@ -262,7 +278,7 @@ public class Preprocess extends DefaultHandler {
 			Project.getProject().addGrafcet(grafcet);
 
 			// si es una etiqueta de negacion
-		} else if (actualTag.equals(GrafcetTagsConstants.CPL_TAG)) { // Grafcet
+		} else if (actualTag.equals(GrafcetTagsConstants.CPL_TAG)) { // cpl
 			/*
 			 * vuelvo la actual tag a la antigua tag ya que si hay mas texto en
 			 * una etiqueta detecta todo negado
@@ -273,43 +289,8 @@ public class Preprocess extends DefaultHandler {
 			 * si la etiqueta es re (flanco de subida) Puede estar en : Action,
 			 * transitio, comment
 			 */
-		} else if (actualTag.equals(GrafcetTagsConstants.RE_TAG) && !reInside ) {
-			
-			if (previousTag.equals(GrafcetTagsConstants.COMMENT_TAG)) {
-				// si esta dentro de un comentario a#ado a cometario
-				addComent(" RE " + text);
-			} else if (isStep) {
-				// Si es un step puede ser de una condicion o de una action
-				if (previousTag.equals(GrafcetTagsConstants.CONDITION_TAG)) {
-					action.addCondition(" RE " + text + "");
-				} else {
-					action.addText(" RE " + text + "");
-				}
-			} else if (isTransition) {
-				// si esta dentro de una transition
-				transition.addCondition(" RE " + text + "");
-			}
-			/*
-			 * si la etiqueta es fe (flanco de bajada) Puede estar en : Action,
-			 * transitio, comment
-			 */
-		} else if (actualTag.equals(GrafcetTagsConstants.FE_TAG) && !feInside) {
-			if (previousTag.equals(GrafcetTagsConstants.COMMENT_TAG)) {
-				// si esta dentro de un comentario añado a cometario
-				addComent(" FE " + text);
-			} else if (isStep) {
-				// Si es un step puede ser de una condicion o de una action
-				if (previousTag.equals(GrafcetTagsConstants.CONDITION_TAG)) {
-					action.addCondition(" FE " + text + "");
-				} else {
-					action.addText(" FE " + text + "");
-				}
-			} else if (isTransition) {
-				// si esta dentro de una transition
-				transition.addCondition(" FE " + text + "");
-
-			}
-			
+		} else if (actualTag.equals(GrafcetTagsConstants.COMMENT_TAG)) { //comment
+			isComment=false;
 		}
 		
 	}

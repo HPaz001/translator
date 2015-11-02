@@ -153,9 +153,9 @@ public class Transition {
 						String[] listSep = list[i].trim().split(":=|==|\\*|\\+|\\·|\\.");
 						// por cada elemento del array
 						for (int j = 0; j < listSep.length; j++) {
+							String auxString = listSep[j].trim();
 							//para comprobar si es una etapa
 							Pattern patS = Pattern.compile("^[0-9]{1,}|^X[0-9]{1,}$");
-							String auxString = listSep[j].trim();
 							Matcher matS = patS.matcher(auxString);
 							// Si no es una etapa
 							if (!matS.matches()) {
@@ -244,6 +244,18 @@ public class Transition {
 		String s = pString.trim();
 		s = s.replaceAll("\\*|\\·|\\.", " AND ");
 		s = s.replace("+", " OR ");
+		Pattern patS = Pattern.compile("^.*. AND $");
+		Matcher matS = patS.matcher(s);
+		// Si no es una etapa
+		if (matS.matches()) {
+			s = s.replaceAll(" AND $", "");
+		}else {
+			Pattern pat = Pattern.compile("^ AND .*");
+			Matcher mat = pat.matcher(s);
+			if(mat.matches()){
+				s = s.replaceAll("^ AND", "");
+			}
+		}
 		return s;
 	}
 
