@@ -22,15 +22,15 @@ public class Timer {
 		this.time = 0;
 	}
 	
-	public Timer fillTimer(String[] list){
+	public Timer fillTimer(String string){
 		//this.nameTimer = list[0];
-		addStepNameTimer(list[1]);
-		String aux = list[2];
+		//addStepNameTimer(list[1]);
+		String aux = string;
 		//Extraigo el texto sin numero
 		aux = aux.replaceAll("[0-9]", "");
 		addTypeTime(aux.trim());
 		//Extraigo el numero sin texto
-		aux = list[2].replaceAll("[a-z]|[A-Z]", "");
+		aux = string.replaceAll("[a-z]|[A-Z]", "");
 		addTime(Integer.parseInt(aux.trim()));
 		
 		return this;

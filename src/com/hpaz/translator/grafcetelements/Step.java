@@ -93,14 +93,12 @@ public class Step {
 
 		if (matCont.matches()) {
 			// obtengo el nombre del contador y le añado la Q
-			String string = pMySet.replaceAll("^CT\\-", "");
-			string = pMySet.substring(0, pMySet.indexOf("=")) + "Q";
+			String string = pMySet.substring(2, pMySet.indexOf("=")) + "Q";
 			set = string + pMySet.substring(pMySet.indexOf("="), pMySet.length());
 		}
-		// si es un mensaje 
-		if(matMess.matches()){
-			set= pMySet.replaceAll("^CT\\-", "");
-			set = set.substring(0,set.indexOf(":"));
+		// si es un mensaje
+		if (matMess.matches()) {
+			set = pMySet.substring(3, pMySet.indexOf(":"));
 		}
 		// Si no se ha añadido un set se añade
 		if (this.mySet == null) {
@@ -169,7 +167,9 @@ public class Step {
 		// para comprobar la emergencia
 		Pattern pat = Pattern.compile("^F/G.*");
 		Matcher mat = pat.matcher(auxTextAction);
+
 		
+
 		// si la accion es una emergencia
 		if (mat.matches() && auxAction.getType().equals(GrafcetTagsConstants.ACTION_FORCING_ORDER)) {
 			auxAction.addEmergency(true);
@@ -197,6 +197,7 @@ public class Step {
 				message = message.substring(0, message.indexOf(":"));
 				// añado la señal de mensaje a la accion
 				auxAction.addMessage(message);
+			
 			}
 		}
 		this.myActions.add(auxAction);

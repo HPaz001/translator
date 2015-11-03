@@ -17,8 +17,10 @@ public class Sequence {
 	/** Se guarda el indice de las secuencias siguientes a esta */
 	private LinkedList<Integer> nextSequencesList;
 
-	/**Para saber la etepa de la emergencia, en ellos guardare el indice de la
-	 * etapa*/
+	/**
+	 * Para saber la etepa de la emergencia, en ellos guardare el indice de la
+	 * etapa
+	 */
 	private int stepStopEmergency;
 	private int stepStartEmergency;
 
@@ -30,12 +32,12 @@ public class Sequence {
 		this.stepStopEmergency = -1;
 		this.stepStartEmergency = -1;
 	}
-	
+
 	public void fillAttributes(Map<String, String> pAttributes) {
 		// anado el id
-		addIdSeq(Integer.parseInt(pAttributes.get("id")));			
+		addIdSeq(Integer.parseInt(pAttributes.get("id")));
 	}
-	
+
 	public int getIdSeq() {
 		return idSeq;
 	}
@@ -55,91 +57,116 @@ public class Sequence {
 	public int getStepStartEmergency() {
 		return stepStartEmergency;
 	}
-	
-	/**Este metodo a#ade una transicion o un step a la lista listTransitionOrStep
-	 * Pero antes de esto genera y guarda las seï¿½ales correspondientes */
+
+	/**
+	 * Este metodo a#ade una transicion o un step a la lista
+	 * listTransitionOrStep Pero antes de esto genera y guarda las seï¿½ales
+	 * correspondientes
+	 */
 	public void addTransitionOrStep(Object pTransitionOrStep) {
-		//si es una transicion
+		// si es una transicion
 		if (pTransitionOrStep instanceof Transition) {
 			Transition transition = (Transition) pTransitionOrStep;
-			//si la transicion tiene un comentario lo analizo 
-			if(transition.getComment() != null){
+			// si la transicion tiene un comentario lo analizo
+			if (transition.getComment() != null) {
 				((Transition) pTransitionOrStep).analyzeReviews();
 			}
 			addSignals(((Transition) pTransitionOrStep).getConditionSep());
-			//si es un step
+			// si es un step
 		} else if (pTransitionOrStep instanceof Step) {
-			//por cada accion que hay en el step
+			// por cada accion que hay en el step
 			for (Action action : ((Step) pTransitionOrStep).getMyActions()) {
-				
+
 				String act = action.getText();
-				
-				//si hay una accion y NO es una emergencia
+
+				// si hay una accion y NO es una emergencia
 				if (act != null && !action.isEmergency()) {
 					String actionName = action.getText().trim();
-					//para comprobar si es un temporizador
+					// para comprobar si es un temporizador
 					Pattern patTemp = Pattern.compile("^TM\\-.*.=[0-9].*");
 					Matcher matTemp = patTemp.matcher(actionName);
-					
-					//TODO temporizador comprobar ¿?¿
-					
-					//Si no es un temporizador
-					if(!matTemp.matches()){
-						
-						//Expresion regular para detectar una asignacion de contador
+
+					// temporizador
+					if (matTemp.matches()) {
+						// Quito el TM-
+						actionName = actionName.replaceAll("^TM\\-", "");
+						// Me quedo solo con el nombre del temp
+						String aux = actionName.substring(0, actionName.indexOf("="));
+						// busco el indice del temp en la lista si esta
+						int index = Project.getProject().equalsTimer(aux);
+						// Si el temporizador no esta lo creo y añado
+						if (index == (-1)) {
+							Timer timer = new Timer();
+							timer.addNameTimer(aux);
+							timer.addStepNameTimer(((Step) pTransitionOrStep).getName());
+							timer.fillTimer(actionName.substring(actionName.indexOf("=")+1));
+							Project.getProject().addTimer(timer);
+
+						}
+					} else {
+
+						// Expresion regular para detectar una asignacion de
+						// contador
 						Pattern patCountAsig = Pattern.compile("^CT\\-.*.=[0-9]$");
 						Matcher matCountAsig = patCountAsig.matcher(actionName.trim());
-						
-						//Si es un contador
-						if(matCountAsig.matches()){							
-							//Quito el CT-
-							actionName=actionName.replaceAll("^CT\\-", "");
-							//Me quedo solo con el nombre del contador
+
+						// Si es un contador
+						if (matCountAsig.matches()) {
+							// Quito el CT-
+							actionName = actionName.replaceAll("^CT\\-", "");
+							// Me quedo solo con el nombre del contador
 							actionName = actionName.substring(0, actionName.indexOf("="));
-							//lo convierto en numero para verificar que efectivamente solo coje los numeros
-							//TODO esto deveria de ser un numero comprobar
-							String initialValue = actionName.substring(actionName.indexOf("=")+1,actionName.length()); 
-							String stepName= ((Step) pTransitionOrStep).getName();
-							//Compruebo si el contador existe en la lista
+							// lo convierto en numero para verificar que
+							// efectivamente solo coje los numeros
+							// TODO esto deveria de ser un numero comprobar
+							String initialValue = actionName.substring(actionName.indexOf("=") + 1,
+									actionName.length());
+							String stepName = ((Step) pTransitionOrStep).getName();
+							// Compruebo si el contador existe en la lista
 							int index = Project.getProject().equalsCount(actionName);
-							//Si index == -1 es q no encontro un contador con ese nombre
-							if(index == (-1)){
-								//Creo el contador y lo relleno
+							// Si index == -1 es q no encontro un contador con
+							// ese nombre
+							if (index == (-1)) {
+								// Creo el contador y lo relleno
 								Counter cont = new Counter();
-								//le agrego el nombre y el valor inicial
+								// le agrego el nombre y el valor inicial
 								cont.addNameCounter(actionName);
 								cont.addInitialValue(initialValue);
 								cont.addStepInitialValue(stepName);
 								Project.getProject().addCounter(cont);
-								
-							}else{//Si index != -1 es q habia un contador con ese nombre, asi q guardo la etapa.
+
+							} else {// Si index != -1 es q habia un contador con
+									// ese nombre, asi q guardo la etapa.
 								Project.getProject().getListCounters().get(index).addInitialValue(stepName);
 							}
-						//Sino es un temporizador, ni un contador, ni emergencia
-						}else{
-							//si es un mensaje
+							// Sino es un temporizador, ni un contador, ni
+							// emergencia
+						} else {
+							// si es un mensaje
 							String message = action.getMessage();
-							if(message!=null){
+							if (message != null) {
 								actionName = message;
 							}
-							addSignal(actionName);	
+							addSignal(actionName);
 						}
-						
+
 					}
-					// si hay acction y es emergencia 
-				}else if (act != null && action.isEmergency()){
-					//si es una action se q estoy en un step
+					// si hay acction y es emergencia
+				} else if (act != null && action.isEmergency()) {
+					// si es una action se q estoy en un step
 					Step auxStep = (Step) pTransitionOrStep;
-					//int stepNumber = Integer.parseInt(auxStep.getName().substring(1));
-					//guardo el indice de la etapa de la emergencia
-					//utilizo el .size ya que este elemento sera añadido en la ultima posicion de la lista
+					// int stepNumber =
+					// Integer.parseInt(auxStep.getName().substring(1));
+					// guardo el indice de la etapa de la emergencia
+					// utilizo el .size ya que este elemento sera añadido en la
+					// ultima posicion de la lista
 					int stepIndex = listTransitionOrStep.size();
 					if (auxStep.isStartEmergency()) {
 						addStepStartEmergency(stepIndex);
-						//addStepStartEmergency(stepNumber);
+						// addStepStartEmergency(stepNumber);
 					} else if (auxStep.isStopEmergency()) {
 						addStepStopEmergency(stepIndex);
-						//addStepStopEmergency(stepNumber);
+						// addStepStopEmergency(stepNumber);
 					}
 				}
 			}
@@ -149,10 +176,10 @@ public class Sequence {
 
 	public LinkedList<String> getVarGlobalStages(String pTypeProgram) {
 
-		//LinkedList<String> auxSignals = new LinkedList<String>();
+		// LinkedList<String> auxSignals = new LinkedList<String>();
 		LinkedList<String> auxStages = new LinkedList<String>();
 
-		//auxSignals.add("\n\t(*---Seï¿½ales---*)\n\n");
+		// auxSignals.add("\n\t(*---Seï¿½ales---*)\n\n");
 		/* puede ser una transition o un step */
 		for (Object st : listTransitionOrStep) {
 			if (st instanceof Step) {
@@ -163,9 +190,9 @@ public class Sequence {
 		return auxStages;
 
 	}
-	
+
 	public LinkedList<String> getStepExternalVars() {
-		
+
 		LinkedList<String> externalVars = new LinkedList<String>();
 
 		/* puede ser una transition o un step */
@@ -184,11 +211,13 @@ public class Sequence {
 
 		/* puede ser una transition o un step */
 		for (Object st : listTransitionOrStep) {
-			//si es un step
+			// si es un step
 			if (st instanceof Step) {
-				//Si es una etapa inicial y no es emergencia o tiene una o mas acciones asociadas
-				if((((Step) st).getType().equals("initial") && !pEmergency)||(!((Step) st).getMyActions().isEmpty())){
-					externalVars.add(((Step) st).printExternalVars());	
+				// Si es una etapa inicial y no es emergencia o tiene una o mas
+				// acciones asociadas
+				if ((((Step) st).getType().equals("initial") && !pEmergency)
+						|| (!((Step) st).getMyActions().isEmpty())) {
+					externalVars.add(((Step) st).printExternalVars());
 				}
 
 			}
@@ -233,11 +262,11 @@ public class Sequence {
 	}
 
 	public void addPreviousSequencesList(Integer previousSequences) {
-		
-		if(previousSequencesList.isEmpty()){
-			this.previousSequencesList.add(previousSequences);	
+
+		if (previousSequencesList.isEmpty()) {
+			this.previousSequencesList.add(previousSequences);
 			// compruebo que no este para no repetir
-		}else if (!previousSequencesList.equals(previousSequences)) {
+		} else if (!previousSequencesList.equals(previousSequences)) {
 			this.previousSequencesList.add(previousSequences);
 		}
 
@@ -248,15 +277,15 @@ public class Sequence {
 	}
 
 	public void addNextSequencesList(Integer nextSequences) {
-		if(nextSequencesList.isEmpty()){
+		if (nextSequencesList.isEmpty()) {
 			this.nextSequencesList.add(nextSequences);
-		}else if (!nextSequencesList.equals(nextSequences)) {
+		} else if (!nextSequencesList.equals(nextSequences)) {
 			this.nextSequencesList.add(nextSequences);
 		}
 	}
 
 	public Transition getLastTransition() {
-		
+
 		for (int i = listTransitionOrStep.size() - 1; i >= 0; i--) {
 			if (listTransitionOrStep.get(i) instanceof Transition) {
 				return (Transition) listTransitionOrStep.get(i);
@@ -284,28 +313,27 @@ public class Sequence {
 	}
 
 	private void addIdSeq(int pNumber) {
-		this.idSeq=pNumber;	
+		this.idSeq = pNumber;
 	}
-	
-	//añade una lista de señales
-	private void  addSignals( LinkedList<String> pSignals){
+
+	// añade una lista de señales
+	private void addSignals(LinkedList<String> pSignals) {
 		this.signals.addAll(pSignals);
 	}
-	
-	//aï¿½ade una unica seï¿½al
-	private void  addSignal( String pSignal){
+
+	// aï¿½ade una unica seï¿½al
+	private void addSignal(String pSignal) {
 		this.signals.add(pSignal);
 	}
-	
+
 	private void addStepStopEmergency(int pNumber) {
-		this.stepStopEmergency=pNumber;
-		
+		this.stepStopEmergency = pNumber;
+
 	}
-	
+
 	private void addStepStartEmergency(int pNumber) {
-		this.stepStartEmergency=pNumber;
-		
+		this.stepStartEmergency = pNumber;
+
 	}
-	
-	
+
 }

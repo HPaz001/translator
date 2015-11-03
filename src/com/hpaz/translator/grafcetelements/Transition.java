@@ -48,12 +48,8 @@ public class Transition {
 
 				Pattern patCondSep = Pattern.compile("^TM\\-.*/X[0-9]./[0-9].*");
 				Matcher matCondSep = patCondSep.matcher(auxConditionSep.trim());
-				// Si es un temporizador lo mando a la funcio que lo trata
-				if (matCondSep.matches()) {
-					addTempToListProject(auxConditionSep.trim());
-
-					// Si no es temporizador
-				} else {
+				// Si No es un temporizador
+				if (!matCondSep.matches()) {
 					// añado a las lista d señales por separado sin el RE, FE
 					addListConditionSep(auxConditionSep.replaceAll(" RE | FE ", "").trim());
 				}
@@ -215,24 +211,16 @@ public class Transition {
 			// Para comprobar si es un temporizador
 			Pattern pat = Pattern.compile("^TM\\-.*/X[0-9]./[0-9].*");
 			Matcher mat = pat.matcher(list[i]);
-			// si es temporizador
-			if (mat.matches()) {
-				//^TM\\-.*.=[0-9].*
-				// le quito el TM- para dejar solo el nombre del temporizador
-				String temp = list[i].replaceAll("^TM\\-", "");
-				addTempToListProject(temp);
-			} else {
-				// Para comprobar si es un contador
-				Pattern pat1 = Pattern.compile("^CT\\-.*.\\>[0-9]|^CT\\-.*.\\>[0-9]|^CT\\-.*.\\<\\>[0-9]");
-				Matcher mat1 = pat1.matcher(list[i]);
-				// TODO si es contador
-				if (mat1.matches()) {
-					// le quito el CT- para dejar solo el nombre del
-					// temporizador
-					list[i]= list[i].replaceAll("^CT\\-", "");
-				}
+			
+			// Para comprobar si es un contador
+			Pattern pat1 = Pattern.compile("^CT\\-.*.\\>[0-9]|^CT\\-.*.\\>[0-9]|^CT\\-.*.\\<\\>[0-9]");
+			Matcher mat1 = pat1.matcher(list[i]);
+			
+			// si no es temporizador ni contador
+			if (!mat.matches() && !mat1.matches() ) {
+				aux.add(list[i]);
 			}
-			aux.add(list[i]);
+			
 		}
 
 		return aux;
@@ -263,17 +251,15 @@ public class Transition {
 	 * Separa la transicion del temporizador y crea el temporizador con los
 	 * valores correspondientes
 	 */
-	private void addTempToListProject(String pString) {
+	/*private void addTempToListProject(String pString) {
 		// creo un array
 		String[] listTemp = pString.split("/");
-
-		// busco el indice del temp si ya esta en la lista
-		int index = Project.getProject().equalsTimer(listTemp[0]);
+		String nameTemp= listTemp[0].substring(2);
+		// busco el indice del temp en la lista
+		int index = Project.getProject().equalsTimer(nameTemp);
 		// Si el temporizador ya esta en la lista solo añado la etapa
 		if (index != (-1)) {
 			Project.getProject().getListTimers().get(index).addStepNameTimer(listTemp[1]);
-			// Si no esta en la lista de temporizadores creo uno nuevo y lo
-			// añado
 		} else {
 			Timer timer = new Timer();
 			timer.addNameTimer(listTemp[0]);
@@ -281,5 +267,5 @@ public class Transition {
 			Project.getProject().addTimer(timer);
 
 		}
-	}
+	}*/
 }
