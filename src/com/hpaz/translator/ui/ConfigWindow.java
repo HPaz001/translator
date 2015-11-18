@@ -5,9 +5,12 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.FileInputStream;
+import java.io.FileReader;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -194,14 +197,20 @@ public class ConfigWindow extends JFrame {
 										selectedCompatibility);
 								reader.setContentHandler(preproces);
 								// Procesamos el xml
-								reader.parse(new InputSource(new FileInputStream(xmlPath)));
+								// new FileInputStream(xmlPath)
+								String xmlFileContentString = readXMLFromFile(xmlPath);
+
+								xmlFileContentString = replaceElementsInXMLContent(xmlFileContentString);
+								
+								reader.parse(new InputSource(new ByteArrayInputStream(xmlFileContentString.getBytes(StandardCharsets.UTF_8))));
+
 								// comprobamos que tipo de opcion ha marcado el
 								// usuario para saber si abrir las siguiente
 								// interfaz o no
 								if (selectedCompatibility.equalsIgnoreCase(GrafcetTagsConstants.PROGRAM_OPT1)
 										|| selectedCompatibility.equalsIgnoreCase(GrafcetTagsConstants.PROGRAM_OPT3)) { // Twincat
 																														// y
-																												// plcopen
+									// plcopen
 									dispose();
 									new VariableInitWindow().setVisible(true);
 								} else {
@@ -210,15 +219,15 @@ public class ConfigWindow extends JFrame {
 											"Se han generado los ficheros de su proyecto en la carpeta seleccionada.",
 											"Finalizado", JOptionPane.DEFAULT_OPTION);
 									dispose();
-									
-									//new MainProgramWindow().setVisible(true);
+
+									// new MainProgramWindow().setVisible(true);
 								}
-							} /*else {
-								JOptionPane.showMessageDialog(contentPane,
-										"El XML no tiene un formato adecuado, por favor selecione uno valido.", "Error",
-										JOptionPane.ERROR_MESSAGE);
-							}
-*/
+							} /*
+								 * else {
+								 * JOptionPane.showMessageDialog(contentPane,
+								 * "El XML no tiene un formato adecuado, por favor selecione uno valido."
+								 * , "Error", JOptionPane.ERROR_MESSAGE); }
+								 */
 							// dispose();
 
 							/*
@@ -244,6 +253,42 @@ public class ConfigWindow extends JFrame {
 						}
 					}
 				}
+			}
+
+			private String replaceElementsInXMLContent(String xmlFileContentString) {
+				
+				String resultXmlContentString = xmlFileContentString;
+				// Reemplazamos las etiquetas de flanco de subida por algo que
+				// podemos manejar correctamente al parsear
+				resultXmlContentString = resultXmlContentString.replace("<re />", "RE ");
+				// Reemplazamos las etiquetas de flanco de bajada por algo que
+				// podemos manejar correctamente al parsear
+				resultXmlContentString = resultXmlContentString.replace("<fe />", "FE ");
+
+				return resultXmlContentString;
+			}
+
+			private String readXMLFromFile(String xmlPath) {
+				String fileContent = "";
+				BufferedReader br = null;
+				try {
+					br = new BufferedReader(new FileReader(xmlPath));
+					StringBuilder sb = new StringBuilder();
+					String line = br.readLine();
+
+					while (line != null) {
+						sb.append(line);
+						sb.append(System.lineSeparator());
+						line = br.readLine();
+					}
+					fileContent = sb.toString();
+					if (br != null)
+						br.close();
+				} catch (Exception e) {
+					System.out.println("No se ha podido leer correctamente el ficero xml");
+					e.printStackTrace();
+				}
+				return fileContent;
 			}
 		});
 		panelLanguage.setLayout(null);
@@ -281,14 +326,15 @@ public class ConfigWindow extends JFrame {
 		try { // XML a validar
 			Source xmlFile = new StreamSource(pXmlPath);
 			// Esquema con el que comparar
-			Source schemaFile = new StreamSource(this.getClass().getResource("files/plantillaParaSFCEdit.xsd").openStream());
+			Source schemaFile = new StreamSource(
+					this.getClass().getResource("files/plantillaParaSFCEdit.xsd").openStream());
 			// Preparacion del esquema
 			SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
 			Schema schema = schemaFactory.newSchema(schemaFile);
 			// Creacion del validador
 			Validator validator = schema.newValidator();
-			
-			// Definicion del manejador de excepciones del validado			
+
+			// Definicion del manejador de excepciones del validado
 			validator.setErrorHandler(new ErrorHandler() {
 				public void warning(SAXParseException exception) throws SAXException {
 					exceptions.add(exception);
@@ -301,7 +347,7 @@ public class ConfigWindow extends JFrame {
 				public void error(SAXParseException exception) throws SAXException {
 					exceptions.add(exception);
 				}
-				
+
 			});
 
 			// Validacion del XML
@@ -311,32 +357,28 @@ public class ConfigWindow extends JFrame {
 			if (exceptions.size() != 0) {
 				isCorrectly = false;
 				String messaheError = "";
-				messaheError = "El Fichero " + xmlFile.getSystemId() + " es invalido"
-				+"\nTiene " + exceptions.size()+" errores.";
+				messaheError = "El Fichero " + xmlFile.getSystemId() + " es invalido" + "\nTiene " + exceptions.size()
+						+ " errores.";
 				for (int i = 0; i < exceptions.size(); i++) {
-					messaheError = messaheError +"\nError # " + (i + 1) + ":\n\t" + exceptions.get(i);
+					messaheError = messaheError + "\nError # " + (i + 1) + ":\n\t" + exceptions.get(i);
 				}
-				JOptionPane.showMessageDialog(contentPane,
-						messaheError, "Error",
-						JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(contentPane, messaheError, "Error", JOptionPane.ERROR_MESSAGE);
 			}
-			
-		}catch (IOException e) {
+
+		} catch (IOException e) {
 			isCorrectly = false;
-			//e.printStackTrace();
+			// e.printStackTrace();
 			JOptionPane.showMessageDialog(contentPane,
-					"El Fichero " + textFieldInput.getText() + " es invalido.\n"
-					+e.getMessage(), "Error",
+					"El Fichero " + textFieldInput.getText() + " es invalido.\n" + e.getMessage(), "Error",
 					JOptionPane.ERROR_MESSAGE);
 		} catch (SAXException e) {
 			isCorrectly = false;
-			//e.printStackTrace();
+			// e.printStackTrace();
 			JOptionPane.showMessageDialog(contentPane,
-					"El Fichero " + textFieldInput.getText() + " es invalido.\n"
-					+e.getMessage(), "Error",
+					"El Fichero " + textFieldInput.getText() + " es invalido.\n" + e.getMessage(), "Error",
 					JOptionPane.ERROR_MESSAGE);
 		}
-		
+
 		return isCorrectly;
 	}
 

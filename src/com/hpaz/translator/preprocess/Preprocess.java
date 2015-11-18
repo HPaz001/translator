@@ -32,7 +32,7 @@ public class Preprocess extends DefaultHandler {
 	private Sequence sequence;
 	private Step step;
 	private Transition transition;
-	private String text;
+	
 	private Action action;
 	private boolean isComment;
 	// variables auxiliares
@@ -40,17 +40,28 @@ public class Preprocess extends DefaultHandler {
 	private boolean isStep;
 	/** isTransition=True si lo que se esta procesasndo es una transition */
 	private boolean isTransition;
+	private String text;
 	private String actualTag;
 	private String previousTag;
 	// private boolean CorrectlyXML;
 
 	public Preprocess(String inputXML, String outputDir, String pLanguage, String pCompatibility) {
-		this.actualTag = "";
-		this.text = "";
+		this.grafcet=null;
+		this.jump=null;
+		this.road=null;
+		this.sequence=null;
+		this.step=null;
+		this.transition=null;
+
+		this.action=null;
+		this.isComment = false;
 		this.isStep = false;
 		this.isTransition = false;
-		this.previousTag = "";
-		this.isComment = false;
+		
+		this.text=null;
+		this.actualTag = null;
+		this.previousTag = null;
+		
 		// this.CorrectlyXML=true;
 		String separator = FileSystems.getDefault().getSeparator();
 		String fileName = inputXML.substring(inputXML.lastIndexOf(separator) + 1, inputXML.length() - 4);
@@ -58,7 +69,7 @@ public class Preprocess extends DefaultHandler {
 		Project.getProject().addOutputPath(outputDir);
 		Project.getProject().addLanguage(pLanguage);
 		Project.getProject().addProgram(pCompatibility);
-
+		
 	}
 
 	/**
@@ -102,10 +113,12 @@ public class Preprocess extends DefaultHandler {
 			action = new Action();
 			attributesAux = processingAttributes(attributes);
 			action.fillAttributes(attributesAux);
+			
 		} else if (actualTag.equals(GrafcetTagsConstants.HLINK_TAG)) {// road
 			road = new Road();
 			attributesAux = processingAttributes(attributes);
 			road.fillAttributes(attributesAux);
+			
 		} else if (actualTag.equals(GrafcetTagsConstants.JUMP_TAG)) {
 			jump = new Jump();
 			attributesAux = processingAttributes(attributes);
@@ -117,14 +130,14 @@ public class Preprocess extends DefaultHandler {
 
 		} else if (actualTag.equals(GrafcetTagsConstants.COMMENT_TAG)) {// comment
 			isComment = true;
-		}
+		} 
 	}
 
 	/** Para obtener los textos que hay dentro de una etiqueta */
 	public void characters(char[] ch, int start, int length) throws SAXException {
 
 		String texto = String.valueOf(ch, start, length);
-
+	
 		text = texto;
 		// quito los enter, tabulaciones y espacios en blanco
 		text = text.replace("\n", "");
@@ -187,7 +200,7 @@ public class Preprocess extends DefaultHandler {
 				 * Action, transitio, comment
 				 * 
 				 * } else if (actualTag.equals(GrafcetTagsConstants.FE_TAG)) {
-				 * if (isComment) { // si esta dentro de un comentario aÃ±ado a
+				 * if (isComment) { // si esta dentro de un comentario añado a
 				 * cometario addComent(" FE "); } else if (isStep) { // Si es un
 				 * step puede ser de una condicion o de una action if
 				 * (previousTag.equals(GrafcetTagsConstants.CONDITION_TAG)) {
@@ -224,11 +237,11 @@ public class Preprocess extends DefaultHandler {
 			isTransition = false;
 
 		} else if (actualTag.equals(GrafcetTagsConstants.HLINK_TAG)) { // hlink
-			// aÃ±ado el camino al grafcet
+			// añado el camino al grafcet
 			grafcet.addRoad(road);
 
 		} else if (actualTag.equals(GrafcetTagsConstants.JUMP_TAG)) { // jump
-			// aÃ±ado el salto al grafcet
+			// añado el salto al grafcet
 			grafcet.addJump(jump);
 
 		} else if (actualTag.equals(GrafcetTagsConstants.GRAFCET_TAG)) { // Grafcet
@@ -243,9 +256,8 @@ public class Preprocess extends DefaultHandler {
 			Map<String, String> auxMap = grafcet.getActionStepMap();
 			Project.getProject().generateActionStepMap(auxMap);
 
-			// aÃ±ado el grafcet al proyecto
+			// añado el grafcet al proyecto
 			Project.getProject().addGrafcet(grafcet);
-
 			// si es una etiqueta de negacion
 		} else if (actualTag.equals(GrafcetTagsConstants.CPL_TAG)) { // cpl
 			/*
@@ -279,14 +291,13 @@ public class Preprocess extends DefaultHandler {
 				// si esta dentro de una transition
 				transition.addCondition(" RE ");
 			}
-
 			/*
 			 * si la etiqueta es fe (flanco de bajada) Puede estar en : Action,
 			 * transitio, comment
 			 */
 		} else if (actualTag.equals(GrafcetTagsConstants.FE_TAG)) {
 			if (isComment) {
-				// si esta dentro de un comentario aÃ±ado a cometario
+				// si esta dentro de un comentario añado a cometario
 				addComent(" FE ");
 			} else if (isStep && !isComment) {
 				// Si es un step puede ser de una condicion o de una action
@@ -313,7 +324,7 @@ public class Preprocess extends DefaultHandler {
 	}
 
 	/**
-	 * AÃ±ade el comentario donde le corresponde, ya que puede ser de una
+	 * Añade el comentario donde le corresponde, ya que puede ser de una
 	 * transicion o de un paso
 	 */
 	private void addComent(String comm) {
@@ -327,12 +338,4 @@ public class Preprocess extends DefaultHandler {
 			transition.addComment(comm);
 		}
 	}
-	/*
-	 * public boolean isPreprocessFinishCorrectly(){ //TODO comprobar que el
-	 * preproceso se ha completado correctamente (Que el XML es valido) y
-	 * devolver el resultado //TODO cuando se hace el preproceso si algo va mal
-	 * tener una boleana global que cambie de true a false return
-	 * this.CorrectlyXML; }
-	 */
-
 }
